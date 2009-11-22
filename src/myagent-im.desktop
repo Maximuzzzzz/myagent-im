@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=MyAgent-IM
+Comment=Instant Messenger for Mail.ru
+Comment[ru]=Клиент мгновенных сообщений Mail.ru
+Exec=myagent-im
+Icon=/usr/share/pixmaps/myagent-im.png
+Terminal=false
+Type=Application
+Categories=Network;InstantMessaging;Qt;

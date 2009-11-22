@@ -1,0 +1,13 @@
+Source: myagent-im
+Section: net
+Priority: extra
+Maintainer: Alexander Volkov <volkov0aa@gmail.com>
+Build-Depends: debhelper (>= 7), libqt4-dev (>= 4.4), pkg-config, flex, zlib1g-dev, libxapian-dev, libxss-dev, libaspell-dev
+Standards-Version: 3.8.3
+Homepage: http://code.google.com/p/myagent-im
+
+Package: myagent-im
+Architecture: any
+Depends: ${shlibs:Depends}, aspell-ru
+Description: Instant messaging application for Mail.ru
+ Instant messenger with  basic Mail.ru protocol support

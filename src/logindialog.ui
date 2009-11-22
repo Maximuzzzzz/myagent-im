@@ -1,0 +1,128 @@
+<ui version="4.0" >
+ <class>LoginDialog</class>
+ <widget class="QDialog" name="LoginDialog" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>214</width>
+    <height>138</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Login</string>
+  </property>
+  <property name="windowIcon" >
+   <iconset resource="res.qrc" >
+    <normaloff>:/icons/logindlg.png</normaloff>:/icons/logindlg.png</iconset>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout" >
+   <item>
+    <layout class="QGridLayout" name="gridLayout" >
+     <item row="0" column="0" >
+      <widget class="QLabel" name="emailLabel" >
+       <property name="text" >
+        <string>E-mail:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1" >
+      <widget class="QComboBox" name="emailBox" >
+       <property name="editable" >
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0" >
+      <widget class="QLabel" name="passwordLabel" >
+       <property name="text" >
+        <string>Password:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1" >
+      <widget class="QLineEdit" name="passwordEdit" >
+       <property name="echoMode" >
+        <enum>QLineEdit::Password</enum>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" >
+     <item>
+      <widget class="QLabel" name="onlineStatusLabel" >
+       <property name="text" >
+        <string>Online status:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="onlineStatusBox" >
+       <item>
+        <property name="text" >
+         <string>Online</string>
+        </property>
+        <property name="icon" >
+         <iconset resource="res.qrc" >
+          <normaloff>:/icons/status/status_online.png</normaloff>:/icons/status/status_online.png</iconset>
+        </property>
+       </item>
+       <item>
+        <property name="text" >
+         <string>Away</string>
+        </property>
+        <property name="icon" >
+         <iconset resource="res.qrc" >
+          <normaloff>:/icons/status/status_away.png</normaloff>:/icons/status/status_away.png</iconset>
+        </property>
+       </item>
+       <item>
+        <property name="text" >
+         <string>Invisible</string>
+        </property>
+        <property name="icon" >
+         <iconset resource="res.qrc" >
+          <normaloff>:/icons/status/status_invisible.png</normaloff>:/icons/status/status_invisible.png</iconset>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" >
+     <item>
+      <widget class="QPushButton" name="okButton" >
+       <property name="text" >
+        <string>Ok</string>
+       </property>
+       <property name="default" >
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cancelButton" >
+       <property name="text" >
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>emailBox</tabstop>
+  <tabstop>passwordEdit</tabstop>
+  <tabstop>onlineStatusBox</tabstop>
+  <tabstop>okButton</tabstop>
+  <tabstop>cancelButton</tabstop>
+ </tabstops>
+ <resources>
+  <include location="res.qrc" />
+ </resources>
+ <connections/>
+</ui>
