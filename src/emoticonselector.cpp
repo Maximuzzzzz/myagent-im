@@ -37,13 +37,13 @@
 EmoticonSelector::EmoticonSelector(QWidget *parent)
 	: QWidget(parent)
 {
-	setWindowFlags(Qt::Tool);
+	setWindowFlags(Qt::Popup);
 	setAttribute(Qt::WA_AlwaysShowToolTips);
 	setWindowTitle(tr("Emoticons"));
 	setWindowIcon(QIcon("smiles:/smiles/smiles/smile.gif"));
 
 	QVBoxLayout* layout = new QVBoxLayout;
-	layout->setContentsMargins(0, 0, 0, 0);
+	layout->setContentsMargins(10, 10, 10, 10);
 	//layout->setSpacing(2);
 
 	toolBox = new QToolBox;
@@ -57,7 +57,7 @@ EmoticonSelector::EmoticonSelector(QWidget *parent)
 
 	//qDebug() << "emoticonsPerRow = " << emoticonsPerRow;
 
-	Emoticons::const_iterator set_it = theRM.emoticons().begin();
+/*	Emoticons::const_iterator set_it = theRM.emoticons().begin();
 	Emoticons::const_iterator setEnd_it = theRM.emoticons().end();
 
 	for (; set_it != setEnd_it; ++set_it)
@@ -90,7 +90,7 @@ EmoticonSelector::EmoticonSelector(QWidget *parent)
 
 		setWidget->setLayout(setLayout);
 		toolBox->addItem(setWidget, (*set_it)->title());
-	}
+	}*/
 
 	layout->addWidget(toolBox);
 	setLayout(layout);

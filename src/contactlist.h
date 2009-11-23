@@ -46,7 +46,7 @@ public:
 
 	void addGroup(quint32 id, quint32 flags, const QString& name);
 	void addContact(const ContactData& data);
-	void addContact(Contact* contact);
+	void addContact(QList<Contact*> &list, Contact* contact, bool checkConstr);
 
 	typedef QList<ContactGroup*>::const_iterator GroupsIterator;
 	GroupsIterator groupsBegin() const { return m_groups.begin(); }
@@ -107,6 +107,7 @@ private slots:
 	void addSmsContactOnServerEnd(quint32 status, bool timeout);
 	void addGroupOnServerEnd(quint32 status, bool timeout);
 	void renameGroupEnd(quint32 status, bool timeout);
+	int contactPos(QByteArray email);
 
 private:
 	QList<ContactGroup*> m_groups;

@@ -39,7 +39,8 @@ public:
 		Away,
 		Online,
 		Connecting,
-		Unauthorized
+		Unauthorized,
+		Null
 	};
 	
 	static const OnlineStatus unknown;

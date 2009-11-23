@@ -22,6 +22,7 @@
 
 #include "messageeditor.h"
 
+#include <qdesktopwidget.h>
 #include <QToolBar>
 #include <QAction>
 #include <QIcon>
@@ -294,7 +295,11 @@ void MessageEditor::insertEmoticon(const QString & id)
 	messageEdit->setTextCursor(cursor);
 	messageEdit->setFocus(Qt::OtherFocusReason);
 	messageEdit->setCurrentCharFormat(currentFormat);
-	qDebug() << "MessageEditor::insertEmoticon currentFormat = " << currentFormat.objectType() << ", format = " << messageEdit->textCursor().charFormat().objectType();
+
+	smilesAction->setChecked(false);
+	emoticonSelector->hide();
+
+	//qDebug() << "MessageEditor::insertEmoticon currentFormat = " << currentFormat.objectType() << ", format = " << messageEdit->textCursor().charFormat().objectType();
 }
 
 void MessageEditor::readSettings()
@@ -345,7 +350,7 @@ void MessageEditor::writeSettings()
 		qDebug() << "MessageEditor::writeSettings(): settings don't exist";
 		return;
 	}
-	
+
 	QString settingsPrefix = "MessageEditor_" + m_contact->email() + "/";
 	
 	settings->setValue(settingsPrefix + "font", lastUserFormat.font().toString());
@@ -356,7 +361,7 @@ void MessageEditor::writeSettings()
 		settings->setValue(settingsPrefix + "backgroundColor", lastUserFormat.background().color().name());
 }
 
-void MessageEditor::blockInput()
+/*void MessageEditor::blockInput()
 {
 	messageEdit->setReadOnly(true);
 	messageEdit->setBackgroundRole(QPalette::Text);
@@ -366,7 +371,7 @@ void MessageEditor::unblockInput()
 {
 	messageEdit->setReadOnly(false);
 	messageEdit->setBackgroundRole(QPalette::Base);
-}
+}*/
 
 bool MessageEditor::isBlocked()
 {
@@ -384,13 +389,29 @@ void MessageEditor::clear()
 
 void MessageEditor::triggerEmoticonSelector()
 {
-	emoticonSelector->setGeometry(emoticonSelector->geometry());
+//	emoticonSelector->setGeometry(emoticonSelector->geometry());
+
+	QDesktopWidget Screen;
+	int screenWidth = Screen.screenGeometry().width();
+	int screenHeight = Screen.screenGeometry().height();
+
+	int XPos, YPos;
+
+	if (emoticonSelector->geometry().width() + mapToGlobal(this->pos()).x() + 180 > screenWidth)
+		XPos = mapToGlobal(this->pos()).x() + 30;
+	else
+		XPos = mapToGlobal(this->pos()).x() + 180;
+	if (emoticonSelector->geometry().height() + mapToGlobal(this->pos()).y() + 30 > screenHeight)
+		YPos = mapToGlobal(this->pos()).y() - 275;
+	else
+		YPos = mapToGlobal(this->pos()).y() + 30;
+	emoticonSelector->setGeometry(XPos, YPos, NULL, NULL);
 	emoticonSelector->setVisible(!emoticonSelector->isVisible());
 }
 
 void MessageEditor::hideEvent(QHideEvent* /*event*/)
 {
-	qDebug() << "MessageEditor::hideEvent";
+	//qDebug() << "MessageEditor::hideEvent";
 	emoticonSelector->hide();
 	smilesAction->setChecked(false);
 }
@@ -414,7 +435,7 @@ QTextDocument * MessageEditor::document() const
 void MessageEditor::createFileTransferBar()
 {
 	fileTransferBar = new QToolBar;
-	
+
 	QLabel* ftLabel = new QLabel(this);
 	
 	ftLabel->setPixmap(QPixmap(":/icons/editor/msg_p_f_title.png"));
@@ -520,6 +541,12 @@ void MessageEditor::checkContactStatus(OnlineStatus status)
 	wakeupButton->setEnabled(status.connected());
 }
 
+void MessageEditor::messageEditorActivate()
+{
+	messageEdit->setFocus();
+qDebug() << "MessageEditor::messagEditorActivate";
+}
+
 void MessageEditor::setCheckSpelling(bool on)
 {
 	messageEdit->setCheckSpelling(on);
@@ -529,4 +556,11 @@ void MessageEditor::setCheckSpelling(bool on)
 	QSettings* settings = m_account->settings();
 	settings->setValue("MessageEditor/checkSpelling", spellAction->isChecked());
 	
+}
+
+bool MessageEditor::event(QEvent* event)
+{
+	if (event->type() == 24) //If event type == QEvent::WindowActivate
+		messageEdit->setFocus();
+	return true;
 }

@@ -40,18 +40,27 @@ public:
 	~SystemTrayIcon();
 
 	virtual bool event(QEvent* e );
+signals:
+	void statusChanged(OnlineStatus status);
 public slots:
 	void setOnlineStatus(OnlineStatus status);
+	void setStatus(OnlineStatus status);
 private slots:
 	void processActivation(QSystemTrayIcon::ActivationReason reason);
 	void updateTooltip();
 	void newLetter(QString sender, QString subject, QDateTime dateTime);
+	void showMainWindow();
+	void slotStatusChanged(QAction* action);
 private:
+	OnlineStatus status;
+
 	ContactListWindow* mainWindow;
 	Account* account;
 	QMenu* contextMenu;
 	QPoint mainWindowPos;
 	QSize mainWindowSize;
+
+	QAction* createAction(OnlineStatus status);
 };
 
 #endif

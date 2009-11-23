@@ -48,8 +48,8 @@ public:
 	MessageEditor(Account* account, Contact* contact, QWidget* parent = 0);
 	~MessageEditor();
 
-	void blockInput();
-	void unblockInput();
+	/*void blockInput();
+	void unblockInput();*/
 	bool isBlocked();
 
 	QTextDocument* document() const;
@@ -65,6 +65,7 @@ signals:
 protected:
 	virtual void hideEvent(QHideEvent* event);
 	bool eventFilter(QObject *obj, QEvent *ev);
+	virtual bool event(QEvent* event);
 
 private slots:
 	void chooseFont();
@@ -96,6 +97,8 @@ private slots:
 
 	void readSettings();
 	void writeSettings();
+	void messageEditorActivate();
+
 private:
 	QAction* addToolAction(const QIcon& icon, const QObject* receiver, const char* method);
 	QIcon toolIcon(const QString& toolName) const;

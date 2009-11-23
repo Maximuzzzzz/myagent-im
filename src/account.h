@@ -88,6 +88,8 @@ private:
 
 	bool m_isInAutoAway;
 	OnlineStatus m_statusBeforeAutoAway;
+
+	//void createDefaultEmoticonsTemplate(QString dir);
 };
 
 #endif

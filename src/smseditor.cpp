@@ -196,3 +196,16 @@ void SmsEditor::checkOnlineStatus(OnlineStatus status)
 {
 	phonesBox->setEnabled(status.connected());
 }
+
+void SmsEditor::smsEditorActivate()
+{
+	smsEdit->setFocus();
+qDebug() << "SMSEditor::smsEditorActivate";
+}
+
+bool SmsEditor::event(QEvent* event)
+{
+	if (event->type() == 24) //If event type == QEvent::WindowActivate
+		smsEdit->setFocus();
+	return true;
+}

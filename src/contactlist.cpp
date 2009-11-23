@@ -30,6 +30,7 @@
 #include "proto.h"
 #include "account.h"
 #include "contact.h"
+#include "onlinestatus.h"
 #include "taskremovecontact.h"
 #include "taskaddcontact.h"
 #include "taskaddsmscontact.h"
@@ -106,23 +107,150 @@ void ContactList::addContact(const ContactData& data)
 	}
 	
 	if (constructing)
-		tmpContacts.append(contact);
+		addContact(tmpContacts, contact, false);//tmpContacts.append(contact);
 	else
-		addContact(contact);
+		addContact(m_contacts, contact, true);
 }
 
-void ContactList::addContact(Contact* contact)
+void ContactList::addContact(QList<Contact*> &list, Contact* contact, bool checkConstr)
 {
-	m_contacts.append(contact);
+	bool added = false;
+	for (int i = 0; i <= list.count() - 1; i++)
+	{
+		if (contact->status() == OnlineStatus::online || contact->status() == OnlineStatus::invisible || contact->status() == OnlineStatus::away)
+		{
+			//Если первый шаг цикла
+			if (i == 0)
+			{
+				//если текущее имя меньше следующего ИЛИ статус следующего НЕ онлайн
+				if (QString::localeAwareCompare(contact->nickname(), list.at(i)->nickname()) <= 0 || (list.at(i)->status() != OnlineStatus::online && \
+				 list.at(i)->status() != OnlineStatus::invisible && list.at(i)->status() != OnlineStatus::away))
+				{
+					list.insert(i, contact);
+					added = true; //добавляем
+					break; //выходим из цикла
+				}
+			}
+			else
+			{
+				//если статус следующего онлайн
+				if (list.at(i)->status() == OnlineStatus::online || list.at(i)->status() == OnlineStatus::invisible || \
+				 list.at(i)->status() == OnlineStatus::away)
+				{
+					//если текущее имя меньше следующего И больше предыдущего
+					if(QString::localeAwareCompare(contact->nickname(), list.at(i)->nickname()) <= 0 && \
+					 QString::localeAwareCompare(contact->nickname(), list.at(i - 1)->nickname()) > 0)
+					{
+						list.insert(i, contact);
+						added = true; //добавляем
+						break; //выходим из цикла
+					}
+				}
+				else
+				{
+					list.insert(i, contact);
+					added = true; //добавляем
+					break; //выходим из цикла
+				}
+			}
+		}
 
-	if (!constructing) emit contactAdded(contact);
+		if (contact->status() == OnlineStatus::offline)
+		{
+			//если статус следующего НЕ онлайн
+			if (list.at(i)->status() != OnlineStatus::online &&	 list.at(i)->status() != OnlineStatus::invisible && \
+			 list.at(i)->status() != OnlineStatus::away)
+			{
+				//если статус следующего неавторизован
+				if (list.at(i)->status() == OnlineStatus::unauthorized)
+				{
+						list.insert(i, contact);
+						added = true; //добавляем
+						break; //выходим из цикла
+				}
+				//если первый шаг цикла
+				if (i == 0)
+				{
+					//если имя текущего меньше следующего ИЛИ статус следующего неавторизован
+					if (QString::localeAwareCompare(contact->nickname(), list.at(i)->nickname()) <= 0 || list.at(i)->status() == OnlineStatus::unauthorized)
+					{
+						list.insert(i, contact);
+						added = true; //добавляем
+						break; //выходим из цикла
+					}
+				}
+				else
+				{
+					//если имя текущего меньше следующего И (больше предыдущего ИЛИ статус предыдущего онлайн)
+					if (QString::localeAwareCompare(contact->nickname(), list.at(i)->nickname()) <= 0 && \
+					 (QString::localeAwareCompare(contact->nickname(), list.at(i - 1)->nickname()) > 0 || \
+					 list.at(i - 1)->status() == OnlineStatus::online || list.at(i - 1)->status() == OnlineStatus::invisible || \
+					 list.at(i - 1)->status() == OnlineStatus::away))
+					{
+						list.insert(i, contact);
+						added = true; //добавляем
+						break; //выходим из цикла
+					}
+				}
+			}
+		}
+
+		if (contact->status() == OnlineStatus::unauthorized)
+		{
+			//если первый шаг цикла
+			if (i == 0)
+			{
+				//если статус следующего неавторизован
+				if (list.at(i)->status() == OnlineStatus::unauthorized)
+				{
+					//если имя текущего меньше имени следующего
+					if (QString::localeAwareCompare(contact->nickname(), list.at(i)->nickname()) <= 0)
+					{
+						list.insert(i, contact);
+						added = true; //добавляем
+						break; //выходим из цикла
+					}
+				}
+			}
+			else
+			{
+				//если статус следующего неавторизован И имя текущего меньше имени следующего И (имя текущего больше имени предыдущего ИЛИ
+				 //статус предыдущего НЕ неавторизован)
+				if (list.at(i) -> status() == OnlineStatus::unauthorized && \
+				 QString::localeAwareCompare(contact->nickname(), list.at(i)->nickname()) <= 0 && \
+				 (QString::localeAwareCompare(contact->nickname(), list.at(i - 1)->nickname()) > 0 || \
+				 list.at(i - 1)->status() != OnlineStatus::unauthorized))
+				{
+						list.insert(i, contact);
+						added = true; //добавляем
+						break; //выходим из цикла
+				}
+			}
+		}
+
+	}
+	if (!added)
+		list.append(contact);
+
+	if (checkConstr)
+		if (!constructing)
+			emit contactAdded(contact);
 }
 
 void ContactList::changeContactStatus(quint32 status, QByteArray email)
 {
 	Contact* contact = findContact(email);
 	if (contact)
+	{
 		contact->changeStatus(status);
+		int pos = contactPos(email);
+		if (pos != -1)
+		{
+			m_contacts.removeAt(pos);
+			addContact(m_contacts, contact, true);
+			emit updated();
+		}
+	}
 }
 
 Contact* ContactList::findContact(const QByteArray & email)
@@ -169,7 +297,7 @@ Contact* ContactList::getContact(const QByteArray& email)
 	qDebug() << "ContactList::getContact: can't find contact for email " << email;
 	// creating temporary contact
 	contact = new Contact(ContactData(email), 0, m_account);
-	addContact(contact);
+	addContact(m_contacts, contact, true);
 	return contact;
 }
 
@@ -662,4 +790,18 @@ void ContactList::renameGroupEnd(quint32 status, bool timeout)
 	group->setName(name);
 
 	emit updated();
+}
+
+int ContactList::contactPos(QByteArray email)
+{
+	if (email == "phone")
+		return -1;
+	
+	for (int i = 0; i < m_contacts.count() - 1; i++){
+qDebug() << "11111111111111111111111111" << m_contacts.at(i)->nickname();
+		if (m_contacts.at(i)->email() == email){
+qDebug() << "22222222222222222222222222" << i;
+			return i;}}
+
+	return -1;
 }

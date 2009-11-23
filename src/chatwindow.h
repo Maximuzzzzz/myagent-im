@@ -50,8 +50,12 @@ public:
 	~ChatWindow();
 	
 public slots:
-	void messageDelivered(bool);
+	void messageDelivered(bool, Message*);
 	void shake();
+
+signals:
+	void messageEditorActivate();
+	void smsEditorActivate();
 
 private slots:
 	void send();
@@ -71,6 +75,14 @@ private slots:
 
 	void saveTopAvatarBoxState(bool checked);
 	void saveBottomAvatarBoxState(bool checked);
+	
+	void slotEditorActivate(int);
+
+	void slotTimeout();
+	void clearStatus();
+
+protected:
+	QTimer* timer;
 
 private:
 	Account* m_account;

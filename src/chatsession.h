@@ -49,7 +49,7 @@ public:
 
 signals:
 	void messageAppended(const Message* msg) const;
-	void messageDelivered(bool really);
+	void messageDelivered(bool really, Message* msg);
 	void smsDelivered(QByteArray phoneNumber, QString text);
 	void smsFailed();
 

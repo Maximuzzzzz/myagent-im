@@ -105,10 +105,10 @@ QString Account::path() const
 	if (basePath.isEmpty()) return "";
 	
 	QDir dir(basePath);
-	
+
 	if (!dir.exists(email()))
 		return "";
-	
+
 	dir.cd(email());
 	
 	return dir.absolutePath();
@@ -237,3 +237,15 @@ void Account::setAutoAway(bool on)
 		m_isInAutoAway = false;
 	}
 }
+
+/*void Account::createDefaultEmoticonsTemplate(QString dir)
+{
+	QFile f;
+#ifdef DATADIR
+	f.setFileName(QLatin1String(DATADIR) + "/emoticons/default_user_skin.txt");
+#else
+	f.setFileName(QCoreApplication::applicationDirPath() + "/emoticons/default_user_skin.txt");
+#endif
+	f.copy(dir + "/skin.txt");
+	theRM.loadEmoticons(dir);
+}*/

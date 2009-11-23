@@ -32,6 +32,7 @@
 #include <QApplication>
 #include <QVBoxLayout>
 #include <QTime>
+#include <QTimer>
 #include <QScrollBar>
 #include <QTimeLine>
 #include <QTabWidget>
@@ -55,10 +56,14 @@
 ChatWindow::ChatWindow(Account* account, ChatSession* s)
 	: m_account(account), session(s), messageEditor(0), smsEditor(0)
 {
-	QIcon windowIcon;
+	timer = new QTimer(this);
+	timer->setSingleShot(true);
+	connect(timer, SIGNAL(timeout()), this, SLOT(slotTimeout()));
+
+/*	QIcon windowIcon;
 	windowIcon.addFile(":icons/message_32x32.png");
 	windowIcon.addFile(":icons/message_16x16.png");
-	setWindowIcon(windowIcon);
+	setWindowIcon(windowIcon);*/
 
 	splitter = new QSplitter(Qt::Vertical, this);
 	
@@ -102,6 +107,8 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s)
 		
 		editorsWidget->addTab(messageEditor, tr("Text"));
 		editorsWidget->addTab(smsEditor, tr("SMS"));
+
+		connect(editorsWidget, SIGNAL(currentChanged(int)), this, SLOT(slotEditorActivate(int)));
 		
 		AvatarBoxWithHandle* avatarBoxWithHandle = new AvatarBoxWithHandle(m_account->avatarsPath(), m_account->email());
 		avatarBoxWithHandle->toggle(m_account->settings()->value("ChatWindow/BottomAvatarBoxState", false).toBool());
@@ -133,10 +140,12 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s)
 	
 	QStatusBar* sb = statusBar();
 	QPushButton* sendButton = new QPushButton(tr("Send"), this);
-	connect(sendButton, SIGNAL(clicked(bool)), this, SLOT(send()));
+	connect(sendButton, SIGNAL(clicked(bool)), this, SLOT(send()));	
+	connect(this, SIGNAL(messageEditorActivate()), messageEditor, SLOT(messageEditorActivate()));
+	connect(this, SIGNAL(smsEditorActivate()), smsEditor, SLOT(smsEditorActivate()));
 
 	connect(session->contact(), SIGNAL(typing()), this, SLOT(contactTyping()));
-	connect(session, SIGNAL(messageDelivered(bool)), this, SLOT(messageDelivered(bool)));
+	connect(session, SIGNAL(messageDelivered(bool, Message*)), this, SLOT(messageDelivered(bool, Message*)));
 	connect(session, SIGNAL(messageAppended(const Message*)), this, SLOT(appendMessageToView(const Message*)));
 	connect(session, SIGNAL(smsDelivered(QByteArray,QString)), this, SLOT(appendSmsToView(QByteArray, QString)));
 	connect(session, SIGNAL(smsFailed()), this, SLOT(smsFailed()));
@@ -160,9 +169,9 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s)
 
 void ChatWindow::send()
 {
-	if (messageEditor && messageEditor->isVisible() && !messageEditor->isBlocked())
+	if (messageEditor && messageEditor->isVisible())
 		sendMessage();
-	else if (smsEditor && smsEditor->isVisible() && !smsEditor->isBlocked())
+	else if (smsEditor && smsEditor->isVisible())
 		sendSms();
 }
 
@@ -174,14 +183,17 @@ quint32 ChatWindow::sendMessage()
 	PlainTextExporter textExporter(messageEditor->document());
 	QString messageText = textExporter.toText();
 	
+	emit messageEditorActivate();
+
 	if (messageText.isEmpty())
 		return 0;
 	
 	RtfExporter rtfExporter(messageEditor->document());
 	QByteArray messageRtf = rtfExporter.toRtf();
 	
-	messageEditor->blockInput();
-	
+	//messageEditor->blockInput();
+	messageEditor->clear();
+
 	return session->sendMessage(messageText, messageRtf);
 }
 
@@ -194,27 +206,32 @@ quint32 ChatWindow::sendSms()
 	QByteArray number = smsEditor->phoneNumber();
 	
 	smsEditor->blockInput();
+	emit smsEditorActivate();
+
 	return session->sendSms(number, text);
 }
 
 void ChatWindow::appendMessageToView(const Message* msg)
 {
 	qDebug() << "ChatWindow::appendMessageToView";
-	statusBar()->clearMessage();
+	//statusBar()->clearMessage();
+	if (msg->type() == Message::Incoming)
+		clearStatus();
 	show();
 
 	QTextCursor cursor = chatView->textCursor();
 	cursor.movePosition(QTextCursor::End);
 	
 	QString prompt;
-
 	if (msg->flags() & MESSAGE_FLAG_SMS)
 	{
-		prompt = msg->dateTime().time().toString() + " <b>" + tr("Sms from number") + " " + msg->rtfText() + "</b>: ";
+		//prompt = msg->dateTime().time().toString() + " <b>" + tr("Sms from number") + " " + msg->rtfText() + "</b> :<br>";	if (msg->type() == Message::Incoming)
+		prompt = "<font color=red>Sms <b>from number</b> " + msg->rtfText() + " (" + msg->dateTime().time().toString() + ") :</font><br>";
 	}
 	else if (msg->flags() & MESSAGE_FLAG_SMS_STATUS)
 	{
-		prompt = msg->dateTime().time().toString() + " <b>" + tr("Sms status for number") + " " + msg->rtfText() + "</b>: ";
+		prompt = msg->dateTime().time().toString() + " <b>" + tr("Sms status for number") + " " + msg->rtfText() + "</b> :<br>";
+		//prompt = "<font color=blue>Sms <b>for number</b> ";
 	}
 	else if (msg->flags() & MESSAGE_FLAG_BELL)
 	{
@@ -224,15 +241,17 @@ void ChatWindow::appendMessageToView(const Message* msg)
 	{
 		QString nick;
 		if (msg->type() == Message::Outgoing)
-			nick = session->account()->nickname();
+			nick = "<font color=blue>" + session->account()->nickname();
 		else
-			nick = session->contact()->nickname();
+			nick = "<font color=red><b>" + session->contact()->nickname() + "</b>";
 		
-		prompt = msg->dateTime().time().toString() + " <b>" + nick + "</b>: ";
+		//prompt = msg->dateTime().time().toString() + " <b>" + nick + "</b>: ";
+		prompt = nick + " (" + msg->dateTime().time().toString() + ") :</font><br>";
 	}
 	
 	cursor.insertHtml(prompt);
 	cursor.insertFragment(msg->documentFragment());
+	cursor.insertHtml("<br>");
 	cursor.movePosition(QTextCursor::End);
 	
 	QScrollBar* vScrollBar = chatView->verticalScrollBar();
@@ -247,20 +266,37 @@ void ChatWindow::appendMessageToView(const Message* msg)
 void ChatWindow::contactTyping()
 {
 	statusBar()->showMessage(tr("Contact is typing"), 10000);
+
+	timer->start(10000);
+	QIcon windowIcon;
+	windowIcon.addFile(":icons/typing_32x32.png");
+	windowIcon.addFile(":icons/typing_16x16.png");
+	setWindowIcon(windowIcon);
 }
 
-void ChatWindow::messageDelivered(bool really)
+void ChatWindow::messageDelivered(bool really, Message* msg)
 {
-	messageEditor->unblockInput();
-	
-	if (really)
+	//messageEditor->unblockInput();
+	if (!really)
 	{
+		QTextCursor cursor = chatView->textCursor();
+		QString prompt;
+
+		prompt = msg->dateTime().time().toString() + " <b>" + session->contact()->nickname() + "</b>: <font color=red>Message not delivered: </font><br>";
+		cursor.movePosition(QTextCursor::End);
+		cursor.insertHtml(prompt);
+		cursor.movePosition(QTextCursor::End);
+		cursor.insertFragment(msg->documentFragment());
+
 		/*QTextCursor cursor(messageEditor->document());
 		cursor.select(QTextCursor::Document);
 		cursor.removeSelectedText();*/
+		/*if (really){
 		messageEditor->clear();
 		
-		statusBar()->clearMessage();
+		*/
+		//statusBar()->clearMessage();
+		
 	}
 }
 
@@ -278,7 +314,7 @@ ChatWindow::~ ChatWindow()
 void ChatWindow::appendSmsToView(QByteArray phoneNumber, QString text)
 {
 	show();
-	statusBar()->clearMessage();
+	//statusBar()->clearMessage();
 	smsEditor->unblockInput();
 	
 	QTextCursor cursor = chatView->textCursor();
@@ -339,4 +375,31 @@ void ChatWindow::saveTopAvatarBoxState(bool checked)
 void ChatWindow::saveBottomAvatarBoxState(bool checked)
 {
 	m_account->settings()->setValue("ChatWindow/BottomAvatarBoxState", checked);
+}
+
+void ChatWindow::slotEditorActivate(int tab)
+{
+	if (tab == 0)
+		emit messageEditorActivate();
+	else if (tab == 1)
+		emit smsEditorActivate();
+}
+
+void ChatWindow::slotTimeout()
+{
+	QIcon windowIcon;
+	windowIcon.addFile(":icons/message_32x32.png");
+	windowIcon.addFile(":icons/message_16x16.png");
+	setWindowIcon(windowIcon);	
+}
+
+void ChatWindow::clearStatus()
+{
+	statusBar()->clearMessage();
+	QIcon windowIcon;
+	windowIcon.addFile(":icons/message_32x32.png");
+	windowIcon.addFile(":icons/message_16x16.png");
+	setWindowIcon(windowIcon);
+	if (timer->isActive())
+		timer->stop();
 }

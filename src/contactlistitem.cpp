@@ -54,6 +54,9 @@ ContactListItem::ContactListItem(Contact* contact)
 		connect(m_contact, SIGNAL(groupChanged(bool)), this, SLOT(changeGroup(bool)));
 		connect(m_contact, SIGNAL(visibilityChanged()), this, SLOT(checkVisibility()));
 	}
+	QFont f = font();
+	f.setPointSize(9);
+	setFont(f);
 
 	connect(m_contact, SIGNAL(renamed(QString)), this, SLOT(rename(const QString&)));
 	connect(m_contact, SIGNAL(destroyed(QObject*)), this, SLOT(destroyItem()));
@@ -75,6 +78,9 @@ ContactListItem::ContactListItem(ContactGroup* group)
 	}
 	else
 		setText(group->name());
+	QFont f = font();
+	f.setPointSize(9);
+	setFont(f);
 }
 
 ContactListItem::ContactListItem(const QString& groupName)
@@ -87,6 +93,9 @@ ContactListItem::ContactListItem(const QString& groupName)
 	setEditable(false);
 	setDragEnabled(false);
 	setDropEnabled(false);
+	QFont f = font();
+	f.setPointSize(9);
+	setFont(f);
 }
 
 void ContactListItem::setStatusIcon(OnlineStatus status)
@@ -112,7 +121,7 @@ void ContactListItem::checkVisibility()
 	QFont f;
 	if (flags & CONTACT_FLAG_VISIBLE)
 	{
-		f.setUnderline(true);	
+		f.setItalic(true);
 		setFont(f);
 	}
 	else if (flags & CONTACT_FLAG_INVISIBLE)
@@ -122,7 +131,7 @@ void ContactListItem::checkVisibility()
 	}
 	else
 	{
-		f.setUnderline(false);
+		f.setItalic(false);
 		f.setStrikeOut(false);
 		setFont(f);
 	}

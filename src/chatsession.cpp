@@ -56,6 +56,7 @@ bool ChatSession::sendMessage(QString plainText, QByteArray rtf)
 {
 	Message* msg = new Message(Message::Outgoing, MESSAGE_FLAG_RTF, plainText, rtf, 0x00FFFFFF);
 	Task* task = new Tasks::SendMessage(m_contact, msg, m_account->client());
+	appendMessage(msg);
 	connect(task, SIGNAL(done(quint32, bool)), this, SLOT(slotMessageStatus(quint32, bool)));
 
 	return task->exec();
@@ -71,14 +72,18 @@ const Message* ChatSession::getLastMessage() const
 
 void ChatSession::slotMessageStatus(quint32 status, bool timeout)
 {	
+	Tasks::SendMessage* task = qobject_cast<Tasks::SendMessage*>(sender());
 	if (!timeout && status == MESSAGE_DELIVERED)
 	{
-		Tasks::SendMessage* task = qobject_cast<Tasks::SendMessage*>(sender());
-		appendMessage(task->getMessage());
-		emit messageDelivered(true);
+		qDebug() << "Message delivered";
+		//appendMessage(task->getMessage());
+		emit messageDelivered(true, task->getMessage());
 	}
 	else
-		emit messageDelivered(false);
+{
+qDebug() << "Message NOT delivered";
+		emit messageDelivered(false, task->getMessage());
+}
 }
 
 void ChatSession::sendTyping()

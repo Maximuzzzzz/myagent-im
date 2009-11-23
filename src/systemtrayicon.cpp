@@ -45,6 +45,17 @@ SystemTrayIcon::SystemTrayIcon(Account* a, ContactListWindow* w)
 	connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(processActivation(QSystemTrayIcon::ActivationReason)));
 	
 	contextMenu = new QMenu;
+	contextMenu->addAction(QIcon(""), tr("Open Mail.Ru Agent"), this, SLOT(showMainWindow()));
+	contextMenu->addAction(QIcon(""), tr("Check e-mail"), NULL, SLOT()); //Доработать
+ 
+	QMenu* menu = contextMenu->addMenu(QIcon(""), "Status"); //Доработать
+	menu->addAction(createAction(OnlineStatus::online));
+	menu->addAction(createAction(OnlineStatus::away));
+	menu->addAction(createAction(OnlineStatus::invisible));
+	menu->addAction(createAction(OnlineStatus::offline));
+
+	connect(menu, SIGNAL(triggered(QAction*)), this, SLOT(slotStatusChanged(QAction*)));
+
 	contextMenu->addAction(QIcon(":icons/exit.png"), tr("Quit"), qApp, SLOT(quit()));
 	setContextMenu(contextMenu);
 }
@@ -63,7 +74,8 @@ void SystemTrayIcon::processActivation(QSystemTrayIcon::ActivationReason reason)
 {
 	if (mainWindow && reason == QSystemTrayIcon::Trigger)
 	{
-		if (mainWindow->isMinimized())
+		showMainWindow();
+		/*if (mainWindow->isMinimized())
 		{
 			mainWindow->hide();
 			mainWindow->showNormal();
@@ -81,7 +93,7 @@ void SystemTrayIcon::processActivation(QSystemTrayIcon::ActivationReason reason)
 		{
 			mainWindow->extShow();
 			mainWindow->raise();
-		}
+		}*/
 	}
 }
 
@@ -112,3 +124,55 @@ void SystemTrayIcon::newLetter(QString sender, QString subject, QDateTime dateTi
 {
 	showMessage(tr("New letter"), sender + "\n" + subject + "\n" + dateTime.toString(), QSystemTrayIcon::Information, 5000);
 }
+
+void SystemTrayIcon::showMainWindow()
+{
+	if (mainWindow->isMinimized())
+	{
+		mainWindow->hide();
+		mainWindow->showNormal();
+	}
+	else if (mainWindow->isVisible() && !mainWindow->isActiveWindow())
+	{
+		mainWindow->extHide();
+		mainWindow->extShow();
+	}
+	else if (mainWindow->isVisible())
+	{
+		mainWindow->extHide();
+	}
+	else if (!mainWindow->isVisible())
+	{
+		mainWindow->extShow();
+		mainWindow->raise();
+	}	
+}
+
+void SystemTrayIcon::setStatus(OnlineStatus status)
+{
+	if (status == this->status)
+		return;
+	
+	qDebug() << "SystemTrayIcon::setStatus " << status.type();
+	
+	this->status = status;
+	
+	qDebug() << "SystemTrayIcon status desc " << status.description();
+	
+	emit statusChanged(status);
+}
+
+void SystemTrayIcon::slotStatusChanged(QAction* action)
+{
+	OnlineStatus newStatus;
+	newStatus = action->data();
+	setStatus(newStatus);
+}
+
+QAction* SystemTrayIcon::createAction(OnlineStatus status)
+{
+	QAction* action = new QAction(status.contactListIcon(), status.description(), this);
+	action->setData(status);
+	return action;
+}
+

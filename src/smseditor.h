@@ -57,6 +57,7 @@ public slots:
 
 protected:
 	bool eventFilter(QObject * obj, QEvent * ev);
+	virtual bool event(QEvent* event);
 
 private slots:
 	void updateRemainingSymbolsNumber(int n);
@@ -64,6 +65,8 @@ private slots:
 	void updatePhones();
 	void checkCurrentPhoneIndex(int);
 	void checkOnlineStatus(OnlineStatus);
+
+	void smsEditorActivate();
 
 private:
 	void createToolBar();
