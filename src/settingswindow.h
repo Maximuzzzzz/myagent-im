@@ -24,6 +24,9 @@
 #define SETTINGSWINDOW_H
 
 #include <QWidget>
+#include <QSettings>
+#include "chatwindowsmanager.h"
+#include "account.h"
 
 class QListWidget;
 class QStackedWidget;
@@ -39,6 +42,8 @@ public:
 	SettingsWindow();
 	~SettingsWindow();
 
+	void setChatWindowsManager(ChatWindowsManager* cwm);
+
 private slots:
 	void saveSettings();
 
@@ -47,7 +52,7 @@ private:
 	void saveCommonSettings();
 
 	void createMessagesPage();
-	void saveMessagesSettings();
+	bool saveMessagesSettings();
 
 	QListWidget* listWidget;
 	QStackedWidget* pagesWidget;
@@ -57,10 +62,14 @@ private:
 	QLineEdit* minutesEdit;
 
 	//messages page windgets
+	QCheckBox* positWin;
 	QRadioButton* enterButton;
 	QRadioButton* doubleEnterButton;
 	QRadioButton* ctrlEnterButton;
 	QCheckBox* altSButton;
+
+	ChatWindowsManager* chatWindowsManager;
+
 };
 
 #endif

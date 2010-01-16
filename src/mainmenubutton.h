@@ -29,6 +29,7 @@
 
 #include "contactinfo.h"
 #include "onlinestatus.h"
+#include "chatwindowsmanager.h"
 
 class Account;
 class SearchContactsForm;
@@ -40,7 +41,8 @@ class MainMenuButton : public ButtonWithMenu
 Q_OBJECT
 public:
 	MainMenuButton(Account* account, ContactListWindow* w);
-	
+	void setChatWindowsManager(ChatWindowsManager* cwm);
+
 private slots:
 	void searchContacts();
 	void showSearchResults(quint32 status, bool timeout);
@@ -63,6 +65,8 @@ private:
 	ContactListWindow* mainWindow;
 	QPointer<SearchContactsForm> searchForm;
 	QPointer<SettingsWindow> settingsWindow;
+
+	ChatWindowsManager* chatWindowsManager;
 };
 
 #endif

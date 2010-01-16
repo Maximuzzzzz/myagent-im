@@ -30,6 +30,7 @@
 #include "contactlist.h"
 #include "logindialog.h"
 #include "contactlistwindow.h"
+#include "audio.h"
 
 #ifdef Q_WS_WIN
 #include <QtPlugin>
@@ -42,6 +43,7 @@ int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
 	app.setQuitOnLastWindowClosed(false);
+	app.setApplicationName("MyMailAgentRu");
 
 #ifdef DATADIR
 	qDebug() << "datadir = " << QLatin1String(DATADIR);
@@ -62,7 +64,7 @@ int main(int argc, char *argv[])
 	myappTranslator.load("myagent-im_" + QLocale::system().name());
 #endif
 	app.installTranslator(&myappTranslator);
-	
+
 	LoginDialog* ld = new LoginDialog;
 	
 	if (ld->exec() == QDialog::Rejected)

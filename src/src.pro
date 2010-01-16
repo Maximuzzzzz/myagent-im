@@ -2,7 +2,8 @@ TEMPLATE = app
 TARGET = myagent-im
 
 CONFIG += qt # warn_on debug
-QT += network
+QT += network phonon
+INCLUDEPATH += /usr/include/KDE
 
 TRANSLATIONS += locale/myagent-im_ru.ts
 LIBS += -laspell
@@ -44,7 +45,8 @@ unix {
         emoticons \
         data \
         desktop \
-        appicon
+        appicon \
+        sounds
     target.path = $$BINDIR
     data.path = $$DATADIR
     data.files += locale/qt_ru.qm \
@@ -66,6 +68,8 @@ unix {
     smiles_static_png.files = emoticons/smiles/static_png/*
     desktop.path = $$PREFIX/share/applications
     desktop.files += myagent-im.desktop
+    sounds.path = $$DATADIR/sounds
+	sounds.files = sounds/*
     appicon.path = $$PREFIX/share/pixmaps
     appicon.files += myagent-im.png
 }
@@ -167,7 +171,8 @@ SOURCES += main.cpp \
     centeredmessagebox.cpp \
     messageedit.cpp \
     favouriteemoticonsdialog.cpp \
- flowlayout.cpp
+    flowlayout.cpp \
+    audio.cpp
 HEADERS += mrimclient.h \
     proto.h \
     account.h \
@@ -269,7 +274,8 @@ HEADERS += mrimclient.h \
     centeredmessagebox.h \
     messageedit.h \
     favouriteemoticonsdialog.h \
- flowlayout.h
+    flowlayout.h \
+    audio.h
 FORMS += logindialog.ui \
     searchcontacts.ui \
     addcontact.ui \

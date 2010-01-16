@@ -31,6 +31,7 @@
 #include "chatsession.h"
 #include "message.h"
 #include "proto.h"
+#include "audio.h"
 
 ChatsManager::ChatsManager(Account* account)
  : QObject(account), m_account(account)
@@ -54,11 +55,18 @@ void ChatsManager::processMessage(QByteArray from, Message* msg)
 
 	if (!contact)
 	{
-		qDebug() << "Sms from unkonown number" << from;
+		qDebug() << "Sms from unknown number" << from;
 		return;
 	}
 
 	ChatSession* session = getSession(contact);
+	if (msg->type() == Message::Incoming)
+	{
+		if (msg->flags() & MESSAGE_FLAG_BELL)
+			audio.play(STRing);
+		else
+			audio.play(STMessage);
+	}
 	session->appendMessage(msg);
 }
 

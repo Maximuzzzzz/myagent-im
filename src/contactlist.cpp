@@ -797,11 +797,9 @@ int ContactList::contactPos(QByteArray email)
 	if (email == "phone")
 		return -1;
 	
-	for (int i = 0; i < m_contacts.count() - 1; i++){
-qDebug() << "11111111111111111111111111" << m_contacts.at(i)->nickname();
-		if (m_contacts.at(i)->email() == email){
-qDebug() << "22222222222222222222222222" << i;
-			return i;}}
+	for (int i = 0; i < m_contacts.count() - 1; i++)
+		if (m_contacts.at(i)->email() == email)
+			return i;
 
 	return -1;
 }

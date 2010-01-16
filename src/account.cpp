@@ -49,6 +49,7 @@ Account::Account(QByteArray email, QByteArray password, QObject* parent)
 	m_chatsManager = new ChatsManager(this);
 
 	QString accountPath = path();
+	qDebug() << "accountPath =" << accountPath;
 	if (!accountPath.isEmpty())
 		m_settings = new QSettings(accountPath + "/settings.txt", QSettings::IniFormat, this);
 
@@ -101,12 +102,15 @@ void Account::setInfo(const QByteArray& totalMessages, const QByteArray& unreadM
 
 QString Account::path() const
 {
+	/*if (theRM.getUserPath() == "")
+		theRM.setUserPath(theRM.basePath() + "/" + email());*/
 	QString basePath = theRM.basePath();
 	if (basePath.isEmpty()) return "";
-	
+	//if (theRM.getUserPath().isEmpty()) return "";
+
 	QDir dir(basePath);
 
-	if (!dir.exists(email()))
+	if (!dir.exists(basePath))
 		return "";
 
 	dir.cd(email());

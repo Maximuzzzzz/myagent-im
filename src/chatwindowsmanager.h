@@ -25,6 +25,8 @@
 
 #include <QObject>
 #include <QHash>
+#include <QMainWindow>
+#include <QSettings>
 
 class ChatSession;
 class ChatWindow;
@@ -40,16 +42,32 @@ public:
 
 	ChatWindow* getWindow(ChatSession* session);
 
+	QHash<ChatSession*, int> deleteFromHash(int indexRemoved);
+	void loadMainWindow();
+	bool isAnyWindowVisible();
+	void reloadStatus(bool doUseTabs);
+	Account* getAccount() { return m_account; }
+
 public slots:
 	ChatWindow* createWindow(ChatSession* session);
+	void mainWindowActivate(ChatWindow* wnd);
+	void onShowWindow();
 
 private slots:
 	void removeWindow(QObject* session);
+	void slotRemoveTab(int tab);
+	void changeIconAndTitle(QIcon icon, ChatWindow* sender);
+	void changeTab(int index);
 
 private:
 	Account* m_account;
 	
 	QHash<ChatSession*, ChatWindow*> windows;
+
+	bool useTabs;
+	QTabWidget* tabs;
+	QHash<ChatSession*, int> tabHash;
+	QMainWindow* mainWindow;
 };
 
 #endif

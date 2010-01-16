@@ -10,8 +10,11 @@ class FavouriteEmoticonsDialog : public QDialog
 	class FavoritesEmoticonsWidget;
 public:
 	FavouriteEmoticonsDialog();
+signals:
+	void doubleClicked(QString id);
 private slots:
 	void slotAccepted();
+	void slotDoubleClicked(QString id);
 private:
 	FavoritesEmoticonsWidget* favouriteEmoticonsWidget;
 };

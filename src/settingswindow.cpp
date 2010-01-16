@@ -36,6 +36,7 @@
 #include <QGroupBox>
 #include <QRadioButton>
 #include <QScrollBar>
+#include <QMessageBox>
 
 #include "resourcemanager.h"
 
@@ -119,9 +120,11 @@ void SettingsWindow::createCommonPage()
 
 void SettingsWindow::saveSettings()
 {
-	saveCommonSettings();
-	saveMessagesSettings();
-	close();
+	if (saveMessagesSettings())
+	{
+		saveCommonSettings();
+		close();
+	}
 }
 
 void SettingsWindow::saveCommonSettings()
@@ -137,7 +140,13 @@ void SettingsWindow::createMessagesPage()
 	QVBoxLayout* layout = new QVBoxLayout;
 
 	QGroupBox* sendBox = new QGroupBox(tr("Sending messages"));
+	QGroupBox* windowsBox = new QGroupBox(tr("Windows options"));
 	QVBoxLayout* sendLayout = new QVBoxLayout;
+	QVBoxLayout* windowsLayout = new QVBoxLayout;
+
+	positWin = new QCheckBox(tr("Tabs in dialog window"));
+	//positWin->setChecked(chatWindowsManager->settings()->value("Windows/UseTabs", true).toBool());
+	positWin->setChecked(theRM.settings()->value("Windows/UseTabs", true).toBool());
 
 	enterButton = new QRadioButton(tr("Send message on Enter pressed"));
 	doubleEnterButton = new QRadioButton(tr("Send message on double Enter pressed"));
@@ -154,6 +163,9 @@ void SettingsWindow::createMessagesPage()
 
 	altSButton->setChecked(theRM.settings()->value("Messages/sendOnAltS", false).toBool());
 
+	windowsLayout->addWidget(positWin);
+	windowsBox->setLayout(windowsLayout);
+
 	sendLayout->addWidget(enterButton);
 	sendLayout->addWidget(doubleEnterButton);
 	sendLayout->addWidget(ctrlEnterButton);
@@ -163,6 +175,7 @@ void SettingsWindow::createMessagesPage()
 	sendBox->setFixedHeight(sendBox->sizeHint().height());
 	sendBox->setMinimumWidth(sendBox->sizeHint().width());
 
+	layout->addWidget(windowsBox);
 	layout->addWidget(sendBox);
 	layout->addStretch();
 
@@ -172,8 +185,9 @@ void SettingsWindow::createMessagesPage()
 	pagesWidget->addWidget(messagesSettingsPage);
 }
 
-void SettingsWindow::saveMessagesSettings()
+bool SettingsWindow::saveMessagesSettings()
 {
+	bool res = true;
 	QString enterVariant;
 	if (enterButton->isChecked())
 		enterVariant = "Enter";
@@ -182,6 +196,18 @@ void SettingsWindow::saveMessagesSettings()
 	else
 		enterVariant = "Ctrl+Enter";
 
+	bool useTabs = theRM.settings()->value("Windows/UseTabs", true).toBool();
+	if (useTabs != positWin->isChecked() && chatWindowsManager->isAnyWindowVisible())
+		if (QMessageBox::question(this, tr("Closing chats"), tr("All chats will be closed. Continue?"), QMessageBox::Yes, QMessageBox::No) != QMessageBox::Yes)
+			return false;
+	theRM.settings()->setValue("Windows/UseTabs", positWin->isChecked());
 	theRM.settings()->setValue("Messages/sendOnEnter", enterVariant);
 	theRM.settings()->setValue("Messages/sendOnAltS", altSButton->isChecked());
+	chatWindowsManager->reloadStatus(positWin->isChecked());
+	return res;
+}
+
+void SettingsWindow::setChatWindowsManager(ChatWindowsManager* cwm)
+{
+	chatWindowsManager = cwm;
 }

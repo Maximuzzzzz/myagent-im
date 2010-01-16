@@ -134,3 +134,8 @@ QString EmoticonWidget::emoticonId() const
 {
 	return movie->id();
 }
+
+void EmoticonWidget::mouseDoubleClickEvent(QMouseEvent* /*event*/)
+{
+	emit doubleClicked(movie->id());
+}

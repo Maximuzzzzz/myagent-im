@@ -53,16 +53,24 @@ public slots:
 	void messageDelivered(bool, Message*);
 	void shake();
 
+	void slotMakeRead();
+
+	bool getIsNewMessage() { return isNewMessage; }
+
+	void editorActivate();
+
 signals:
 	void messageEditorActivate();
 	void smsEditorActivate();
+	void setMainWindowIconAndTitle(QIcon icon, ChatWindow* sender);
+	void newMessage(ChatWindow* sender);
 
 private slots:
 	void send();
 	quint32 sendMessage();
 	quint32 sendSms();
 	void contactTyping();
-	void appendMessageToView(const Message* msg);
+	void appendMessageToView(const Message* msg, bool newIncoming = true);
 	void checkContactStatus(OnlineStatus status);
 
 	void appendSmsToView(QByteArray phoneNumber, QString text);
@@ -98,6 +106,9 @@ private:
 	int savedX;
 	int savedY;
 	QPointer<QTimeLine> shakeTimeLine;
+	bool isNewMessage;
+
+	QTabWidget* editorsWidget;
 };
 
 #endif

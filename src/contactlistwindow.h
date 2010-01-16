@@ -54,6 +54,8 @@ public:
 	QAction* myBlogAction() { return m_myBlogAction; }
 	QAction* myPhotosAction() { return m_myPhotosAction; }
 	QAction* myVideosAction() { return m_myVideosAction; }
+
+	ChatWindowsManager* getChatWindowsManager() { return chatWindowsManager; }
 public slots:
 	void openMail();
 

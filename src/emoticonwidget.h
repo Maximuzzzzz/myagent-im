@@ -42,6 +42,7 @@ public:
 signals:
 	void clicked(QString id);
 	void draggingStarted();
+	void doubleClicked(QString id);
 protected:
 	virtual void showEvent(QShowEvent* event);
 	virtual void hideEvent(QHideEvent* event);
@@ -49,6 +50,7 @@ protected:
 	virtual void mousePressEvent(QMouseEvent* event);
 	virtual void mouseMoveEvent(QMouseEvent* event);
 	virtual void mouseReleaseEvent(QMouseEvent* event);
+	virtual void mouseDoubleClickEvent(QMouseEvent* event);
 private:
 	void init();
 	void setMovie(EmoticonMovie* m);

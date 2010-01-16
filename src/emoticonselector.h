@@ -47,10 +47,11 @@ private slots:
 	void setupFavouriteEmoticons();
 private:
 	QWidget* createFavouriteEmoticonsWidget(int emoticonsPerRow);
+	void setCurrentLayout();
 private:
 	typedef QList<EmoticonMovie*> MovieList;
 	MovieList movieList;
-	QToolBox* toolBox;
+	QWidget* emotions;
 };
 
 #endif

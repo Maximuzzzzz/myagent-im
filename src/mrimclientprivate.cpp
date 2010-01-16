@@ -33,6 +33,7 @@
 #include "mrimclient.h"
 #include "proto.h"
 #include "datetime.h"
+#include "audio.h"
 
 using namespace Proto;
 
@@ -407,6 +408,9 @@ void MRIMClientPrivate::processUserInfo(QByteArray data)
 		in >> param >> descr;
 	}
 
+	if (unreadMessages.toUInt() > 0)
+		audio.play(STLetter);
+
 	account->setInfo(totalMessages, unreadMessages, codec->toUnicode(nick));
 }
 
@@ -607,6 +611,9 @@ void MRIMClientPrivate::processMailBoxStatus2(QByteArray data)
 	quint32 unixTime;
 	in >> baSender >> baSubject >> unixTime;
 
+	if (unreadMessages > 0)
+		audio.play(STLetter);
+
 	emit q->newNumberOfUnreadLetters(unreadMessages);
 	emit q->newLetter(codec->toUnicode(baSender), codec->toUnicode(baSubject), QDateTime::fromTime_t(unixTime));
 }
@@ -660,6 +667,8 @@ void MRIMClientPrivate::processMessageAck(QByteArray data)
 	{
 		QString nickname, message;
 		unpackAuthorizationMessage(text, nickname, message);
+
+		audio.play(STAuth);
 
 		emit q->contactAsksAuthorization(from, nickname, message);
 

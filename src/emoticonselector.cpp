@@ -26,7 +26,6 @@
 
 #include <cmath>
 #include <QLabel>
-#include <QToolBox>
 #include <QGridLayout>
 
 #include "emoticonmovie.h"
@@ -42,60 +41,9 @@ EmoticonSelector::EmoticonSelector(QWidget *parent)
 	setWindowTitle(tr("Emoticons"));
 	setWindowIcon(QIcon("smiles:/smiles/smiles/smile.gif"));
 
-	QVBoxLayout* layout = new QVBoxLayout;
-	layout->setContentsMargins(10, 10, 10, 10);
-	//layout->setSpacing(2);
+	setCurrentLayout();
 
-	toolBox = new QToolBox;
-
-	int maxSetSize = theRM.emoticons().maxSetSize();
-	int numberOfFavouriteEmoticons = theRM.emoticons().favouriteEmoticons().size();
-	maxSetSize = maxSetSize > numberOfFavouriteEmoticons ? maxSetSize : numberOfFavouriteEmoticons;
-	int emoticonsPerRow = static_cast<int>(ceil(sqrt((double)maxSetSize)));
-
-	toolBox->addItem(createFavouriteEmoticonsWidget(emoticonsPerRow), tr("Favourite"));
-
-	//qDebug() << "emoticonsPerRow = " << emoticonsPerRow;
-
-/*	Emoticons::const_iterator set_it = theRM.emoticons().begin();
-	Emoticons::const_iterator setEnd_it = theRM.emoticons().end();
-
-	for (; set_it != setEnd_it; ++set_it)
-	{
-		//qDebug() << "emoticon set " << (*set_it)->title();
-		EmoticonSet::const_iterator info_it = (*set_it)->begin();
-		EmoticonSet::const_iterator infoEnd_it = (*set_it)->end();
-
-		QWidget* setWidget = new QWidget;
-		QGridLayout* setLayout = new QGridLayout;
-		setLayout->setSpacing(2);
-
-		int row = 0;
-		int col = 0;
-
-		for (; info_it != infoEnd_it; ++info_it)
-		{
-			EmoticonWidget* w = new EmoticonWidget((*info_it)->id(), this);
-			w->setToolTip((*info_it)->tip());
-			connect(w, SIGNAL(clicked(QString)), this, SLOT(slotClicked(QString)));
-			setLayout->addWidget(w, row, col);
-			if (col == emoticonsPerRow)
-			{
-				col = 0;
-				row++;
-			}
-			else
-				col++;
-		}
-
-		setWidget->setLayout(setLayout);
-		toolBox->addItem(setWidget, (*set_it)->title());
-	}*/
-
-	layout->addWidget(toolBox);
-	setLayout(layout);
-
-	connect(toolBox, SIGNAL(currentChanged(int)), SLOT(correctSize()));
+	//connect(toolBox, SIGNAL(currentChanged(int)), SLOT(correctSize()));
 	setFixedSize(sizeHint());
 }
 
@@ -154,6 +102,7 @@ EmoticonSelector::~EmoticonSelector()
 void EmoticonSelector::slotClicked(QString id)
 {
 	emit selected(id);
+	qDebug() << "DblClicked";
 }
 
 void EmoticonSelector::closeEvent(QCloseEvent* /*event*/)
@@ -164,18 +113,28 @@ void EmoticonSelector::closeEvent(QCloseEvent* /*event*/)
 void EmoticonSelector::setupFavouriteEmoticons()
 {
 	FavouriteEmoticonsDialog dlg;
+	connect (&dlg, SIGNAL(doubleClicked(QString)), this, SLOT(slotClicked(QString)));
 	if (dlg.exec() == QDialog::Accepted)
 	{
-		QWidget* favouriteEmotionsWidget = toolBox->widget(0);
-		toolBox->removeItem(0);
-		delete favouriteEmotionsWidget;
+		delete this->layout();
+		delete emotions;
+
+		setCurrentLayout();
+	}
+}
+
+void EmoticonSelector::setCurrentLayout()
+{
+		QVBoxLayout* layout = new QVBoxLayout;
+		layout->setContentsMargins(0, 0, 0, 0);
+		//layout->setSpacing(2);
+
 		int maxSetSize = theRM.emoticons().maxSetSize();
 		int numberOfFavouriteEmoticons = theRM.emoticons().favouriteEmoticons().size();
 		maxSetSize = maxSetSize > numberOfFavouriteEmoticons ? maxSetSize : numberOfFavouriteEmoticons;
 		int emoticonsPerRow = static_cast<int>(ceil(sqrt((double)maxSetSize)));
-		favouriteEmotionsWidget = createFavouriteEmoticonsWidget(emoticonsPerRow);
-		toolBox->insertItem(0, favouriteEmotionsWidget, tr("Favourite"));
-		setFixedSize(sizeHint());
-		toolBox->setCurrentIndex(0);
-	}
+
+		emotions = createFavouriteEmoticonsWidget(emoticonsPerRow);
+		layout->addWidget(emotions);
+		setLayout(layout);
 }

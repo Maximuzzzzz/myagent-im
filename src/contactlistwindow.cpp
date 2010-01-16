@@ -95,6 +95,7 @@ ContactListWindow::ContactListWindow(Account* account)
 	
 	mainMenuButton = new MainMenuButton(account, this);
 	mainMenuButton->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Ignored);
+	mainMenuButton->setChatWindowsManager(chatWindowsManager);
 	
 	QVBoxLayout* layout = new QVBoxLayout;
 	layout->setContentsMargins(1, 1, 1, 1);

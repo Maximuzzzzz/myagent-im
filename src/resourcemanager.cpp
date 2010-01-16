@@ -31,11 +31,14 @@ ResourceManager::ResourceManager(QObject *parent)
 	: QObject(parent)
 {
 	//Q_INIT_RESOURCE(res);
+	//userPath = "";
 	m_settings = new QSettings(basePath() + "/settings.txt", QSettings::IniFormat, this);
 #ifdef DATADIR
 	QString emoticonsPath = QLatin1String(DATADIR) + "/emoticons";
+	soundsPath = QLatin1String(DATADIR) + "/sounds";
 #else
 	QString emoticonsPath = QCoreApplication::applicationDirPath() + "/emoticons";
+	soundsPath = QCoreApplication::applicationDirPath() + "/sounds";
 #endif
 	QDir::addSearchPath(emoticonsResourcePrefix(), emoticonsPath);
 	m_emoticons.load(emoticonsPath + "/skin.txt", m_settings);
@@ -79,3 +82,8 @@ QString ResourceManager::emoticonsResourcePrefix()
 {
 	return "smiles";
 }
+
+/*void ResourceManager::setUserPath(QString path)
+{
+	userPath = path;
+}*/

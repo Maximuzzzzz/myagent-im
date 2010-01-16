@@ -560,7 +560,9 @@ void MessageEditor::setCheckSpelling(bool on)
 
 bool MessageEditor::event(QEvent* event)
 {
-	if (event->type() == 24) //If event type == QEvent::WindowActivate
+	if (/*event->type() == 17 || */event->type() == 24){ //If event type == QEvent::Show or QEvent::WindowActivate
 		messageEdit->setFocus();
+qDebug() << "event = WindowActivate";
+}
 	return true;
 }

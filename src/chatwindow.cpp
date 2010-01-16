@@ -52,18 +52,16 @@
 #include "plaintextexporter.h"
 #include "plaintextparser.h"
 #include "avatarboxwithhandle.h"
+#include "audio.h"
 
 ChatWindow::ChatWindow(Account* account, ChatSession* s)
 	: m_account(account), session(s), messageEditor(0), smsEditor(0)
 {
+	isNewMessage = false;
+
 	timer = new QTimer(this);
 	timer->setSingleShot(true);
 	connect(timer, SIGNAL(timeout()), this, SLOT(slotTimeout()));
-
-/*	QIcon windowIcon;
-	windowIcon.addFile(":icons/message_32x32.png");
-	windowIcon.addFile(":icons/message_16x16.png");
-	setWindowIcon(windowIcon);*/
 
 	splitter = new QSplitter(Qt::Vertical, this);
 	
@@ -92,7 +90,7 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s)
 		bottomWidgetLayout->setContentsMargins(1, 1, 1, 1);
 		bottomWidgetLayout->setSpacing(1);
 		
-		QTabWidget* editorsWidget = new QTabWidget;
+		editorsWidget = new QTabWidget;
 		editorsWidget->setStyleSheet("QTabWidget::pane { border: 0px; } QTabWidget::tab-bar { left: 1px; } QTabBar::tab { padding: 0px 32px 0px 32px; font: bold 9px; }");
 		editorsWidget->setTabPosition(QTabWidget::South);
 		editorsWidget->setTabShape(QTabWidget::Triangular);
@@ -147,6 +145,7 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s)
 	connect(session->contact(), SIGNAL(typing()), this, SLOT(contactTyping()));
 	connect(session, SIGNAL(messageDelivered(bool, Message*)), this, SLOT(messageDelivered(bool, Message*)));
 	connect(session, SIGNAL(messageAppended(const Message*)), this, SLOT(appendMessageToView(const Message*)));
+
 	connect(session, SIGNAL(smsDelivered(QByteArray,QString)), this, SLOT(appendSmsToView(QByteArray, QString)));
 	connect(session, SIGNAL(smsFailed()), this, SLOT(smsFailed()));
 
@@ -158,7 +157,7 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s)
 	ChatSession::MessageIterator it = session->messagesBegin();
 	for (; it != session->messagesEnd(); ++it)
 	{
-		appendMessageToView(*it);
+		appendMessageToView(*it, false);
 	}
 
 	shakeTimeLine = new QTimeLine(2000, this);
@@ -191,8 +190,9 @@ quint32 ChatWindow::sendMessage()
 	RtfExporter rtfExporter(messageEditor->document());
 	QByteArray messageRtf = rtfExporter.toRtf();
 	
-	//messageEditor->blockInput();
 	messageEditor->clear();
+
+	audio.play(STOtprav);
 
 	return session->sendMessage(messageText, messageRtf);
 }
@@ -208,15 +208,28 @@ quint32 ChatWindow::sendSms()
 	smsEditor->blockInput();
 	emit smsEditorActivate();
 
+	audio.play(STOtprav);
+
 	return session->sendSms(number, text);
 }
 
-void ChatWindow::appendMessageToView(const Message* msg)
+void ChatWindow::appendMessageToView(const Message* msg, bool newIncoming)
 {
-	qDebug() << "ChatWindow::appendMessageToView";
-	//statusBar()->clearMessage();
+	qDebug() << "ChatWindow::appendMessageToView Message, newIncoming =" << newIncoming;
 	if (msg->type() == Message::Incoming)
+	{
 		clearStatus();
+		qDebug() << "IsActiveWindow: " << isActiveWindow();
+		if (newIncoming && (!isVisible()))
+		{
+			QIcon currentIcon;
+			currentIcon.addFile(":icons/message_32x32.png");
+			currentIcon.addFile(":icons/message_16x16.png");
+			setWindowIcon(currentIcon);
+			isNewMessage = true;
+			emit setMainWindowIconAndTitle(currentIcon, this);
+		}
+	}
 	show();
 
 	QTextCursor cursor = chatView->textCursor();
@@ -224,19 +237,11 @@ void ChatWindow::appendMessageToView(const Message* msg)
 	
 	QString prompt;
 	if (msg->flags() & MESSAGE_FLAG_SMS)
-	{
-		//prompt = msg->dateTime().time().toString() + " <b>" + tr("Sms from number") + " " + msg->rtfText() + "</b> :<br>";	if (msg->type() == Message::Incoming)
 		prompt = "<font color=red>Sms <b>from number</b> " + msg->rtfText() + " (" + msg->dateTime().time().toString() + ") :</font><br>";
-	}
 	else if (msg->flags() & MESSAGE_FLAG_SMS_STATUS)
-	{
 		prompt = msg->dateTime().time().toString() + " <b>" + tr("Sms status for number") + " " + msg->rtfText() + "</b> :<br>";
-		//prompt = "<font color=blue>Sms <b>for number</b> ";
-	}
 	else if (msg->flags() & MESSAGE_FLAG_BELL)
-	{
 		prompt = "<font color=green>" + msg->dateTime().time().toString() + " <b>" + tr("Alarm clock:")  + " <b></font>";
-	}
 	else
 	{
 		QString nick;
@@ -245,7 +250,6 @@ void ChatWindow::appendMessageToView(const Message* msg)
 		else
 			nick = "<font color=red><b>" + session->contact()->nickname() + "</b>";
 		
-		//prompt = msg->dateTime().time().toString() + " <b>" + nick + "</b>: ";
 		prompt = nick + " (" + msg->dateTime().time().toString() + ") :</font><br>";
 	}
 	
@@ -261,22 +265,23 @@ void ChatWindow::appendMessageToView(const Message* msg)
 
 	if (msg->flags() & MESSAGE_FLAG_BELL && msg->type() == Message::Incoming)
 		shake();
+	emit newMessage(this);
 }
 
 void ChatWindow::contactTyping()
 {
-	statusBar()->showMessage(tr("Contact is typing"), 10000);
+	statusBar()->showMessage(tr("Contact is typing"), 7000);
 
-	timer->start(10000);
-	QIcon windowIcon;
-	windowIcon.addFile(":icons/typing_32x32.png");
-	windowIcon.addFile(":icons/typing_16x16.png");
-	setWindowIcon(windowIcon);
+	timer->start(7000);
+	QIcon currentIcon;
+	currentIcon.addFile(":icons/typing_32x32.png");
+	currentIcon.addFile(":icons/typing_16x16.png");
+	setWindowIcon(currentIcon);
+	emit setMainWindowIconAndTitle(currentIcon, this);
 }
 
 void ChatWindow::messageDelivered(bool really, Message* msg)
 {
-	//messageEditor->unblockInput();
 	if (!really)
 	{
 		QTextCursor cursor = chatView->textCursor();
@@ -288,15 +293,8 @@ void ChatWindow::messageDelivered(bool really, Message* msg)
 		cursor.movePosition(QTextCursor::End);
 		cursor.insertFragment(msg->documentFragment());
 
-		/*QTextCursor cursor(messageEditor->document());
-		cursor.select(QTextCursor::Document);
-		cursor.removeSelectedText();*/
-		/*if (really){
-		messageEditor->clear();
-		
-		*/
-		//statusBar()->clearMessage();
-		
+		audio.play(STMessage);
+		emit newMessage(this);
 	}
 }
 
@@ -304,6 +302,8 @@ void ChatWindow::checkContactStatus(OnlineStatus status)
 {
 	Contact* contact = session->contact();
 	setWindowTitle(contact->email() + " - " + status.description());
+	setWindowIcon(status.chatWindowIcon());
+	emit setMainWindowIconAndTitle(windowIcon(), this);
 }
 
 ChatWindow::~ ChatWindow()
@@ -314,7 +314,6 @@ ChatWindow::~ ChatWindow()
 void ChatWindow::appendSmsToView(QByteArray phoneNumber, QString text)
 {
 	show();
-	//statusBar()->clearMessage();
 	smsEditor->unblockInput();
 	
 	QTextCursor cursor = chatView->textCursor();
@@ -332,6 +331,7 @@ void ChatWindow::appendSmsToView(QByteArray phoneNumber, QString text)
 	smsEditor->clear();
 
 	qApp->alert(this);
+	emit newMessage(this);
 }
 
 void ChatWindow::smsFailed()
@@ -346,6 +346,7 @@ void ChatWindow::shake()
 	
 	savedX = x();
 	savedY = y();
+	audio.play(STRing);
 	shakeTimeLine->start();
 }
 
@@ -377,6 +378,11 @@ void ChatWindow::saveBottomAvatarBoxState(bool checked)
 	m_account->settings()->setValue("ChatWindow/BottomAvatarBoxState", checked);
 }
 
+void ChatWindow::editorActivate()
+{
+	slotEditorActivate(editorsWidget->currentIndex());
+}
+
 void ChatWindow::slotEditorActivate(int tab)
 {
 	if (tab == 0)
@@ -387,19 +393,34 @@ void ChatWindow::slotEditorActivate(int tab)
 
 void ChatWindow::slotTimeout()
 {
-	QIcon windowIcon;
-	windowIcon.addFile(":icons/message_32x32.png");
-	windowIcon.addFile(":icons/message_16x16.png");
-	setWindowIcon(windowIcon);	
+	setWindowIcon(session->contact()->status().chatWindowIcon());
+	emit setMainWindowIconAndTitle(windowIcon(), this);
 }
 
 void ChatWindow::clearStatus()
 {
 	statusBar()->clearMessage();
-	QIcon windowIcon;
-	windowIcon.addFile(":icons/message_32x32.png");
-	windowIcon.addFile(":icons/message_16x16.png");
-	setWindowIcon(windowIcon);
+	if (isNewMessage)
+	{
+		QIcon currentIcon;
+		currentIcon.addFile(":icons/message_32x32.png");
+		currentIcon.addFile(":icons/message_16x16.png");
+		setWindowIcon(currentIcon);
+	}
+	else
+		setWindowIcon(session->contact()->status().chatWindowIcon());
+	emit setMainWindowIconAndTitle(windowIcon(), this);
 	if (timer->isActive())
 		timer->stop();
+}
+
+void ChatWindow::slotMakeRead()
+{
+	qDebug() << "ChatWindow::slotMakeRead";
+	if (isNewMessage)
+	{
+		isNewMessage = false;
+		setWindowIcon(session->contact()->status().chatWindowIcon());
+		emit setMainWindowIconAndTitle(windowIcon(), this);
+	}
 }

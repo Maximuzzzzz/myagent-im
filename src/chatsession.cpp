@@ -76,7 +76,6 @@ void ChatSession::slotMessageStatus(quint32 status, bool timeout)
 	if (!timeout && status == MESSAGE_DELIVERED)
 	{
 		qDebug() << "Message delivered";
-		//appendMessage(task->getMessage());
 		emit messageDelivered(true, task->getMessage());
 	}
 	else

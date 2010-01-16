@@ -51,6 +51,7 @@ FavouriteEmoticonsDialog::FavouriteEmoticonsDialog()
 			EmoticonWidget* w = new EmoticonWidget((*info_it)->id(), this);
 			w->setDragEnabled(true);
 			w->setToolTip((*info_it)->tip());
+			connect(w, SIGNAL(doubleClicked(QString)), SLOT(slotDoubleClicked(QString)));
 			setLayout->addWidget(w, row, col);
 			if (col == emoticonsPerRow)
 			{
@@ -258,4 +259,10 @@ QStringList FavouriteEmoticonsDialog::FavoritesEmoticonsWidget::favouriteEmotico
 	}
 
 	return result;
+}
+
+void FavouriteEmoticonsDialog::slotDoubleClicked(QString id)
+{
+	close();
+	emit doubleClicked(id);
 }

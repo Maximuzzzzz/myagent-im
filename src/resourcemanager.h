@@ -43,6 +43,10 @@ public:
 	Emoticons& emoticons() { return m_emoticons; }
 	const Locations& locations() const { return m_locations; }
 	QString emoticonsResourcePrefix();
+	const QString getSoundsPath() const { return soundsPath; }
+
+	/*void setUserPath(QString path);
+	const QString getUserPath() { return userPath; }*/
 
 private:
 	ResourceManager(QObject* parent = 0);
@@ -51,6 +55,8 @@ private:
 	QSettings* m_settings;
 	Emoticons m_emoticons;
 	Locations m_locations;
+	QString soundsPath;
+	//QString userPath;
 };
 
 //static ResourceManager& theRM = ResourceManager::self();
