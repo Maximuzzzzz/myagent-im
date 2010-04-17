@@ -46,7 +46,7 @@ QTextDocumentFragment Message::documentFragment() const
 {
 	QTextDocument doc;
 	
-	if (m_flags & MESSAGE_FLAG_BELL)
+	if (m_flags & MESSAGE_FLAG_ALARM)
 	{
 		QTextCursor cursor(&doc);
 		QString html = "<font color=green>";

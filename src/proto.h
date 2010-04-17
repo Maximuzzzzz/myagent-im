@@ -1,13 +1,11 @@
 #ifndef MRIM_PROTO_H
 #define MRIM_PROTO_H
 
-namespace Proto
-{
+
 
 #define PROTO_VERSION_MAJOR     1
 #define PROTO_VERSION_MINOR     9
 #define PROTO_VERSION ((((quint32)(PROTO_VERSION_MAJOR))<<16)|(quint32)(PROTO_VERSION_MINOR))
-
 
 #define PROTO_MAJOR(p) (((p)&0xFFFF0000)>>16)
 #define PROTO_MINOR(p) ((p)&0x0000FFFF)
@@ -26,8 +24,12 @@ typedef struct mrim_packet_header_t
 }
 mrim_packet_header_t;
 
+#define HEADER_SIZE 44
+
 #define CS_MAGIC    0xDEADBEEF		// Клиентский Magic ( C <-> S )
 
+
+// UNICODE = (UTF-16LE) (>=1.17)
 
 /***************************************************************************
 
@@ -56,24 +58,29 @@ mrim_packet_header_t;
 	// LPS to
 	// LPS message
 	// LPS rtf-formatted message (>=1.1)
-	#define MESSAGE_FLAG_OFFLINE	0x00000001
-	#define MESSAGE_FLAG_NORECV		0x00000004
-	#define MESSAGE_FLAG_AUTHORIZE	0x00000008 	// X-MRIM-Flags: 00000008
-	#define MESSAGE_FLAG_SYSTEM		0x00000040
-	#define MESSAGE_FLAG_RTF		0x00000080
-	#define MESSAGE_FLAG_CONTACT	0x00000200
-	#define MESSAGE_FLAG_NOTIFY		0x00000400
-	#define MESSAGE_FLAG_SMS		0x00000800
-	#define MESSAGE_FLAG_MULTICAST	0x00001000
-	#define MESSAGE_FLAG_SMS_STATUS	0x00002000
-	#define MESSAGE_FLAG_BELL		0x00004000
-#define MAX_MULTICAST_RECIPIENTS 50
-	#define MESSAGE_USERFLAGS_MASK	0x000036A8	// Flags that user is allowed to set himself
 
-//#define MESSAGE_SMS_DELIVERY_REPORT	= 0x00002000;
-// S -> C
-// UL status
-// UL contact_id or (DWORD)-1 if status is not OK
+	#define MESSAGE_FLAG_OFFLINE		0x00000001
+	#define MESSAGE_FLAG_NORECV			0x00000004
+	#define MESSAGE_FLAG_AUTHORIZE		0x00000008 	// X-MRIM-Flags: 00000008
+	#define MESSAGE_FLAG_SYSTEM			0x00000040
+	#define MESSAGE_FLAG_RTF			0x00000080
+	#define MESSAGE_FLAG_CONTACT		0x00000200
+	#define MESSAGE_FLAG_NOTIFY			0x00000400
+	#define MESSAGE_FLAG_SMS			0x00000800
+	#define MESSAGE_FLAG_MULTICAST		0x00001000
+	#define MESSAGE_SMS_DELIVERY_REPORT	0x00002000
+	#define MESSAGE_FLAG_ALARM			0x00004000
+	#define MESSAGE_FLAG_FLASH			0x00008000
+	#define MESSAGE_FLAG_SPAMF_SPAM		0x00020000	// ����� ����������� �� ���� - ������� ����� � ���� ������ ;������� ������������, �������� � ������ ��������� ��������� ��� �������� ������ ��������
+	#define MESSAGE_FLAG_v1p16			0x00100000	// ��� ������������� �������
+	#define MESSAGE_FLAG_CP1251			0x00200000
+// LPS to e-mail ANSI
+// LPS message ANSI/UNICODE (see flags)
+// LPS rtf-formatted message (>=1.1) ???
+
+#define MAX_MULTICAST_RECIPIENTS 50
+	#define MESSAGE_USERFLAGS_MASK		0x000036A8	// Flags that user is allowed to set himself
+
 
 #define MRIM_CS_SMS	0x1039
 // UL - unknown
@@ -139,7 +146,7 @@ mrim_packet_header_t;
 	#define CONTACT_FLAG_VISIBLE	0x00000008
 	#define CONTACT_FLAG_IGNORE		0x00000010
 	#define CONTACT_FLAG_SHADOW		0x00000020
-	#define CONTACT_FLAG_SMS		0x00100000
+	#define CONTACT_FLAG_PHONE		0x00100000
 
 	#define SMS_CONTACT_GROUP		0x000f4342
 
@@ -260,7 +267,7 @@ enum {
 #define MRIM_CS_MAILBOX_STATUS			0x1033
 //DWORD new messages in mailbox
 
-#define MRIM_CS_MAILBOX_STATUS2			0x1048
+#define MRIM_CS_NEW_MAIL			0x1048
 //UL - unread messages number
 //LPS - sender
 //LPS - subject
@@ -297,12 +304,47 @@ enum {
 // LPS client description //max 256
 
 
+
+#define MRIM_CS_PROXY		0x1044
+// LPS          to e-mail ANSI
+// DWORD        id_request
+// DWORD        data_type
+	#define MRIM_PROXY_TYPE_VOICE	1
+	#define MRIM_PROXY_TYPE_FILES	2
+	#define MRIM_PROXY_TYPE_CALLOUT	3
+// LPS          user_data ???
+// LPS          lps_ip_port ???
+// DWORD        session_id[4]
+
+#define MRIM_CS_PROXY_ACK		0x1045
+//DWORD         status
+	#define PROXY_STATUS_OK					1
+	#define PROXY_STATUS_DECLINE			0
+	#define PROXY_STATUS_ERROR				2
+	#define PROXY_STATUS_INCOMPATIBLE_VERS	3
+	#define PROXY_STATUS_NOHARDWARE			4
+	#define PROXY_STATUS_MIRROR				5
+	#define PROXY_STATUS_CLOSED				6
+// LPS           to e-mail ANSI
+// DWORD         id_request
+// DWORD         data_type
+// LPS           user_data ???
+// LPS:          lps_ip_port ???
+// DWORD[4]      Session_id
+
+#define MRIM_CS_PROXY_HELLO			0x1046
+// DWORD[4]      Session_id
+
+#define MRIM_CS_PROXY_HELLO_ACK		0x1047
+
+
+
 typedef struct mrim_connection_params_t
 {
 	quint32	ping_period;
 }
 mrim_connection_params_t;
 
-} //namespace Proto
+//} //namespace Proto
 
 #endif // MRIM_PROTO_H

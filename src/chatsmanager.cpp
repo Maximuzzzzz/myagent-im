@@ -30,6 +30,7 @@
 #include "contactlist.h"
 #include "chatsession.h"
 #include "message.h"
+#include "filemessage.h"
 #include "proto.h"
 #include "audio.h"
 
@@ -37,6 +38,7 @@ ChatsManager::ChatsManager(Account* account)
  : QObject(account), m_account(account)
 {
 	connect(m_account->client(), SIGNAL(messageReceived(QByteArray, Message*)), this, SLOT(processMessage(QByteArray, Message*)));
+	connect(m_account->client(), SIGNAL(fileReceived(FileMessage*)), this, SLOT(processFileMessage(FileMessage*)));
 }
 
 ChatsManager::~ChatsManager()
@@ -48,7 +50,7 @@ void ChatsManager::processMessage(QByteArray from, Message* msg)
 {
 	Contact* contact;
 	
-	if (msg->flags() & (MESSAGE_FLAG_SMS | MESSAGE_FLAG_SMS_STATUS))
+	if (msg->flags() & (MESSAGE_FLAG_SMS | MESSAGE_SMS_DELIVERY_REPORT))
 		contact = m_account->contactList()->findContactWithPhone(from);
 	else
 		contact = m_account->contactList()->getContact(from);
@@ -62,12 +64,19 @@ void ChatsManager::processMessage(QByteArray from, Message* msg)
 	ChatSession* session = getSession(contact);
 	if (msg->type() == Message::Incoming)
 	{
-		if (msg->flags() & MESSAGE_FLAG_BELL)
+		if (msg->flags() & MESSAGE_FLAG_ALARM)
 			audio.play(STRing);
 		else
 			audio.play(STMessage);
 	}
 	session->appendMessage(msg);
+}
+
+void ChatsManager::processFileMessage(FileMessage* fmsg)
+{
+	ChatSession* session = getSession(m_account->contactList()->getContact(fmsg->getContEmail()));
+	audio.play(STMessage);
+	session->fileReceived(fmsg);
 }
 
 ChatSession* ChatsManager::getSession(Contact* contact)

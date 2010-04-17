@@ -33,6 +33,7 @@ class Contact;
 class ContactGroup;
 class ContactList;
 class Message;
+class FileMessage;
 class QTextCodec;
 
 class MRIMClientPrivate;
@@ -59,6 +60,7 @@ signals:
 	void contactStatusChanged(quint32 status, QByteArray email);
 	void contactTyping(QByteArray email);
 	void messageReceived(QByteArray from, Message* msg);
+	void fileReceived(FileMessage* fmsg);
 	void messageStatus(quint32 id, quint32 status);
 	void contactModified(quint32 id, quint32 status);
 	void contactAdded(quint32 id, quint32 status, quint32 contactId);
@@ -70,6 +72,9 @@ signals:
 	void receivedMPOPSession(quint32 seq, quint32 status, QByteArray session);
 	void newLetter(QString sender, QString subject, QDateTime dateTime);
 	void smsAck(quint32 seq, quint32 status);
+	void fileTransferAck(quint32 status, QByteArray email, quint32 sessionId, QByteArray mirrorIps);
+	void proxy(QByteArray email, quint32 idRequest, quint32 dataType, QByteArray filesAnsi, QByteArray proxyIps, quint32 sessionId, quint32 unk1, quint32 unk2, quint32 unk3);
+	void proxyAck(quint32 status, QByteArray email, quint32 id_request, quint32 dataType, QByteArray filesAnsi, QByteArray ips, quint32 sessionId, quint32 unk1, quint32 unk2, quint32 unk3);
 	
 public slots:
 	void connectToServer(quint32 status);
@@ -93,6 +98,10 @@ public slots:
 	quint32 getMPOPSession();
 	quint32 sendSms(QByteArray number, const QString& text);
 	quint32 changeContactPhones(Contact* contact, const QStringList& phones);
+	quint32 sendFile(FileMessage* fileMessage);
+	quint32 sendFileAck(quint32 status, QByteArray email, quint32 sessionId, QByteArray ips);
+	void sendProxy(FileMessage* fmsg, quint32 dataType);
+	void sendProxyAck(FileMessage* fmsg, quint32 status, quint32 dataType, quint32 sessionId, quint32 unk1, quint32 unk2, quint32 unk3);
 	
 private:
 	MRIMClientPrivate* p;

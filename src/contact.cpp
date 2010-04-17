@@ -241,7 +241,7 @@ void Contact::setGroup(quint32 id)
 
 bool Contact::isPhone() const
 {
-	return (data.flags & CONTACT_FLAG_SMS);
+	return (data.flags & CONTACT_FLAG_PHONE);
 }
 
 bool Contact::isTemporary() const

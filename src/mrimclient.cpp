@@ -24,6 +24,8 @@
 
 #include <QTextCodec>
 #include <QFile>
+#include <QHostAddress>
+#include <QNetworkInterface>
 
 #include "mrimclient.h"
 #include "mrimclientprivate.h"
@@ -34,9 +36,8 @@
 #include "contact.h"
 #include "contactlist.h"
 #include "message.h"
+#include "filemessage.h"
 #include "contactdata.h"
-
-using namespace Proto;
 
 MRIMClient::MRIMClient(Account* a)
 	: QObject(a)
@@ -310,7 +311,7 @@ quint32 MRIMClient::addSmsContact(const QString & nickname, const QStringList & 
 	QByteArray data;
 	MRIMDataStream out(&data, QIODevice::WriteOnly);
 	
-	out << quint32(CONTACT_FLAG_SMS);
+	out << quint32(CONTACT_FLAG_PHONE);
 	out << quint32(SMS_CONTACT_GROUP);
 	out << QByteArray("phone");
 	out << baNick;
@@ -401,6 +402,8 @@ quint32 MRIMClient::getMPOPSession()
 
 quint32 MRIMClient::sendSms(QByteArray number, const QString & text)
 {
+	qDebug() << "MRIMClient::sendSms()";
+
 	QByteArray data;
 	MRIMDataStream out(&data, QIODevice::WriteOnly);
 	
@@ -408,6 +411,9 @@ quint32 MRIMClient::sendSms(QByteArray number, const QString & text)
 		number.prepend('+');
 	QByteArray smsText = p->codec->fromUnicode(text);
 	
+	qDebug() << "number =" << number;
+	qDebug() << "text =" << smsText;
+
 	out << quint32(0);
 	out << number;
 	out << smsText;
@@ -444,4 +450,96 @@ Account * MRIMClient::account()
 uint MRIMClient::getPingTime() const
 {
 	return p->pingTime;
+}
+
+quint32 MRIMClient::sendFile(FileMessage* fmsg)
+{
+	qDebug() << "MRIMClient::sendFile";
+	QByteArray data;
+	QByteArray lps1;
+	QByteArray lps2;
+	quint32 unk = 1;
+	MRIMDataStream out(&data, QIODevice::WriteOnly);
+	MRIMDataStream out2(&lps1, QIODevice::WriteOnly);
+	MRIMDataStream out3(&lps2, QIODevice::WriteOnly);
+
+	out3 << unk << fmsg->getFilesUtf();
+	out2 << fmsg->getFilesAnsi() << lps2 << fmsg->getIps();
+	out << fmsg->getContEmail() << fmsg->getSessionId() << fmsg->getTotalSize() << lps1;
+
+	qDebug() << "dest = " << fmsg->getContEmail();
+	qDebug() << "sessionId = " << fmsg->getSessionId();
+	qDebug() << "totalSize = " << fmsg->getTotalSize();
+	qDebug() << "filesAnsi = " << fmsg->getFilesAnsi();
+	qDebug() << "ips = " << fmsg->getIps();
+	qDebug() << "filesUtf = " << fmsg->getFilesUtf();
+
+	connect(fmsg, SIGNAL(proxy(FileMessage*, quint32)), this, SLOT(sendProxy(FileMessage*, quint32)));
+	connect(fmsg, SIGNAL(proxyAck(FileMessage*, quint32, quint32, quint32, quint32, quint32, quint32)), this, SLOT(sendProxyAck(FileMessage*, quint32, quint32, quint32, quint32, quint32, quint32)));
+	connect(this, SIGNAL(fileTransferAck(quint32, QByteArray, quint32, QByteArray)), fmsg, SLOT(slotFileTransferStatus(quint32, QByteArray, quint32, QByteArray)));
+	connect(this, SIGNAL(proxyAck(quint32, QByteArray, quint32, quint32, QByteArray, QByteArray, quint32, quint32, quint32, quint32)), fmsg, SLOT(slotProxyAck(quint32, QByteArray, quint32, quint32, QByteArray, QByteArray, quint32, quint32, quint32, quint32)));
+
+	return p->sendPacket(MRIM_CS_FILE_TRANSFER, data);
+}
+
+quint32 MRIMClient::sendFileAck(quint32 status, QByteArray email, quint32 sessionId, QByteArray ips)
+{
+	qDebug() << "MRIMClient::sendFileAck";
+	QByteArray data;
+	MRIMDataStream out(&data, QIODevice::WriteOnly);
+
+	out << status << email << sessionId << ips;
+
+	qDebug() << "status =" << status;
+	qDebug() << "email =" << email;
+	qDebug() << "sessionId =" << sessionId;
+	qDebug() << "ips =" << ips;
+
+	qDebug() << data.toHex();
+
+	return p->sendPacket(MRIM_CS_FILE_TRANSFER_ACK, data);
+}
+
+void MRIMClient::sendProxy(FileMessage* fmsg, quint32 dataType)
+{
+	qDebug() << "MRIMClient::sendProxy";
+	QByteArray data;
+	QByteArray lps1;
+	QByteArray ips = "";
+	quint32 null = 0;
+	quint32 unk = 2, unk2 = 4, unk3 = 1;
+	MRIMDataStream out(&data, QIODevice::WriteOnly);
+	MRIMDataStream out2(&lps1, QIODevice::WriteOnly);
+
+	out2 << unk << fmsg->getFilesUtf();
+	out << fmsg->getContEmail() << fmsg->getSessionId() << dataType << fmsg->getFilesAnsi() << ips;
+	out << null << null << null << null << lps1 << unk2 << unk3;
+
+	qDebug() << "email =" << fmsg->getContEmail();
+	qDebug() << "idRequest =" << fmsg->getSessionId();
+	qDebug() << "dataType =" << dataType;
+
+	qDebug() << "userData =" << fmsg->getFilesAnsi();
+
+	p->sendPacket(MRIM_CS_PROXY, data);
+}
+
+void MRIMClient::sendProxyAck(FileMessage* fmsg, quint32 status, quint32 dataType, quint32 sessionId, quint32 unk1, quint32 unk2, quint32 unk3)
+{
+	qDebug() << "MRIMClient::sendProxyAck";
+	QByteArray data;
+	MRIMDataStream out(&data, QIODevice::WriteOnly);
+
+	quint32 unk4 = 16;
+	quint32 unk5 = 2;
+	quint32 unk6 = 0;
+	quint32 unk7 = 4;
+	quint32 unk8 = 1;
+
+	out << status << fmsg->getContEmail() << fmsg->getSessionId() << dataType << fmsg->getFilesAnsi() << fmsg->getIps() << sessionId;
+	out << unk1 << unk2 << unk3 << unk4 << unk5 << unk6 << unk7 << unk8;
+
+	qDebug() << "MRIMClient::sendProxyAck" << data.toHex();
+
+	p->sendPacket(MRIM_CS_PROXY_ACK, data);
 }

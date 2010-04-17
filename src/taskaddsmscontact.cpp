@@ -44,7 +44,7 @@ bool Tasks::AddSmsContact::exec()
 
 ContactData Tasks::AddSmsContact::contactData() const
 {
-	return ContactData(m_contactId, CONTACT_FLAG_SMS, SMS_CONTACT_GROUP, "phone", m_nickname, m_phones);
+	return ContactData(m_contactId, CONTACT_FLAG_PHONE, SMS_CONTACT_GROUP, "phone", m_nickname, m_phones);
 }
 
 void Tasks::AddSmsContact::checkResult(quint32 msgseq, quint32 status, quint32 contactId)

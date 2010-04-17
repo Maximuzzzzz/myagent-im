@@ -59,9 +59,9 @@ int main(int argc, char *argv[])
 	
 	QTranslator myappTranslator;
 #ifdef DATADIR
-	myappTranslator.load("myagent-im_" + QLocale::system().name(), QLatin1String(DATADIR));
+	myappTranslator.load("locale/myagent-im_" + QLocale::system().name(), QLatin1String(DATADIR));
 #else
-	myappTranslator.load("myagent-im_" + QLocale::system().name());
+	myappTranslator.load("locale/myagent-im_" + QLocale::system().name());
 #endif
 	app.installTranslator(&myappTranslator);
 
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
 	
 	if (ld->exec() == QDialog::Rejected)
 		return 0;
-	
+
 	AccountManager am;
 	Account* account = am.getAccount(ld->email(), ld->password());
 	ContactListWindow clw(account);

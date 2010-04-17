@@ -26,8 +26,13 @@
 #include <QWidget>
 #include <QTextCharFormat>
 #include <QPointer>
+#include <QFileInfo>
+#include <QProgressBar>
+#include <QTcpServer>
+#include <QTcpSocket>
 
 #include "onlinestatus.h"
+#include "filemessage.h"
 
 class QToolBar;
 class MessageEdit;
@@ -48,19 +53,24 @@ public:
 	MessageEditor(Account* account, Contact* contact, QWidget* parent = 0);
 	~MessageEditor();
 
-	/*void blockInput();
-	void unblockInput();*/
 	bool isBlocked();
 
 	QTextDocument* document() const;
 
 public slots:
 	void clear();
+	void fileReceived(FileMessage* fmsg);
+	void receiveFiles(quint32 sessId);
+	void cancelTransferring(quint32 sessId = 0);
 
 signals:
 	void textChanged();
 	void sendPressed();
 	void wakeupPressed();
+	void filesTransfer(FileMessage* fmsg);
+	void filesReceiveAck(FileMessage* fmsg, quint32 status);
+	void signalProxy(quint32 idRequest, quint32 dataType, QByteArray userData, QByteArray lpsIpPort, quint32 sessionId);
+	void signalProxyAck(QByteArray mirrorIps);
 
 protected:
 	virtual void hideEvent(QHideEvent* event);
@@ -89,6 +99,8 @@ private slots:
 	void triggerEmoticonSelector();
 
 	void addFile();
+	void deleteFile();
+	void sendFiles();
 	void fileTransfer(bool checked);
 
 	void slotCurrentCharFormatChanged(const QTextCharFormat& f);
@@ -98,6 +110,8 @@ private slots:
 	void readSettings();
 	void writeSettings();
 	void messageEditorActivate();
+
+	void slotProgress(FileMessage::Status action, int percentage);
 
 private:
 	QAction* addToolAction(const QIcon& icon, const QObject* receiver, const char* method);
@@ -109,11 +123,13 @@ private:
 	void createFileTransferBar();
 	QIcon fileTransferIcon(const QString& toolName) const;
 	QToolButton* createFileTransferToolButton(const QIcon& icon, const QObject* receiver, const char* method);
+
 private:
 	QPointer<Account> m_account;
 	QPointer<Contact> m_contact;
 
 	QToolBar* toolBar;
+	QAction* fileTransferAction;
 	MessageEdit* messageEdit;
 
 	QAction* spellAction;
@@ -135,8 +151,30 @@ private:
 	QTextCharFormat lastUserFormat;
 
 	QToolBar* fileTransferBar;
+	QToolBar* fileProcessBar;
 	QComboBox* filesBox;
 	QLabel* bytesLabel;
+	QLabel* fileStatusLabel;
+	QProgressBar* fileProgress;
+
+	QList<QFileInfo> fileList;
+
+	QToolButton* plus;
+	QToolButton* minus;
+	QToolButton* send;
+	QToolButton* cancel;
+
+	quint32 totalSize;
+	double progressStep;
+
+	FileMessage* fileMessageIn;
+	FileMessage* fileMessageOut;
+	quint32 sessId;
+
+	QTcpSocket* tcpSocket;
+	QTcpServer* tcpServer;
+
+	QFile* m_currentFile;
 };
 
 #endif

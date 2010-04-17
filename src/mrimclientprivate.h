@@ -86,12 +86,15 @@ private:
 	void processLogout(QByteArray data);
 	void processConnectionParams(QByteArray data);
 	void processMailBoxStatus(QByteArray data);
-	void processMailBoxStatus2(QByteArray data);
+	void processNewMail(QByteArray data);
 	void processFileTransfer(QByteArray data);
 	void processFileTransferAck(QByteArray data);
 	void processMPOPSession(QByteArray data, quint32 msgseq);
 	void processSmsAck(QByteArray data, quint32 msgseq);
 	
+	void processProxy(QByteArray data, quint32 msgseq);
+	void processProxyAck(QByteArray data, quint32 msgseq);
+
 	MRIMClient* q;
 
 	QTextCodec* codec;

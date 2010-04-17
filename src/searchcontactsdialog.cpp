@@ -33,7 +33,7 @@
 #include "proto.h"
 #include "centerwindow.h"
 
-using namespace Proto;
+//using namespace Proto;
 
 int SearchContactsForm::days[12] = { 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 

@@ -34,6 +34,9 @@ Q_OBJECT
 public:
 	AnimatedTextBrowser ( QWidget *parent = 0 );
 
+/*protected:
+	virtual void setSource(const QString & name);*/
+
 private slots: 
 	void processDocumentChange(int position, int charsRemoved, int charsAdded)
 	{

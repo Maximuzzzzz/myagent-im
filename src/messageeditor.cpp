@@ -34,12 +34,16 @@
 #include <QLabel>
 #include <QComboBox>
 #include <QKeyEvent>
+#include <QPainter>
+#include <QTextCodec>
 
 #include "messageedit.h"
 #include "emoticonselector.h"
 #include "toolbutton.h"
 #include "account.h"
 #include "contact.h"
+#include "proto.h"
+#include "mrimdatastream.h"
 
 MessageEditor::MessageEditor(Account* account, Contact* contact, QWidget* parent)
 	: QWidget(parent), m_account(account), m_contact(contact)
@@ -51,6 +55,7 @@ MessageEditor::MessageEditor(Account* account, Contact* contact, QWidget* parent
 	layout->setSpacing(0);
 	
 	createToolBar();
+	createFileTransferBar();
 	messageEdit = new MessageEdit;
 	messageEdit->installEventFilter(this);
 	
@@ -58,6 +63,9 @@ MessageEditor::MessageEditor(Account* account, Contact* contact, QWidget* parent
 	connect(messageEdit, SIGNAL(cursorPositionChanged()), this, SLOT(updateFormatActions()));
 
 	layout->addWidget(toolBar);
+	layout->addWidget(fileTransferBar);
+	layout->addWidget(fileProcessBar);
+	
 	layout->addWidget(messageEdit);
 	setLayout(layout);
 
@@ -65,14 +73,15 @@ MessageEditor::MessageEditor(Account* account, Contact* contact, QWidget* parent
 	connect(emoticonSelector, SIGNAL(selected(QString)), SLOT(insertEmoticon(QString)));
 	connect(emoticonSelector, SIGNAL(closed()), smilesAction, SLOT(toggle()));
 
-	fileTransferBar = NULL;
-
 	readSettings();
 
 	connect(messageEdit, SIGNAL(currentCharFormatChanged(const QTextCharFormat&)), this, SLOT(slotCurrentCharFormatChanged(const QTextCharFormat &)));
 
 	connect(m_contact, SIGNAL(statusChanged(OnlineStatus)), this, SLOT(checkContactStatus(OnlineStatus)));
 	checkContactStatus(m_contact->status());
+
+	fileMessageIn = NULL;
+	fileMessageOut = NULL;
 }
 
 MessageEditor::~MessageEditor()
@@ -182,13 +191,12 @@ void MessageEditor::createToolBar()
 	connect(wakeupButton, SIGNAL(clicked()), SIGNAL(wakeupPressed()));
 	toolBar->addWidget(wakeupButton);
 	
-	/*editorToolBar->addSeparator();
+	toolBar->addSeparator();
 	
-	QAction* fileTransferAction = new QAction(QIcon(":/icons/ft.png"), "", this);
+	fileTransferAction = new QAction(QIcon(":/icons/ft.png"), "", this);
 	fileTransferAction->setCheckable(true);
 	connect(fileTransferAction, SIGNAL(triggered(bool)), this, SLOT(fileTransfer(bool)));
-	editorToolBar->addAction(fileTransferAction);
-	*/
+	toolBar->addAction(fileTransferAction);
 }
 
 void MessageEditor::chooseFont()
@@ -361,18 +369,6 @@ void MessageEditor::writeSettings()
 		settings->setValue(settingsPrefix + "backgroundColor", lastUserFormat.background().color().name());
 }
 
-/*void MessageEditor::blockInput()
-{
-	messageEdit->setReadOnly(true);
-	messageEdit->setBackgroundRole(QPalette::Text);
-}
-
-void MessageEditor::unblockInput()
-{
-	messageEdit->setReadOnly(false);
-	messageEdit->setBackgroundRole(QPalette::Base);
-}*/
-
 bool MessageEditor::isBlocked()
 {
 	return messageEdit->isReadOnly();
@@ -453,34 +449,66 @@ void MessageEditor::createFileTransferBar()
 	label1->setStyleSheet("QLabel { margin : 0px; border : 0px; padding : 0px }");
 	bytesLabel = new QLabel("<small>0</small>");
 	bytesLabel->setStyleSheet("QLabel { margin : 0px; border : 0px; padding : 0px }");
-	QLabel* label2 = new QLabel(tr("<small>&nbsp; bytes</small>"));
-	label2->setStyleSheet("QLabel { margin : 0px; border : 0px; padding : 0px }");
+	//QLabel* label2 = new QLabel(tr("<small>&nbsp; bytes</small>"));
+	//label2->setStyleSheet("QLabel { margin : 0px; border : 0px; padding : 0px }");
 	
+	totalSize = 0;
+
 	labelsLayout->addWidget(label1);
 	labelsLayout->addWidget(bytesLabel);
-	labelsLayout->addWidget(label2);
+	//labelsLayout->addWidget(label2);
 	labelsLayout->addStretch();
 	
 	QHBoxLayout* buttonsLayout = new QHBoxLayout;
 	
-	QToolButton* plus = createFileTransferToolButton(fileTransferIcon("add"), this, SLOT(addFile()));
-	QToolButton* minus = createFileTransferToolButton(fileTransferIcon("delete"), this, SLOT(deleteFile()));
-	QToolButton* send = createFileTransferToolButton(fileTransferIcon("send"), this, SLOT(sendFiles()));
-	
+	plus = createFileTransferToolButton(fileTransferIcon("add"), this, SLOT(addFile()));
+	minus = createFileTransferToolButton(fileTransferIcon("delete"), this, SLOT(deleteFile()));
+	send = createFileTransferToolButton(fileTransferIcon("send"), this, SLOT(sendFiles()));
+
+	minus->setEnabled(false);
+	send->setEnabled(false);
+
 	buttonsLayout->addWidget(plus);
 	buttonsLayout->addWidget(minus);
 	buttonsLayout->addSpacing(4);
 	buttonsLayout->addWidget(send);
 	buttonsLayout->addStretch();
-	
+
 	helperLayout->addLayout(labelsLayout);
 	helperLayout->addLayout(buttonsLayout);
-	
+
 	helperWidget->setLayout(helperLayout);
-	
+
 	fileTransferBar->addWidget(ftLabel);
 	fileTransferBar->addWidget(filesBox);
 	fileTransferBar->addWidget(helperWidget);
+
+	fileTransferBar->setVisible(false);
+
+	fileProcessBar = new QToolBar;
+
+	QLabel* ftLabel2 = new QLabel(this);
+	
+	ftLabel2->setPixmap(QPixmap(":/icons/editor/msg_p_f_title.png"));
+	QWidget* indicatorWidget = new QWidget(this);
+	QVBoxLayout* indicatorLayout = new QVBoxLayout;
+	indicatorLayout->setSpacing(0);
+	indicatorLayout->setContentsMargins(0,0,0,0);
+
+	cancel = createFileTransferToolButton(fileTransferIcon("cancel"), this, SLOT(cancelTransferring()));
+
+	fileStatusLabel = new QLabel(tr("<small>Status...</small>"));
+	fileProgress = new QProgressBar();
+
+	indicatorLayout->addWidget(fileStatusLabel);
+	indicatorLayout->addWidget(fileProgress);
+	indicatorWidget->setLayout(indicatorLayout);
+
+	fileProcessBar->addWidget(ftLabel2);
+	fileProcessBar->addWidget(indicatorWidget);
+	fileProcessBar->addWidget(cancel);
+
+	fileProcessBar->setVisible(false);
 }
 
 QIcon MessageEditor::fileTransferIcon(const QString & toolName) const
@@ -520,15 +548,54 @@ void MessageEditor::addFile()
 		
 		QFileInfo finfo(*it);
 		filesBox->addItem(finfo.fileName(), *it);
+		fileList.append(finfo);
+		totalSize += finfo.size();
 	}
 	
 	qDebug() << "filesBox.sizeHint = " << filesBox->sizeHint();
 	filesBox->resize(filesBox->sizeHint());
+
+	if (filesBox->count() > 0)
+	{
+		minus->setEnabled(true);
+		send->setEnabled(true);
+	}
+
+	bytesLabel->setText("<small>" + FileMessage::getSizeInString(totalSize) + "</small>");
+}
+
+void MessageEditor::deleteFile()
+{
+	totalSize -= fileList.takeAt(filesBox->currentIndex()).size();
+	filesBox->removeItem(filesBox->currentIndex());
+	if (filesBox->count() == 0)
+	{
+		minus->setEnabled(false);
+		send->setEnabled(false);
+	}
+}
+
+void MessageEditor::sendFiles()
+{
+	qDebug() << "MessageEditor::sendFiles()";
+	fileProgress->setValue(0);
+	fileProcessBar->setVisible(true);
+	fileTransferBar->setVisible(false);
+
+	fileMessageOut = new FileMessage(FileMessage::Outgoing, fileList);
+	sessId = fileMessageOut->getSessionId();
+
+	connect(fileMessageOut, SIGNAL(progress(FileMessage::Status, int)), this, SLOT(slotProgress(FileMessage::Status, int)));
+
+	emit filesTransfer(fileMessageOut);
 }
 
 void MessageEditor::fileTransfer(bool checked)
 {
+	if (!checked)
+		cancelTransferring();
 	fileTransferBar->setVisible(checked);
+	fileTransferAction->setChecked(checked);
 }
 
 void MessageEditor::slotCurrentCharFormatChanged(const QTextCharFormat & f)
@@ -539,12 +606,18 @@ void MessageEditor::slotCurrentCharFormatChanged(const QTextCharFormat & f)
 void MessageEditor::checkContactStatus(OnlineStatus status)
 {
 	wakeupButton->setEnabled(status.connected());
+	fileTransferAction->setEnabled(status.connected());
+	if (fileTransferAction->isChecked())
+	{
+		fileTransferBar->setVisible(status.connected());
+		fileTransferAction->setChecked(false);
+	}
 }
 
 void MessageEditor::messageEditorActivate()
 {
+	qDebug() << "MessageEditor::messagEditorActivate";
 	messageEdit->setFocus();
-qDebug() << "MessageEditor::messagEditorActivate";
 }
 
 void MessageEditor::setCheckSpelling(bool on)
@@ -555,14 +628,124 @@ void MessageEditor::setCheckSpelling(bool on)
 	
 	QSettings* settings = m_account->settings();
 	settings->setValue("MessageEditor/checkSpelling", spellAction->isChecked());
-	
 }
 
 bool MessageEditor::event(QEvent* event)
 {
-	if (/*event->type() == 17 || */event->type() == 24){ //If event type == QEvent::Show or QEvent::WindowActivate
+	if (/*event->type() == 17 || */event->type() == 24) //If event type == QEvent::Show or QEvent::WindowActivate
 		messageEdit->setFocus();
-qDebug() << "event = WindowActivate";
-}
 	return true;
+}
+
+void MessageEditor::cancelTransferring(quint32 sessId)
+{
+	qDebug() << "MessageEditor::cancelTransferring()";
+
+	if (fileMessageIn != NULL)
+	{
+		if (fileMessageIn->cancelTransferring(sessId))
+		{
+			fileMessageIn->deleteLater();
+			fileMessageIn = NULL;
+		}
+	}
+	if (fileMessageOut != NULL)
+	{
+		if (fileMessageOut->cancelTransferring(sessId))
+		{
+			fileMessageOut->deleteLater();
+			fileMessageOut = NULL;
+		}
+	}
+}
+
+void MessageEditor::receiveFiles(quint32 sessId)
+{
+	qDebug() << "MessageEditor::receiveFiles()";
+
+	fileTransferAction->setChecked(true);
+	fileProcessBar->setVisible(true);
+	fileTransferBar->setVisible(false);
+
+	fileProgress->setMaximum(MAX_INT);
+	fileProgress->setValue(0);
+
+	connect(fileMessageIn, SIGNAL(progress(FileMessage::Status, int)), this, SLOT(slotProgress(FileMessage::Status, int)));
+	fileMessageIn->receiveFiles(sessId);
+}
+
+void MessageEditor::fileReceived(FileMessage* fmsg)
+{
+	qDebug() << "MessageEditor::fileReceived";
+
+	if (fmsg->error() == 0)
+	{
+		fileMessageIn = fmsg;
+		sessId = fileMessageIn->getSessionId();
+	}
+}
+
+void MessageEditor::slotProgress(FileMessage::Status action, int percentage)
+{
+	switch (action)
+	{
+		case FileMessage::TRANSFERRING_READY:
+		case FileMessage::TRANSFERRING_FILE:
+		case FileMessage::RECEIVING_FILE:
+			qDebug() << "MessageEditor::file progress";
+			fileProgress->setValue(percentage);
+			break;
+
+		case FileMessage::TRANSFERRING_COMPLETE:
+			qDebug() << "MessageEditor::Deleting file message out";
+			fileMessageOut = NULL;
+			fileProcessBar->setVisible(false);
+			fileTransferBar->setVisible(false);
+			fileTransferAction->setChecked(false);
+			break;
+
+		case FileMessage::RECEIVING_COMPLETE:
+			qDebug() << "MessageEditor::Deleting file message in";
+			fileMessageIn = NULL;
+			fileProcessBar->setVisible(false);
+			fileTransferBar->setVisible(false);
+			fileTransferAction->setChecked(false);
+			break;
+
+		case FileMessage::TRANSFER_ERROR:
+			qDebug() << "MessageEditor::Deleting file message out because of error";
+			fileMessageOut = NULL;
+			fileProcessBar->setVisible(false);
+			fileTransferBar->setVisible(false);
+			fileTransferAction->setChecked(false);
+			break;
+
+		case FileMessage::RECEIVE_ERROR:
+			qDebug() << "MessageEditor::Deleting file message in because of error";
+			fileMessageIn = NULL;
+			fileProcessBar->setVisible(false);
+			fileTransferBar->setVisible(false);
+			fileTransferAction->setChecked(false);
+			break;
+
+		case FileMessage::TRANSFER_CANCEL:
+			qDebug() << "MessageEditor::Deleting file message out because of error";
+			fileMessageOut = NULL;
+			fileProcessBar->setVisible(false);
+			fileTransferBar->setVisible(false);
+			fileTransferAction->setChecked(false);
+			break;
+
+		case FileMessage::RECEIVE_CANCEL:
+			qDebug() << "MessageEditor::Deleting file message in because of error";
+			fileMessageIn = NULL;
+			fileProcessBar->setVisible(false);
+			fileTransferBar->setVisible(false);
+			fileTransferAction->setChecked(false);
+			break;
+
+		default:
+			break;
+
+	}
 }

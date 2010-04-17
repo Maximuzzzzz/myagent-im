@@ -29,13 +29,12 @@
 
 #include "account.h"
 #include "message.h"
+#include "filemessage.h"
 #include "zlibbytearray.h"
 #include "mrimclient.h"
 #include "proto.h"
 #include "datetime.h"
 #include "audio.h"
-
-using namespace Proto;
 
 MRIMClientPrivate::MRIMClientPrivate(Account* a, MRIMClient* parent)
 	: QObject(parent), account(a)
@@ -101,7 +100,7 @@ quint32 MRIMClientPrivate::sendPacket(quint32 msgtype, QByteArray data)
 
 void MRIMClientPrivate::slotConnectedToServer()
 {
-	qDebug() << "MRIMClientPrivate::slotConnectedToServer() currentStatus = " << currentStatus << ", newStatus = " << newStatus << ", gettingAddress = " << gettingAddress;
+	//qDebug() << "MRIMClientPrivate::slotConnectedToServer() currentStatus = " << currentStatus << ", newStatus = " << newStatus << ", gettingAddress = " << gettingAddress;
 
 	if (currentStatus == STATUS_OFFLINE && newStatus != STATUS_OFFLINE)
 		if (!gettingAddress)
@@ -110,7 +109,7 @@ void MRIMClientPrivate::slotConnectedToServer()
 
 void MRIMClientPrivate::slotDisconnectedFromServer()
 {
-	qDebug() << "MRIMClientPrivate slotDisconnectedFromServer, currentStatus = " << currentStatus << ", manualDisconnect = " << manualDisconnect;
+	//qDebug() << "MRIMClientPrivate slotDisconnectedFromServer, currentStatus = " << currentStatus << ", manualDisconnect = " << manualDisconnect;
 	if (currentStatus != STATUS_OFFLINE || !gettingAddress || manualDisconnect)
 	{
 		pingTimer->stop();
@@ -128,6 +127,7 @@ void MRIMClientPrivate::slotSocketStateChanged(QAbstractSocket::SocketState stat
 
 void MRIMClientPrivate::slotSocketError(QAbstractSocket::SocketError error)
 {
+	/*TODO: reconnect on error*/
 	qDebug() << "MRIMClientPrivate::slotSocketEror" << error;
 }
 
@@ -158,7 +158,7 @@ void MRIMClientPrivate::readData()
 	{
 		if (!headerReceived)
 		{
-			qDebug() << "sizeof(mrim_packet_header_t) = " << sizeof(mrim_packet_header_t);
+			//qDebug() << "sizeof(mrim_packet_header_t) = " << sizeof(mrim_packet_header_t);
 			if (socket.bytesAvailable() < sizeof(mrim_packet_header_t))
 				break;
 
@@ -244,8 +244,8 @@ void MRIMClientPrivate::processPacket(QByteArray header, QByteArray data)
 		case MRIM_CS_MAILBOX_STATUS:
 			processMailBoxStatus(data);
 			break;
-		case MRIM_CS_MAILBOX_STATUS2:
-			processMailBoxStatus2(data);
+		case MRIM_CS_NEW_MAIL:
+			processNewMail(data);
 			break;
 		case MRIM_CS_MODIFY_CONTACT_ACK:
 			processModifyContactAck(data, msgseq);
@@ -267,6 +267,12 @@ void MRIMClientPrivate::processPacket(QByteArray header, QByteArray data)
 			break;
 		case MRIM_CS_SMS_ACK:
 			processSmsAck(data, msgseq);
+			break;
+		case MRIM_CS_PROXY:
+			processProxy(data, msgseq);
+			break;
+		case MRIM_CS_PROXY_ACK:
+			processProxyAck(data, msgseq);
 			break;
 		default:
 			qDebug() << "unknown message";
@@ -597,15 +603,15 @@ void MRIMClientPrivate::processMailBoxStatus(QByteArray data)
 	emit q->newNumberOfUnreadLetters(unreadMessages);
 }
 
-void MRIMClientPrivate::processMailBoxStatus2(QByteArray data)
+void MRIMClientPrivate::processNewMail(QByteArray data)
 {
-	qDebug() << "MRIM_CS_MAILBOX_STATUS, bytes = " << data.size();
+	qDebug() << "MRIM_CS_NEW_MAIL, bytes = " << data.size();
 	MRIMDataStream in(data);
 
 	quint32 unreadMessages;
 
 	in >> unreadMessages;
-	qDebug() << "mailbox status 2: unreadMessages = " << unreadMessages;
+	qDebug() << "mailbox new mail: unreadMessages = " << unreadMessages;
 
 	QByteArray baSender, baSubject;
 	quint32 unixTime;
@@ -678,7 +684,7 @@ void MRIMClientPrivate::processMessageAck(QByteArray data)
 	QString plainText;
 	plainText = codec->toUnicode(text);
 
-	if (flags & (MESSAGE_FLAG_SMS | MESSAGE_FLAG_SMS_STATUS))
+	if (flags & (MESSAGE_FLAG_SMS | MESSAGE_SMS_DELIVERY_REPORT))
 	{
 		emit q->messageReceived
 		(
@@ -851,26 +857,50 @@ void MRIMClientPrivate::processFileTransfer(QByteArray data)
 	QByteArray email;
 	quint32 sessionId;
 	quint32 totalSize;
-	quint32 tmp;
-	QByteArray fileDescriptions;
-	QByteArray empty;
-	QByteArray ips;
+	QByteArray lps1;
 
 	in >> email >> sessionId >> totalSize;
 	qDebug() << "email = " << email << ", sessionId = " << sessionId << ", totalSize = " << totalSize;
-	in >> tmp;
-	qDebug() << "united string size = " << tmp;
-	in >> fileDescriptions;
-	qDebug() << "fileDescriptions = " << fileDescriptions;
-	in >> empty;
-	qDebug() << "empty QByteArray = " << empty;
-	in >> ips;
+	in >> lps1;
+
+	qDebug() << "lps1 = " << lps1;
+	qDebug() << "lps1.toHex = " << lps1.toHex();
+
+	MRIMDataStream in2(lps1);
+
+	QByteArray filesAnsi;
+	QByteArray lps2;
+	QByteArray ips;
+
+	in2 >> filesAnsi >> lps2 >> ips;
+
+	MRIMDataStream in3(lps2);
+
+	quint32 unk;
+	QString filesUtf;
+
+	in3 >> unk >> filesUtf;
+
+	qDebug() << "filesAnsi = " << filesAnsi;
 	qDebug() << "ips = " << ips;
+	qDebug() << "unk = " << unk;
+	qDebug() << "filesUtf = " << filesUtf;
+
+	FileMessage* fmsg = new FileMessage(FileMessage::Incoming, q->account()->email(), email, totalSize, sessionId, filesAnsi, filesUtf, ips);
+	connect(q, SIGNAL(proxy(QByteArray, quint32, quint32, QByteArray, QByteArray, quint32, quint32, quint32, quint32)), fmsg, SLOT(slotProxy(QByteArray, quint32, quint32, QByteArray, QByteArray, quint32, quint32, quint32, quint32)));
+	connect(q, SIGNAL(fileTransferAck(quint32, QByteArray, quint32, QByteArray)), fmsg, SLOT(slotFileTransferStatus(quint32, QByteArray, quint32, QByteArray)));
+	connect(q, SIGNAL(proxyAck(quint32, QByteArray, quint32, quint32, QByteArray, QByteArray, quint32, quint32, quint32, quint32)), fmsg, SLOT(slotProxyAck(quint32, QByteArray, quint32, quint32, QByteArray, QByteArray, quint32, quint32, quint32, quint32)));
+
+	connect(fmsg, SIGNAL(fileAck(quint32, QByteArray, quint32, QByteArray)), q, SLOT(sendFileAck(quint32, QByteArray, quint32, QByteArray)));
+	connect(fmsg, SIGNAL(proxyAck(FileMessage*, quint32, quint32, quint32, quint32, quint32, quint32)), q, SLOT(sendProxyAck(FileMessage*, quint32, quint32, quint32, quint32, quint32, quint32)));
+
+	emit q->fileReceived(fmsg);
 }
 
 void MRIMClientPrivate::processFileTransferAck(QByteArray data)
 {
 	qDebug() << "MRIM_CS_FILE_TRANSFER_ACK, bytes = " << data.size();
+	qDebug() << data.toHex();
 	MRIMDataStream in(data);
 
 	quint32 status;
@@ -881,6 +911,8 @@ void MRIMClientPrivate::processFileTransferAck(QByteArray data)
 	in >> status >> email >> sessionId >> mirrorIps;
 
 	qDebug() << "status = " << status << ", email = " << email << ", sessionId = " << sessionId << ", mirrorIps = " << mirrorIps;
+
+	emit q->fileTransferAck(status, email, sessionId, mirrorIps);
 }
 
 void MRIMClientPrivate::processMPOPSession(QByteArray data, quint32 msgseq)
@@ -906,4 +938,60 @@ void MRIMClientPrivate::processSmsAck(QByteArray data, quint32 msgseq)
 	qDebug() << "sms status = " << QString::number(status, 16);
 
 	emit q->smsAck(msgseq, status);
+}
+
+void MRIMClientPrivate::processProxy(QByteArray data, quint32 msgseq)
+{
+	qDebug() << "MRIM_CS_PROXY, bytes = " << data.size();
+	MRIMDataStream in(data);
+
+	qDebug() << data.toHex();
+
+	QByteArray email;
+	quint32 idRequest;
+	quint32 dataType;
+
+	QByteArray filesAnsi;
+	QByteArray proxyIps;
+	quint32 sessionId;
+	quint32 unk1, unk2, unk3;
+
+	in >> email >> idRequest >> dataType >> filesAnsi >> proxyIps >> sessionId;
+	in >> unk1 >> unk2 >> unk3;
+	qDebug() << "email =" << email;
+	qDebug() << "idRequest =" << idRequest;
+	qDebug() << "dataType =" << dataType;
+	qDebug() << "userData =" << filesAnsi;
+
+	qDebug() << "lpsIpPort =" << proxyIps;
+	qDebug() << "sessionId =" << sessionId;
+
+	qDebug() << unk1 << unk2 << unk3;
+
+	emit q->proxy(email, idRequest, dataType, filesAnsi, proxyIps, sessionId, unk1, unk2, unk3);
+}
+
+void MRIMClientPrivate::processProxyAck(QByteArray data, quint32 msgseq)
+{
+	qDebug() << "MRIM_CS_PROXY_ACK, bytes = " << data.size();
+	MRIMDataStream in(data);
+
+	qDebug() << data.toHex();
+
+	quint32 status;
+	QByteArray email;
+	quint32 idRequest;
+	quint32 dataType;
+	QByteArray filesAnsi;
+	QByteArray ips;
+	quint32 sessionId;
+
+	quint32 unk1, unk2, unk3, unk4, unk5, unk6, unk7, unk8;
+
+	in >> status >> email >> idRequest >> dataType >> filesAnsi >> ips >> sessionId;
+	in >> unk1 >> unk2 >> unk3 >> unk4 >> unk5 >> unk6 >> unk7 >> unk8;
+
+	qDebug() << status;
+
+	emit q->proxyAck(status, email, idRequest, dataType, filesAnsi, ips, sessionId, unk1, unk2, unk3);
 }

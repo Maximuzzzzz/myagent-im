@@ -39,3 +39,11 @@ void AnimatedTextBrowser::openUrl(const QUrl & url)
 	if (!scheme.isEmpty() && scheme != "file" && scheme != "qrc")
 		QDesktopServices::openUrl(url);
 }
+
+/*void AnimatedTextBrowser::setSource(const QString & name)
+{
+	qDebug() << "AnimatedTextBrowser::setSource" << name;
+
+//	QString s = name.stripWhiteSpace();
+	QTextBrowser::setSource(name);
+}*/

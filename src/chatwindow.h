@@ -40,6 +40,7 @@ class Account;
 #include "animatedtextedit.h"
 #include "animatedtextbrowser.h"
 #include "animatedtextdocument.h"
+#include "filemessage.h"
 #include "onlinestatus.h"
 
 class ChatWindow : public QMainWindow
@@ -88,6 +89,16 @@ private slots:
 
 	void slotTimeout();
 	void clearStatus();
+
+	void fileTransferring(FileMessage* fmsg);
+	void fileReceiving(FileMessage* fmsg);
+
+	void slotAnchorClicked(QUrl url);
+	void clenupCommandUrls();
+
+	void transferStarted(quint32 sessId);
+
+	void slotFileTransferred(FileMessage::Status action, QString filesInHtml, QString destination);
 
 protected:
 	QTimer* timer;

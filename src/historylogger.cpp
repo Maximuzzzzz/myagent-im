@@ -81,7 +81,7 @@ HistoryLogger::~HistoryLogger()
 
 void HistoryLogger::saveMessage(const Message* message)
 {
-	if (message->flags() & MESSAGE_FLAG_BELL)
+	if (message->flags() & MESSAGE_FLAG_ALARM)
 		return;
 	
 	Xapian::Document doc;

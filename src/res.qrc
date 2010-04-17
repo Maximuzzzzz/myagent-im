@@ -53,6 +53,10 @@
 		<file>icons/editor/msg_p_f_add_d.png</file>
 		<file>icons/editor/msg_p_f_add_h.png</file>
 		<file>icons/editor/msg_p_f_add_p.png</file>
+		<file>icons/editor/msg_p_f_cancel_dis.png</file>
+		<file>icons/editor/msg_p_f_cancel_d.png</file>
+		<file>icons/editor/msg_p_f_cancel_h.png</file>
+		<file>icons/editor/msg_p_f_cancel_p.png</file>
 		<file>icons/editor/msg_p_f_delete_dis.png</file>
 		<file>icons/editor/msg_p_f_delete_d.png</file>
 		<file>icons/editor/msg_p_f_delete_h.png</file>
@@ -107,6 +111,8 @@
 		<file>icons/message_16x16.png</file>
 		<file>icons/title_32x32.png</file>
 		<file>icons/title_16x16.png</file>
+		<file>icons/typing_32x32.png</file>
+		<file>icons/typing_16x16.png</file>
 		<file>icons/typing.png</file>
 		<file>icons/logindlg.png</file>
 		<file>icons/phone.png</file>

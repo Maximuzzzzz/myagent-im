@@ -27,6 +27,7 @@
 #include <QList>
 
 #include "message.h"
+#include "filemessage.h"
 
 class Account;
 class Contact;
@@ -52,6 +53,7 @@ signals:
 	void messageDelivered(bool really, Message* msg);
 	void smsDelivered(QByteArray phoneNumber, QString text);
 	void smsFailed();
+	void signalFileReceived(FileMessage* fmsg);
 
 public slots:	
 	void appendMessage(Message* msg);
@@ -59,6 +61,10 @@ public slots:
 	bool sendSms(QByteArray number, QString text);
 	void sendTyping();
 	bool wakeupContact();
+	bool fileTransfer(FileMessage* fmsg);
+	void fileReceived(FileMessage* fmsg);
+	//void cancelTransferring(quint32 sessId);
+
 private slots:
 	void slotMessageStatus(quint32 status, bool timeout);
 	void slotSmsStatus(quint32 status, bool timeout);

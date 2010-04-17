@@ -5,7 +5,7 @@ CONFIG += qt # warn_on debug
 QT += network phonon
 INCLUDEPATH += /usr/include/KDE
 
-TRANSLATIONS += locale/myagent-im_ru.ts
+TRANSLATIONS = locale/myagent-im_ru.ts
 LIBS += -laspell
 win32 {
     QTPLUGIN += qjpeg \
@@ -88,6 +88,7 @@ SOURCES += main.cpp \
     zlibbytearray.cpp \
     contactlisttreeview.cpp \
     message.cpp \
+	filemessage.cpp \
     contactmimedata.cpp \
     taskchangegroup.cpp \
     task.cpp \
@@ -187,6 +188,7 @@ HEADERS += mrimclient.h \
     zlibbytearray.h \
     contactlisttreeview.h \
     message.h \
+	filemessage.h \
     contactmimedata.h \
     taskchangegroup.h \
     task.h \

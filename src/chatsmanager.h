@@ -29,6 +29,7 @@
 class Contact;
 class ChatSession;
 class Message;
+class FileMessage;
 class Account;
 
 class ChatsManager : public QObject
@@ -46,6 +47,7 @@ signals:
 	
 private slots:
 	void processMessage(QByteArray from, Message* msg);
+	void processFileMessage(FileMessage* fmsg);
 	void removeSession(Contact* contact);
 	
 private:

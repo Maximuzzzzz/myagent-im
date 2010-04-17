@@ -27,6 +27,7 @@
 #include "account.h"
 #include "contact.h"
 #include "message.h"
+#include "filemessage.h"
 #include "mrimclient.h"
 #include "proto.h"
 #include "tasksendmessage.h"
@@ -79,10 +80,10 @@ void ChatSession::slotMessageStatus(quint32 status, bool timeout)
 		emit messageDelivered(true, task->getMessage());
 	}
 	else
-{
-qDebug() << "Message NOT delivered";
+	{
+	qDebug() << "Message NOT delivered";
 		emit messageDelivered(false, task->getMessage());
-}
+	}
 }
 
 void ChatSession::sendTyping()
@@ -117,14 +118,14 @@ void ChatSession::slotSmsStatus(quint32 status, bool timeout)
 bool ChatSession::wakeupContact()
 {
 	int msec = awakeDelay.elapsed();
-	if (msec < 30000)
+	if (msec < 5000)
 	{
 		QString plainText = tr("You can't use alarm clock so often!");
 		QTextDocument doc(plainText);
 		RtfExporter rtfExporter(&doc);
 		QByteArray rtf = rtfExporter.toRtf();
 		
-		Message* msg = new Message(Message::Error, MESSAGE_FLAG_RTF | MESSAGE_FLAG_BELL, plainText, rtf, 0x00FFFFFF);
+		Message* msg = new Message(Message::Error, MESSAGE_FLAG_RTF | MESSAGE_FLAG_ALARM, plainText, rtf, 0x00FFFFFF);
 		appendMessage(msg);
 		return false;
 	}
@@ -134,7 +135,7 @@ bool ChatSession::wakeupContact()
 	RtfExporter rtfExporter(&doc);
 	QByteArray rtf = rtfExporter.toRtf();
 	
-	Message* msg = new Message(Message::Outgoing, MESSAGE_FLAG_RTF | MESSAGE_FLAG_BELL, plainText, rtf, 0x00FFFFFF);
+	Message* msg = new Message(Message::Outgoing, MESSAGE_FLAG_RTF | MESSAGE_FLAG_ALARM, plainText, rtf, 0x00FFFFFF);
 	Task* task = new Tasks::SendMessage(m_contact, msg, m_account->client());
 	connect(task, SIGNAL(done(quint32, bool)), this, SLOT(slotMessageStatus(quint32, bool)));
 	
@@ -146,3 +147,26 @@ bool ChatSession::wakeupContact()
 
 	return false;
 }
+
+bool ChatSession::fileTransfer(FileMessage* fmsg)
+{
+	qDebug() << "ChatSession::fileTransfer()";
+
+	fmsg->setAccEmail(m_account->email());
+	fmsg->setContEmail(m_contact->email());
+	fmsg->sendFiles(m_account->client());
+
+	return true;
+}
+
+void ChatSession::fileReceived(FileMessage* fmsg)
+{
+	qDebug() << "ChatSession::fileReceived";
+	emit signalFileReceived(fmsg);
+}
+
+/*void ChatSession::cancelTransferring(quint32 sessId)
+{
+	qDebug() << "ChatSession::cancelTransferring()";
+	m_account->client()->sendFileAck(FILE_TRANSFER_STATUS_DECLINE, m_contact->email(), sessId, "");
+}*/
