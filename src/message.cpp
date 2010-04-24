@@ -24,6 +24,8 @@
 
 #include <QTextDocument>
 
+#include <QDebug>
+
 #include "rtfparser.h"
 #include "plaintextparser.h"
 #include "proto.h"
@@ -42,7 +44,12 @@ Message::~Message()
 {
 }
 
-QTextDocumentFragment Message::documentFragment() const
+void Message::setId(quint32 id)
+{
+	m_id = id;
+}
+
+QTextDocumentFragment Message::documentFragment(int defR, int defG, int defB, int defSize, QString fontFamily) const
 {
 	QTextDocument doc;
 	
@@ -63,7 +70,10 @@ QTextDocumentFragment Message::documentFragment() const
 	else if (m_flags & MESSAGE_FLAG_RTF)
 	{
 		RtfParser rtfParser;
-		rtfParser.parse(m_rtfText, &doc);
+		if (defR > -1)
+			rtfParser.parse(m_rtfText, &doc, defR, defG, defB, defSize, fontFamily);
+		else
+			rtfParser.parse(m_rtfText, &doc); /*TODO: add font family and all values will be taken from chatwindow*/
 	}
 	else
 	{
@@ -75,4 +85,9 @@ QTextDocumentFragment Message::documentFragment() const
 	}
 
 	return QTextDocumentFragment(&doc);
+}
+
+QTextDocumentFragment Message::documentFragment(QFont defFont, QColor defFontColor, QColor defBkColor) const
+{
+	return documentFragment(defFontColor.red(), defFontColor.green(), defFontColor.blue(), defFont.pointSize(), defFont.family());
 }

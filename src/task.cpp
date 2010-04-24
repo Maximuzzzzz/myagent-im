@@ -23,6 +23,7 @@
 #include "task.h"
 
 #include <QTimer>
+#include <QDebug>
 
 #include "mrimclient.h"
 
@@ -37,6 +38,8 @@ Task::Task(MRIMClient* client, QObject *parent)
 
 void Task::setTimer()
 {
+//timer->start(1000);
+
 	if (mc != 0)
 		timer->start(mc->getPingTime());
 }
@@ -53,6 +56,7 @@ void Task::unsetTimer()
 
 void Task::timeout()
 {
+	qDebug() << "Task::timeout()";
 	onTimeout();
 	
 	emit done(0, true);

@@ -28,6 +28,7 @@
 
 #include "message.h"
 #include "filemessage.h"
+#include "tasksendmessage.h"
 
 class Account;
 class Contact;
@@ -42,9 +43,7 @@ public:
 	Account* account() { return m_account; }
 	Contact* contact() { return m_contact; }
 	
-	const Message* getLastMessage() const;
-
-	typedef QList<Message*>::const_iterator MessageIterator;
+	typedef QHash<quint32, Message*>::const_iterator MessageIterator;
 	MessageIterator messagesBegin() const { return messages.begin(); }
 	MessageIterator messagesEnd() const { return messages.end(); }
 
@@ -56,14 +55,16 @@ signals:
 	void signalFileReceived(FileMessage* fmsg);
 
 public slots:	
-	void appendMessage(Message* msg);
+	void appendMessage(Message* msg, bool addInHash = true);
 	bool sendMessage(QString plainText, QByteArray rtf);
+	bool sendMessage(Message* msg);
 	bool sendSms(QByteArray number, QString text);
 	void sendTyping();
 	bool wakeupContact();
 	bool fileTransfer(FileMessage* fmsg);
 	void fileReceived(FileMessage* fmsg);
-	//void cancelTransferring(quint32 sessId);
+	void resendMessage(quint32 id);
+	void clearHash();
 
 private slots:
 	void slotMessageStatus(quint32 status, bool timeout);
@@ -72,7 +73,8 @@ private slots:
 private:
 	Account* m_account;
 	Contact* m_contact;
-	QList<Message*> messages;
+	QHash<quint32, Message*> messages;
+	quint32 numering;
 	
 	QTime typingTime;
 	QTime awakeDelay;

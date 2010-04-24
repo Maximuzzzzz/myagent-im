@@ -27,6 +27,9 @@
 #include <QTextDocumentFragment>
 #include <QCoreApplication>
 
+#include <QFont>
+#include <QColor>
+
 class Message
 {
 Q_DECLARE_TR_FUNCTIONS(Message)
@@ -42,8 +45,12 @@ public:
 	const QByteArray rtfText() const { return m_rtfText; }
 	const QDateTime dateTime() const { return m_dateTime; }
 	Type type() const { return m_type; }
+	quint32 getId() { return m_id; }
 
-	QTextDocumentFragment documentFragment() const;
+	void setId(quint32 id);
+
+	QTextDocumentFragment documentFragment(int defR = -1, int defG = -1, int defB = -1, int defSize = -1, QString fontFamily = "") const;
+	QTextDocumentFragment documentFragment(QFont defFont, QColor defFontColor, QColor defBkColor) const;
 
 private:
 	Type m_type;
@@ -52,6 +59,9 @@ private:
 	QString m_plainText;
 	QByteArray m_rtfText; // phone number for sms
 	quint32 m_backgroundColor;
+	quint32 m_id;
+
+	bool m_ignoreStyle;
 };
 
 #endif

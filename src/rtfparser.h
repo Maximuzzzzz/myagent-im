@@ -56,6 +56,7 @@ public:
 	void setImage(QString id);
 	void setSmile(const char* str);
 	void setFont(int nFont);
+	void setFont(QString fontFamily);
 	//void setEncoding(unsigned nFont);
 	void setFontColor(unsigned short color);
 	void setBackgroundColor(unsigned short color);
@@ -116,7 +117,7 @@ public:
 	RtfParser();
 	~RtfParser();
 	
-	void parse(QByteArray rtf, QTextDocument* doc);
+	void parse(QByteArray rtf, QTextDocument* doc, int defR = -1, int defG = -1, int defB = -1, int defSize = -1, QString fontFamily = "");
 	
 private:	
 	// Fonts table.

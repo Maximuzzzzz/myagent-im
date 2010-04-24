@@ -197,6 +197,9 @@ void MessageEditor::createToolBar()
 	fileTransferAction->setCheckable(true);
 	connect(fileTransferAction, SIGNAL(triggered(bool)), this, SLOT(fileTransfer(bool)));
 	toolBar->addAction(fileTransferAction);
+
+	toolBar->addSeparator();
+	ignoreAction = addToolAction(toolIcon("ignore"), this, SIGNAL(setIgnore(bool)));
 }
 
 void MessageEditor::chooseFont()
@@ -237,6 +240,8 @@ void MessageEditor::setCurrentFont(const QFont & f)
 
 	mergeMyCharFormat(fmt);
 	updateFormatActions();
+
+	defaultFont = f;
 }
 
 void MessageEditor::setTextColor(const QColor & c)
@@ -245,6 +250,8 @@ void MessageEditor::setTextColor(const QColor & c)
 	fmt.setForeground(c);
 
 	mergeMyCharFormat(fmt);
+
+	defaultFontColor = c;
 }
 
 void MessageEditor::setTextBackgroundColor(const QColor & c)
@@ -253,6 +260,8 @@ void MessageEditor::setTextBackgroundColor(const QColor & c)
 	fmt.setBackground(c);
 
 	mergeMyCharFormat(fmt);
+
+	defaultBkColor = c;
 }
 
 void MessageEditor::mergeMyCharFormat(const QTextCharFormat & fmt)
@@ -330,15 +339,16 @@ void MessageEditor::readSettings()
 	setCheckSpelling(checkSpelling);
 	
 	QString settingsPrefix = "MessageEditor_" + m_contact->email() + "/";
-	QFont font;
-	font.fromString(settings->value(settingsPrefix + "font").toString());
-	QColor textColor(settings->value(settingsPrefix + "textColor", "#000000").toString());
-	QColor backColor(settings->value(settingsPrefix + "backgroundColor", "#ffffff").toString());
+	defaultFont.fromString(settings->value(settingsPrefix + "font").toString());
+	defaultFontColor = QColor(settings->value(settingsPrefix + "textColor", "#000000").toString());
+	defaultBkColor = QColor(settings->value(settingsPrefix + "backgroundColor", "#ffffff").toString());
+
+	ignoreAction->setChecked(settings->value(settingsPrefix + "ignoreSettings", false).toBool());
 
 	QTextCharFormat fmt;
-	fmt.setFont(font);
-	fmt.setForeground(textColor);
-	fmt.setBackground(backColor);
+	fmt.setFont(defaultFont);
+	fmt.setForeground(defaultFontColor);
+	fmt.setBackground(defaultBkColor);
 
 	mergeMyCharFormat(fmt);
 }
@@ -367,6 +377,7 @@ void MessageEditor::writeSettings()
 		settings->remove(settingsPrefix + "backgroundColor");
 	else
 		settings->setValue(settingsPrefix + "backgroundColor", lastUserFormat.background().color().name());
+	settings->setValue(settingsPrefix + "ignoreSettings", ignoreAction->isChecked());
 }
 
 bool MessageEditor::isBlocked()
@@ -748,4 +759,9 @@ void MessageEditor::slotProgress(FileMessage::Status action, int percentage)
 			break;
 
 	}
+}
+
+bool MessageEditor::isIgnoreFont()
+{
+	return ignoreAction->isChecked();
 }

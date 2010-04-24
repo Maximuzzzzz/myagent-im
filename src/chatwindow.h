@@ -94,11 +94,13 @@ private slots:
 	void fileReceiving(FileMessage* fmsg);
 
 	void slotAnchorClicked(QUrl url);
-	void clenupCommandUrls();
+	void cleanupCommandUrls(QString str = "");
 
 	void transferStarted(quint32 sessId);
 
 	void slotFileTransferred(FileMessage::Status action, QString filesInHtml, QString destination);
+
+	//void setIgnore(bool ignore);
 
 protected:
 	QTimer* timer;
@@ -120,6 +122,8 @@ private:
 	bool isNewMessage;
 
 	QTabWidget* editorsWidget;
+
+//	bool ignoreFont;
 };
 
 #endif

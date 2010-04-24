@@ -147,7 +147,7 @@ quint32 MRIMClient::sendMessage(QByteArray email, const Message* message)
 	out << packedRtf;
 
 	qDebug() << "MRIMClient::sendMessage" << data.toHex();
-	
+
 	return p->sendPacket(MRIM_CS_MESSAGE, data);
 }
 

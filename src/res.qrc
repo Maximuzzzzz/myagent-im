@@ -32,6 +32,10 @@
 		<file>icons/editor/msg_bar_s_font_h.png</file>
 		<file>icons/editor/msg_bar_s_font_ph.png</file>
 		<file>icons/editor/msg_bar_s_font_p.png</file>
+		<file>icons/editor/msg_bar_s_ignore_d.png</file>
+		<file>icons/editor/msg_bar_s_ignore_h.png</file>
+		<file>icons/editor/msg_bar_s_ignore_ph.png</file>
+		<file>icons/editor/msg_bar_s_ignore_p.png</file>
 		<file>icons/editor/msg_bar_s_italic_d.png</file>
 		<file>icons/editor/msg_bar_s_italic_h.png</file>
 		<file>icons/editor/msg_bar_s_italic_ph.png</file>

@@ -30,8 +30,7 @@
 
 namespace Tasks
 {
-QSet<Contact*> SendMessage::taskContacts;
-	
+
 SendMessage::SendMessage(Contact* c, Message* m, MRIMClient* client, QObject *parent)
 	: Task(client, parent), contact(c), message(m)
 {
@@ -39,7 +38,6 @@ SendMessage::SendMessage(Contact* c, Message* m, MRIMClient* client, QObject *pa
 
 SendMessage::~SendMessage()
 {
-	taskContacts.remove(contact);
 }
 
 bool SendMessage::exec()
@@ -50,26 +48,17 @@ bool SendMessage::exec()
 		return false;
 	}
 	
-	if (taskContacts.contains(contact))
-	{
-		qDebug () << "sending message blocked";
-		delete this;
-		return false;
-	}
-	
 	connect(mc, SIGNAL(messageStatus(quint32, quint32)), this, SLOT(checkResult(quint32, quint32)));
 	
 	setTimer();
 	
-	//seq = mc->sendRtfMessage(contact->email(), message->plainText(), message->rtfText());
 	seq = mc->sendMessage(contact->email(), message);
+	message->setId(seq);
 	if (seq == 0)
 	{
 		delete this;
 		return false;
 	}
-	
-	taskContacts.insert(contact);
 	
 	return true;
 }
@@ -79,7 +68,6 @@ void SendMessage::checkResult(quint32 msgseq, quint32 status)
 	if (seq == msgseq)
 	{
 		unsetTimer();
-		taskContacts.remove(contact);
 		emit done(status, false);
 		delete this;
 	}
@@ -87,8 +75,7 @@ void SendMessage::checkResult(quint32 msgseq, quint32 status)
 
 void SendMessage::timeout()
 {
-	taskContacts.remove(contact);
-	
+qDebug() << "SendMessage::timeout()";
 	Task::timeout();
 }
 

@@ -26,6 +26,7 @@
 #include "task.h"
 
 #include <QSet>
+#include <QTimer>
 
 class Contact;
 class Message;
@@ -47,9 +48,9 @@ protected slots:
 private slots:
 	void checkResult(quint32 msgseq, quint32 status);
 private:
-	static QSet<Contact*> taskContacts;
 	Contact* contact;
 	Message* message;
+	QTimer* tim; //if to delete this string, Task::timeout() will not work properly. Why? I don't know! o_O
 };
 
 }

@@ -30,45 +30,48 @@
 #include "filemessage.h"
 #include "mrimclient.h"
 #include "proto.h"
-#include "tasksendmessage.h"
 #include "tasksendsms.h"
 #include "rtfexporter.h"
+#include "audio.h"
 
 ChatSession::ChatSession(Account* account, Contact* contact)
 	: m_account(account), m_contact(contact)
 {
+	numering = 0;
 }
 
 ChatSession::~ChatSession()
 {
 	qDebug() << "ChatSession::~ChatSession() ";
-	//qDebug() << "email = " << m_contact->email();
 	qDeleteAll(messages);
 	messages.clear();
 }
 
-void ChatSession::appendMessage(Message* msg)
+void ChatSession::appendMessage(Message* msg, bool addInHash)
 {
-	messages.append(msg);
+	if (addInHash)
+	{
+		while (messages.value(++numering, NULL) != NULL) {}
+		messages.insert(numering, msg);
+	}
 	emit messageAppended(msg);
 }
 
 bool ChatSession::sendMessage(QString plainText, QByteArray rtf)
 {
 	Message* msg = new Message(Message::Outgoing, MESSAGE_FLAG_RTF, plainText, rtf, 0x00FFFFFF);
-	Task* task = new Tasks::SendMessage(m_contact, msg, m_account->client());
-	appendMessage(msg);
-	connect(task, SIGNAL(done(quint32, bool)), this, SLOT(slotMessageStatus(quint32, bool)));
 
-	return task->exec();
+	return sendMessage(msg);
 }
 
-const Message* ChatSession::getLastMessage() const
+bool ChatSession::sendMessage(Message* msg)
 {
-	if (!messages.isEmpty())
-		return messages.last();
-	
-	return NULL;
+	Task* task = new Tasks::SendMessage(m_contact, msg, m_account->client());
+	connect(task, SIGNAL(done(quint32, bool)), this, SLOT(slotMessageStatus(quint32, bool)));
+
+	appendMessage(msg);
+
+	return task->exec();
 }
 
 void ChatSession::slotMessageStatus(quint32 status, bool timeout)
@@ -77,11 +80,12 @@ void ChatSession::slotMessageStatus(quint32 status, bool timeout)
 	if (!timeout && status == MESSAGE_DELIVERED)
 	{
 		qDebug() << "Message delivered";
+		messages.remove(messages.key(task->getMessage()));
 		emit messageDelivered(true, task->getMessage());
 	}
 	else
 	{
-	qDebug() << "Message NOT delivered";
+		qDebug() << "Message NOT delivered";
 		emit messageDelivered(false, task->getMessage());
 	}
 }
@@ -126,7 +130,7 @@ bool ChatSession::wakeupContact()
 		QByteArray rtf = rtfExporter.toRtf();
 		
 		Message* msg = new Message(Message::Error, MESSAGE_FLAG_RTF | MESSAGE_FLAG_ALARM, plainText, rtf, 0x00FFFFFF);
-		appendMessage(msg);
+		appendMessage(msg, false);
 		return false;
 	}
 
@@ -165,8 +169,29 @@ void ChatSession::fileReceived(FileMessage* fmsg)
 	emit signalFileReceived(fmsg);
 }
 
-/*void ChatSession::cancelTransferring(quint32 sessId)
+void ChatSession::resendMessage(quint32 id)
 {
-	qDebug() << "ChatSession::cancelTransferring()";
-	m_account->client()->sendFileAck(FILE_TRANSFER_STATUS_DECLINE, m_contact->email(), sessId, "");
-}*/
+	MessageIterator it = messagesBegin();
+
+	bool found = false;
+	for (; it != messagesEnd(); ++it)
+	{
+		if ((*it)->getId() == id)
+		{
+			found = true;
+			break;
+		}
+	}
+
+	if (found)
+	{
+		Message* msg = *it;
+		sendMessage(msg);
+		audio.play(STOtprav);
+	}
+}
+
+void ChatSession::clearHash()
+{
+	messages.clear();
+}

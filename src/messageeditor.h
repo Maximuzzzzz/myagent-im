@@ -57,11 +57,16 @@ public:
 
 	QTextDocument* document() const;
 
+	QFont getDefFont() { return defaultFont; }
+	QColor getDefFontColor() { return defaultFontColor; }
+	QColor getDefBkColor() { return defaultBkColor; }
+
 public slots:
 	void clear();
 	void fileReceived(FileMessage* fmsg);
 	void receiveFiles(quint32 sessId);
 	void cancelTransferring(quint32 sessId = 0);
+	bool isIgnoreFont();
 
 signals:
 	void textChanged();
@@ -71,6 +76,7 @@ signals:
 	void filesReceiveAck(FileMessage* fmsg, quint32 status);
 	void signalProxy(quint32 idRequest, quint32 dataType, QByteArray userData, QByteArray lpsIpPort, quint32 sessionId);
 	void signalProxyAck(QByteArray mirrorIps);
+	void setIgnore(bool b);
 
 protected:
 	virtual void hideEvent(QHideEvent* event);
@@ -141,6 +147,7 @@ private:
 	QAction* boldFontAction;
 	QAction* italicFontAction;
 	QAction* underlinedFontAction;
+	QAction* ignoreAction;
 	
 	QAction* smilesAction;
 
@@ -175,6 +182,10 @@ private:
 	QTcpServer* tcpServer;
 
 	QFile* m_currentFile;
+
+	QFont defaultFont;
+	QColor defaultFontColor;
+	QColor defaultBkColor;
 };
 
 #endif

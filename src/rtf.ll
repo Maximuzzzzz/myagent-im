@@ -149,11 +149,16 @@ void RtfLevel::setFont(int nFont)
 		m_nFont = nFont;
 		m_nEncoding = parser->fonts[nFont-1].charset;
 		
-		QTextCharFormat fmt;
-		//qDebug() << "font name = " << parser->fonts[nFont-1].name;
-		fmt.setFontFamily(parser->fonts[nFont-1].name);
-		parser->cursor.mergeCharFormat(fmt);
+		setFont(QString(parser->fonts[nFont-1].name));
 	}
+}
+
+void RtfLevel::setFont(QString fontFamily)
+{
+	QTextCharFormat fmt;
+	//qDebug() << "font name = " << parser->fonts[nFont-1].name;
+	fmt.setFontFamily(fontFamily);
+	parser->cursor.mergeCharFormat(fmt);
 }
 
 void RtfLevel::setText(const char* str)
@@ -413,7 +418,7 @@ static char h2d(char c)
 }
 
 
-void RtfParser::parse(QByteArray rtf, QTextDocument* doc)
+void RtfParser::parse(QByteArray rtf, QTextDocument* doc, int defR, int defG, int defB, int defSize, QString fontFamily)
 {
 	cursor = QTextCursor(doc);
 	
@@ -422,7 +427,17 @@ void RtfParser::parse(QByteArray rtf, QTextDocument* doc)
 	{
 		int res = yylex();
 		if (!res) break;
-		
+
+		/*if (defR > -1)
+			curLevel.setRed(defR);
+		if (defG > -1)
+			curLevel.setRed(defG);
+		if (defB > -1)
+			curLevel.setRed(defB);*/
+
+		if (defSize > -1)
+			curLevel.setFontSizeHalfPoints(defSize * 2);
+
 		switch (res)
 		{
 		case UP:
@@ -483,22 +498,35 @@ void RtfParser::parse(QByteArray rtf, QTextDocument* doc)
 					break;
 				case F:
 					// RTF fonts are 0-based; our font index is 1-based.
-					curLevel.setFont(cmd_value+1);
+					if (fontFamily == "")
+						curLevel.setFont(cmd_value+1);
+					else
+						curLevel.setFont(fontFamily);
 					break;
 				case FS:
-					curLevel.setFontSizeHalfPoints(cmd_value);
+					if (defSize < 0)
+						curLevel.setFontSizeHalfPoints(cmd_value);
 					break;
 				case COLORTBL:
 					curLevel.setColors();
 					break;
 				case RED:
-					curLevel.setRed(cmd_value);
+					if (defR < 0)
+						curLevel.setRed(cmd_value);
+					else
+						curLevel.setRed(defR);
 					break;
 				case GREEN:
-					curLevel.setGreen(cmd_value);
+					if (defG < 0)
+						curLevel.setGreen(cmd_value);
+					else
+						curLevel.setGreen(defG);
 					break;
 				case BLUE:
-					curLevel.setBlue(cmd_value);
+					if (defB < 0)
+						curLevel.setBlue(cmd_value);
+					else
+						curLevel.setBlue(defB);
 					break;
 				case CF:
 					curLevel.setFontColor(cmd_value);

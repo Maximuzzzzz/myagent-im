@@ -100,6 +100,8 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s)
 		connect(messageEditor, SIGNAL(sendPressed()), this, SLOT(sendMessage()));
 		connect(messageEditor, SIGNAL(textChanged()), session, SLOT(sendTyping()));
 		connect(messageEditor, SIGNAL(wakeupPressed()), this, SLOT(wakeupContact()));
+
+		connect(messageEditor, SIGNAL(setIgnore(bool)), this, SLOT(setIgnore(bool)));
 		
 		smsEditor = new SmsEditor(m_account, session->contact());
 		connect(smsEditor, SIGNAL(sendPressed()), this, SLOT(sendSms()));
@@ -165,6 +167,7 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s)
 	{
 		appendMessageToView(*it, false);
 	}
+	session->clearHash();
 
 	shakeTimeLine = new QTimeLine(2000, this);
 	shakeTimeLine->setFrameRange(0, 200);
@@ -240,7 +243,7 @@ void ChatWindow::appendMessageToView(const Message* msg, bool newIncoming)
 
 	QTextCursor cursor = chatView->textCursor();
 	cursor.movePosition(QTextCursor::End);
-	
+
 	QString prompt;
 	if (msg->flags() & MESSAGE_FLAG_SMS)
 		prompt = "<font color=red>Sms <b>from number</b> " + msg->rtfText() + " (" + msg->dateTime().time().toString() + ") :</font><br>";
@@ -258,12 +261,15 @@ void ChatWindow::appendMessageToView(const Message* msg, bool newIncoming)
 		
 		prompt = nick + " (" + msg->dateTime().time().toString() + ") :</font><br>";
 	}
-	
+
 	cursor.insertHtml(prompt);
-	cursor.insertFragment(msg->documentFragment());
+	if (messageEditor->isIgnoreFont())
+		cursor.insertFragment(msg->documentFragment(messageEditor->getDefFont(), messageEditor->getDefFontColor(), messageEditor->getDefBkColor()));
+	else
+		cursor.insertFragment(msg->documentFragment());
 	cursor.insertHtml("<br>");
 	cursor.movePosition(QTextCursor::End);
-	
+
 	QScrollBar* vScrollBar = chatView->verticalScrollBar();
 	vScrollBar->triggerAction(QAbstractSlider::SliderToMaximum);
 
@@ -298,10 +304,18 @@ void ChatWindow::messageDelivered(bool really, Message* msg)
 		cursor.insertHtml(prompt);
 		cursor.movePosition(QTextCursor::End);
 		cursor.insertFragment(msg->documentFragment());
+		prompt = "<a href=\"resend_" + QString::number(msg->getId()) + "\">Resend</a><br><br>";
+		cursor.insertBlock();
+		cursor.insertHtml(prompt);
+
+		QScrollBar* vScrollBar = chatView->verticalScrollBar();
+		vScrollBar->triggerAction(QAbstractSlider::SliderToMaximum);
 
 		audio.play(STMessage);
 		emit newMessage(this);
 	}
+	else
+		delete msg;
 }
 
 void ChatWindow::checkContactStatus(OnlineStatus status)
@@ -461,7 +475,7 @@ void ChatWindow::fileReceiving(FileMessage* fmsg)
 	connect(fmsg, SIGNAL(startTransferring(quint32)), this, SLOT(transferStarted(quint32)));
 	connect(fmsg, SIGNAL(fileTransferred(FileMessage::Status, QString, QString)), this, SLOT(slotFileTransferred(FileMessage::Status, QString, QString)));
 
-	clenupCommandUrls();
+	cleanupCommandUrls();
 
 	QTextCursor cursor = chatView->textCursor();
 	cursor.movePosition(QTextCursor::End);
@@ -489,23 +503,28 @@ void ChatWindow::slotAnchorClicked(QUrl url)
 
 	if (url.path().contains("ft_ok"))
 	{
-		clenupCommandUrls();
+		cleanupCommandUrls();
 		messageEditor->receiveFiles(url.path().mid(6).toUInt());
 	}
 	else if (url.path().contains("ft_save_as"))
 	{
 		//qDebug() << url.path().mid(11);
-		clenupCommandUrls();
+		cleanupCommandUrls();
 	}
 	else if (url.path().contains("ft_cancel"))
 	{
-		clenupCommandUrls();
+		cleanupCommandUrls();
 		messageEditor->cancelTransferring(url.path().mid(10).toUInt());
 		//session->cancelTransferring(url.path().mid(10).toUInt());
 	}
+	else if (url.path().contains("resend"))
+	{
+		//cleanupCommandUrls("resend");
+		session->resendMessage(url.path().mid(7).toUInt());
+	}
 }
 
-void ChatWindow::clenupCommandUrls()
+void ChatWindow::cleanupCommandUrls(QString str)
 {
 	qDebug() << "ChatWindow::clenupCommandUrls()";
 
@@ -519,14 +538,14 @@ void ChatWindow::clenupCommandUrls()
 	QTextBlock tb = cursor.block();
 	cursor.setPosition(tb.position());
 
-	while (!cursor.charFormat().isAnchor() && tb.isValid() && cursor.charFormat().anchorHref().mid(6) != "file://")
+	while (tb.isValid())
 	{
-		tb = tb.previous();
-		cursor.setPosition(tb.position());
-	}
+		while (!cursor.charFormat().isAnchor() || cursor.charFormat().anchorHref().left(7) == "file://" || cursor.charFormat().anchorHref().left(7) == "resend_")
+		{
+			tb = tb.previous();
+			cursor.setPosition(tb.position());
+		}
 
-	if (tb.isValid())
-	{
 		cursor.select(QTextCursor::LineUnderCursor);
 		cursor.setCharFormat(nullFormat);
 	}
@@ -536,7 +555,7 @@ void ChatWindow::transferStarted(quint32 sessId)
 {
 	qDebug() << "ChatWindow::transferStarted()";
 
-	clenupCommandUrls();
+	cleanupCommandUrls();
 
 	QTextCursor cursor = chatView->textCursor();
 	cursor.movePosition(QTextCursor::End);
@@ -563,7 +582,7 @@ void ChatWindow::slotFileTransferred(FileMessage::Status action, QString filesIn
 	{
 		case FileMessage::TRANSFERRING_COMPLETE:
 		case FileMessage::RECEIVING_COMPLETE:
-			clenupCommandUrls();
+			cleanupCommandUrls();
 			cursor.insertBlock();
 			cursor.insertHtml("<font color=green>" + tr("Files transferring") + " (" + QDateTime::currentDateTime().time().toString() + ")</font><br>");
 			cursor.insertHtml("<font color=green>" + tr("File transferring successful complete</font><br>"));
@@ -578,7 +597,7 @@ void ChatWindow::slotFileTransferred(FileMessage::Status action, QString filesIn
 
 		case FileMessage::TRANSFER_ERROR:
 		case FileMessage::RECEIVE_ERROR:
-			clenupCommandUrls();
+			cleanupCommandUrls();
 			cursor.insertBlock();
 			cursor.insertHtml("<font color=green>" + tr("Files transferring") + " (" + QDateTime::currentDateTime().time().toString() + ")</font><br>");
 			cursor.insertHtml("<font color=green>" + tr("Error occured while file transfering") + "</font>");
@@ -586,7 +605,7 @@ void ChatWindow::slotFileTransferred(FileMessage::Status action, QString filesIn
 
 		case FileMessage::TRANSFER_CANCEL:
 		case FileMessage::RECEIVE_CANCEL:
-			clenupCommandUrls();
+			cleanupCommandUrls();
 			cursor.insertBlock();
 			cursor.insertHtml("<font color=green>" + tr("Files transferring") + " (" + QDateTime::currentDateTime().time().toString() + ")</font><br>");
 			cursor.insertHtml("<font color=green>" + tr("Transferring canceled") + "</font>");
@@ -599,3 +618,9 @@ void ChatWindow::slotFileTransferred(FileMessage::Status action, QString filesIn
 	QScrollBar* vScrollBar = chatView->verticalScrollBar();
 	vScrollBar->triggerAction(QAbstractSlider::SliderToMaximum);
 }
+
+/*void ChatWindow::setIgnore(bool ignore)
+{
+qDebug() << "Ignore set as" << ignore;
+	ignoreFont = ignore;
+}*/
