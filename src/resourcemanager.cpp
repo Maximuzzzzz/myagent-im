@@ -30,8 +30,6 @@
 ResourceManager::ResourceManager(QObject *parent)
 	: QObject(parent)
 {
-	//Q_INIT_RESOURCE(res);
-	//userPath = "";
 	m_settings = new QSettings(basePath() + "/settings.txt", QSettings::IniFormat, this);
 #ifdef DATADIR
 	QString emoticonsPath = QLatin1String(DATADIR) + "/emoticons";
@@ -83,7 +81,7 @@ QString ResourceManager::emoticonsResourcePrefix()
 	return "smiles";
 }
 
-/*void ResourceManager::setUserPath(QString path)
+void ResourceManager::setAudio(Audio* a)
 {
-	userPath = path;
-}*/
+	audio = a;
+}

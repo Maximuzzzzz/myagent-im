@@ -50,6 +50,7 @@
 #include "linkbutton.h"
 #include "centerwindow.h"
 #include "centeredmessagebox.h"
+#include "audio.h"
 
 ContactListWindow::ContactListWindow(Account* account)
 	: m_account(account)
@@ -220,6 +221,9 @@ void ContactListWindow::slotContactAsksAuthorization(const QByteArray & email, c
 {
 	AuthorizeDialog* dlg = new AuthorizeDialog(m_account, email, nickname, message);
 	connect(dlg, SIGNAL(accepted()), this, SLOT(authorizeContact()));
+
+	theRM.getAudio()->play(STAuth);
+
 	dlg->show();
 }
 

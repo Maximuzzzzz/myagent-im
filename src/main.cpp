@@ -30,7 +30,9 @@
 #include "contactlist.h"
 #include "logindialog.h"
 #include "contactlistwindow.h"
+
 #include "audio.h"
+#include "resourcemanager.h"
 
 #ifdef Q_WS_WIN
 #include <QtPlugin>
@@ -64,6 +66,9 @@ int main(int argc, char *argv[])
 	myappTranslator.load("locale/myagent-im_" + QLocale::system().name());
 #endif
 	app.installTranslator(&myappTranslator);
+
+	Audio* audio = new Audio();
+	theRM.setAudio(audio);
 
 	LoginDialog* ld = new LoginDialog;
 	

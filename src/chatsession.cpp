@@ -33,6 +33,7 @@
 #include "tasksendsms.h"
 #include "rtfexporter.h"
 #include "audio.h"
+#include "resourcemanager.h"
 
 ChatSession::ChatSession(Account* account, Contact* contact)
 	: m_account(account), m_contact(contact)
@@ -187,7 +188,7 @@ void ChatSession::resendMessage(quint32 id)
 	{
 		Message* msg = *it;
 		sendMessage(msg);
-		audio.play(STOtprav);
+		theRM.getAudio()->play(STOtprav);
 	}
 }
 

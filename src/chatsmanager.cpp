@@ -33,6 +33,7 @@
 #include "filemessage.h"
 #include "proto.h"
 #include "audio.h"
+#include "resourcemanager.h"
 
 ChatsManager::ChatsManager(Account* account)
  : QObject(account), m_account(account)
@@ -65,9 +66,9 @@ void ChatsManager::processMessage(QByteArray from, Message* msg)
 	if (msg->type() == Message::Incoming)
 	{
 		if (msg->flags() & MESSAGE_FLAG_ALARM)
-			audio.play(STRing);
+			theRM.getAudio()->play(STRing);
 		else
-			audio.play(STMessage);
+			theRM.getAudio()->play(STMessage);
 	}
 	session->appendMessage(msg);
 }
@@ -75,7 +76,7 @@ void ChatsManager::processMessage(QByteArray from, Message* msg)
 void ChatsManager::processFileMessage(FileMessage* fmsg)
 {
 	ChatSession* session = getSession(m_account->contactList()->getContact(fmsg->getContEmail()));
-	audio.play(STMessage);
+	theRM.getAudio()->play(STMessage);
 	session->fileReceived(fmsg);
 }
 

@@ -31,6 +31,7 @@
 #include "contactlistwindow.h"
 #include "account.h"
 #include "mrimclient.h"
+#include "audio.h"
 
 SystemTrayIcon::SystemTrayIcon(Account* a, ContactListWindow* w)
  : QSystemTrayIcon(w), mainWindow(w), account(a)
@@ -122,6 +123,8 @@ bool SystemTrayIcon::event(QEvent* e)
 
 void SystemTrayIcon::newLetter(QString sender, QString subject, QDateTime dateTime)
 {
+	theRM.getAudio()->play(STLetter);
+
 	showMessage(tr("New letter"), sender + "\n" + subject + "\n" + dateTime.toString(), QSystemTrayIcon::Information, 5000);
 }
 

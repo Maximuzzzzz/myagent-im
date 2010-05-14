@@ -75,6 +75,8 @@ unix {
 }
 RESOURCES += res.qrc
 SOURCES += main.cpp \
+	soundplayer.cpp \
+	audio.cpp \
     mrimclient.cpp \
     account.cpp \
     contactgroup.cpp \
@@ -172,9 +174,10 @@ SOURCES += main.cpp \
     centeredmessagebox.cpp \
     messageedit.cpp \
     favouriteemoticonsdialog.cpp \
-    flowlayout.cpp \
-    audio.cpp
+    flowlayout.cpp
 HEADERS += mrimclient.h \
+	soundplayer.h \
+	audio.h \
     proto.h \
     account.h \
     contactgroup.h \
@@ -276,8 +279,7 @@ HEADERS += mrimclient.h \
     centeredmessagebox.h \
     messageedit.h \
     favouriteemoticonsdialog.h \
-    flowlayout.h \
-    audio.h
+    flowlayout.h
 FORMS += logindialog.ui \
     searchcontacts.ui \
     addcontact.ui \

@@ -29,6 +29,7 @@
 
 #include "emoticons.h"
 #include "locations.h"
+#include "audio.h"
 
 class ResourceManager : public QObject
 {
@@ -44,9 +45,8 @@ public:
 	const Locations& locations() const { return m_locations; }
 	QString emoticonsResourcePrefix();
 	const QString getSoundsPath() const { return soundsPath; }
-
-	/*void setUserPath(QString path);
-	const QString getUserPath() { return userPath; }*/
+	void setAudio(Audio* a);
+	Audio* getAudio() { return audio; }
 
 private:
 	ResourceManager(QObject* parent = 0);
@@ -56,10 +56,9 @@ private:
 	Emoticons m_emoticons;
 	Locations m_locations;
 	QString soundsPath;
-	//QString userPath;
+	Audio* audio;
 };
 
-//static ResourceManager& theRM = ResourceManager::self();
 #define theRM ResourceManager::self()
 
 #endif

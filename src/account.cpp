@@ -32,6 +32,7 @@
 #include "resourcemanager.h"
 #include "chatsmanager.h"
 #include "historymanager.h"
+#include "audio.h"
 
 Account::Account(QByteArray email, QByteArray password, QObject* parent)
 	: QObject(parent)
@@ -95,6 +96,9 @@ void Account::setInfo(const QByteArray& totalMessages, const QByteArray& unreadM
 	m_totalMessages  = totalMessages.toUInt();
 	m_unreadMessages = unreadMessages.toUInt();
 	m_nickname = nickname;
+
+	if (unreadMessages.toUInt() > 0)
+		theRM.getAudio()->play(STLetter);
 
 	emit nicknameChanged();
 	emit unreadLettersChanged(m_unreadMessages);

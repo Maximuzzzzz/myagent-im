@@ -201,7 +201,7 @@ quint32 ChatWindow::sendMessage()
 	
 	messageEditor->clear();
 
-	audio.play(STOtprav);
+	theRM.getAudio()->play(STOtprav);
 
 	return session->sendMessage(messageText, messageRtf);
 }
@@ -217,7 +217,7 @@ quint32 ChatWindow::sendSms()
 	smsEditor->blockInput();
 	emit smsEditorActivate();
 
-	audio.play(STOtprav);
+	theRM.getAudio()->play(STOtprav);
 
 	return session->sendSms(number, text);
 }
@@ -311,7 +311,8 @@ void ChatWindow::messageDelivered(bool really, Message* msg)
 		QScrollBar* vScrollBar = chatView->verticalScrollBar();
 		vScrollBar->triggerAction(QAbstractSlider::SliderToMaximum);
 
-		audio.play(STMessage);
+		theRM.getAudio()->play(STMessage);
+
 		emit newMessage(this);
 	}
 	else
@@ -366,7 +367,9 @@ void ChatWindow::shake()
 	
 	savedX = x();
 	savedY = y();
-	audio.play(STRing);
+
+	theRM.getAudio()->play(STRing);
+
 	shakeTimeLine->start();
 }
 
@@ -540,14 +543,16 @@ void ChatWindow::cleanupCommandUrls(QString str)
 
 	while (tb.isValid())
 	{
-		while (!cursor.charFormat().isAnchor() || cursor.charFormat().anchorHref().left(7) == "file://" || cursor.charFormat().anchorHref().left(7) == "resend_")
+		if (cursor.charFormat().isAnchor() && (cursor.charFormat().anchorHref().left(7) == "file://" || cursor.charFormat().anchorHref().left(7) == "resend_"))
 		{
-			tb = tb.previous();
-			cursor.setPosition(tb.position());
+			cursor.select(QTextCursor::LineUnderCursor);
+			cursor.setCharFormat(nullFormat);
 		}
 
-		cursor.select(QTextCursor::LineUnderCursor);
-		cursor.setCharFormat(nullFormat);
+		tb = tb.previous();
+		cursor.setPosition(tb.position());
+
+		qDebug() << "In cycle";
 	}
 }
 
