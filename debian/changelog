@@ -1,5 +1,33 @@
+myagent-im (0.3.1) unstable; urgency=low
+
+  * Fixed paths for translation files
+  * Use standard (not triangalar) tabs
+  * Initial resize of window with tabs
+
+ -- Alexander Volkov <volkov0aa@gmail.com>  Sat, 15 May 2010 17:41:26 +0400
+
+myagent-im (0.3.0) unstable; urgency=low
+
+  Dmitry Malahov <abr_mail@mail.ru>:
+  * Sending next message without waiting previous message will be delivered
+  * Added message "message not delivered", if another contact didn't get the message
+  * Sorting the contact list
+  * Added three tray menu items
+  * Some changes in emoticons widget
+  * Added sounds
+  * Widget for smiles contains only favourite icons
+  * Added main window with tabs and possibility to change option "chats in/out window"
+  * Changed dialog icon to current icon status
+  * Added files transferring
+  * Update messages monitoring: message either will be delivered or sender will get error message and resend link
+  * Added button for ignoring interlocutor style (but works independently by different interlocutors)
+  * Clearing unnecessary messages from memory
+
+ -- Alexander Volkov <volkov0aa@gmail.com>  Sat, 15 May 2010 12:19:06 +0400
+
 myagent-im (0.2.1) unstable; urgency=low
 
   * Initial Release.
 
  -- Alexander Volkov <volkov0aa@gmail.com>  Sat, 10 Oct 2009 22:25:26 +0400
+

@@ -217,13 +217,13 @@ void ChatWindowsManager::loadMainWindow()
 	tabs->setStyleSheet("QTabWidget::pane { border: 0px; } QTabWidget::tab-bar { left: 1px; } QTabBar::tab { padding: 5px 5px 5px 5px; font: bold 10px; }");
 	tabs->setTabsClosable(true);
 	tabs->setTabPosition(QTabWidget::North);
-	tabs->setTabShape(QTabWidget::Triangular);
 	connect(tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(slotRemoveTab(int)));
 	connect(tabs, SIGNAL(currentChanged(int)), this, SLOT(changeTab(int)));
 
 	connect(mainWindow, SIGNAL(showEvent()), this, SLOT(onShowWindow()));
 
 	mainWindow->setCentralWidget(tabs);
+        mainWindow->resize(750, 550);
 }
 
 bool ChatWindowsManager::isAnyWindowVisible()

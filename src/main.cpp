@@ -55,13 +55,13 @@ int main(int argc, char *argv[])
 #ifdef DATADIR
 	qtTranslator.load("qt_" + QLocale::system().name(), QLatin1String(DATADIR));
 #else
-	qtTranslator.load("qt_" + QLocale::system().name());
+        qtTranslator.load("locale/qt_" + QLocale::system().name());
 #endif
 	app.installTranslator(&qtTranslator);
 	
 	QTranslator myappTranslator;
 #ifdef DATADIR
-	myappTranslator.load("locale/myagent-im_" + QLocale::system().name(), QLatin1String(DATADIR));
+        myappTranslator.load("myagent-im_" + QLocale::system().name(), QLatin1String(DATADIR));
 #else
 	myappTranslator.load("locale/myagent-im_" + QLocale::system().name());
 #endif
