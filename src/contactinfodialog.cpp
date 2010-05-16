@@ -194,15 +194,15 @@ void ContactInfoDialog::createContent(const ContactInfo & info)
 	phoneEdit2 = new QLineEdit;
 	phoneEdit3 = new QLineEdit;
 	
-	int phoneWidth = phoneEdit1->fontMetrics().width("+00000000000") + 4*phoneEdit1->style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
+	int phoneWidth = phoneEdit1->fontMetrics().width("+000000000000") + 4*phoneEdit1->style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
 
 	phoneEdit1->setFixedWidth(phoneWidth);
 	phoneEdit2->setFixedWidth(phoneWidth);
 	phoneEdit3->setFixedWidth(phoneWidth);
 
-	phoneEdit1->setValidator(new QRegExpValidator(QRegExp("|\\+(\\d){11}"), phoneEdit1));
-	phoneEdit2->setValidator(new QRegExpValidator(QRegExp("|\\+(\\d){11}"), phoneEdit2));
-	phoneEdit3->setValidator(new QRegExpValidator(QRegExp("|\\+(\\d){11}"), phoneEdit3));
+	phoneEdit1->setValidator(new QRegExpValidator(QRegExp("|\\+(\\d){11,12}"), phoneEdit1));
+	phoneEdit2->setValidator(new QRegExpValidator(QRegExp("|\\+(\\d){11,12}"), phoneEdit2));
+	phoneEdit3->setValidator(new QRegExpValidator(QRegExp("|\\+(\\d){11,12}"), phoneEdit3));
 
 	connect(phoneEdit1, SIGNAL(textEdited(const QString&)), SLOT(checkPhones()));
 	connect(phoneEdit2, SIGNAL(textEdited(const QString&)), SLOT(checkPhones()));

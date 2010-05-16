@@ -34,12 +34,14 @@
 #include "favouriteemoticonsdialog.h"
 
 EmoticonSelector::EmoticonSelector(QWidget *parent)
-	: QWidget(parent)
+	: QFrame(parent)
 {
 	setWindowFlags(Qt::Popup);
 	setAttribute(Qt::WA_AlwaysShowToolTips);
 	setWindowTitle(tr("Emoticons"));
 	setWindowIcon(QIcon("smiles:/smiles/smiles/smile.gif"));
+
+	setFrameStyle(QFrame::Panel | QFrame::Raised);
 
 	setCurrentLayout();
 
@@ -125,16 +127,16 @@ void EmoticonSelector::setupFavouriteEmoticons()
 
 void EmoticonSelector::setCurrentLayout()
 {
-		QVBoxLayout* layout = new QVBoxLayout;
-		layout->setContentsMargins(0, 0, 0, 0);
-		//layout->setSpacing(2);
+	QVBoxLayout* layout = new QVBoxLayout;
+	layout->setContentsMargins(0, 0, 0, 0);
+	//layout->setSpacing(2);
 
-		int maxSetSize = theRM.emoticons().maxSetSize();
-		int numberOfFavouriteEmoticons = theRM.emoticons().favouriteEmoticons().size();
-		maxSetSize = maxSetSize > numberOfFavouriteEmoticons ? maxSetSize : numberOfFavouriteEmoticons;
-		int emoticonsPerRow = static_cast<int>(ceil(sqrt((double)maxSetSize)));
+	int maxSetSize = theRM.emoticons().maxSetSize();
+	int numberOfFavouriteEmoticons = theRM.emoticons().favouriteEmoticons().size();
+	maxSetSize = maxSetSize > numberOfFavouriteEmoticons ? maxSetSize : numberOfFavouriteEmoticons;
+	int emoticonsPerRow = static_cast<int>(ceil(sqrt((double)maxSetSize)));
 
-		emotions = createFavouriteEmoticonsWidget(emoticonsPerRow);
-		layout->addWidget(emotions);
-		setLayout(layout);
+	emotions = createFavouriteEmoticonsWidget(emoticonsPerRow);
+	layout->addWidget(emotions);
+	setLayout(layout);
 }

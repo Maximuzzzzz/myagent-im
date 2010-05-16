@@ -23,12 +23,12 @@
 #ifndef EMOTICONSELECTOR_H
 #define EMOTICONSELECTOR_H
 
-#include <QWidget>
+#include <QFrame>
 
 class QToolBox;
 class EmoticonMovie;
 
-class EmoticonSelector : public QWidget
+class EmoticonSelector : public QFrame
 {
 Q_OBJECT
 public:

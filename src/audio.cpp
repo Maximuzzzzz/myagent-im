@@ -1,9 +1,15 @@
 #include "audio.h"
 
 #include <QDebug>
+#include <QSettings>
+
+#include "resourcemanager.h"
 
 void Audio::play(SoundType soundType)
 {
+	if (!theRM.settings()->value("Sounds/Enable", true).toBool())
+		return;
+
 	if (!sounds.contains(soundType))
 	{
 		if (soundType != STOtprav)

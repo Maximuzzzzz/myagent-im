@@ -70,7 +70,6 @@ ContactListWindow::ContactListWindow(Account* account)
 	connect(mc, SIGNAL(contactAsksAuthorization(const QByteArray&, const QString&, const QString&)), this, SLOT(slotContactAsksAuthorization(const QByteArray&, const QString&, const QString&)));
 
 	chatWindowsManager = new ChatWindowsManager(m_account, this);
-	connect(m_account->chatsManager(), SIGNAL(sessionInitialized(ChatSession*)), chatWindowsManager, SLOT(createWindow(ChatSession*)));
 	
 	QHBoxLayout* headerLayout = new QHBoxLayout;
 	headerLayout->setSpacing(4);
@@ -137,11 +136,7 @@ void ContactListWindow::slotContactItemActivated(Contact* contact)
 	{
 		ChatSession* session = m_account->chatsManager()->getSession(contact);
 		ChatWindow* wnd = chatWindowsManager->getWindow(session);
-		if (wnd->isMinimized())
-			wnd->showNormal();
-		wnd->show();
-		wnd->raise();
-		wnd->activateWindow();
+		chatWindowsManager->raiseWindow(wnd);
 	}
 }
 
@@ -315,6 +310,8 @@ void ContactListWindow::openMailRuUrlEnd(quint32 status, bool timeout)
 		qDebug() << "openMailSession strange sender";
 		return;
 	}
+
+	qDebug() << Q_FUNC_INFO << "session id =" << task->session();
 	
 	QString url = "http://win.mail.ru/cgi-bin/auth?Login=" + m_account->email() + "&agent=" + task->session() + "&page=" + task->url();
 	QDesktopServices::openUrl(QUrl(url));

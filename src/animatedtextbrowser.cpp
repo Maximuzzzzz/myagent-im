@@ -36,7 +36,7 @@ AnimatedTextBrowser::AnimatedTextBrowser ( QWidget *parent )
 void AnimatedTextBrowser::openUrl(const QUrl & url)
 {
 	QString scheme = url.scheme();
-	if (!scheme.isEmpty() && scheme != "file" && scheme != "qrc")
+	if (!scheme.isEmpty() && /*scheme != "file" &&*/ scheme != "qrc")
 		QDesktopServices::openUrl(url);
 }
 

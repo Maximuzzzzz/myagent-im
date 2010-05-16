@@ -506,7 +506,12 @@ void MessageEditor::createFileTransferBar()
 	indicatorLayout->setSpacing(0);
 	indicatorLayout->setContentsMargins(0,0,0,0);
 
+	QWidget* cancelHelperWidget = new QWidget;
+	QHBoxLayout* cancelHelperLayout = new QHBoxLayout;
+	cancelHelperLayout->setContentsMargins(0, 0, 0, 0);
 	cancel = createFileTransferToolButton(fileTransferIcon("cancel"), this, SLOT(cancelTransferring()));
+	cancelHelperLayout->addWidget(cancel);
+	cancelHelperWidget->setLayout(cancelHelperLayout);
 
 	fileStatusLabel = new QLabel(tr("<small>Status...</small>"));
 	fileProgress = new QProgressBar();
@@ -517,7 +522,7 @@ void MessageEditor::createFileTransferBar()
 
 	fileProcessBar->addWidget(ftLabel2);
 	fileProcessBar->addWidget(indicatorWidget);
-	fileProcessBar->addWidget(cancel);
+	fileProcessBar->addWidget(cancelHelperWidget);
 
 	fileProcessBar->setVisible(false);
 }

@@ -69,15 +69,14 @@ void StatusButton::setStatus(OnlineStatus status)
 
 void StatusButton::slotStatusChanged(QAction* action)
 {
-	OnlineStatus newStatus;
-	newStatus = action->data();
+	OnlineStatus newStatus = action->data().value<OnlineStatus>();
 	setStatus(newStatus);
 }
 
 QAction* StatusButton::createAction(OnlineStatus status)
 {
 	QAction* action = new QAction(status.contactListIcon(), status.description(), this);
-	action->setData(status);
+	action->setData(QVariant::fromValue(status));
 	return action;
 }
 

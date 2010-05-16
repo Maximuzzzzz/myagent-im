@@ -55,8 +55,14 @@
 #include "audio.h"
 
 ChatWindow::ChatWindow(Account* account, ChatSession* s)
-	: m_account(account), session(s), messageEditor(0), smsEditor(0)
+	: QWidget(),
+	m_account(account), session(s), messageEditor(0), smsEditor(0)
 {
+	qDebug() << Q_FUNC_INFO << "{";
+
+	QVBoxLayout* layout = new QVBoxLayout;
+	layout->setContentsMargins(0, 0, 0, 0);
+
 	isNewMessage = false;
 
 	timer = new QTimer(this);
@@ -137,9 +143,12 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s)
 	splitter->setStretchFactor(0, 7);
 	splitter->setStretchFactor(1, 3);
 	
-	setCentralWidget(splitter);
+	layout->addWidget(splitter);
 	
-	QStatusBar* sb = statusBar();
+	statusBar = new QStatusBar();
+
+	layout->addWidget(statusBar);
+
 	QPushButton* sendButton = new QPushButton(tr("Send"), this);
 	connect(sendButton, SIGNAL(clicked(bool)), this, SLOT(send()));	
 	connect(this, SIGNAL(messageEditorActivate()), messageEditor, SLOT(messageEditorActivate()));
@@ -157,10 +166,8 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s)
 	connect(session, SIGNAL(smsDelivered(QByteArray,QString)), this, SLOT(appendSmsToView(QByteArray, QString)));
 	connect(session, SIGNAL(smsFailed()), this, SLOT(smsFailed()));
 
-	sb->addPermanentWidget(sendButton);
-	sb->setSizeGripEnabled(false);
-	
-	resize(750, 550);
+	statusBar->addPermanentWidget(sendButton);
+	statusBar->setSizeGripEnabled(false);
 
 	ChatSession::MessageIterator it = session->messagesBegin();
 	for (; it != session->messagesEnd(); ++it)
@@ -173,6 +180,10 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s)
 	shakeTimeLine->setFrameRange(0, 200);
 	connect(shakeTimeLine, SIGNAL(frameChanged(int)), SLOT(shakeStep()));
 	connect(shakeTimeLine, SIGNAL(finished()), SLOT(restorePosAfterShake()));
+
+	setLayout(layout);
+
+	qDebug() << Q_FUNC_INFO << "}";
 }
 
 void ChatWindow::send()
@@ -246,7 +257,7 @@ void ChatWindow::appendMessageToView(const Message* msg, bool newIncoming)
 
 	QString prompt;
 	if (msg->flags() & MESSAGE_FLAG_SMS)
-		prompt = "<font color=red>Sms <b>from number</b> " + msg->rtfText() + " (" + msg->dateTime().time().toString() + ") :</font><br>";
+		prompt = "<font color=red>" + tr("Sms from number") + " " + msg->rtfText() + " (" + msg->dateTime().time().toString() + ") :</font><br>";
 	else if (msg->flags() & MESSAGE_SMS_DELIVERY_REPORT)
 		prompt = msg->dateTime().time().toString() + " <b>" + tr("Sms status for number") + " " + msg->rtfText() + "</b> :<br>";
 	else if (msg->flags() & MESSAGE_FLAG_ALARM)
@@ -282,7 +293,7 @@ void ChatWindow::appendMessageToView(const Message* msg, bool newIncoming)
 
 void ChatWindow::contactTyping()
 {
-	statusBar()->showMessage(tr("Contact is typing"), 7000);
+	statusBar->showMessage(tr("Contact is typing"), 7000);
 
 	timer->start(7000);
 	QIcon currentIcon;
@@ -296,15 +307,21 @@ void ChatWindow::messageDelivered(bool really, Message* msg)
 {
 	if (!really)
 	{
+		if (msg->flags() & MESSAGE_FLAG_ALARM)
+		{
+			delete msg;
+			return;
+		}
+
 		QTextCursor cursor = chatView->textCursor();
 		QString prompt;
 
-		prompt = msg->dateTime().time().toString() + " <b>" + session->contact()->nickname() + "</b>: <font color=red>Message not delivered: </font><br>";
+		prompt = msg->dateTime().time().toString() + " <b>" + session->contact()->nickname() + "</b>: <font color=red>" + tr("Message not delivered") + ": </font><br>";
 		cursor.movePosition(QTextCursor::End);
 		cursor.insertHtml(prompt);
 		cursor.movePosition(QTextCursor::End);
 		cursor.insertFragment(msg->documentFragment());
-		prompt = "<a href=\"resend_" + QString::number(msg->getId()) + "\">Resend</a><br><br>";
+		prompt = "<a href=\"resend_" + QString::number(msg->getId()) + "\">" + tr("Resend") + "</a><br><br>";
 		cursor.insertBlock();
 		cursor.insertHtml(prompt);
 
@@ -422,7 +439,7 @@ void ChatWindow::slotTimeout()
 
 void ChatWindow::clearStatus()
 {
-	statusBar()->clearMessage();
+	statusBar->clearMessage();
 	if (isNewMessage)
 	{
 		QIcon currentIcon;
@@ -590,13 +607,14 @@ void ChatWindow::slotFileTransferred(FileMessage::Status action, QString filesIn
 			cleanupCommandUrls();
 			cursor.insertBlock();
 			cursor.insertHtml("<font color=green>" + tr("Files transferring") + " (" + QDateTime::currentDateTime().time().toString() + ")</font><br>");
-			cursor.insertHtml("<font color=green>" + tr("File transferring successful complete</font><br>"));
+			cursor.insertHtml("<font color=green>" + tr("File transferring successful complete") + "</font><br>");
 			if (action == FileMessage::RECEIVING_COMPLETE)
 			{
 				cursor.insertHtml("<font color=green>Received file(s):</font><br>");
 				cursor.insertHtml("<font color=green>" + filesInHtml + "</font><br>");
 				cursor.insertBlock();
 				cursor.insertHtml("<a href=\"file://" + destination + "\">" + tr("Open folder") + "</a>");
+				cursor.insertBlock();
 			}
 			break;
 

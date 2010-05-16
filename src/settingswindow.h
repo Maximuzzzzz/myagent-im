@@ -52,7 +52,13 @@ private:
 	void saveCommonSettings();
 
 	void createMessagesPage();
-	bool saveMessagesSettings();
+	void saveMessagesSettings();
+
+	void createWindowsPage();
+	bool saveWindowsSettings();
+
+	void createAudioPage();
+	void saveAudioSettings();
 
 	QListWidget* listWidget;
 	QStackedWidget* pagesWidget;
@@ -61,12 +67,17 @@ private:
 	QCheckBox* awayCheckBox;
 	QLineEdit* minutesEdit;
 
-	//messages page windgets
-	QCheckBox* positWin;
+	//messages page widgets
 	QRadioButton* enterButton;
 	QRadioButton* doubleEnterButton;
 	QRadioButton* ctrlEnterButton;
 	QCheckBox* altSButton;
+
+	//windows page widgets
+	QCheckBox* tabWindows;
+
+	//audio page widgets
+	QCheckBox* enableSounds;
 
 	ChatWindowsManager* chatWindowsManager;
 

@@ -686,7 +686,18 @@ void FileMessage::initProxy(quint32 dataType, QByteArray proxyIps, quint32 sessi
 
 QString FileMessage::getSizeInString(quint32 size)
 {
-	return "I don't able to do this yet. Sorry :)"; /*TODO: transform size into string with KB, MB, GB ...*/
+	static const double KB = 1024;
+	static const double MB = 1024*KB;
+	static const double GB = 1024*MB;
+
+	if (size > GB)
+		return QString("%1 GB").arg(double(size)/GB, 0, 'f', 2);
+	else if (size > MB)
+		return QString("%1 MB").arg(double(size)/MB, 0, 'f', 2);
+	else if (size > KB)
+		return QString("%1 KB").arg(double(size)/KB, 0, 'f', 2);
+	else
+		return QString("%1 B").arg(size);
 }
 
 bool FileMessage::cancelTransferring(quint32 sessId)

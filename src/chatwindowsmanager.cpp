@@ -25,6 +25,7 @@
 #include <QDebug>
 #include <QTabWidget>
 #include <QPushButton>
+#include <QVBoxLayout>
 
 #include "account.h"
 #include "contact.h"
@@ -35,8 +36,8 @@
 ChatWindowsManager::ChatWindowsManager(Account* account, QObject *parent)
 	: QObject(parent), m_account(account)
 {
-	//useTabs = theRM.settings()->value("Windows/UseTabs", true).toBool();
-	useTabs = m_account->settings()->value("Windows/UseTabs", true).toBool();
+	connect(m_account->chatsManager(), SIGNAL(sessionInitialized(ChatSession*)), this, SLOT(createWindow(ChatSession*)));
+	useTabs = theRM.settings()->value("Windows/UseTabs", true).toBool();
 
 	if (useTabs)
 		loadMainWindow();
@@ -44,16 +45,16 @@ ChatWindowsManager::ChatWindowsManager(Account* account, QObject *parent)
 
 ChatWindowsManager::~ChatWindowsManager()
 {
-	qDebug() << "ChatWindowsManager::~ChatWindowsManager()";
+	qDebug() << Q_FUNC_INFO << "{";
 	QList<ChatWindow*> wnds = windows.values();
-	qDebug() << "ChatWindowsManager::~ChatWindowsManager() windows num = " << wnds.size();
+	qDebug() << Q_FUNC_INFO << "windows num = " << wnds.size();
 	qDeleteAll(wnds);
-	qDebug() << "ChatWindowsManager::~ChatWindowsManager() finished";
+	qDebug() << Q_FUNC_INFO << "}";
 }
 
 ChatWindow* ChatWindowsManager::getWindow(ChatSession* session)
 {
-	qDebug() << "ChatWindowsManager::getWindow";
+	qDebug() << Q_FUNC_INFO;
 	ChatWindow* wnd = windows.value(session, NULL);
 	if (wnd == NULL)
 		wnd = createWindow(session);
@@ -61,12 +62,12 @@ ChatWindow* ChatWindowsManager::getWindow(ChatSession* session)
 	if (useTabs)
 	{
 		/*if (tabs->count() == 0)
-			mainWindow->setGeometry(wnd->geometry());*/
+			tabsWindow->setGeometry(wnd->geometry());*/
 
 		QHash<ChatSession*, int>::const_iterator it = tabHash.find(session);
 		if (it.key() == session)
 		{
-			//if (!mainWindow->isVisible())
+			//if (!tabsWindow->isVisible())
 				tabs->setCurrentIndex(tabHash.value(session));
 			tabs->setTabIcon(tabHash.value(session), wnd->windowIcon());
 		}
@@ -78,7 +79,7 @@ ChatWindow* ChatWindowsManager::getWindow(ChatSession* session)
 		}
 		changeTab(tabs->currentIndex());
 
-		mainWindow->show();
+		tabsWindow->show();
 	}
 
 	return wnd;
@@ -86,17 +87,17 @@ ChatWindow* ChatWindowsManager::getWindow(ChatSession* session)
 
 void ChatWindowsManager::slotRemoveTab(int tab)
 {
-	qDebug() << "ChatWindowsManager::slotRemoveTab";
+	qDebug() << Q_FUNC_INFO;
 	ChatSession* s = tabHash.key(tab);
 	tabs->removeTab(tabHash.value(s));
 	tabHash = deleteFromHash(tabHash.take(s));
 	if (tabs->count() == 0)
-		mainWindow->close();
+		tabsWindow->close();
 }
 
 void ChatWindowsManager::removeWindow(QObject* session)
 {
-	qDebug() << "ChatWindowsManager::removeWindow";
+	qDebug() << Q_FUNC_INFO;
 	ChatSession* s = static_cast<ChatSession*>(session);
 	ChatWindow* wnd = windows.take(s);
 	if (useTabs)
@@ -106,26 +107,29 @@ void ChatWindowsManager::removeWindow(QObject* session)
 
 ChatWindow* ChatWindowsManager::createWindow(ChatSession* session)
 {
-	qDebug() << "ChatWindowsManager::createWindow";
+	qDebug() << Q_FUNC_INFO;
 	ChatWindow* wnd = new ChatWindow(m_account, session);
 	windows.insert(session, wnd);
 	connect(session, SIGNAL(destroyed(QObject*)), this, SLOT(removeWindow(QObject*)));
 	if (useTabs)
 	{
 		int tabIndex = tabs->addTab(wnd, wnd->windowIcon(), session->contact()->nickname());
+		wnd->setWindowFlags(Qt::Widget);
 		tabHash.insert(session, tabIndex);
-		if (!mainWindow->isVisible())
+		if (!tabsWindow->isVisible())
 			tabs->setCurrentIndex(tabIndex);
 		changeTab(tabs->currentIndex());
 		connect(wnd, SIGNAL(setMainWindowIconAndTitle(QIcon, ChatWindow*)), this, SLOT(changeIconAndTitle(QIcon, ChatWindow*)));
 		connect(wnd, SIGNAL(newMessage(ChatWindow*)), this, SLOT(mainWindowActivate(ChatWindow*)));
-		mainWindow->show();
+		tabsWindow->show();
 	}
+	else
+		wnd->resize(750, 550);
 
 	return wnd;
 }
 
-void ChatWindowsManager::changeIconAndTitle(QIcon icon, ChatWindow* sender)
+void ChatWindowsManager::changeIconAndTitle(const QIcon& icon, ChatWindow* sender)
 {
 	ChatSession* s = windows.key(sender);
 	QHash<ChatSession*, int>::const_iterator it = tabHash.find(s);
@@ -140,7 +144,7 @@ void ChatWindowsManager::changeIconAndTitle(QIcon icon, ChatWindow* sender)
 
 void ChatWindowsManager::changeTab(int index)
 {
-	qDebug() << "ChatWindowsManager::changeTab";
+	qDebug() << Q_FUNC_INFO << index;
 	if (tabs->count() > 0)
 	{
 		ChatSession* s = tabHash.key(tabs->currentIndex());
@@ -150,14 +154,14 @@ void ChatWindowsManager::changeTab(int index)
 			wnd->slotMakeRead();
 			wnd->editorActivate();
 		}
-		mainWindow->setWindowIcon(tabs->tabIcon(index));
-		mainWindow->setWindowTitle(tabs->currentWidget()->windowTitle());
+		tabsWindow->setWindowIcon(tabs->tabIcon(index));
+		tabsWindow->setWindowTitle(tabs->currentWidget()->windowTitle());
 	}
 }
 
 void ChatWindowsManager::mainWindowActivate(ChatWindow* wnd)
 {
-	qDebug() << "ChatWindowsManager::mainWindowActivate";
+	qDebug() << Q_FUNC_INFO << wnd << "{";
 
 	ChatSession* s = windows.key(wnd);
 	QHash<ChatSession*, int>::const_iterator it = tabHash.find(s);
@@ -166,11 +170,11 @@ void ChatWindowsManager::mainWindowActivate(ChatWindow* wnd)
 	{
 		qDebug() << "(it.key() == s)";
 		tabIndex = tabHash.value(s);
-		if (!mainWindow->isVisible())
+		if (!tabsWindow->isVisible())
 		{
 			tabs->setCurrentIndex(tabIndex);
 			changeTab(tabs->currentIndex());
-			mainWindow->show();
+			tabsWindow->show();
 		}
 	}
 	else
@@ -178,16 +182,18 @@ void ChatWindowsManager::mainWindowActivate(ChatWindow* wnd)
 		qDebug() << "(it.key() != s)";
 		tabIndex = tabs->addTab(wnd, wnd->windowIcon(), s->contact()->nickname());
 		tabHash.insert(s, tabIndex);
-		if (!mainWindow->isVisible())
+		if (!tabsWindow->isVisible())
 			tabs->setCurrentIndex(tabIndex);
 		changeTab(tabs->currentIndex());
-		mainWindow->show();
+		tabsWindow->show();
 	}
+
+	qDebug() << Q_FUNC_INFO << "}";
 }
 
 QHash<ChatSession*, int> ChatWindowsManager::deleteFromHash(int indexRemoved)
 {
-	qDebug() << "ChatWindowsManager::updateHash(" << indexRemoved << ")";
+	qDebug() << Q_FUNC_INFO << indexRemoved << ")";
 	QHash<ChatSession*, int> tmpHash;
 	QHash<ChatSession*, int>::iterator it = tabHash.begin();
 	while (it != tabHash.end())
@@ -205,13 +211,13 @@ QHash<ChatSession*, int> ChatWindowsManager::deleteFromHash(int indexRemoved)
 
 void ChatWindowsManager::loadMainWindow()
 {
-	qDebug() << "ChatWindowsManager::loadMainWindow()";
-	mainWindow = new QMainWindow();
+	qDebug() << Q_FUNC_INFO;
+	tabsWindow = new QWidget;
 
 	QIcon windowIcon;
 	windowIcon.addFile(":icons/message_32x32.png");
 	windowIcon.addFile(":icons/message_16x16.png");
-	mainWindow->setWindowIcon(windowIcon);
+	tabsWindow->setWindowIcon(windowIcon);
 
 	tabs = new QTabWidget;
 	tabs->setStyleSheet("QTabWidget::pane { border: 0px; } QTabWidget::tab-bar { left: 1px; } QTabBar::tab { padding: 5px 5px 5px 5px; font: bold 10px; }");
@@ -220,16 +226,20 @@ void ChatWindowsManager::loadMainWindow()
 	connect(tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(slotRemoveTab(int)));
 	connect(tabs, SIGNAL(currentChanged(int)), this, SLOT(changeTab(int)));
 
-	connect(mainWindow, SIGNAL(showEvent()), this, SLOT(onShowWindow()));
+	//connect(tabsWindow, SIGNAL(showEvent()), this, SLOT(onShowWindow())); // looks strange
 
-	mainWindow->setCentralWidget(tabs);
-        mainWindow->resize(750, 550);
+	QVBoxLayout* layout = new QVBoxLayout;
+	layout->setContentsMargins(1, 1, 1, 1);
+	layout->addWidget(tabs);
+	tabsWindow->setLayout(layout);
+
+	tabsWindow->resize(750, 550);
 }
 
 bool ChatWindowsManager::isAnyWindowVisible()
 {
 	if (useTabs)
-		return mainWindow->isVisible();
+		return tabsWindow->isVisible();
 	else
 	{
 		QHash<ChatSession*, ChatWindow*>::iterator it = windows.begin();
@@ -246,7 +256,7 @@ bool ChatWindowsManager::isAnyWindowVisible()
 
 void ChatWindowsManager::reloadStatus(bool doUseTabs)
 {
-	qDebug() << "ChatWindowsManager::reloadStatus()";
+	qDebug() << Q_FUNC_INFO << "doUseTabs =" << doUseTabs;
 	if (doUseTabs == useTabs)
 		return;
 	if (!doUseTabs)
@@ -254,7 +264,7 @@ void ChatWindowsManager::reloadStatus(bool doUseTabs)
 		tabHash.clear();
 		windows.clear();
 		delete tabs;
-		delete mainWindow;
+		delete tabsWindow;
 	}
 	else
 	{
@@ -273,5 +283,18 @@ void ChatWindowsManager::reloadStatus(bool doUseTabs)
 
 void ChatWindowsManager::onShowWindow()
 {
+	// seems to be unused
 	changeTab(tabs->currentIndex());
+}
+
+void ChatWindowsManager::raiseWindow(ChatWindow* wnd)
+{
+	if (!useTabs)
+	{
+		if (wnd->isMinimized())
+			wnd->showNormal();
+		wnd->show();
+		wnd->raise();
+		wnd->activateWindow();
+	}
 }

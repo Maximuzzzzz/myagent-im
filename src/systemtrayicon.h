@@ -40,18 +40,23 @@ public:
 	~SystemTrayIcon();
 
 	virtual bool event(QEvent* e );
-signals:
-	void statusChanged(OnlineStatus status);
+
 public slots:
-	void setOnlineStatus(OnlineStatus status);
-	void setStatus(OnlineStatus status);
+	void showOnlineStatus(OnlineStatus status);
+
 private slots:
 	void processActivation(QSystemTrayIcon::ActivationReason reason);
 	void updateTooltip();
 	void newLetter(QString sender, QString subject, QDateTime dateTime);
-	void showMainWindow();
-	void slotStatusChanged(QAction* action);
+	void toggleMainWindowVisibility();
+	void processStatusAction(QAction* action);
+	void slotContextMenuAboutToShow();
+
 private:
+	QAction* createStatusAction(OnlineStatus status);
+	void setOnlineStatus(OnlineStatus status);
+	void setupMainWindowVisibilityAction();
+
 	OnlineStatus status;
 
 	ContactListWindow* mainWindow;
@@ -60,7 +65,7 @@ private:
 	QPoint mainWindowPos;
 	QSize mainWindowSize;
 
-	QAction* createAction(OnlineStatus status);
+	QAction* mainWindowVisibilityAction;
 };
 
 #endif

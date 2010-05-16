@@ -77,6 +77,8 @@ SettingsWindow::SettingsWindow()
 
 	createCommonPage();
 	createMessagesPage();
+	createWindowsPage();
+	createAudioPage();
 
 	listWidget->setCurrentRow(0);
 	listWidget->setMaximumWidth(listWidget->sizeHintForColumn(0) + 10);
@@ -120,11 +122,11 @@ void SettingsWindow::createCommonPage()
 
 void SettingsWindow::saveSettings()
 {
-	if (saveMessagesSettings())
-	{
-		saveCommonSettings();
+	saveMessagesSettings();
+	saveCommonSettings();
+	saveAudioSettings();
+	if (saveWindowsSettings())
 		close();
-	}
 }
 
 void SettingsWindow::saveCommonSettings()
@@ -140,13 +142,7 @@ void SettingsWindow::createMessagesPage()
 	QVBoxLayout* layout = new QVBoxLayout;
 
 	QGroupBox* sendBox = new QGroupBox(tr("Sending messages"));
-	QGroupBox* windowsBox = new QGroupBox(tr("Windows options"));
 	QVBoxLayout* sendLayout = new QVBoxLayout;
-	QVBoxLayout* windowsLayout = new QVBoxLayout;
-
-	positWin = new QCheckBox(tr("Tabs in dialog window"));
-	//positWin->setChecked(chatWindowsManager->settings()->value("Windows/UseTabs", true).toBool());
-	positWin->setChecked(theRM.settings()->value("Windows/UseTabs", true).toBool());
 
 	enterButton = new QRadioButton(tr("Send message on Enter pressed"));
 	doubleEnterButton = new QRadioButton(tr("Send message on double Enter pressed"));
@@ -163,9 +159,6 @@ void SettingsWindow::createMessagesPage()
 
 	altSButton->setChecked(theRM.settings()->value("Messages/sendOnAltS", false).toBool());
 
-	windowsLayout->addWidget(positWin);
-	windowsBox->setLayout(windowsLayout);
-
 	sendLayout->addWidget(enterButton);
 	sendLayout->addWidget(doubleEnterButton);
 	sendLayout->addWidget(ctrlEnterButton);
@@ -175,7 +168,6 @@ void SettingsWindow::createMessagesPage()
 	sendBox->setFixedHeight(sendBox->sizeHint().height());
 	sendBox->setMinimumWidth(sendBox->sizeHint().width());
 
-	layout->addWidget(windowsBox);
 	layout->addWidget(sendBox);
 	layout->addStretch();
 
@@ -185,9 +177,8 @@ void SettingsWindow::createMessagesPage()
 	pagesWidget->addWidget(messagesSettingsPage);
 }
 
-bool SettingsWindow::saveMessagesSettings()
+void SettingsWindow::saveMessagesSettings()
 {
-	bool res = true;
 	QString enterVariant;
 	if (enterButton->isChecked())
 		enterVariant = "Enter";
@@ -196,18 +187,68 @@ bool SettingsWindow::saveMessagesSettings()
 	else
 		enterVariant = "Ctrl+Enter";
 
-	bool useTabs = theRM.settings()->value("Windows/UseTabs", true).toBool();
-	if (useTabs != positWin->isChecked() && chatWindowsManager->isAnyWindowVisible())
-		if (QMessageBox::question(this, tr("Closing chats"), tr("All chats will be closed. Continue?"), QMessageBox::Yes, QMessageBox::No) != QMessageBox::Yes)
-			return false;
-	theRM.settings()->setValue("Windows/UseTabs", positWin->isChecked());
 	theRM.settings()->setValue("Messages/sendOnEnter", enterVariant);
 	theRM.settings()->setValue("Messages/sendOnAltS", altSButton->isChecked());
-	chatWindowsManager->reloadStatus(positWin->isChecked());
-	return res;
 }
 
 void SettingsWindow::setChatWindowsManager(ChatWindowsManager* cwm)
 {
 	chatWindowsManager = cwm;
+}
+
+void SettingsWindow::createWindowsPage()
+{
+	QWidget* page = new QWidget;
+	QVBoxLayout* layout = new QVBoxLayout;
+
+	tabWindows = new QCheckBox(tr("Tabs in dialog window"));
+	//tabWindows->setChecked(chatWindowsManager->settings()->value("Windows/UseTabs", true).toBool());
+	tabWindows->setChecked(theRM.settings()->value("Windows/UseTabs", true).toBool());
+
+	layout->addWidget(tabWindows);
+	layout->addStretch();
+
+	page->setLayout(layout);
+
+	listWidget->addItem(tr("Windows"));
+	pagesWidget->addWidget(page);
+}
+
+bool SettingsWindow::saveWindowsSettings()
+{
+	bool useTabs = theRM.settings()->value("Windows/UseTabs", true).toBool();
+	if (useTabs != tabWindows->isChecked() && chatWindowsManager->isAnyWindowVisible())
+	{
+		if (QMessageBox::question(this,
+					  tr("Closing chats"),
+					  tr("All chats will be closed. Continue?"),
+					  QMessageBox::Yes, QMessageBox::No)
+			!= QMessageBox::Yes)
+			return false;
+	}
+	theRM.settings()->setValue("Windows/UseTabs", tabWindows->isChecked());
+	chatWindowsManager->reloadStatus(tabWindows->isChecked());
+	return true;
+}
+
+void SettingsWindow::createAudioPage()
+{
+	QWidget* page = new QWidget;
+	QVBoxLayout* layout = new QVBoxLayout;
+
+	enableSounds = new QCheckBox(tr("Enable sounds"));
+	enableSounds->setChecked(theRM.settings()->value("Sounds/Enable", true).toBool());
+
+	layout->addWidget(enableSounds);
+	layout->addStretch();
+
+	page->setLayout(layout);
+
+	listWidget->addItem(tr("Sounds"));
+	pagesWidget->addWidget(page);
+}
+
+void SettingsWindow::saveAudioSettings()
+{
+	theRM.settings()->setValue("Sounds/Enable", enableSounds->isChecked());
 }

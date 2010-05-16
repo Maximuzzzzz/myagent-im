@@ -23,12 +23,13 @@
 #ifndef CHATWINDOW_H
 #define CHATWINDOW_H
 
-#include <QMainWindow>
 #include <QTextCharFormat>
 #include <QPointer>
 
 class QSplitter;
 class QTimeLine;
+class QTabWidget;
+class QStatusBar;
 
 class ChatSession;
 class Message;
@@ -43,7 +44,7 @@ class Account;
 #include "filemessage.h"
 #include "onlinestatus.h"
 
-class ChatWindow : public QMainWindow
+class ChatWindow : public QWidget
 {
 Q_OBJECT
 public:
@@ -122,6 +123,7 @@ private:
 	bool isNewMessage;
 
 	QTabWidget* editorsWidget;
+	QStatusBar* statusBar;
 
 //	bool ignoreFont;
 };

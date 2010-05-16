@@ -3,6 +3,11 @@ myagent-im (0.3.1) unstable; urgency=low
   * Fixed paths for translation files
   * Use standard (not triangalar) tabs
   * Initial resize of window with tabs
+  * Additional translation
+  * Fixed system tray menu
+  * Fixed showing chat windows as separate windows for short time after creation in tabbed mode
+  * Added settings pages for windows and sounds
+  * Fixed size of cancel button on file transfer progress bar
 
  -- Alexander Volkov <volkov0aa@gmail.com>  Sat, 15 May 2010 17:41:26 +0400
 
