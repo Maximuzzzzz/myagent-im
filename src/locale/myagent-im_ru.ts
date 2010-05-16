@@ -759,6 +759,26 @@
 <context>
     <name>FileMessage</name>
     <message>
+        <location filename="../filemessage.cpp" line="694"/>
+        <source>%1 GB</source>
+        <translation>%1 Гб</translation>
+    </message>
+    <message>
+        <location filename="../filemessage.cpp" line="696"/>
+        <source>%1 MB</source>
+        <translation>%1 Мб</translation>
+    </message>
+    <message>
+        <location filename="../filemessage.cpp" line="698"/>
+        <source>%1 KB</source>
+        <translation>%1 Кб</translation>
+    </message>
+    <message>
+        <location filename="../filemessage.cpp" line="700"/>
+        <source>%1 B</source>
+        <translation>%1 б</translation>
+    </message>
+    <message>
         <location filename="../filemessage.cpp" line="737"/>
         <location filename="../filemessage.cpp" line="738"/>
         <location filename="../filemessage.cpp" line="739"/>
@@ -964,12 +984,12 @@
         <translation>&lt;small&gt;Общий размер: &lt;/small&gt;</translation>
     </message>
     <message>
-        <location filename="../messageeditor.cpp" line="516"/>
+        <location filename="../messageeditor.cpp" line="517"/>
         <source>&lt;small&gt;Status...&lt;/small&gt;</source>
         <translation>&lt;small&gt;Статус...&lt;/small&gt;</translation>
     </message>
     <message>
-        <location filename="../messageeditor.cpp" line="556"/>
+        <location filename="../messageeditor.cpp" line="557"/>
         <source>Select files to transfer</source>
         <translation>Выберите файлы для передачи</translation>
     </message>

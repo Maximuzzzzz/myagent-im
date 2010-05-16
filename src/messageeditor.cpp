@@ -458,12 +458,13 @@ void MessageEditor::createFileTransferBar()
 	
 	QLabel* label1 = new QLabel(tr("<small>Total size: </small>"));
 	label1->setStyleSheet("QLabel { margin : 0px; border : 0px; padding : 0px }");
-	bytesLabel = new QLabel("<small>0</small>");
+	bytesLabel = new QLabel;
 	bytesLabel->setStyleSheet("QLabel { margin : 0px; border : 0px; padding : 0px }");
 	//QLabel* label2 = new QLabel(tr("<small>&nbsp; bytes</small>"));
 	//label2->setStyleSheet("QLabel { margin : 0px; border : 0px; padding : 0px }");
 	
 	totalSize = 0;
+	bytesLabel->setText("<small>" + FileMessage::getSizeInString(totalSize) + "</small>");
 
 	labelsLayout->addWidget(label1);
 	labelsLayout->addWidget(bytesLabel);
@@ -556,7 +557,7 @@ void MessageEditor::addFile()
 		QFileDialog::getOpenFileNames(this, tr("Select files to transfer"));
 	
 	QStringList::const_iterator it = files.begin();
-	for (;it != files.end(); ++it)
+	for (; it != files.end(); ++it)
 	{
 		int index = filesBox->findData(*it);
 		if (index != -1)
@@ -589,6 +590,8 @@ void MessageEditor::deleteFile()
 		minus->setEnabled(false);
 		send->setEnabled(false);
 	}
+
+	bytesLabel->setText("<small>" + FileMessage::getSizeInString(totalSize) + "</small>");
 }
 
 void MessageEditor::sendFiles()

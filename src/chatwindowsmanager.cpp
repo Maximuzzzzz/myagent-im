@@ -64,17 +64,16 @@ ChatWindow* ChatWindowsManager::getWindow(ChatSession* session)
 		/*if (tabs->count() == 0)
 			tabsWindow->setGeometry(wnd->geometry());*/
 
-		QHash<ChatSession*, int>::const_iterator it = tabHash.find(session);
-		if (it.key() == session)
+		int tabIndex = tabs->indexOf(wnd);
+		if (tabIndex != -1)
 		{
 			//if (!tabsWindow->isVisible())
-				tabs->setCurrentIndex(tabHash.value(session));
-			tabs->setTabIcon(tabHash.value(session), wnd->windowIcon());
+			tabs->setCurrentIndex(tabIndex);
+			tabs->setTabIcon(tabIndex, wnd->windowIcon());
 		}
 		else
 		{
-			int tabIndex = tabs->addTab(wnd, wnd->windowIcon(), session->contact()->nickname());
-			tabHash.insert(session, tabIndex);
+			tabIndex = tabs->addTab(wnd, wnd->windowIcon(), session->contact()->nickname());
 			tabs->setCurrentIndex(tabIndex);
 		}
 		changeTab(tabs->currentIndex());
@@ -88,9 +87,9 @@ ChatWindow* ChatWindowsManager::getWindow(ChatSession* session)
 void ChatWindowsManager::slotRemoveTab(int tab)
 {
 	qDebug() << Q_FUNC_INFO;
-	ChatSession* s = tabHash.key(tab);
-	tabs->removeTab(tabHash.value(s));
-	tabHash = deleteFromHash(tabHash.take(s));
+
+	tabs->removeTab(tab);
+
 	if (tabs->count() == 0)
 		tabsWindow->close();
 }
@@ -101,7 +100,11 @@ void ChatWindowsManager::removeWindow(QObject* session)
 	ChatSession* s = static_cast<ChatSession*>(session);
 	ChatWindow* wnd = windows.take(s);
 	if (useTabs)
-		slotRemoveTab(tabHash.value(s));
+	{
+		int tabIndex = tabs->indexOf(wnd);
+		if (tabIndex != -1)
+			slotRemoveTab(tabIndex);
+	}
 	delete wnd;
 }
 
@@ -114,10 +117,10 @@ ChatWindow* ChatWindowsManager::createWindow(ChatSession* session)
 	if (useTabs)
 	{
 		int tabIndex = tabs->addTab(wnd, wnd->windowIcon(), session->contact()->nickname());
-		wnd->setWindowFlags(Qt::Widget);
-		tabHash.insert(session, tabIndex);
+
 		if (!tabsWindow->isVisible())
 			tabs->setCurrentIndex(tabIndex);
+
 		changeTab(tabs->currentIndex());
 		connect(wnd, SIGNAL(setMainWindowIconAndTitle(QIcon, ChatWindow*)), this, SLOT(changeIconAndTitle(QIcon, ChatWindow*)));
 		connect(wnd, SIGNAL(newMessage(ChatWindow*)), this, SLOT(mainWindowActivate(ChatWindow*)));
@@ -131,14 +134,12 @@ ChatWindow* ChatWindowsManager::createWindow(ChatSession* session)
 
 void ChatWindowsManager::changeIconAndTitle(const QIcon& icon, ChatWindow* sender)
 {
-	ChatSession* s = windows.key(sender);
-	QHash<ChatSession*, int>::const_iterator it = tabHash.find(s);
-	if (it.key() == s)
+	int tabIndex = tabs->indexOf(sender);
+	if (tabIndex != -1)
 	{
-		int index = tabHash.value(s);
-		tabs->setTabIcon(index, icon);
-		if (index == tabs->currentIndex())
-			changeTab(tabs->currentIndex());
+		tabs->setTabIcon(tabIndex, icon);
+		if (tabIndex == tabs->currentIndex())
+			changeTab(tabIndex);
 	}
 }
 
@@ -147,8 +148,8 @@ void ChatWindowsManager::changeTab(int index)
 	qDebug() << Q_FUNC_INFO << index;
 	if (tabs->count() > 0)
 	{
-		ChatSession* s = tabHash.key(tabs->currentIndex());
-		ChatWindow* wnd = windows.value(s, NULL);
+		ChatWindow* wnd = static_cast<ChatWindow*>(tabs->widget(index));
+
 		if (wnd != NULL)
 		{
 			wnd->slotMakeRead();
@@ -163,13 +164,9 @@ void ChatWindowsManager::mainWindowActivate(ChatWindow* wnd)
 {
 	qDebug() << Q_FUNC_INFO << wnd << "{";
 
-	ChatSession* s = windows.key(wnd);
-	QHash<ChatSession*, int>::const_iterator it = tabHash.find(s);
-	int tabIndex;
-	if (it.key() == s)
+	int tabIndex = tabs->indexOf(wnd);
+	if (tabIndex != -1)
 	{
-		qDebug() << "(it.key() == s)";
-		tabIndex = tabHash.value(s);
 		if (!tabsWindow->isVisible())
 		{
 			tabs->setCurrentIndex(tabIndex);
@@ -179,9 +176,8 @@ void ChatWindowsManager::mainWindowActivate(ChatWindow* wnd)
 	}
 	else
 	{
-		qDebug() << "(it.key() != s)";
+		ChatSession* s = windows.key(wnd);
 		tabIndex = tabs->addTab(wnd, wnd->windowIcon(), s->contact()->nickname());
-		tabHash.insert(s, tabIndex);
 		if (!tabsWindow->isVisible())
 			tabs->setCurrentIndex(tabIndex);
 		changeTab(tabs->currentIndex());
@@ -189,24 +185,6 @@ void ChatWindowsManager::mainWindowActivate(ChatWindow* wnd)
 	}
 
 	qDebug() << Q_FUNC_INFO << "}";
-}
-
-QHash<ChatSession*, int> ChatWindowsManager::deleteFromHash(int indexRemoved)
-{
-	qDebug() << Q_FUNC_INFO << indexRemoved << ")";
-	QHash<ChatSession*, int> tmpHash;
-	QHash<ChatSession*, int>::iterator it = tabHash.begin();
-	while (it != tabHash.end())
-	{
-		int currIndex = it.value();
-		ChatSession* s = tabHash.key(currIndex);
-		if (currIndex > indexRemoved)
-			tmpHash.insert(s, currIndex - 1);
-		else
-			tmpHash.insert(s, currIndex);
-		it++;
-	}
-	return tmpHash;
 }
 
 void ChatWindowsManager::loadMainWindow()
@@ -261,7 +239,6 @@ void ChatWindowsManager::reloadStatus(bool doUseTabs)
 		return;
 	if (!doUseTabs)
 	{
-		tabHash.clear();
 		windows.clear();
 		delete tabs;
 		delete tabsWindow;

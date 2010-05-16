@@ -691,13 +691,13 @@ QString FileMessage::getSizeInString(quint32 size)
 	static const double GB = 1024*MB;
 
 	if (size > GB)
-		return QString("%1 GB").arg(double(size)/GB, 0, 'f', 2);
+		return tr("%1 GB").arg(double(size)/GB, 0, 'f', 2);
 	else if (size > MB)
-		return QString("%1 MB").arg(double(size)/MB, 0, 'f', 2);
+		return tr("%1 MB").arg(double(size)/MB, 0, 'f', 2);
 	else if (size > KB)
-		return QString("%1 KB").arg(double(size)/KB, 0, 'f', 2);
+		return tr("%1 KB").arg(double(size)/KB, 0, 'f', 2);
 	else
-		return QString("%1 B").arg(size);
+		return tr("%1 B").arg(size);
 }
 
 bool FileMessage::cancelTransferring(quint32 sessId)

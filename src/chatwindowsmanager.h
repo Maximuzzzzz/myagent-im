@@ -57,14 +57,12 @@ private slots:
 	void changeTab(int index);
 
 private:
-	QHash<ChatSession*, int> deleteFromHash(int indexRemoved);
 	void loadMainWindow();
 
 	Account* m_account;
 	QHash<ChatSession*, ChatWindow*> windows;
 	bool useTabs;
 	QTabWidget* tabs;
-	QHash<ChatSession*, int> tabHash;
 	QWidget* tabsWindow;
 };
 
