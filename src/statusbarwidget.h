@@ -20,53 +20,34 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef CHATWINDOWSMANAGER_H
-#define CHATWINDOWSMANAGER_H
+#ifndef STATUSBARWIDGET_H
+#define STATUSBARWIDGET_H
 
-#include <QObject>
-#include <QHash>
+#include <QWidget>
+#include <QLabel>
 
-class QIcon;
-class QTabWidget;
-
-class ChatSession;
-class ChatWindow;
-class Account;
-
-class ChatWindowsManager : public QObject
+class StatusBarWidget : public QWidget
 {
 Q_OBJECT
 public:
-	ChatWindowsManager(Account* account, QObject *parent = 0);
-	~ChatWindowsManager();
+	StatusBarWidget();
+	~StatusBarWidget();
 
-	ChatWindow* getWindow(ChatSession* session);
-	void raiseWindow(ChatWindow* wnd);
-
-	bool isAnyWindowVisible();
-	void reloadStatus(bool doUseTabs);
-	Account* getAccount() { return m_account; }
+public slots:
+	void clearStatus();
+	void setStatus(const QString& status);
+	void setStatus(QByteArray status);
+	void setActive(bool state);
 
 signals:
-	void ignoreSet(bool ignore);
+	void clicked();
 
-private slots:
-	void mainWindowActivate(ChatWindow* wnd);
-	void onShowWindow();
-	ChatWindow* createWindow(ChatSession* session);
-	void removeWindow(QObject* session);
-	void slotRemoveTab(int tab);
-	void changeIconAndTitle(const QIcon& icon, ChatWindow* sender);
-	void changeTab(int index);
+protected:
+	virtual void mousePressEvent(QMouseEvent* event);
 
 private:
-	void loadMainWindow();
-
-	Account* m_account;
-	QHash<ChatSession*, ChatWindow*> windows;
-	bool useTabs;
-	QTabWidget* tabs;
-	QWidget* tabsWindow;
+	QLabel* statusLabel;
+	bool active;
 };
 
 #endif

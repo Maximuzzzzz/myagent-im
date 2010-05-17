@@ -62,15 +62,17 @@ ContactListWindow::ContactListWindow(Account* account)
 	setWindowTitle(account->email());
 
 	MRIMClient* mc = account->client();
+	connect (account, SIGNAL(statusChanged(QByteArray)), this, SLOT(slotStatusChanged(QByteArray)));
 
 	createActions();	
 
 	connect(mc, SIGNAL(loginRejected(QString)), this, SLOT(slotLoginRejected(QString)));
 	connect(mc, SIGNAL(loggedOut(quint32)), this, SLOT(slotLoggedOut(quint32)));
 	connect(mc, SIGNAL(contactAsksAuthorization(const QByteArray&, const QString&, const QString&)), this, SLOT(slotContactAsksAuthorization(const QByteArray&, const QString&, const QString&)));
+	connect(mc, SIGNAL(statusChanged(QByteArray)), this, SLOT(slotStatusChanged(QByteArray)));
 
 	chatWindowsManager = new ChatWindowsManager(m_account, this);
-	
+
 	QHBoxLayout* headerLayout = new QHBoxLayout;
 	headerLayout->setSpacing(4);
 	NewLettersLabel* newLettersLabel = new NewLettersLabel(m_account);
@@ -85,35 +87,42 @@ ContactListWindow::ContactListWindow(Account* account)
 	contactsTreeView = new ContactListTreeView(mc->account());
 	model = new ContactListModel(mc->account()->contactList());
 	contactsTreeView->setModel(model);
-	
+
 	connect(contactsTreeView, SIGNAL(contactItemActivated(Contact*)), this, SLOT(slotContactItemActivated(Contact*)));
 	connect(model, SIGNAL(modelRebuilded()), contactsTreeView, SLOT(expandAll()));
-	
+
+	statusBar = new StatusBarWidget(); //TODO: if account offline or connecting, statusBar must be disabled!
+	connect(statusBar, SIGNAL(clicked()), this, SLOT(openStatusEditor()));
+
+	statusEditor = new StatusEditor(this);
+	connect(statusEditor, SIGNAL(sendStatus(const QString&)), this, SLOT(sendStatus(const QString&)));
+
 	statusButton = new StatusButton;
 	connect(statusButton, SIGNAL(statusChanged(OnlineStatus)), account, SLOT(setOnlineStatus(OnlineStatus)));
-	connect(account, SIGNAL(onlineStatusChanged(OnlineStatus)), statusButton, SLOT(setStatus(OnlineStatus)));
-	
+	connect(account, SIGNAL(onlineStatusChanged(OnlineStatus)), this, SLOT(slotSetOnlineStatus(OnlineStatus)));
+
 	mainMenuButton = new MainMenuButton(account, this);
 	mainMenuButton->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Ignored);
 	mainMenuButton->setChatWindowsManager(chatWindowsManager);
-	
+
 	QVBoxLayout* layout = new QVBoxLayout;
 	layout->setContentsMargins(1, 1, 1, 1);
 	layout->setSpacing(1);
 
 	layout->addLayout(headerLayout);
 	layout->addWidget(contactsTreeView);
-	
+	layout->addWidget(statusBar);
+
 	QHBoxLayout* bottonLayout = new QHBoxLayout;
 	bottonLayout->addWidget(mainMenuButton);
 	bottonLayout->addWidget(statusButton);
-	
+
 	layout->addLayout(bottonLayout);
-	
+
 	setLayout(layout);
-	
+
 	readSettings();
-	
+
 	sysTray = new SystemTrayIcon(m_account, this);
 	sysTray->show();
 
@@ -125,7 +134,7 @@ ContactListWindow::~ContactListWindow()
 {
 	qDebug() << "ContactListWindow::~ContactListWindow";
 	writeSettings();
-	qDebug() << "ContactListWindow::~ContactListWindow settings writed";
+	qDebug() << "ContactListWindow::~ContactListWindow settings wrote";
 }
 
 void ContactListWindow::slotContactItemActivated(Contact* contact)
@@ -329,4 +338,38 @@ void ContactListWindow::checkAutoAwayTime(int seconds)
 	
 	if (seconds == 0)
 		m_account->setAutoAway(false);
+}
+
+void ContactListWindow::openStatusEditor()
+{
+	qDebug() << "ContactListWindow::openStatusEditor()";
+
+	statusEditor->show();
+	statusEditor->setGeometry(this->geometry().x(), statusBar->geometry().y() + this->geometry().y() - statusEditor->geometry().height() + statusBar->geometry().height(), this->geometry().width(), NULL);
+}
+
+void ContactListWindow::sendStatus(const QString& status)
+{
+	qDebug() << "ContactListWindow::sendStatus(" << status << ")";
+	m_account->client()->sendStatus(status);
+	statusBar->setStatus(status);
+}
+
+void ContactListWindow::slotStatusChanged(QByteArray status)
+{
+	qDebug() << "slotStatusChanged(" << status << ")";
+	statusEditor->setStatus(status);
+	statusBar->setStatus(status);
+}
+
+void ContactListWindow::slotSetOnlineStatus(OnlineStatus status)
+{
+	statusButton->setStatus(status);
+	if (status == OnlineStatus::offline || status == OnlineStatus::connecting || status == OnlineStatus::unknown)
+	{
+		statusBar->setActive(false);
+		statusEditor->close();
+	}
+	else
+		statusBar->setActive(true);
 }

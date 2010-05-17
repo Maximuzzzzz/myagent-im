@@ -123,7 +123,7 @@ void ChatSession::slotSmsStatus(quint32 status, bool timeout)
 bool ChatSession::wakeupContact()
 {
 	int msec = awakeDelay.elapsed();
-	if (msec < 5000)
+	if (msec < 30000)
 	{
 		QString plainText = tr("You can't use alarm clock so often!");
 		QTextDocument doc(plainText);

@@ -67,6 +67,7 @@ public slots:
 	void receiveFiles(quint32 sessId);
 	void cancelTransferring(quint32 sessId = 0);
 	bool isIgnoreFont();
+	void slotIgnoreSet(bool ignore);
 
 signals:
 	void textChanged();

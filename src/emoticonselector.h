@@ -41,13 +41,16 @@ signals:
 
 protected:
 	virtual void closeEvent(QCloseEvent* event);
+
 private slots:
 	void slotClicked(QString id);
 	void correctSize();
 	void setupFavouriteEmoticons();
+
 private:
 	QWidget* createFavouriteEmoticonsWidget(int emoticonsPerRow);
 	void setCurrentLayout();
+
 private:
 	typedef QList<EmoticonMovie*> MovieList;
 	MovieList movieList;

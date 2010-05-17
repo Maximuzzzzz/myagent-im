@@ -75,6 +75,7 @@ signals:
 	void fileTransferAck(quint32 status, QByteArray email, quint32 sessionId, QByteArray mirrorIps);
 	void proxy(QByteArray email, quint32 idRequest, quint32 dataType, QByteArray filesAnsi, QByteArray proxyIps, quint32 sessionId, quint32 unk1, quint32 unk2, quint32 unk3);
 	void proxyAck(quint32 status, QByteArray email, quint32 id_request, quint32 dataType, QByteArray filesAnsi, QByteArray ips, quint32 sessionId, quint32 unk1, quint32 unk2, quint32 unk3);
+	void statusChanged(QByteArray);
 	
 public slots:
 	void connectToServer(quint32 status);
@@ -102,6 +103,7 @@ public slots:
 	quint32 sendFileAck(quint32 status, QByteArray email, quint32 sessionId, QByteArray ips);
 	void sendProxy(FileMessage* fmsg, quint32 dataType);
 	void sendProxyAck(FileMessage* fmsg, quint32 status, quint32 dataType, quint32 sessionId, quint32 unk1, quint32 unk2, quint32 unk3);
+	quint32 sendStatus(const QString& text);
 	
 private:
 	MRIMClientPrivate* p;

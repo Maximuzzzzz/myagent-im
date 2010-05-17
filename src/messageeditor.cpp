@@ -159,7 +159,6 @@ QIcon MessageEditor::toolIcon(const QString& toolName) const
 void MessageEditor::createToolBar()
 {
 	toolBar = new QToolBar;
-	//toolBar->setStyleSheet("QToolBar { border: 0px; }");
 	
 	spellAction = addToolAction(toolIcon("orfo"), this, SLOT(setCheckSpelling(bool)));
 
@@ -315,8 +314,6 @@ void MessageEditor::insertEmoticon(const QString & id)
 
 	smilesAction->setChecked(false);
 	emoticonSelector->hide();
-
-	//qDebug() << "MessageEditor::insertEmoticon currentFormat = " << currentFormat.objectType() << ", format = " << messageEdit->textCursor().charFormat().objectType();
 }
 
 void MessageEditor::readSettings()
@@ -343,7 +340,7 @@ void MessageEditor::readSettings()
 	defaultFontColor = QColor(settings->value(settingsPrefix + "textColor", "#000000").toString());
 	defaultBkColor = QColor(settings->value(settingsPrefix + "backgroundColor", "#ffffff").toString());
 
-	ignoreAction->setChecked(settings->value(settingsPrefix + "ignoreSettings", false).toBool());
+	ignoreAction->setChecked(settings->value("ChatWindow/ignoreSettings", false).toBool());
 
 	QTextCharFormat fmt;
 	fmt.setFont(defaultFont);
@@ -377,7 +374,7 @@ void MessageEditor::writeSettings()
 		settings->remove(settingsPrefix + "backgroundColor");
 	else
 		settings->setValue(settingsPrefix + "backgroundColor", lastUserFormat.background().color().name());
-	settings->setValue(settingsPrefix + "ignoreSettings", ignoreAction->isChecked());
+	settings->setValue("ChatWindow/ignoreSettings", ignoreAction->isChecked());
 }
 
 bool MessageEditor::isBlocked()
@@ -396,8 +393,6 @@ void MessageEditor::clear()
 
 void MessageEditor::triggerEmoticonSelector()
 {
-//	emoticonSelector->setGeometry(emoticonSelector->geometry());
-
 	QDesktopWidget Screen;
 	int screenWidth = Screen.screenGeometry().width();
 	int screenHeight = Screen.screenGeometry().height();
@@ -553,22 +548,21 @@ QToolButton* MessageEditor::createFileTransferToolButton(const QIcon & icon, con
 
 void MessageEditor::addFile()
 {
-	QStringList files =
-		QFileDialog::getOpenFileNames(this, tr("Select files to transfer"));
-	
+	QStringList files =	QFileDialog::getOpenFileNames(this, tr("Select files to transfer"));
+
 	QStringList::const_iterator it = files.begin();
 	for (; it != files.end(); ++it)
 	{
 		int index = filesBox->findData(*it);
 		if (index != -1)
 			continue;
-		
+
 		QFileInfo finfo(*it);
 		filesBox->addItem(finfo.fileName(), *it);
 		fileList.append(finfo);
 		totalSize += finfo.size();
 	}
-	
+
 	qDebug() << "filesBox.sizeHint = " << filesBox->sizeHint();
 	filesBox->resize(filesBox->sizeHint());
 
@@ -772,4 +766,10 @@ void MessageEditor::slotProgress(FileMessage::Status action, int percentage)
 bool MessageEditor::isIgnoreFont()
 {
 	return ignoreAction->isChecked();
+}
+
+void MessageEditor::slotIgnoreSet(bool ignore)
+{
+	ignoreAction->setChecked(ignore);
+	writeSettings();
 }

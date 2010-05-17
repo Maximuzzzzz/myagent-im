@@ -107,7 +107,8 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s)
 		connect(messageEditor, SIGNAL(textChanged()), session, SLOT(sendTyping()));
 		connect(messageEditor, SIGNAL(wakeupPressed()), this, SLOT(wakeupContact()));
 
-		connect(messageEditor, SIGNAL(setIgnore(bool)), this, SLOT(setIgnore(bool)));
+		connect(messageEditor, SIGNAL(setIgnore(bool)), this, SIGNAL(setIgnore(bool)));
+		connect(this, SIGNAL(ignoreSet(bool)), messageEditor, SLOT(slotIgnoreSet(bool)));
 		
 		smsEditor = new SmsEditor(m_account, session->contact());
 		connect(smsEditor, SIGNAL(sendPressed()), this, SLOT(sendSms()));

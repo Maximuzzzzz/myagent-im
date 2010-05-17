@@ -273,6 +273,9 @@ void MRIMClientPrivate::processPacket(QByteArray header, QByteArray data)
 		case MRIM_CS_PROXY_ACK:
 			processProxyAck(data, msgseq);
 			break;
+		case MRIM_SC_STATUS_TEXT: //doesn't work with current (9) protocol version
+			processStatusChanged(data);
+			break;
 		default:
 			qDebug() << "unknown message";
 			/*uchar* chhdr = (uchar*)header.data();
@@ -389,31 +392,47 @@ void MRIMClientPrivate::processUserInfo(QByteArray data)
 	MRIMDataStream in(data);
 
 	QByteArray totalMessages, unreadMessages, nick;
+	QString statusText;
 
 	QByteArray param, descr;
 
-	for (int i = 0; i < 3; i++)
+	do //for (int i = 0; i < 10; i++)
 	{
 		in >> param >> descr;
 
 		if (param == "MESSAGES.TOTAL")
+		{
 			totalMessages = descr;
+			account->setTotalMessages(descr);
+		}
 		else if (param == "MESSAGES.UNREAD")
+		{
 			unreadMessages = descr;
+			account->setUnreadMessages(descr);
+		}
 		else if (param == "MRIM.NICKNAME")
+		{
 			nick = descr;
+			account->setNickName(descr);
+		}
+		else if (param == "micblog.status.text")
+		{
+			qDebug() << "status text =" << descr.toHex();
+			statusText = descr;
+			account->setStatusText(descr);
+		}
 		else
 			qDebug() << "something strange with user info";
 
 		qDebug() << param << " " << descr;
-	}
+	} while (param != "");
 
 	while (in.device()->bytesAvailable())
 	{
 		in >> param >> descr;
 	}
 
-	account->setInfo(totalMessages, unreadMessages, codec->toUnicode(nick));
+	//account->setInfo(totalMessages, unreadMessages, codec->toUnicode(nick), statusText);
 }
 
 void MRIMClientPrivate::processContactList2(QByteArray data)
@@ -985,4 +1004,17 @@ void MRIMClientPrivate::processProxyAck(QByteArray data, quint32 msgseq)
 	qDebug() << status;
 
 	emit q->proxyAck(status, email, idRequest, dataType, filesAnsi, ips, sessionId, unk1, unk2, unk3);
+}
+
+void MRIMClientPrivate::processStatusChanged(QByteArray data)
+{
+	qDebug() << "MRIMClientPrivate::processStatusChanged";
+
+	MRIMDataStream in(data);
+
+	QByteArray status;
+
+	in >> status;
+
+	emit q->statusChanged(status);
 }

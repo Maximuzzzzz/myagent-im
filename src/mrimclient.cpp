@@ -543,3 +543,15 @@ void MRIMClient::sendProxyAck(FileMessage* fmsg, quint32 status, quint32 dataTyp
 
 	p->sendPacket(MRIM_CS_PROXY_ACK, data);
 }
+
+quint32 MRIMClient::sendStatus(const QString& text)
+{
+	qDebug() << "MRIMClient::sendStatus(" << text << ")";
+	QByteArray data;
+	MRIMDataStream out(&data, QIODevice::WriteOnly);
+
+	quint32 unk = 1;
+	out << unk << text;
+	qDebug() << data.toHex();
+	return p->sendPacket(MRIM_CS_STATUS_TEXT, data);
+}

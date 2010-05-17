@@ -114,6 +114,8 @@ ChatWindow* ChatWindowsManager::createWindow(ChatSession* session)
 	ChatWindow* wnd = new ChatWindow(m_account, session);
 	windows.insert(session, wnd);
 	connect(session, SIGNAL(destroyed(QObject*)), this, SLOT(removeWindow(QObject*)));
+	connect(wnd, SIGNAL(setIgnore(bool)), this, SIGNAL(ignoreSet(bool)));
+	connect(this, SIGNAL(ignoreSet(bool)), wnd, SIGNAL(ignoreSet(bool)));
 	if (useTabs)
 	{
 		int tabIndex = tabs->addTab(wnd, wnd->windowIcon(), session->contact()->nickname());

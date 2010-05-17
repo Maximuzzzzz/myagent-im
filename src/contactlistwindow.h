@@ -23,17 +23,20 @@
 #ifndef CONTACTLISTWINDOW_H
 #define CONTACTLISTWINDOW_H
 
+#include <QLabel>
+
 #include <QWidget>
 #include <QModelIndex>
 #include <QEvent>
 
 #include "onlinestatus.h"
 #include "idle/idle.h"
+#include "statusbarwidget.h"
+#include "statuseditor.h"
 
 class Account;
 class Contact;
 class QTreeView;
-class StatusBox;
 class StatusButton;
 class ChatWindowsManager;
 class ContactListModel;
@@ -46,7 +49,7 @@ Q_OBJECT
 public:
 	ContactListWindow(Account* account);
 	~ContactListWindow();
-	
+
 	void extHide();
 	void extShow();
 
@@ -56,12 +59,13 @@ public:
 	QAction* myVideosAction() { return m_myVideosAction; }
 
 	ChatWindowsManager* getChatWindowsManager() { return chatWindowsManager; }
+
 public slots:
 	void openMail();
 
 protected:
 	virtual void closeEvent(QCloseEvent* event);
-	
+
 private slots:
 	void slotContactItemActivated(Contact* contact);
 	void slotLoginRejected(QString reason);
@@ -71,11 +75,15 @@ private slots:
 	void openMailRuProject();
 	void openMailRuUrlEnd(quint32 status, bool timeout);
 	void checkAutoAwayTime(int seconds);
+	void openStatusEditor();
+	void sendStatus(const QString& status);
+	void slotStatusChanged(QByteArray status);
+	void slotSetOnlineStatus(OnlineStatus status);
 
 private:
 	void writeSettings();
 	void readSettings();
-	
+
 	QIcon projectIcon(const QString& project) const;
 	void createActions();
 
@@ -83,12 +91,13 @@ private:
 
 	Account* m_account;
 	QTreeView* contactsTreeView;
-	StatusBox* statusBox;
 	StatusButton* statusButton;
 	MainMenuButton* mainMenuButton;
 	ContactListModel* model;
 	ChatWindowsManager* chatWindowsManager;
-	
+	StatusBarWidget* statusBar;
+	StatusEditor* statusEditor;
+
 	QAction* m_myWorldAction;
 	QAction* m_myBlogAction;
 	QAction* m_myPhotosAction;

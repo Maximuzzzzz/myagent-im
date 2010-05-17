@@ -66,6 +66,8 @@ signals:
 	void smsEditorActivate();
 	void setMainWindowIconAndTitle(QIcon icon, ChatWindow* sender);
 	void newMessage(ChatWindow* sender);
+	void setIgnore(bool ignore);
+	void ignoreSet(bool ignore);
 
 private slots:
 	void send();
@@ -101,8 +103,6 @@ private slots:
 
 	void slotFileTransferred(FileMessage::Status action, QString filesInHtml, QString destination);
 
-	//void setIgnore(bool ignore);
-
 protected:
 	QTimer* timer;
 
@@ -124,8 +124,6 @@ private:
 
 	QTabWidget* editorsWidget;
 	QStatusBar* statusBar;
-
-//	bool ignoreFont;
 };
 
 #endif

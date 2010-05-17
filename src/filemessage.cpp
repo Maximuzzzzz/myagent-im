@@ -84,7 +84,6 @@ FileMessage::FileMessage(Type type, QList<QFileInfo> & files, QByteArray accEmai
 		QTextCodec* codec = QTextCodec::codecForName("cp1251");
 		if (codec->canEncode(it->fileName()))
 			asciiName = it->fileName().toAscii();
-
 		else
 			asciiName = "unicode_file_name_" + QByteArray::number(filesInUnicode++) + ".";
 

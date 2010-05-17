@@ -337,6 +337,11 @@ enum {
 
 #define MRIM_CS_PROXY_HELLO_ACK		0x1047
 
+#define MRIM_SC_STATUS_TEXT			0x1063
+// LPS status
+
+#define MRIM_CS_STATUS_TEXT			0x1064
+// LPS status
 
 
 typedef struct mrim_connection_params_t

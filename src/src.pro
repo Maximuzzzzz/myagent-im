@@ -174,7 +174,9 @@ SOURCES += main.cpp \
     centeredmessagebox.cpp \
     messageedit.cpp \
     favouriteemoticonsdialog.cpp \
-    flowlayout.cpp
+    flowlayout.cpp \
+	statusbarwidget.cpp \
+	statuseditor.cpp
 HEADERS += mrimclient.h \
 	soundplayer.h \
 	audio.h \
@@ -279,7 +281,9 @@ HEADERS += mrimclient.h \
     centeredmessagebox.h \
     messageedit.h \
     favouriteemoticonsdialog.h \
-    flowlayout.h
+    flowlayout.h \
+	statusbarwidget.h \
+	statuseditor.h
 FORMS += logindialog.ui \
     searchcontacts.ui \
     addcontact.ui \

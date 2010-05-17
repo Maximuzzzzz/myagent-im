@@ -95,6 +95,8 @@ private:
 	void processProxy(QByteArray data, quint32 msgseq);
 	void processProxyAck(QByteArray data, quint32 msgseq);
 
+	void processStatusChanged(QByteArray data);
+
 	MRIMClient* q;
 
 	QTextCodec* codec;

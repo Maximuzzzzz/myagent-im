@@ -26,6 +26,7 @@
 #include <QDir>
 #include <QDebug>
 #include <QApplication>
+#include <QTextCodec>
 
 #include "proto.h"
 #include "mrimclient.h"
@@ -90,7 +91,7 @@ Account::~Account()
 	delete m_contactList;
 }
 
-void Account::setInfo(const QByteArray& totalMessages, const QByteArray& unreadMessages, const QString& nickname)
+/*void Account::setInfo(const QByteArray& totalMessages, const QByteArray& unreadMessages, const QString& nickname, const QString& statusText)
 {
 	qDebug() << "Account::setInfo unreadMessages = " << unreadMessages;
 	m_totalMessages  = totalMessages.toUInt();
@@ -102,15 +103,13 @@ void Account::setInfo(const QByteArray& totalMessages, const QByteArray& unreadM
 
 	emit nicknameChanged();
 	emit unreadLettersChanged(m_unreadMessages);
-}
+	emit statusChanged(statusText);
+}*/
 
 QString Account::path() const
 {
-	/*if (theRM.getUserPath() == "")
-		theRM.setUserPath(theRM.basePath() + "/" + email());*/
 	QString basePath = theRM.basePath();
 	if (basePath.isEmpty()) return "";
-	//if (theRM.getUserPath().isEmpty()) return "";
 
 	QDir dir(basePath);
 
@@ -246,14 +245,39 @@ void Account::setAutoAway(bool on)
 	}
 }
 
-/*void Account::createDefaultEmoticonsTemplate(QString dir)
+void Account::setTotalMessages(const QByteArray& totalMessages)
 {
-	QFile f;
-#ifdef DATADIR
-	f.setFileName(QLatin1String(DATADIR) + "/emoticons/default_user_skin.txt");
-#else
-	f.setFileName(QCoreApplication::applicationDirPath() + "/emoticons/default_user_skin.txt");
-#endif
-	f.copy(dir + "/skin.txt");
-	theRM.loadEmoticons(dir);
-}*/
+	qDebug() << "Account::setTotalMessages = " << totalMessages;
+	m_totalMessages  = totalMessages.toUInt();
+
+	emit totalMessagesChanged(totalMessages);
+}
+
+void Account::setUnreadMessages(const QByteArray& unreadMessages)
+{
+	qDebug() << "Account::setUnreadMessages" << unreadMessages;
+	m_unreadMessages = unreadMessages.toUInt();
+
+	if (unreadMessages.toUInt() > 0)
+		theRM.getAudio()->play(STLetter);
+
+	emit unreadLettersChanged(m_unreadMessages);
+}
+
+void Account::setNickName(QByteArray nickname)
+{
+	qDebug() << "Account::setNickName" << nickname;
+
+	QTextCodec* codec = QTextCodec::codecForName("CP1251");
+	//if (codec->canEncode(nickname))
+	m_nickname = codec->toUnicode(nickname);
+	//m_nickname = nickname.fromAscii();
+
+	emit nicknameChanged();
+}
+
+void Account::setStatusText(QByteArray statusText)
+{
+	qDebug() << "Account::setStatusText" << statusText;
+	emit statusChanged(statusText);
+}

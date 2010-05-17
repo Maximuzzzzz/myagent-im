@@ -38,14 +38,11 @@ EmoticonSelector::EmoticonSelector(QWidget *parent)
 {
 	setWindowFlags(Qt::Popup);
 	setAttribute(Qt::WA_AlwaysShowToolTips);
-	setWindowTitle(tr("Emoticons"));
-	setWindowIcon(QIcon("smiles:/smiles/smiles/smile.gif"));
 
 	setFrameStyle(QFrame::Panel | QFrame::Raised);
 
 	setCurrentLayout();
 
-	//connect(toolBox, SIGNAL(currentChanged(int)), SLOT(correctSize()));
 	setFixedSize(sizeHint());
 }
 
