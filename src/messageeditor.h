@@ -30,6 +30,7 @@
 #include <QProgressBar>
 #include <QTcpServer>
 #include <QTcpSocket>
+#include <QPushButton>
 
 #include "onlinestatus.h"
 #include "filemessage.h"
@@ -170,7 +171,8 @@ private:
 	QToolButton* plus;
 	QToolButton* minus;
 	QToolButton* send;
-	QToolButton* cancel;
+	QPushButton* cancel;
+	//QToolButton* cancel;
 
 	quint32 totalSize;
 	double progressStep;

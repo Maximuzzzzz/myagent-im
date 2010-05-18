@@ -199,6 +199,8 @@ void MessageEditor::createToolBar()
 
 	toolBar->addSeparator();
 	ignoreAction = addToolAction(toolIcon("ignore"), this, SIGNAL(setIgnore(bool)));
+
+	ignoreAction->setToolTip(tr("Ignore interlocutor style"));
 }
 
 void MessageEditor::chooseFont()
@@ -505,7 +507,9 @@ void MessageEditor::createFileTransferBar()
 	QWidget* cancelHelperWidget = new QWidget;
 	QHBoxLayout* cancelHelperLayout = new QHBoxLayout;
 	cancelHelperLayout->setContentsMargins(0, 0, 0, 0);
-	cancel = createFileTransferToolButton(fileTransferIcon("cancel"), this, SLOT(cancelTransferring()));
+	cancel = new QPushButton(tr("Cancel"));
+	connect(cancel, SIGNAL(clicked(bool)), this, SLOT(cancelTransferring()));
+	//cancel = createFileTransferToolButton(fileTransferIcon("cancel"), this, SLOT(cancelTransferring()));
 	cancelHelperLayout->addWidget(cancel);
 	cancelHelperWidget->setLayout(cancelHelperLayout);
 

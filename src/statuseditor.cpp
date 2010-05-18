@@ -43,7 +43,7 @@ StatusEditor::StatusEditor(QWidget *parent)
 	QWidget* bottomWidget = new QWidget(this);
 	QWidget* twoLabels = new QWidget(bottomWidget);
 	sayButton = new QPushButton(tr("Say"));
-	sayButton->setActive(false);
+	sayButton->setEnabled(false);
 	connect(sayButton, SIGNAL(clicked(bool)), this, SLOT(slotSendStatus()));
 
 	QHBoxLayout* bottomLayout = new QHBoxLayout;
