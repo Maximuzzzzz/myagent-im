@@ -11,6 +11,12 @@ myagent-im (0.3.1) unstable; urgency=low
   * Simplified tabs logic + probably fixed segfault when quiting app and
       there are tabs in chat window
 
+  Dmitry Malahov <abr_mail@mail.ru>:
+  * Added text statuses
+  * MRIMclien reads all data from account info packet
+  * Button for ignoring interlocutor style affects in all chatwindows
+  * Added tooltip for button "Ignore"
+
  -- Alexander Volkov <volkov0aa@gmail.com>  Sat, 15 May 2010 17:41:26 +0400
 
 myagent-im (0.3.0) unstable; urgency=low

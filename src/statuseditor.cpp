@@ -49,8 +49,8 @@ StatusEditor::StatusEditor(QWidget *parent)
 	QHBoxLayout* bottomLayout = new QHBoxLayout;
 	QVBoxLayout* twoLabelsLayout = new QVBoxLayout;
 
-	symbolsCounter = new QLabel(tr("160 symbols left"));
-	QLabel* linkToFriends = new QLabel(tr("<a href=\"#\">Checkout news from friens</a>"));
+	symbolsCounter = new QLabel(tr("%n symbol(s) left", "", 160));
+	QLabel* linkToFriends = new QLabel("<a href=\"#\">" + tr("Checkout news from friends") + "</a>");
 
 	QFont font;
 	font.setPointSize(8);
@@ -85,7 +85,7 @@ StatusEditor::~StatusEditor()
 
 void StatusEditor::slotTextChanged(const QString& text)
 {
-	symbolsCounter->setText(QString::number(160 - text.length()) + tr(" symbols left"));
+	symbolsCounter->setText(tr("%n symbol(s) left", "", 160 - text.length()));
 	if (text.length() == 0)
 		sayButton->setEnabled(false);
 	else

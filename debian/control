@@ -8,6 +8,6 @@ Homepage: http://code.google.com/p/myagent-im
 
 Package: myagent-im
 Architecture: any
-Depends: ${shlibs:Depends}, aspell-ru
+Depends: ${shlibs:Depends}, aspell-ru, phonon-backend
 Description: Instant messaging application for Mail.ru
  Instant messenger with  basic Mail.ru protocol support
