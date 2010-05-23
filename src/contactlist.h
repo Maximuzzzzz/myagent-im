@@ -40,13 +40,13 @@ Q_OBJECT
 public:
 	ContactList(Account* account);
 	~ContactList();
-	
+
 	void beginUpdating();
 	void endUpdating();
 
 	void addGroup(quint32 id, quint32 flags, const QString& name);
 	void addContact(const ContactData& data);
-	void addContact(QList<Contact*> &list, Contact* contact, bool checkConstr);
+	void addContact(Contact* contact);
 
 	typedef QList<ContactGroup*>::const_iterator GroupsIterator;
 	GroupsIterator groupsBegin() const { return m_groups.begin(); }
@@ -58,7 +58,7 @@ public:
 	typedef QList<Contact*>::const_iterator ConstContactsIterator;
 	ConstContactsIterator contactsBegin() const { return m_contacts.begin(); }
 	ConstContactsIterator contactsEnd() const { return m_contacts.end(); }
-	
+
 	typedef QList<Contact*>::iterator ContactsIterator;
 	ContactsIterator contactsBegin() { return m_contacts.begin(); }
 	ContactsIterator contactsEnd() { return m_contacts.end(); }
@@ -80,7 +80,7 @@ public:
 	bool addSmsContactOnServer(const QString& nickname, const QStringList& phones);
 	bool addGroupOnServer(const QString& groupName);
 	bool renameGroup(ContactGroup* group, const QString& newName);
-	
+
 signals:
 	void groupAdded(ContactGroup* group);
 	void contactAdded(Contact* contact);
@@ -92,12 +92,12 @@ signals:
 	void addSmsContactOnServerError(QString error);
 	void addGroupOnServerError(QString error);
 	void renameGroupError(QString error);
-	
+
 public slots:
 	void changeContactStatus(quint32 status, QByteArray email);
 	void contactTyping(QByteArray email);
 	void slotContactAuthorized(const QByteArray& email);
-	
+
 private slots:
 	void checkOnlineStatus(OnlineStatus status);
 
@@ -107,16 +107,15 @@ private slots:
 	void addSmsContactOnServerEnd(quint32 status, bool timeout);
 	void addGroupOnServerEnd(quint32 status, bool timeout);
 	void renameGroupEnd(quint32 status, bool timeout);
-	int contactPos(QByteArray email);
 
 private:
 	QList<ContactGroup*> m_groups;
 	QList<ContactGroup*> m_hiddenGroups;
 	QList<Contact*> m_contacts;
 	QList<Contact*> tmpContacts;
-	
+
 	bool constructing;
-	
+
 	Account* m_account;
 };
 

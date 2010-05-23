@@ -20,48 +20,35 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef CONTACTLISTTREEVIEW_H
-#define CONTACTLISTTREEVIEW_H
+#ifndef CONTACTLISTSORTFILTERPROXYMODEL_H
+#define CONTACTLISTSORTFILTERPROXYMODEL_H
 
-#include <QTreeView>
-#include <QRect>
+#include <QSortFilterProxyModel>
 
-class Account;
 class Contact;
-class Action;
-class ContactContextMenu;
-class ContactGroupContextMenu;
-class ContactListSortFilterProxyModel;
+class ContactGroup;
+class ContactListModel;
 
-class ContactListTreeView : public QTreeView
+class ContactListSortFilterProxyModel : public QSortFilterProxyModel
 {
 Q_OBJECT
 public:
-	ContactListTreeView(Account* account, QWidget *parent = 0);
+	ContactListSortFilterProxyModel(QObject * parent = 0);
 
-	virtual void setModel(QAbstractItemModel* model);
+	bool isGroup(const QModelIndex& index);
+	Contact* contactFromIndex(const QModelIndex& index);
+	ContactGroup* groupFromIndex(const QModelIndex & index);
+
+	virtual void setSourceModel(QAbstractItemModel* sourceModel);
 
 signals:
-	void contactItemActivated(Contact* contact);
+	void modelRebuilded();
 
 protected:
-	//virtual QStyleOptionViewItem viewOptions() const;
-	virtual void dropEvent(QDropEvent* event);
-	virtual void dragMoveEvent(QDragMoveEvent* event);
-	virtual void dragLeaveEvent(QDragLeaveEvent* event);
-	virtual void startDrag(Qt::DropActions supportedActions);
-	virtual void paintEvent(QPaintEvent* event);
-	virtual void contextMenuEvent(QContextMenuEvent* e);
-
-private slots:
-	void slotActivated(const QModelIndex& index);
+	//virtual bool lessThan(const QModelIndex& left, const QModelIndex& right ) const;
 
 private:
-	QRect dropRect;
-	Account* account_;
-	ContactContextMenu* contactMenu;
-	ContactGroupContextMenu* groupMenu;
-	ContactListSortFilterProxyModel* contactListModel;
+	ContactListModel* contactListModel;
 };
 
 #endif

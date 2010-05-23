@@ -39,7 +39,6 @@ class Contact;
 class QTreeView;
 class StatusButton;
 class ChatWindowsManager;
-class ContactListModel;
 class SystemTrayIcon;
 class MainMenuButton;
 
@@ -93,7 +92,6 @@ private:
 	QTreeView* contactsTreeView;
 	StatusButton* statusButton;
 	MainMenuButton* mainMenuButton;
-	ContactListModel* model;
 	ChatWindowsManager* chatWindowsManager;
 	StatusBarWidget* statusBar;
 	StatusEditor* statusEditor;

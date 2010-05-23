@@ -20,48 +20,38 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef CONTACTLISTTREEVIEW_H
-#define CONTACTLISTTREEVIEW_H
+#include "contactlistsortfilterproxymodel.h"
 
-#include <QTreeView>
-#include <QRect>
+#include "contactlistmodel.h"
 
-class Account;
-class Contact;
-class Action;
-class ContactContextMenu;
-class ContactGroupContextMenu;
-class ContactListSortFilterProxyModel;
-
-class ContactListTreeView : public QTreeView
+ContactListSortFilterProxyModel::ContactListSortFilterProxyModel(QObject * parent)
+	: QSortFilterProxyModel(parent), contactListModel(0)
 {
-Q_OBJECT
-public:
-	ContactListTreeView(Account* account, QWidget *parent = 0);
+}
 
-	virtual void setModel(QAbstractItemModel* model);
+void ContactListSortFilterProxyModel::setSourceModel(QAbstractItemModel* sourceModel)
+{
+	contactListModel = qobject_cast<ContactListModel*>(sourceModel);
+	connect(contactListModel, SIGNAL(modelRebuilded()), this, SIGNAL(modelRebuilded()));
+	QSortFilterProxyModel::setSourceModel(sourceModel);
+}
 
-signals:
-	void contactItemActivated(Contact* contact);
+bool ContactListSortFilterProxyModel::isGroup(const QModelIndex& index)
+{
+	return contactListModel->isGroup(mapToSource(index));
+}
 
-protected:
-	//virtual QStyleOptionViewItem viewOptions() const;
-	virtual void dropEvent(QDropEvent* event);
-	virtual void dragMoveEvent(QDragMoveEvent* event);
-	virtual void dragLeaveEvent(QDragLeaveEvent* event);
-	virtual void startDrag(Qt::DropActions supportedActions);
-	virtual void paintEvent(QPaintEvent* event);
-	virtual void contextMenuEvent(QContextMenuEvent* e);
+Contact* ContactListSortFilterProxyModel::contactFromIndex(const QModelIndex& index)
+{
+	return contactListModel->contactFromIndex(mapToSource(index));
+}
 
-private slots:
-	void slotActivated(const QModelIndex& index);
+ContactGroup* ContactListSortFilterProxyModel::groupFromIndex(const QModelIndex & index)
+{
+	return contactListModel->groupFromIndex(mapToSource(index));
+}
 
-private:
-	QRect dropRect;
-	Account* account_;
-	ContactContextMenu* contactMenu;
-	ContactGroupContextMenu* groupMenu;
-	ContactListSortFilterProxyModel* contactListModel;
-};
+/*bool ContactListSortFilterProxyModel::lessThan(const QModelIndex& left, const QModelIndex& right ) const
+{
 
-#endif
+}*/

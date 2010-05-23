@@ -31,13 +31,13 @@
 #include "contactmimedata.h"
 #include "contact.h"
 #include "contactlistitem.h"
-#include "contactlistmodel.h"
 #include "contactcontextmenu.h"
 #include "contactgroupcontextmenu.h"
+#include "contactlistsortfilterproxymodel.h"
 #include "account.h"
 
 ContactListTreeView::ContactListTreeView(Account* account, QWidget *parent)
- : QTreeView(parent), account_(account)
+	: QTreeView(parent), account_(account), contactListModel(0)
 {
 	header()->hide();
 	setSelectionBehavior(QAbstractItemView::SelectItems);
@@ -46,7 +46,7 @@ ContactListTreeView::ContactListTreeView(Account* account, QWidget *parent)
 	setAcceptDrops(true);
 	setDragDropMode(QAbstractItemView::InternalMove);
 	setDropIndicatorShown(false);
-	
+
 	contactMenu = new ContactContextMenu(account, this);
 	groupMenu = new ContactGroupContextMenu(account, this);
 
@@ -60,6 +60,12 @@ ContactListTreeView::ContactListTreeView(Account* account, QWidget *parent)
 	return options;
 }*/
 
+void ContactListTreeView::setModel(QAbstractItemModel* model)
+{
+	contactListModel = qobject_cast<ContactListSortFilterProxyModel*>(model);
+	QTreeView::setModel(model);
+}
+
 void ContactListTreeView::dropEvent(QDropEvent * event)
 {
 	qDebug() << "drop event";
@@ -70,11 +76,9 @@ void ContactListTreeView::dragMoveEvent(QDragMoveEvent* event)
 {
 	QTreeView::dragMoveEvent(event);
 	QModelIndex index = indexAt(event->pos());
-	
-	ContactListModel* clModel = static_cast<ContactListModel*>(model());
-	
+
 	if (index.isValid())
-		if (clModel->isGroup(index) && index != selectedIndexes().first().parent())
+		if (contactListModel->isGroup(index) && index != selectedIndexes().first().parent())
 		{
 			dropRect = visualRect(index);
 			dropRect.adjust(0, 0, -1, -1);
@@ -94,12 +98,12 @@ void ContactListTreeView::startDrag(Qt::DropActions supportedActions)
 	QModelIndexList indexes = selectedIndexes();
 	if (indexes.count() == 1)
 	{
-		ContactMimeData* data = static_cast<ContactMimeData*>(model()->mimeData(indexes));
+		ContactMimeData* data = static_cast<ContactMimeData*>(contactListModel->mimeData(indexes));
 		if (!data)
 			return;
-		
+
 		//Contact* contact = data->getContactItem()->getContact();
-		
+
 		QDrag *drag = new QDrag(this);
 		/*QPixmap avatarPixmap = contact->getAvatar();
 		QPixmap dragPixmap(avatarPixmap.width()+2, avatarPixmap.height()+2);
@@ -131,8 +135,7 @@ void ContactListTreeView::dragLeaveEvent(QDragLeaveEvent* event)
 void ContactListTreeView::contextMenuEvent(QContextMenuEvent* e)
 {
 	QModelIndex index = indexAt(e->pos());
-	ContactListModel* contactListModel = static_cast<ContactListModel*>(model());
-	
+
 	if (Contact* contact = contactListModel->contactFromIndex(index))
 	{
 		contactMenu->setContact(contact);
@@ -147,7 +150,6 @@ void ContactListTreeView::contextMenuEvent(QContextMenuEvent* e)
 
 void ContactListTreeView::slotActivated(const QModelIndex & index)
 {
-	ContactListModel* contactListModel = static_cast<ContactListModel*>(model());
 	Contact* contact = contactListModel->contactFromIndex(index);
 	if (contact)
 		emit contactItemActivated(contact);

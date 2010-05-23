@@ -30,6 +30,7 @@
 #include "account.h"
 #include "contactlist.h"
 #include "contactlistmodel.h"
+#include "contactlistsortfilterproxymodel.h"
 #include "contactlisttreeview.h"
 #include "contactlistitem.h"
 #include "mrimclient.h"
@@ -64,7 +65,7 @@ ContactListWindow::ContactListWindow(Account* account)
 	MRIMClient* mc = account->client();
 	connect (account, SIGNAL(statusChanged(QByteArray)), this, SLOT(slotStatusChanged(QByteArray)));
 
-	createActions();	
+	createActions();
 
 	connect(mc, SIGNAL(loginRejected(QString)), this, SLOT(slotLoginRejected(QString)));
 	connect(mc, SIGNAL(loggedOut(quint32)), this, SLOT(slotLoggedOut(quint32)));
@@ -85,11 +86,15 @@ ContactListWindow::ContactListWindow(Account* account)
 	headerLayout->addWidget(new LinkButton(m_myVideosAction));
 
 	contactsTreeView = new ContactListTreeView(mc->account());
-	model = new ContactListModel(mc->account()->contactList());
-	contactsTreeView->setModel(model);
+	ContactListModel* model = new ContactListModel(mc->account()->contactList());
+	ContactListSortFilterProxyModel* proxyModel = new ContactListSortFilterProxyModel(model);
+	proxyModel->setSourceModel(model);
+	proxyModel->sort(0);
+
+	contactsTreeView->setModel(proxyModel);
 
 	connect(contactsTreeView, SIGNAL(contactItemActivated(Contact*)), this, SLOT(slotContactItemActivated(Contact*)));
-	connect(model, SIGNAL(modelRebuilded()), contactsTreeView, SLOT(expandAll()));
+	connect(proxyModel, SIGNAL(modelRebuilded()), contactsTreeView, SLOT(expandAll()));
 
 	statusBar = new StatusBarWidget(); //TODO: if account offline or connecting, statusBar must be disabled!
 	connect(statusBar, SIGNAL(clicked()), this, SLOT(openStatusEditor()));
@@ -140,7 +145,7 @@ ContactListWindow::~ContactListWindow()
 void ContactListWindow::slotContactItemActivated(Contact* contact)
 {
 	qDebug() << "contact activated";
-	
+
 	if (contact)
 	{
 		ChatSession* session = m_account->chatsManager()->getSession(contact);
@@ -164,14 +169,14 @@ void ContactListWindow::readSettings()
 {
 	QPoint pos(0, 0);
 	QSize size(200, 400);
-	
+
 	QSettings* settings = m_account->settings();
 	if (settings)
 	{
 		pos = m_account->settings()->value("ContactListWindow/pos", pos).toPoint();
 		size = m_account->settings()->value("ContactListWindow/size", size).toSize();
 	}
-	
+
 	resize(size);
 	move(pos);
 }
@@ -193,7 +198,7 @@ void ContactListWindow::slotLoginRejected(QString reason)
 
 	if (ld.exec() == QDialog::Rejected)
 		qApp->quit();
-	
+
 	m_account->reset(ld.email(), ld.password());
 	m_account->setOnlineStatus(ld.status());
 }
@@ -203,7 +208,7 @@ void ContactListWindow::slotLoggedOut(quint32 reason)
 	QString reasonText;
 	if (reason == LOGOUT_NO_RELOGIN_FLAG)
 		reasonText = tr("Someone else entered with your login");
-	
+
 	CenteredMessageBox::warning(tr("Logout"), reasonText);
 }
 
@@ -234,12 +239,12 @@ void ContactListWindow::slotContactAsksAuthorization(const QByteArray & email, c
 void ContactListWindow::authorizeContact()
 {
 	AuthorizeDialog* dlg = qobject_cast<AuthorizeDialog*>(sender());
-	
+
 	qDebug() << "user wanna authorize contact " << dlg->email();
 	MRIMClient* mc = m_account->client();
-	
+
 	mc->authorizeContact(dlg->email());
-	
+
 	if (dlg->addContact())
 	{
 		ContactList* cl = m_account->contactList();
@@ -264,7 +269,7 @@ QIcon ContactListWindow::projectIcon(const QString & project) const
 	icon.addPixmap(QPixmap(":icons/projects/main_top_" + project + "_d.png"), QIcon::Normal, QIcon::Off);
 	icon.addPixmap(QPixmap(":icons/projects/main_top_" + project + "_h.png"), QIcon::Active, QIcon::Off);
 	icon.addPixmap(QPixmap(":icons/projects/main_top_" + project + "_p.png"), QIcon::Active, QIcon::On);
-	
+
 	return icon;
 }
 
@@ -312,7 +317,7 @@ void ContactListWindow::openMailRuUrlEnd(quint32 status, bool timeout)
 		qDebug() << "MRIMClientPrivate: can't get mpop session";
 		return;
 	}
-	
+
 	Tasks::GetMPOPSession* task = qobject_cast<Tasks::GetMPOPSession*>(sender());
 	if (!task)
 	{
@@ -321,8 +326,8 @@ void ContactListWindow::openMailRuUrlEnd(quint32 status, bool timeout)
 	}
 
 	qDebug() << Q_FUNC_INFO << "session id =" << task->session();
-	
-	QString url = "http://win.mail.ru/cgi-bin/auth?Login=" + m_account->email() + "&agent=" + task->session() + "&page=" + task->url();
+
+	QString url = "http://swa.mail.ru/cgi-bin/auth?Login=" + m_account->email() + "&agent=" + task->session() + "&page=" + task->url();
 	QDesktopServices::openUrl(QUrl(url));
 }
 
@@ -331,11 +336,11 @@ void ContactListWindow::checkAutoAwayTime(int seconds)
 	if (theRM.settings()->value("Common/autoAwayEnabled", false).toBool())
 	{
 		int awaySeconds = 60*theRM.settings()->value("Common/autoAwayMinutes", 10).toUInt();
-	
+
 		if (seconds >= awaySeconds)
 			m_account->setAutoAway(true);
 	}
-	
+
 	if (seconds == 0)
 		m_account->setAutoAway(false);
 }

@@ -1,13 +1,12 @@
 TEMPLATE = app
 TARGET = myagent-im
-
 CONFIG += qt # warn_on debug
-QT += network phonon
+QT += network \
+    phonon
 INCLUDEPATH += /usr/include/KDE
-
 TRANSLATIONS = locale/myagent-im_ru.ts
 LIBS += -laspell
-win32 {
+win32 { 
     QTPLUGIN += qjpeg \
         qgif
     LIBS += -llibapi \
@@ -25,13 +24,13 @@ win32 {
         -llibinmemory \
         -llibquartz
 }
-unix {
+unix { 
     LIBS += -lxapian
     CONFIG += link_pkgconfig
     PKGCONFIG += xscrnsaver
 }
-unix {
-    isEmpty(PREFIX): PREFIX = /usr/local
+unix { 
+    isEmpty(PREFIX):PREFIX = /usr/local
     BINDIR = $$PREFIX/bin
     DATADIR = $$PREFIX/share/myagent-im
     DEFINES += DATADIR=\\\"$$DATADIR\\\"
@@ -69,14 +68,14 @@ unix {
     desktop.path = $$PREFIX/share/applications
     desktop.files += myagent-im.desktop
     sounds.path = $$DATADIR/sounds
-	sounds.files = sounds/*
+    sounds.files = sounds/*
     appicon.path = $$PREFIX/share/pixmaps
     appicon.files += myagent-im.png
 }
 RESOURCES += res.qrc
 SOURCES += main.cpp \
-	soundplayer.cpp \
-	audio.cpp \
+    soundplayer.cpp \
+    audio.cpp \
     mrimclient.cpp \
     account.cpp \
     contactgroup.cpp \
@@ -90,7 +89,7 @@ SOURCES += main.cpp \
     zlibbytearray.cpp \
     contactlisttreeview.cpp \
     message.cpp \
-	filemessage.cpp \
+    filemessage.cpp \
     contactmimedata.cpp \
     taskchangegroup.cpp \
     task.cpp \
@@ -175,11 +174,12 @@ SOURCES += main.cpp \
     messageedit.cpp \
     favouriteemoticonsdialog.cpp \
     flowlayout.cpp \
-	statusbarwidget.cpp \
-	statuseditor.cpp
+    statusbarwidget.cpp \
+    statuseditor.cpp \
+    contactlistsortfilterproxymodel.cpp
 HEADERS += mrimclient.h \
-	soundplayer.h \
-	audio.h \
+    soundplayer.h \
+    audio.h \
     proto.h \
     account.h \
     contactgroup.h \
@@ -193,7 +193,7 @@ HEADERS += mrimclient.h \
     zlibbytearray.h \
     contactlisttreeview.h \
     message.h \
-	filemessage.h \
+    filemessage.h \
     contactmimedata.h \
     taskchangegroup.h \
     task.h \
@@ -282,8 +282,9 @@ HEADERS += mrimclient.h \
     messageedit.h \
     favouriteemoticonsdialog.h \
     flowlayout.h \
-	statusbarwidget.h \
-	statuseditor.h
+    statusbarwidget.h \
+    statuseditor.h \
+    contactlistsortfilterproxymodel.h
 FORMS += logindialog.ui \
     searchcontacts.ui \
     addcontact.ui \

@@ -44,14 +44,15 @@ public:
 	bool isGroup(const QModelIndex& index);
 	Contact* contactFromIndex(const QModelIndex& index);
 	ContactGroup* groupFromIndex(const QModelIndex & index);
-public slots:
-	void addContact(Contact* c);
+
+signals:
+	void modelRebuilded();
+
 private slots:
 	void rebuild();
 	void changeContactGroup(bool indeed);
-	
-signals:
-	void modelRebuilded();
+	void addContact(Contact* c);
+
 private:
 	ContactList* contactList;
 	QStringList myFormats;

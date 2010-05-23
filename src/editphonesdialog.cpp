@@ -33,7 +33,7 @@ EditPhonesDialog::EditPhonesDialog(const QString& nickname, const QStringList& p
 {
 	setupUi(this);
 	setFixedSize(sizeHint());
-	
+
 	usernameEdit->setText(nickname);
 	if (nickname.isEmpty())
 	{
@@ -42,16 +42,16 @@ EditPhonesDialog::EditPhonesDialog(const QString& nickname, const QStringList& p
 	}
 	else
 		usernameEdit->setDisabled(true);
-	
+
 	phoneEdit1->setText(phones.value(0));
 	phoneEdit2->setText(phones.value(1));
 	phoneEdit3->setText(phones.value(2));
 
 	usernameEdit->setValidator(new QRegExpValidator(QRegExp(".+"), phoneEdit1));
-	phoneEdit1->setValidator(new QRegExpValidator(QRegExp("\\+(\\d){11}"), phoneEdit1));
-	phoneEdit2->setValidator(new QRegExpValidator(QRegExp("|\\+(\\d){11}"), phoneEdit2));
-	phoneEdit3->setValidator(new QRegExpValidator(QRegExp("|\\+(\\d){11}"), phoneEdit3));
-	
+	phoneEdit1->setValidator(new QRegExpValidator(QRegExp("\\+(\\d){11,12}"), phoneEdit1));
+	phoneEdit2->setValidator(new QRegExpValidator(QRegExp("|\\+(\\d){11,12}"), phoneEdit2));
+	phoneEdit3->setValidator(new QRegExpValidator(QRegExp("|\\+(\\d){11,12}"), phoneEdit3));
+
 	connect(usernameEdit, SIGNAL(textEdited(const QString&)), SLOT(checkData()));
 	connect(phoneEdit1, SIGNAL(textEdited(const QString&)), SLOT(checkData()));
 	connect(phoneEdit2, SIGNAL(textEdited(const QString&)), SLOT(checkData()));
@@ -79,7 +79,7 @@ void EditPhonesDialog::checkData()
 		saveButton->setDisabled(true);
 		return;
 	}
-	
+
 	if (phoneEdit2->text().isEmpty() && !phoneEdit3->text().isEmpty())
 	{
 		saveButton->setDisabled(true);
@@ -99,11 +99,11 @@ QStringList EditPhonesDialog::phones() const
 {
 	QStringList result;
 	QString phone;
-	
+
 	phone = phoneEdit1->text();
 	if (!phone.isEmpty())
 		result.append(phone);
-	
+
 	phone = phoneEdit2->text();
 	if (!phone.isEmpty())
 		result.append(phone);
