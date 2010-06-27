@@ -94,6 +94,9 @@ bool ContactListSortFilterProxyModel::filterAcceptsRow(int source_row, const QMo
 
 	if (!allowOnlineOnly || contact->status().connected())
 	{
+		if (filter.isEmpty())
+			return true;
+
 		if (contact->nickname().contains(filter, Qt::CaseInsensitive) ||
 		    QString::fromLatin1(contact->email()).contains(filter, Qt::CaseInsensitive))
 			return true;
