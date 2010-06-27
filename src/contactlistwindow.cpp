@@ -51,6 +51,8 @@
 #include "linkbutton.h"
 #include "centerwindow.h"
 #include "centeredmessagebox.h"
+#include "filtercontactslineedit.h"
+#include "triggeroptionbutton.h"
 #include "audio.h"
 
 ContactListWindow::ContactListWindow(Account* account)
@@ -85,6 +87,14 @@ ContactListWindow::ContactListWindow(Account* account)
 	headerLayout->addWidget(new LinkButton(m_myPhotosAction));
 	headerLayout->addWidget(new LinkButton(m_myVideosAction));
 
+	QHBoxLayout* filterLayout = new QHBoxLayout;
+	FilterContactsLineEdit* filterLineEdit = new FilterContactsLineEdit;
+	filterLayout->addWidget(filterLineEdit);
+
+	TriggerOptionButton* onlineOnlyContactsButton =
+			new TriggerOptionButton("online_only", "ContactListWindow/showOnlineOnlyContacts");
+	filterLayout->addWidget(onlineOnlyContactsButton);
+
 	contactsTreeView = new ContactListTreeView(mc->account());
 	ContactListModel* model = new ContactListModel(mc->account()->contactList());
 	ContactListSortFilterProxyModel* proxyModel = new ContactListSortFilterProxyModel(model);
@@ -95,6 +105,10 @@ ContactListWindow::ContactListWindow(Account* account)
 
 	connect(contactsTreeView, SIGNAL(contactItemActivated(Contact*)), this, SLOT(slotContactItemActivated(Contact*)));
 	connect(proxyModel, SIGNAL(modelRebuilded()), contactsTreeView, SLOT(expandAll()));
+
+	connect(filterLineEdit,SIGNAL(textChanged(const QString&)), proxyModel, SLOT(setFilterString(const QString&)));
+	connect(onlineOnlyContactsButton, SIGNAL(toggled(bool)), proxyModel, SLOT(allowOnlineOnlyContacts(bool)));
+	proxyModel->allowOnlineOnlyContacts(onlineOnlyContactsButton->isChecked());
 
 	statusBar = new StatusBarWidget(); //TODO: if account offline or connecting, statusBar must be disabled!
 	connect(statusBar, SIGNAL(clicked()), this, SLOT(openStatusEditor()));
@@ -115,6 +129,7 @@ ContactListWindow::ContactListWindow(Account* account)
 	layout->setSpacing(1);
 
 	layout->addLayout(headerLayout);
+	layout->addLayout(filterLayout);
 	layout->addWidget(contactsTreeView);
 	layout->addWidget(statusBar);
 

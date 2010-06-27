@@ -22,11 +22,16 @@
 
 #include "contactlistsortfilterproxymodel.h"
 
+#include <QDebug>
+
 #include "contactlistmodel.h"
+#include "contact.h"
 
 ContactListSortFilterProxyModel::ContactListSortFilterProxyModel(QObject * parent)
 	: QSortFilterProxyModel(parent), contactListModel(0)
 {
+	allowOnlineOnly = false;
+	setDynamicSortFilter(true);
 }
 
 void ContactListSortFilterProxyModel::setSourceModel(QAbstractItemModel* sourceModel)
@@ -41,17 +46,64 @@ bool ContactListSortFilterProxyModel::isGroup(const QModelIndex& index)
 	return contactListModel->isGroup(mapToSource(index));
 }
 
-Contact* ContactListSortFilterProxyModel::contactFromIndex(const QModelIndex& index)
+Contact* ContactListSortFilterProxyModel::contactFromIndex(const QModelIndex& index) const
 {
 	return contactListModel->contactFromIndex(mapToSource(index));
 }
 
-ContactGroup* ContactListSortFilterProxyModel::groupFromIndex(const QModelIndex & index)
+ContactGroup* ContactListSortFilterProxyModel::groupFromIndex(const QModelIndex & index) const
 {
 	return contactListModel->groupFromIndex(mapToSource(index));
 }
 
-/*bool ContactListSortFilterProxyModel::lessThan(const QModelIndex& left, const QModelIndex& right ) const
+void ContactListSortFilterProxyModel::setFilterString(const QString& filterString)
 {
+	filter = filterString;
+	invalidateFilter();
+}
 
-}*/
+bool ContactListSortFilterProxyModel::lessThan(const QModelIndex& left, const QModelIndex& right) const
+{
+	Contact* contact1 = contactListModel->contactFromIndex(left);
+
+	if (!contact1)
+		return false;
+
+	Contact* contact2 = contactListModel->contactFromIndex(right);
+
+	if (!contact2)
+		return false;
+
+	return contact1->nickname() < contact2->nickname();
+}
+
+bool ContactListSortFilterProxyModel::filterAcceptsColumn(int /*source_column*/, const QModelIndex& /*source_parent*/) const
+{
+	return true;
+}
+
+bool ContactListSortFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
+{
+	if (filter.isEmpty() && !allowOnlineOnly)
+		return true;
+
+	Contact* contact = contactListModel->contactFromIndex(source_parent.child(source_row, 0));
+
+	if (!contact)
+		return true;
+
+	if (!allowOnlineOnly || contact->status().connected())
+	{
+		if (contact->nickname().contains(filter, Qt::CaseInsensitive) ||
+		    QString::fromLatin1(contact->email()).contains(filter, Qt::CaseInsensitive))
+			return true;
+	}
+
+	return false;
+}
+
+void ContactListSortFilterProxyModel::allowOnlineOnlyContacts(bool allow)
+{
+	allowOnlineOnly = allow;
+	invalidateFilter();
+}

@@ -176,7 +176,10 @@ SOURCES += main.cpp \
     flowlayout.cpp \
     statusbarwidget.cpp \
     statuseditor.cpp \
-    contactlistsortfilterproxymodel.cpp
+    contactlistsortfilterproxymodel.cpp \
+    lineedit.cpp \
+    filtercontactslineedit.cpp \
+    triggeroptionbutton.cpp
 HEADERS += mrimclient.h \
     soundplayer.h \
     audio.h \
@@ -284,7 +287,11 @@ HEADERS += mrimclient.h \
     flowlayout.h \
     statusbarwidget.h \
     statuseditor.h \
-    contactlistsortfilterproxymodel.h
+    contactlistsortfilterproxymodel.h \
+    lineedit_p.h \
+    lineedit.h \
+    filtercontactslineedit.h \
+    triggeroptionbutton.h
 FORMS += logindialog.ui \
     searchcontacts.ui \
     addcontact.ui \

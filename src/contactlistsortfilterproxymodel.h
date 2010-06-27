@@ -36,19 +36,27 @@ public:
 	ContactListSortFilterProxyModel(QObject * parent = 0);
 
 	bool isGroup(const QModelIndex& index);
-	Contact* contactFromIndex(const QModelIndex& index);
-	ContactGroup* groupFromIndex(const QModelIndex & index);
+	Contact* contactFromIndex(const QModelIndex& index) const;
+	ContactGroup* groupFromIndex(const QModelIndex & index) const;
 
 	virtual void setSourceModel(QAbstractItemModel* sourceModel);
+
+public slots:
+	void setFilterString(const QString&);
+	void allowOnlineOnlyContacts(bool allow);
 
 signals:
 	void modelRebuilded();
 
 protected:
-	//virtual bool lessThan(const QModelIndex& left, const QModelIndex& right ) const;
+	virtual bool lessThan(const QModelIndex& left, const QModelIndex& right) const;
+	virtual bool filterAcceptsColumn(int source_column, const QModelIndex & source_parent) const;
+	virtual bool filterAcceptsRow(int source_row, const QModelIndex & source_parent) const;
 
 private:
 	ContactListModel* contactListModel;
+	QString filter;
+	bool allowOnlineOnly;
 };
 
 #endif

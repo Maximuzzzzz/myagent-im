@@ -520,97 +520,97 @@
 <context>
     <name>ContactList</name>
     <message>
-        <location filename="../contactlist.cpp" line="550"/>
-        <location filename="../contactlist.cpp" line="608"/>
-        <location filename="../contactlist.cpp" line="652"/>
-        <location filename="../contactlist.cpp" line="715"/>
-        <location filename="../contactlist.cpp" line="768"/>
+        <location filename="../contactlist.cpp" line="422"/>
+        <location filename="../contactlist.cpp" line="480"/>
+        <location filename="../contactlist.cpp" line="524"/>
+        <location filename="../contactlist.cpp" line="587"/>
+        <location filename="../contactlist.cpp" line="640"/>
         <source>Time is out</source>
         <translation>Время вышло</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="555"/>
-        <location filename="../contactlist.cpp" line="613"/>
+        <location filename="../contactlist.cpp" line="427"/>
+        <location filename="../contactlist.cpp" line="485"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="383"/>
+        <location filename="../contactlist.cpp" line="255"/>
         <source>Removing contact failed</source>
         <translation>Не удалось удалить контакт</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="629"/>
+        <location filename="../contactlist.cpp" line="501"/>
         <source>Group %1 already exists.</source>
         <translation>Группа %1 уже существует.</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="640"/>
+        <location filename="../contactlist.cpp" line="512"/>
         <source>Adding group is currently impossible</source>
         <translation>Добавление группы временно невозможно</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="654"/>
-        <location filename="../contactlist.cpp" line="717"/>
-        <location filename="../contactlist.cpp" line="770"/>
+        <location filename="../contactlist.cpp" line="526"/>
+        <location filename="../contactlist.cpp" line="589"/>
+        <location filename="../contactlist.cpp" line="642"/>
         <source>Incorrect data</source>
         <translation>Неверные данные</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="656"/>
-        <location filename="../contactlist.cpp" line="719"/>
-        <location filename="../contactlist.cpp" line="772"/>
+        <location filename="../contactlist.cpp" line="528"/>
+        <location filename="../contactlist.cpp" line="591"/>
+        <location filename="../contactlist.cpp" line="644"/>
         <source>Internal error</source>
         <translation>Внутренняя ошибка</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="658"/>
-        <location filename="../contactlist.cpp" line="721"/>
-        <location filename="../contactlist.cpp" line="774"/>
+        <location filename="../contactlist.cpp" line="530"/>
+        <location filename="../contactlist.cpp" line="593"/>
+        <location filename="../contactlist.cpp" line="646"/>
         <source>Invalid group name</source>
         <translation>Неправильное имя группы</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="660"/>
+        <location filename="../contactlist.cpp" line="532"/>
         <source>Number of groups exceeded</source>
         <translation>Превышено число групп</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="662"/>
-        <location filename="../contactlist.cpp" line="725"/>
-        <location filename="../contactlist.cpp" line="778"/>
+        <location filename="../contactlist.cpp" line="534"/>
+        <location filename="../contactlist.cpp" line="597"/>
+        <location filename="../contactlist.cpp" line="650"/>
         <source>Unknown error</source>
         <translation>Неизвестная ошибка</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="679"/>
-        <location filename="../contactlist.cpp" line="747"/>
+        <location filename="../contactlist.cpp" line="551"/>
+        <location filename="../contactlist.cpp" line="619"/>
         <source>Unknown group</source>
         <translation>Неизвестная группа</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="694"/>
+        <location filename="../contactlist.cpp" line="566"/>
         <source>Group is not empty</source>
         <translation>Группа не пуста</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="703"/>
+        <location filename="../contactlist.cpp" line="575"/>
         <source>Removing group is currently impossible</source>
         <translation>Удаление группы временно невозможно</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="723"/>
-        <location filename="../contactlist.cpp" line="776"/>
+        <location filename="../contactlist.cpp" line="595"/>
+        <location filename="../contactlist.cpp" line="648"/>
         <source>No such group</source>
         <translation>Группа не существует</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="756"/>
+        <location filename="../contactlist.cpp" line="628"/>
         <source>Renaming group is currently impossible</source>
         <translation>Переименование группы временно невозможно</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="587"/>
+        <location filename="../contactlist.cpp" line="459"/>
         <source>Contact %1 already exists</source>
         <translation>Контакт %1 уже существует</translation>
     </message>
@@ -634,37 +634,37 @@
 <context>
     <name>ContactListWindow</name>
     <message>
-        <location filename="../contactlistwindow.cpp" line="189"/>
+        <location filename="../contactlistwindow.cpp" line="209"/>
         <source>Login rejected</source>
         <translation>Вход отклонен</translation>
     </message>
     <message>
-        <location filename="../contactlistwindow.cpp" line="207"/>
+        <location filename="../contactlistwindow.cpp" line="227"/>
         <source>Logout</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="../contactlistwindow.cpp" line="205"/>
+        <location filename="../contactlistwindow.cpp" line="225"/>
         <source>Someone else entered with your login</source>
         <translation>Кто-то еще вошел под Вашим логином</translation>
     </message>
     <message>
-        <location filename="../contactlistwindow.cpp" line="277"/>
+        <location filename="../contactlistwindow.cpp" line="297"/>
         <source>My world</source>
         <translation>Мой мир</translation>
     </message>
     <message>
-        <location filename="../contactlistwindow.cpp" line="281"/>
+        <location filename="../contactlistwindow.cpp" line="301"/>
         <source>My blog</source>
         <translation>Мой блог</translation>
     </message>
     <message>
-        <location filename="../contactlistwindow.cpp" line="285"/>
+        <location filename="../contactlistwindow.cpp" line="305"/>
         <source>My photos</source>
         <translation>Мои фото</translation>
     </message>
     <message>
-        <location filename="../contactlistwindow.cpp" line="289"/>
+        <location filename="../contactlistwindow.cpp" line="309"/>
         <source>My videos</source>
         <translation>Моё видео</translation>
     </message>
@@ -783,6 +783,14 @@
         <location filename="../filemessage.cpp" line="738"/>
         <source>Myagent-im files</source>
         <translation>Файлы myagent-im</translation>
+    </message>
+</context>
+<context>
+    <name>FilterContactsLineEdit</name>
+    <message>
+        <location filename="../filtercontactslineedit.cpp" line="13"/>
+        <source>Filter contacts</source>
+        <translation>Фильтр контактов</translation>
     </message>
 </context>
 <context>

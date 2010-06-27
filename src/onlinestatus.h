@@ -65,8 +65,6 @@ public:
 	bool operator==(OnlineStatus another) { return (m_type == another.m_type); }
 	bool operator!=(OnlineStatus another) { return (m_type != another.m_type); }
 
-	//operator QVariant() const { return static_cast<int>(m_type); }
-	//OnlineStatus operator=(const QVariant& v) { m_type = static_cast<StatusType>(v.toInt()); return *this; }
 private:
 	StatusType m_type;
 };
