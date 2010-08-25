@@ -64,6 +64,7 @@ public:
 	ContactsIterator contactsEnd() { return m_contacts.end(); }
 
 	Contact* findContact(const QByteArray& email);
+	Contact* findContact(const QByteArray& email, QList<Contact*> & list);
 	Contact* findSmsContact(const QString& nickname);
 	Contact* getContact(const QByteArray& email);
 	Contact* findContactWithPhone(const QByteArray& phoneNumber);

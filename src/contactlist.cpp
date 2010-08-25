@@ -91,11 +91,11 @@ void ContactList::addContact(const ContactData& data)
 		m_hiddenGroups.append(group);
 	}
 	
-	Contact* contact = findContact(data.email);
+	Contact* contact = findContact(data.email, (constructing) ? (tmpContacts) : (m_contacts));
 	if (contact)
 	{
 		qDebug() << "preserving contact" << contact->email();
-		m_contacts.removeAll(contact);
+		((constructing) ? (tmpContacts) : (m_contacts)).removeAll(contact);
 		contact->update(data, group);
 	}
 	else
@@ -106,9 +106,15 @@ void ContactList::addContact(const ContactData& data)
 	}
 	
 	if (constructing)
+	{
+		qDebug() << "adding contact to temporary contacts";
 		tmpContacts.append(contact);
+	}
 	else
+	{
+		qDebug() << "adding contact to main contacts";
 		addContact(contact);
+	}
 }
 
 void ContactList::addContact(Contact* contact)
@@ -127,19 +133,25 @@ void ContactList::changeContactStatus(quint32 status, QByteArray email)
 
 Contact* ContactList::findContact(const QByteArray & email)
 {
+	findContact(email, m_contacts);
+}
+
+Contact* ContactList::findContact(const QByteArray& email, QList<Contact*> & list)
+{
 	if (email == "phone")
 		return 0;
 	
-	QList<Contact*>::iterator it = m_contacts.begin();
+	QList<Contact*>::iterator it = list.begin();
 	
-	while (it != m_contacts.end() && (*it)->email() != email)
+	while (it != list.end() && (*it)->email() != email)
 		++it;
 
-	if (it == m_contacts.end())
+	if (it == list.end())
 		return 0;
 	else
 		return *it;
 }
+
 
 Contact* ContactList::findSmsContact(const QString & nickname)
 {
@@ -274,6 +286,7 @@ void ContactList::slotContactAuthorized(const QByteArray& email)
 
 void ContactList::load()
 {
+	qDebug() << "ContactList::load()";
 	if (m_account->path().isEmpty())
 		return;
 	
@@ -318,7 +331,18 @@ void ContactList::load()
 		Contact* contact = new Contact(m_account);
 		contact->load(in);
 		if (in.status() == QDataStream::Ok)
-			m_contacts.append(contact);
+		{
+			Contact* cont = findContact(contact->email());
+			if (cont)
+			{
+				qDebug() << "Contact" << cont->email() << "already exists!";
+				cont = contact;
+				delete contact;
+			}
+			else
+				m_contacts.append(contact);
+
+		}
 		else
 		{
 			delete contact;
