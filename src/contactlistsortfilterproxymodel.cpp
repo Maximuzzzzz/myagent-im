@@ -74,7 +74,17 @@ bool ContactListSortFilterProxyModel::lessThan(const QModelIndex& left, const QM
 	if (!contact2)
 		return false;
 
-	return contact1->nickname() < contact2->nickname();
+	if (contact1->status() <= OnlineStatus::invisible && contact2->status() <= OnlineStatus::invisible || 
+	 contact1->status() == contact2->status())
+	{
+		int cmp = contact1->nickname().compare(contact2->nickname(), Qt::CaseInsensitive);
+		if (cmp == 0)
+			return contact1->email() < contact2->email();
+		else
+			return cmp < 0;
+	}
+	else
+		return (contact1->status() < contact2->status());
 }
 
 bool ContactListSortFilterProxyModel::filterAcceptsColumn(int /*source_column*/, const QModelIndex& /*source_parent*/) const

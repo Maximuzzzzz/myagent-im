@@ -37,12 +37,12 @@ LoginDialog::LoginDialog(QWidget* parent)
 	
 	QDir dir(theRM.basePath());
 	QStringList filters;
-	filters << "?*@mail.ru" << "?*@list.ru" << "?*inbox.ru" << "?*bk.ru";
+	filters << "?*@mail.ru" << "?*@list.ru" << "?*inbox.ru" << "?*bk.ru" << "?*corp.mail.ru";
 	emailBox->addItems(dir.entryList(filters, QDir::Dirs | QDir::CaseSensitive));
 	emailBox->lineEdit()->clear();
 	emailBox->lineEdit()->completer()->setCompletionMode(QCompleter::PopupCompletion);
 
-	emailBox->lineEdit()->setValidator(new QRegExpValidator(QRegExp("([a-z]|[A-Z]|[0-9])+([a-z]|[A-Z]|[0-9]|[_\\-\\.])*@(mail.ru|list.ru|inbox.ru|bk.ru)"), emailBox));
+	emailBox->lineEdit()->setValidator(new QRegExpValidator(QRegExp("([a-z]|[A-Z]|[0-9])+([a-z]|[A-Z]|[0-9]|[_\\-\\.])*@(mail.ru|list.ru|inbox.ru|bk.ru|corp.mail.ru)"), emailBox));
 	passwordEdit->setValidator(new QRegExpValidator(QRegExp(".+"), passwordEdit));
 
 	connect(emailBox->lineEdit(), SIGNAL(textEdited(const QString&)), SLOT(checkEmail()));

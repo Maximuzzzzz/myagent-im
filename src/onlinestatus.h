@@ -34,13 +34,13 @@ class OnlineStatus
 public:
 	enum StatusType
 	{
-		Unknown,
-		Offline,
-		Invisible,
-		Away,
 		Online,
-		Connecting,
+		Away,
+		Invisible,
+		Offline,
 		Unauthorized,
+		Connecting,
+		Unknown,
 		Null
 	};
 	
@@ -64,6 +64,10 @@ public:
 	
 	bool operator==(OnlineStatus another) { return (m_type == another.m_type); }
 	bool operator!=(OnlineStatus another) { return (m_type != another.m_type); }
+	bool operator<=(OnlineStatus another) { return (m_type <= another.m_type); }
+	bool operator>=(OnlineStatus another) { return (m_type >= another.m_type); }
+	bool operator<(OnlineStatus another) { return (m_type < another.m_type); }
+	bool operator>(OnlineStatus another) { return (m_type > another.m_type); }
 
 private:
 	StatusType m_type;
