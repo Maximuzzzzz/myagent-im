@@ -116,8 +116,11 @@ QString Account::path() const
 	if (!dir.exists(basePath))
 		return "";
 
+	if (!dir.exists(email()))
+		dir.mkdir(email());
+
 	dir.cd(email());
-	
+
 	return dir.absolutePath();
 }
 

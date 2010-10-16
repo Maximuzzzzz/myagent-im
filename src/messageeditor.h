@@ -69,6 +69,7 @@ public slots:
 	void cancelTransferring(quint32 sessId = 0);
 	bool isIgnoreFont();
 	void slotIgnoreSet(bool ignore);
+	void setCheckSpelling(bool on);
 
 signals:
 	void textChanged();
@@ -79,6 +80,7 @@ signals:
 	void signalProxy(quint32 idRequest, quint32 dataType, QByteArray userData, QByteArray lpsIpPort, quint32 sessionId);
 	void signalProxyAck(QByteArray mirrorIps);
 	void setIgnore(bool b);
+	void setSignalCheckSpelling(bool b);
 
 protected:
 	virtual void hideEvent(QHideEvent* event);
@@ -89,8 +91,6 @@ private slots:
 	void chooseFont();
 	void chooseFontColor();
 	void chooseBackgroundColor();
-
-	void setCheckSpelling(bool on);
 
 	void setCurrentFont(const QFont& f);
 	void setTextColor(const QColor& c);
@@ -172,7 +172,6 @@ private:
 	QToolButton* minus;
 	QToolButton* send;
 	QPushButton* cancel;
-	//QToolButton* cancel;
 
 	quint32 totalSize;
 	double progressStep;

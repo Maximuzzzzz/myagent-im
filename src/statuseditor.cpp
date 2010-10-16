@@ -31,13 +31,15 @@
 
 StatusEditor::StatusEditor(QWidget *parent)
 {
+	maxSize = 500;
+
 	setWindowFlags(Qt::Popup);
 	QVBoxLayout* layout = new QVBoxLayout;
 	QLabel* label1 = new QLabel(tr("Microblog"));
 	QLabel* label2 = new QLabel("<font color=#888888>" + QDateTime::currentDateTime().toString("d MMM yy, hh:mm") + "</font>");
 
 	editor = new QLineEdit(this);
-	editor->setMaxLength(160);
+	editor->setMaxLength(maxSize);
 	connect(editor, SIGNAL(textChanged(const QString&)), SLOT(slotTextChanged(const QString&)));
 
 	QWidget* bottomWidget = new QWidget(this);
@@ -49,7 +51,7 @@ StatusEditor::StatusEditor(QWidget *parent)
 	QHBoxLayout* bottomLayout = new QHBoxLayout;
 	QVBoxLayout* twoLabelsLayout = new QVBoxLayout;
 
-	symbolsCounter = new QLabel(tr("%n symbol(s) left", "", 160));
+	symbolsCounter = new QLabel(tr("%n symbol(s) left", "", maxSize));
 	QLabel* linkToFriends = new QLabel("<a href=\"#\">" + tr("Checkout news from friends") + "</a>");
 
 	QFont font;
@@ -85,7 +87,7 @@ StatusEditor::~StatusEditor()
 
 void StatusEditor::slotTextChanged(const QString& text)
 {
-	symbolsCounter->setText(tr("%n symbol(s) left", "", 160 - text.length()));
+	symbolsCounter->setText(tr("%n symbol(s) left", "", maxSize - text.length()));
 	if (text.length() == 0)
 		sayButton->setEnabled(false);
 	else

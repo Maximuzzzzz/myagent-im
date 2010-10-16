@@ -70,7 +70,7 @@ bool SmsEditor::eventFilter(QObject * obj, QEvent * ev)
 		qDebug() << "SmsEditor::eventFilter, key =" << QString::number(keyEvent->key(), 16) << ", mods =" << QString::number(keyEvent->modifiers(), 16);
 		if (keyEvent->key() == Qt::Key_Return)
 		{
-			QString enterVariant = theRM.settings()->value("Messages/sendOnEnter", "Ctrl+Enter").toString();
+			QString enterVariant = m_account->settings()->value("Messages/sendOnEnter", "Ctrl+Enter").toString();
 			if (enterVariant == "Enter")
 			{
 				if (!keyEvent->isAutoRepeat() && keyEvent->modifiers() == Qt::NoModifier)

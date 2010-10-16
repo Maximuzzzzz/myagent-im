@@ -97,7 +97,7 @@ bool MessageEditor::eventFilter(QObject * obj, QEvent * ev)
 		qDebug() << "MessageEdit::eventFilter, key =" << QString::number(keyEvent->key(), 16) << ", mods =" << QString::number(keyEvent->modifiers(), 16);
 		if (keyEvent->key() == Qt::Key_Return)
 		{
-			QString enterVariant = theRM.settings()->value("Messages/sendOnEnter", "Ctrl+Enter").toString();
+			QString enterVariant = m_account->settings()->value("Messages/sendOnEnter", "Ctrl+Enter").toString();
 			if (enterVariant == "Enter")
 			{
 				if (!keyEvent->isAutoRepeat() && keyEvent->modifiers() == Qt::NoModifier)
@@ -160,7 +160,7 @@ void MessageEditor::createToolBar()
 {
 	toolBar = new QToolBar;
 	
-	spellAction = addToolAction(toolIcon("orfo"), this, SLOT(setCheckSpelling(bool)));
+	spellAction = addToolAction(toolIcon("orfo"), this, SIGNAL(setSignalCheckSpelling(bool)));
 
 	toolBar->addSeparator();
 
@@ -326,23 +326,15 @@ void MessageEditor::readSettings()
 		return;
 	}
 	
-	QSettings* settings = m_account->settings();
-	
-	if (!settings)
-	{
-		qDebug() << "MessageEditor::readSettings(): settings don't exist";
-		return;
-	}
-	
-	bool checkSpelling = settings->value("MessageEditor/checkSpelling", false).toBool();
+	bool checkSpelling = m_account->settings()->value("MessageEditor/checkSpelling", false).toBool();
 	setCheckSpelling(checkSpelling);
 	
 	QString settingsPrefix = "MessageEditor_" + m_contact->email() + "/";
-	defaultFont.fromString(settings->value(settingsPrefix + "font").toString());
-	defaultFontColor = QColor(settings->value(settingsPrefix + "textColor", "#000000").toString());
-	defaultBkColor = QColor(settings->value(settingsPrefix + "backgroundColor", "#ffffff").toString());
+	defaultFont.fromString(m_account->settings()->value(settingsPrefix + "font").toString());
+	defaultFontColor = QColor(m_account->settings()->value(settingsPrefix + "textColor", "#000000").toString());
+	defaultBkColor = QColor(m_account->settings()->value(settingsPrefix + "backgroundColor", "#ffffff").toString());
 
-	ignoreAction->setChecked(settings->value("ChatWindow/ignoreSettings", false).toBool());
+	ignoreAction->setChecked(m_account->settings()->value("ChatWindow/ignoreSettings", false).toBool());
 
 	QTextCharFormat fmt;
 	fmt.setFont(defaultFont);
@@ -360,23 +352,15 @@ void MessageEditor::writeSettings()
 		return;
 	}
 
-	QSettings* settings = m_account->settings();
-
-	if (!settings)
-	{
-		qDebug() << "MessageEditor::writeSettings(): settings don't exist";
-		return;
-	}
-
 	QString settingsPrefix = "MessageEditor_" + m_contact->email() + "/";
 	
-	settings->setValue(settingsPrefix + "font", lastUserFormat.font().toString());
-	settings->setValue(settingsPrefix + "textColor", lastUserFormat.foreground().color().name());
+	m_account->settings()->setValue(settingsPrefix + "font", lastUserFormat.font().toString());
+	m_account->settings()->setValue(settingsPrefix + "textColor", lastUserFormat.foreground().color().name());
 	if (lastUserFormat.background().style() == Qt::NoBrush)
-		settings->remove(settingsPrefix + "backgroundColor");
+		m_account->settings()->remove(settingsPrefix + "backgroundColor");
 	else
-		settings->setValue(settingsPrefix + "backgroundColor", lastUserFormat.background().color().name());
-	settings->setValue("ChatWindow/ignoreSettings", ignoreAction->isChecked());
+		m_account->settings()->setValue(settingsPrefix + "backgroundColor", lastUserFormat.background().color().name());
+	m_account->settings()->setValue("ChatWindow/ignoreSettings", ignoreAction->isChecked());
 }
 
 bool MessageEditor::isBlocked()
@@ -639,12 +623,12 @@ void MessageEditor::messageEditorActivate()
 
 void MessageEditor::setCheckSpelling(bool on)
 {
+	qDebug() << "setCheckSpelling" << on;
 	messageEdit->setCheckSpelling(on);
 	if (spellAction->isChecked() != on)
 		spellAction->setChecked(on);
 	
-	QSettings* settings = m_account->settings();
-	settings->setValue("MessageEditor/checkSpelling", spellAction->isChecked());
+	m_account->settings()->setValue("MessageEditor/checkSpelling", spellAction->isChecked());
 }
 
 bool MessageEditor::event(QEvent* event)

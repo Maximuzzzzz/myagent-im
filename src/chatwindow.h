@@ -68,6 +68,8 @@ signals:
 	void newMessage(ChatWindow* sender);
 	void setIgnore(bool ignore);
 	void ignoreSet(bool ignore);
+	void setSignalCheckSpelling(bool b);
+	void signalCheckSpellingSet(bool b);
 
 private slots:
 	void send();

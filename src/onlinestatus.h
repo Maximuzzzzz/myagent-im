@@ -34,14 +34,14 @@ class OnlineStatus
 public:
 	enum StatusType
 	{
-		Online,
-		Away,
-		Invisible,
-		Offline,
-		Unauthorized,
-		Connecting,
-		Unknown,
-		Null
+		Online,		//Don't rearrange these strings!!!
+		Away,		//
+		Invisible,	//
+		Offline,	//
+		Unauthorized,	//
+		Connecting,	//
+		Unknown,	//
+		Null		//
 	};
 	
 	static const OnlineStatus unknown;

@@ -40,3 +40,8 @@ MyAgent-IM - программа для обмена сообщениями по 
 Должно вывестись примерно следующее:
 QMake version 2.01a
 Using Qt version 4.4.0 in /usr/lib
+
+При установке deb-пакета может возникнуть ошибка:
+"Error: dependency is not satisfiable: phonon-backend"
+Для её устранения необходимо установить phonon-backend-gstreamer или phonon-backend-xine или любой другой, отображающийся в списке по команде:
+`aptitude search phonon-backend`

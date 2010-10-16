@@ -2,6 +2,7 @@
 #define AUDIO_H
 
 #include "soundplayer.h"
+#include "account.h"
 
 #include <QSet>
 
@@ -13,10 +14,12 @@ public:
 
 public slots:
 	void stop(SoundType soundType);
+	void setAccount(Account* account);
 
 private:
 	QSet<SoundType> sounds;
 	SoundPlayer* audio;
+	Account* m_account;
 };
 
 #endif

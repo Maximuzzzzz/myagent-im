@@ -59,8 +59,14 @@ public:
 
 	ChatWindowsManager* getChatWindowsManager() { return chatWindowsManager; }
 
+	enum Widgets
+	{
+		MicroBlog
+	};
+
 public slots:
 	void openMail();
+	void visibleWidget(Widgets w, bool st);
 
 protected:
 	virtual void closeEvent(QCloseEvent* event);

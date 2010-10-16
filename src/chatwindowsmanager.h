@@ -49,6 +49,7 @@ public:
 
 signals:
 	void ignoreSet(bool ignore);
+	void signalCheckSpellingSet(bool b);
 
 private slots:
 	void mainWindowActivate(ChatWindow* wnd);

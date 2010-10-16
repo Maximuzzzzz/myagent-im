@@ -40,7 +40,8 @@
 
 #include "resourcemanager.h"
 
-SettingsWindow::SettingsWindow()
+SettingsWindow::SettingsWindow(Account* account, ContactListWindow* clw)
+	: m_account(account), m_clw(clw)
 {
 	setWindowTitle(tr("Settings"));
 	setWindowIcon(QIcon(":icons/settings.png"));
@@ -79,6 +80,7 @@ SettingsWindow::SettingsWindow()
 	createMessagesPage();
 	createWindowsPage();
 	createAudioPage();
+	createViewPage();
 
 	listWidget->setCurrentRow(0);
 	listWidget->setMaximumWidth(listWidget->sizeHintForColumn(0) + 10);
@@ -97,11 +99,11 @@ void SettingsWindow::createCommonPage()
 	QHBoxLayout* hl = new QHBoxLayout;
 
 	awayCheckBox = new QCheckBox(tr("Set away status after"));
-	awayCheckBox->setChecked(theRM.settings()->value("Common/autoAwayEnabled", false).toBool());
+	awayCheckBox->setChecked(m_account->settings()->value("Common/autoAwayEnabled", false).toBool());
 	minutesEdit = new QLineEdit;
 	minutesEdit->setValidator(new QIntValidator(1, 1000, minutesEdit));
 	minutesEdit->setFixedWidth(minutesEdit->fontMetrics().size(Qt::TextSingleLine, "1000").width());
-	minutesEdit->setText(theRM.settings()->value("Common/autoAwayMinutes", "10").toString());
+	minutesEdit->setText(m_account->settings()->value("Common/autoAwayMinutes", "10").toString());
 	connect(awayCheckBox, SIGNAL(toggled(bool)), minutesEdit, SLOT(setEnabled(bool)));
 	minutesEdit->setEnabled(awayCheckBox->isChecked());
 	QLabel* tailLabel = new QLabel(tr("minutes of idle"));
@@ -125,14 +127,15 @@ void SettingsWindow::saveSettings()
 	saveMessagesSettings();
 	saveCommonSettings();
 	saveAudioSettings();
+	saveViewSettings();
 	if (saveWindowsSettings())
 		close();
 }
 
 void SettingsWindow::saveCommonSettings()
 {
-	theRM.settings()->setValue("Common/autoAwayEnabled", awayCheckBox->isChecked());
-	theRM.settings()->setValue("Common/autoAwayMinutes", minutesEdit->text());
+	m_account->settings()->setValue("Common/autoAwayEnabled", awayCheckBox->isChecked());
+	m_account->settings()->setValue("Common/autoAwayMinutes", minutesEdit->text());
 }
 
 void SettingsWindow::createMessagesPage()
@@ -149,7 +152,7 @@ void SettingsWindow::createMessagesPage()
 	ctrlEnterButton = new QRadioButton(tr("Send message on Ctrl+Enter pressed"));
 	altSButton = new QCheckBox(tr("Send message on Alt+S pressed"));
 
-	QString enterVariant = theRM.settings()->value("Messages/sendOnEnter", "Ctrl+Enter").toString();
+	QString enterVariant = m_account->settings()->value("Messages/sendOnEnter", "Ctrl+Enter").toString();
 	if (enterVariant == "Enter")
 		enterButton->setChecked(true);
 	else if (enterVariant == "Enter+Enter")
@@ -157,7 +160,7 @@ void SettingsWindow::createMessagesPage()
 	else
 		ctrlEnterButton->setChecked(true);
 
-	altSButton->setChecked(theRM.settings()->value("Messages/sendOnAltS", false).toBool());
+	altSButton->setChecked(m_account->settings()->value("Messages/sendOnAltS", false).toBool());
 
 	sendLayout->addWidget(enterButton);
 	sendLayout->addWidget(doubleEnterButton);
@@ -187,8 +190,8 @@ void SettingsWindow::saveMessagesSettings()
 	else
 		enterVariant = "Ctrl+Enter";
 
-	theRM.settings()->setValue("Messages/sendOnEnter", enterVariant);
-	theRM.settings()->setValue("Messages/sendOnAltS", altSButton->isChecked());
+	m_account->settings()->setValue("Messages/sendOnEnter", enterVariant);
+	m_account->settings()->setValue("Messages/sendOnAltS", altSButton->isChecked());
 }
 
 void SettingsWindow::setChatWindowsManager(ChatWindowsManager* cwm)
@@ -203,7 +206,7 @@ void SettingsWindow::createWindowsPage()
 
 	tabWindows = new QCheckBox(tr("Tabs in dialog window"));
 	//tabWindows->setChecked(chatWindowsManager->settings()->value("Windows/UseTabs", true).toBool());
-	tabWindows->setChecked(theRM.settings()->value("Windows/UseTabs", true).toBool());
+	tabWindows->setChecked(m_account->settings()->value("Windows/UseTabs", true).toBool());
 
 	layout->addWidget(tabWindows);
 	layout->addStretch();
@@ -216,7 +219,7 @@ void SettingsWindow::createWindowsPage()
 
 bool SettingsWindow::saveWindowsSettings()
 {
-	bool useTabs = theRM.settings()->value("Windows/UseTabs", true).toBool();
+	bool useTabs = m_account->settings()->value("Windows/UseTabs", true).toBool();
 	if (useTabs != tabWindows->isChecked() && chatWindowsManager->isAnyWindowVisible())
 	{
 		if (QMessageBox::question(this,
@@ -226,7 +229,7 @@ bool SettingsWindow::saveWindowsSettings()
 			!= QMessageBox::Yes)
 			return false;
 	}
-	theRM.settings()->setValue("Windows/UseTabs", tabWindows->isChecked());
+	m_account->settings()->setValue("Windows/UseTabs", tabWindows->isChecked());
 	chatWindowsManager->reloadStatus(tabWindows->isChecked());
 	return true;
 }
@@ -237,7 +240,7 @@ void SettingsWindow::createAudioPage()
 	QVBoxLayout* layout = new QVBoxLayout;
 
 	enableSounds = new QCheckBox(tr("Enable sounds"));
-	enableSounds->setChecked(theRM.settings()->value("Sounds/Enable", true).toBool());
+	enableSounds->setChecked(m_account->settings()->value("Sounds/Enable", true).toBool());
 
 	layout->addWidget(enableSounds);
 	layout->addStretch();
@@ -250,5 +253,28 @@ void SettingsWindow::createAudioPage()
 
 void SettingsWindow::saveAudioSettings()
 {
-	theRM.settings()->setValue("Sounds/Enable", enableSounds->isChecked());
+	m_account->settings()->setValue("Sounds/Enable", enableSounds->isChecked());
+}
+
+void SettingsWindow::createViewPage()
+{
+	QWidget* page = new QWidget;
+	QVBoxLayout* layout = new QVBoxLayout;
+
+	enableMicroBlog = new QCheckBox(tr("Enable microblog"));
+	enableMicroBlog->setChecked(m_account->settings()->value("MicroBlog/Enable", true).toBool());
+
+	layout->addWidget(enableMicroBlog);
+	layout->addStretch();
+
+	page->setLayout(layout);
+
+	listWidget->addItem(tr("View"));
+	pagesWidget->addWidget(page);
+}
+
+void SettingsWindow::saveViewSettings()
+{
+	m_account->settings()->setValue("MicroBlog/Enable", enableMicroBlog->isChecked());
+	m_clw->visibleWidget(ContactListWindow::MicroBlog, enableMicroBlog->isChecked());
 }

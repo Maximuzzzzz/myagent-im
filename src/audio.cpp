@@ -7,7 +7,7 @@
 
 void Audio::play(SoundType soundType)
 {
-	if (!theRM.settings()->value("Sounds/Enable", true).toBool())
+	if (m_account && !m_account->settings()->value("Sounds/Enable", true).toBool())
 		return;
 
 	if (!sounds.contains(soundType))
@@ -25,4 +25,9 @@ void Audio::stop(SoundType soundType)
 {
 	qDebug() << "removing current sound type";
 	sounds.remove(soundType);
+}
+
+void Audio::setAccount(Account* account)
+{
+	m_account = account;
 }

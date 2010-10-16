@@ -27,6 +27,9 @@
 #include <QSettings>
 #include "chatwindowsmanager.h"
 #include "account.h"
+#include "contactlistwindow.h"
+
+class Account;
 
 class QListWidget;
 class QStackedWidget;
@@ -39,7 +42,7 @@ class SettingsWindow : public QWidget
 {
 Q_OBJECT
 public:
-	SettingsWindow();
+	SettingsWindow(Account* account, ContactListWindow* clw);
 	~SettingsWindow();
 
 	void setChatWindowsManager(ChatWindowsManager* cwm);
@@ -60,6 +63,9 @@ private:
 	void createAudioPage();
 	void saveAudioSettings();
 
+	void createViewPage();
+	void saveViewSettings();
+
 	QListWidget* listWidget;
 	QStackedWidget* pagesWidget;
 
@@ -79,7 +85,14 @@ private:
 	//audio page widgets
 	QCheckBox* enableSounds;
 
+	//view page widgets
+	QCheckBox* enableMicroBlog;
+
 	ChatWindowsManager* chatWindowsManager;
+
+	Account* m_account;
+
+	ContactListWindow* m_clw;
 
 };
 

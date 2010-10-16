@@ -37,7 +37,7 @@ ChatWindowsManager::ChatWindowsManager(Account* account, QObject *parent)
 	: QObject(parent), m_account(account)
 {
 	connect(m_account->chatsManager(), SIGNAL(sessionInitialized(ChatSession*)), this, SLOT(createWindow(ChatSession*)));
-	useTabs = theRM.settings()->value("Windows/UseTabs", true).toBool();
+	useTabs = m_account->settings()->value("Windows/UseTabs", true).toBool();
 
 	if (useTabs)
 		loadMainWindow();
@@ -116,6 +116,8 @@ ChatWindow* ChatWindowsManager::createWindow(ChatSession* session)
 	connect(session, SIGNAL(destroyed(QObject*)), this, SLOT(removeWindow(QObject*)));
 	connect(wnd, SIGNAL(setIgnore(bool)), this, SIGNAL(ignoreSet(bool)));
 	connect(this, SIGNAL(ignoreSet(bool)), wnd, SIGNAL(ignoreSet(bool)));
+	connect(wnd, SIGNAL(setSignalCheckSpelling(bool)), this, SIGNAL(signalCheckSpellingSet(bool)));
+	connect(this, SIGNAL(signalCheckSpellingSet(bool)), wnd, SIGNAL(signalCheckSpellingSet(bool)));
 	if (useTabs)
 	{
 		int tabIndex = tabs->addTab(wnd, wnd->windowIcon(), session->contact()->nickname());

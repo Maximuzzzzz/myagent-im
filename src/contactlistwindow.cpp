@@ -110,7 +110,7 @@ ContactListWindow::ContactListWindow(Account* account)
 	connect(onlineOnlyContactsButton, SIGNAL(toggled(bool)), proxyModel, SLOT(allowOnlineOnlyContacts(bool)));
 	proxyModel->allowOnlineOnlyContacts(onlineOnlyContactsButton->isChecked());
 
-	statusBar = new StatusBarWidget(); //TODO: if account offline or connecting, statusBar must be disabled!
+	statusBar = new StatusBarWidget();
 	connect(statusBar, SIGNAL(clicked()), this, SLOT(openStatusEditor()));
 
 	statusEditor = new StatusEditor(this);
@@ -140,6 +140,9 @@ ContactListWindow::ContactListWindow(Account* account)
 	layout->addLayout(bottonLayout);
 
 	setLayout(layout);
+
+	if (!m_account->settings()->value("MicroBlog/Enable", true).toBool())
+		statusBar->hide();
 
 	readSettings();
 
@@ -348,9 +351,9 @@ void ContactListWindow::openMailRuUrlEnd(quint32 status, bool timeout)
 
 void ContactListWindow::checkAutoAwayTime(int seconds)
 {
-	if (theRM.settings()->value("Common/autoAwayEnabled", false).toBool())
+	if (m_account->settings()->value("Common/autoAwayEnabled", false).toBool())
 	{
-		int awaySeconds = 60*theRM.settings()->value("Common/autoAwayMinutes", 10).toUInt();
+		int awaySeconds = 60*m_account->settings()->value("Common/autoAwayMinutes", 10).toUInt();
 
 		if (seconds >= awaySeconds)
 			m_account->setAutoAway(true);
@@ -392,4 +395,14 @@ void ContactListWindow::slotSetOnlineStatus(OnlineStatus status)
 	}
 	else
 		statusBar->setActive(true);
+}
+
+void ContactListWindow::visibleWidget(Widgets w, bool st)
+{
+	switch (w)
+	{
+		case MicroBlog:
+			statusBar->setVisible(st);
+			return;
+	}
 }

@@ -242,7 +242,7 @@ void MainMenuButton::showSettingsWindow()
 		return;
 	}
 
-	settingsWindow = new SettingsWindow;
+	settingsWindow = new SettingsWindow(m_account, mainWindow);
 	settingsWindow->setChatWindowsManager(chatWindowsManager);
 	centerWindow(settingsWindow);
 	settingsWindow->show();

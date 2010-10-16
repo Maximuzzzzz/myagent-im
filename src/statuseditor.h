@@ -45,6 +45,7 @@ private slots:
 	void slotSendStatus();
 
 private:
+	int maxSize; //TODO: must be const
 	QLabel* symbolsCounter;
 	QLineEdit* editor;
 	QPushButton* sayButton;
