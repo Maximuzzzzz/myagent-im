@@ -81,9 +81,10 @@ private slots:
 	void openMailRuUrlEnd(quint32 status, bool timeout);
 	void checkAutoAwayTime(int seconds);
 	void openStatusEditor();
-	void sendStatus(const QString& status);
-	void slotStatusChanged(QByteArray status);
+	void sendMicrotext(const QString& microText);
+	void slotMicroblogChanged(QString microText);
 	void slotSetOnlineStatus(OnlineStatus status);
+//	void slotConferenceAck(const QByteArray& confChat, const QString& confName);
 
 private:
 	void writeSettings();

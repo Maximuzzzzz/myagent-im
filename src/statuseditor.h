@@ -23,6 +23,8 @@
 #ifndef STATUSEDITOR_H
 #define STATUSEDITOR_H
 
+#define maxSize 500
+
 #include <QWidget>
 #include <QLabel>
 #include <QLineEdit>
@@ -35,17 +37,16 @@ public:
 	StatusEditor(QWidget *parent = 0);
 	~StatusEditor();
 
-	void setStatus(QByteArray text);
+	void setStatus(QString text);
 
 signals:
-	void sendStatus(const QString& text);
+	void sendMicrotext(const QString& text);
 
 private slots:
 	void slotTextChanged(const QString& text);
-	void slotSendStatus();
+	void slotSendMicrotext();
 
 private:
-	int maxSize; //TODO: must be const
 	QLabel* symbolsCounter;
 	QLineEdit* editor;
 	QPushButton* sayButton;

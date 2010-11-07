@@ -179,7 +179,11 @@ SOURCES += main.cpp \
     contactlistsortfilterproxymodel.cpp \
     lineedit.cpp \
     filtercontactslineedit.cpp \
-    triggeroptionbutton.cpp
+    triggeroptionbutton.cpp \
+	newconferencedialog.cpp \
+	tasknewconference.cpp \
+	mrimmime.cpp \
+	conferencecontextmenu.cpp
 HEADERS += mrimclient.h \
     soundplayer.h \
     audio.h \
@@ -291,13 +295,18 @@ HEADERS += mrimclient.h \
     lineedit_p.h \
     lineedit.h \
     filtercontactslineedit.h \
-    triggeroptionbutton.h
+    triggeroptionbutton.h \
+	newconferencedialog.h \
+	tasknewconference.h \
+	mrimmime.h \
+	conferencecontextmenu.h
 FORMS += logindialog.ui \
     searchcontacts.ui \
     addcontact.ui \
     askauthorization.ui \
     authorize.ui \
-    editphones.ui
+    editphones.ui \
+	newconference.ui
 LEXSOURCES += emoticons.ll \
     rtf.ll \
     plaintextparser.ll

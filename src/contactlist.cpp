@@ -36,6 +36,7 @@
 #include "taskaddgroup.h"
 #include "taskremovegroup.h"
 #include "taskrenamegroup.h"
+#include "tasknewconference.h"
 
 ContactList::ContactList(Account* account)
 	: QObject(account), m_account(account)
@@ -57,6 +58,8 @@ void ContactList::clear()
 	qDeleteAll(m_groups);
 	m_groups.clear();
 
+	emit groupsCleared();
+
 	qDeleteAll(m_hiddenGroups);
 	m_hiddenGroups.clear();
 
@@ -69,28 +72,28 @@ void ContactList::clear()
 
 void ContactList::addGroup(quint32 id, quint32 flags, const QString& name)
 {
+	qDebug() << "ContactList::addGroup" << constructing;
 	ContactGroup* group = new ContactGroup(id, flags, name);
 	m_groups.append(group);
-	
-	if (!constructing) emit groupAdded(group);
+
+	/*if (!constructing) */emit groupAdded(group);
 }
 
-void ContactList::addContact(const ContactData& data)
+Contact* ContactList::addContact(const ContactData& data)
 {
 	ContactGroup* group;
 	uint id = data.group;
+
 	QList<ContactGroup*>::const_iterator it = m_groups.begin();
 	while (it != m_groups.end() && (*it)->id() != id) ++it;
 	if (it != m_groups.end())
-	{
 		group = *it;
-	}
 	else
 	{
 		group = new ContactGroup(data.group, 0, "");
 		m_hiddenGroups.append(group);
 	}
-	
+
 	Contact* contact = findContact(data.email, (constructing) ? (tmpContacts) : (m_contacts));
 	if (contact)
 	{
@@ -102,7 +105,6 @@ void ContactList::addContact(const ContactData& data)
 	{
 		qDebug() << "creating new contact for contact" << data.email << data.nick;
 		contact = new Contact(data, group, m_account);
-		qDebug() << "contact = " << (void*)contact;
 	}
 	
 	if (constructing)
@@ -115,6 +117,8 @@ void ContactList::addContact(const ContactData& data)
 		qDebug() << "adding contact to main contacts";
 		addContact(contact);
 	}
+
+	return contact;
 }
 
 void ContactList::addContact(Contact* contact)
@@ -133,7 +137,7 @@ void ContactList::changeContactStatus(quint32 status, QByteArray email)
 
 Contact* ContactList::findContact(const QByteArray & email)
 {
-	findContact(email, m_contacts);
+	return findContact(email, m_contacts);
 }
 
 Contact* ContactList::findContact(const QByteArray& email, QList<Contact*> & list)
@@ -210,6 +214,8 @@ void ContactList::beginUpdating()
 	qDebug() << "ContactList::beginUpdating()";
 	qDeleteAll(m_groups);
 	m_groups.clear();
+
+	emit groupsCleared();
 	
 	qDeleteAll(m_hiddenGroups);
 	m_hiddenGroups.clear();
@@ -244,11 +250,12 @@ bool ContactList::removeContactOnServer(Contact* contact)
 		return false;
 	}
 	
-	if (contact->isTemporary())
+	if (contact->isTemporary() && !contact->isConference())
 	{
 		m_contacts.removeAll(contact);
-		delete contact;
-		emit updated();
+		emit contactRemoved(contact);
+		//delete contact;
+		//emit updated();
 
 		return true;
 	}
@@ -271,12 +278,12 @@ void ContactList::removeContactOnServerEnd(quint32 status, bool timeout)
 	Tasks::RemoveContact* task = qobject_cast<Tasks::RemoveContact*>(sender());
 	Contact* contact = task->contact();
 	m_contacts.removeAll(contact);
-	delete contact;
-	emit updated();
+	emit contactRemoved(contact);
 }
 
 void ContactList::slotContactAuthorized(const QByteArray& email)
 {
+	qDebug() << "ContactList::slotContactAuthorized";
 	Contact* contact = getContact(email);
 	if (contact)
 		contact->setAuthorized();
@@ -317,6 +324,7 @@ void ContactList::load()
 	{
 		ContactGroup* group = new ContactGroup(in);
 		m_groups.append(group);
+		emit groupAdded(group);
 	}
 	
 	if (in.status() != QDataStream::Ok)
@@ -461,7 +469,8 @@ void ContactList::addContactOnServerEnd(quint32 status, bool timeout)
 		{
 			qDebug() << "addContactOnServerEnd remove temporary contact";
 			m_contacts.removeAll(contact);
-			delete contact;
+			//delete contact;
+			emit contactRemoved(contact);
 		}
 		else
 		{
@@ -469,10 +478,81 @@ void ContactList::addContactOnServerEnd(quint32 status, bool timeout)
 			return;
 		}
 	}
-	
-	addContact(task->contactData());
 
-	emit updated();
+	addContact(task->contactData());
+}
+
+
+bool ContactList::newConferenceOnServer(QString confName, QByteArray owner, QList<QByteArray> members)
+{
+	qDebug() << "ContactList::newConferenceOnServer" << confName;
+	MRIMClient* mc = m_account->client();
+	
+	Task* task = new Tasks::NewConference(confName, owner, mc, members);
+	connect(task, SIGNAL(done(quint32, bool)), this, SLOT(newConferenceOnServerEnd(quint32, bool)));
+	if (!task->exec())
+	{
+		qDebug() << "new conference task returned 0";
+		return false;
+	}
+	
+	return true;
+}
+
+bool ContactList::addConferenceOnServer(const QByteArray & chat, const QString & confName)
+{
+	Contact* contact = findContact(chat);
+	if (contact)
+		return false;
+
+	qDebug() << "ContactList::addConferenceOnServer" << confName << chat;
+	MRIMClient* mc = m_account->client();
+	
+	Task* task = new Tasks::NewConference(confName, chat, mc, QList<QByteArray>());
+	connect(task, SIGNAL(done(quint32, bool)), this, SLOT(newConferenceOnServerEnd(quint32, bool)));
+	if (!task->exec())
+	{
+		qDebug() << "new conference task returned 0";
+		return false;
+	}
+	
+	return true;
+}
+
+void ContactList::newConferenceOnServerEnd(quint32 status, bool timeout)
+{
+	qDebug() << "ContactList::newConferenceOnServerEnd";
+	if (timeout)
+	{
+		emit newConferenceOnServerError(tr("Time is out"));
+		return;
+	}
+	else if (status != CONTACT_OPER_SUCCESS)
+	{
+		emit newConferenceOnServerError(tr("Error"));
+		return;
+	}
+
+	Tasks::NewConference* task = qobject_cast<Tasks::NewConference*>(sender());
+
+	Contact* contact = findContact(task->contactData().email);
+	if (contact)
+	{
+		if (contact->isTemporary())
+		{
+			qDebug() << "addContactOnServerEnd remove temporary contact";
+			m_contacts.removeAll(contact);
+			emit contactRemoved(contact);
+		}
+		else
+		{
+			qDebug() << "ContactList::addContactOnServerEnd: strange error: contact added but it is already in contactlist";
+			return;
+		}
+	}
+
+	qDebug() << "Conference name:" << task->contactData().nick;
+	contact = addContact(task->contactData());
 }
 
 bool ContactList::addSmsContactOnServer(const QString & nickname, const QStringList & phones)
@@ -513,7 +593,7 @@ void ContactList::addSmsContactOnServerEnd(quint32 status, bool timeout)
 	Tasks::AddSmsContact* task = qobject_cast<Tasks::AddSmsContact*>(sender());
 	addContact(task->contactData());
 
-	emit updated();
+	//emit updated();
 }
 
 bool ContactList::addGroupOnServer(const QString& groupName)
@@ -565,7 +645,7 @@ void ContactList::addGroupOnServerEnd(quint32 status, bool timeout)
 
 	Tasks::AddGroup* task = qobject_cast<Tasks::AddGroup*>(sender());
 	addGroup(task->groupId(), CONTACT_FLAG_GROUP, task->groupName());
-	emit updated();
+	//emit updated();
 }
 
 bool ContactList::removeGroupOnServer(ContactGroup* group)
@@ -632,6 +712,7 @@ void ContactList::removeGroupOnServerEnd(quint32 status, bool timeout)
 	m_groups.removeAll(group);
 	delete group;
 
+	emit groupRemoved(group);
 	emit updated();
 }
 

@@ -50,6 +50,8 @@ QString SoundPlayer::soundDescription(SoundType soundType)
 			return "otprav";
 		case STRing:
 			return "ring";
+		case STConference:
+			return "conference";
 		default:
 			return "";
 	}

@@ -34,6 +34,7 @@ Tasks::AddContact::AddContact(quint32 group, const QByteArray& email, const QStr
 
 bool Tasks::AddContact::exec()
 {
+	qDebug() << "Tasks::AddContact::exec()";
 	if (!block())
 		return false;
 	

@@ -48,9 +48,7 @@ ContactData::ContactData(quint32 contactId, MRIMDataStream& stream, const QByteA
 	stream >> group;
 	stream >> email;
 	
-	QByteArray contactNick;
-	stream >> contactNick;
-	nick = codec->toUnicode(contactNick);
+	stream >> nick;
 	
 	stream >> internalFlags;
 	stream >> status;
@@ -145,4 +143,9 @@ void ContactData::prepareForSending(MRIMDataStream & stream) const
 		else if (tailMask.at(i) == 's')
 			stream << tailData.at(i).toByteArray();
 	}
+}
+
+bool ContactData::isConference() const
+{
+	return email.contains("@chat.agent");
 }

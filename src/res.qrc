@@ -129,5 +129,6 @@
         <file>icons/online_only_h.png</file>
         <file>icons/online_only_p.png</file>
         <file>icons/online_only_ph.png</file>
+        <file>icons/msg_conference.png</file>
     </qresource>
 </RCC>

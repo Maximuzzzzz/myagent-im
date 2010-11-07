@@ -32,6 +32,7 @@
 #include "contact.h"
 #include "contactlistitem.h"
 #include "contactcontextmenu.h"
+#include "conferencecontextmenu.h"
 #include "contactgroupcontextmenu.h"
 #include "contactlistsortfilterproxymodel.h"
 #include "account.h"
@@ -49,6 +50,7 @@ ContactListTreeView::ContactListTreeView(Account* account, QWidget *parent)
 
 	contactMenu = new ContactContextMenu(account, this);
 	groupMenu = new ContactGroupContextMenu(account, this);
+	conferenceMenu = new ConferenceContextMenu(account, this);
 
 	connect(this, SIGNAL(activated(const QModelIndex&)), this, SLOT(slotActivated(const QModelIndex&)));
 }
@@ -138,8 +140,16 @@ void ContactListTreeView::contextMenuEvent(QContextMenuEvent* e)
 
 	if (Contact* contact = contactListModel->contactFromIndex(index))
 	{
-		contactMenu->setContact(contact);
-		contactMenu->exec(QCursor::pos());
+		if (contact->isConference())
+		{
+			conferenceMenu->setContact(contact);
+			conferenceMenu->exec(QCursor::pos());
+		}
+		else
+		{
+			contactMenu->setContact(contact);
+			contactMenu->exec(QCursor::pos());
+		}
 	}
 	else if (ContactGroup* group = contactListModel->groupFromIndex(index))
 	{

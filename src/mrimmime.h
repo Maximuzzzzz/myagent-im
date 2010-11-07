@@ -20,39 +20,54 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef RTFEXPORTER_H
-#define RTFEXPORTER_H
+#ifndef MRIMMIME_H
+#define MRIMMIME_H
 
-#include <QTextDocument>
-#include <QTextCharFormat>
-#include <QTextFragment>
-#include <QColor>
+#include <QObject>
+#include <QHash>
 
-class RtfExporter
+#include "datetime.h"
+
+class MrimMIME : public QObject
 {
 public:
-	RtfExporter(const QTextDocument* _doc);
-	~RtfExporter();
-	
-	QByteArray toRtf();
+	MrimMIME();
+	MrimMIME(const QByteArray & data);
+
+	QByteArray from() { return m_from; }
+	QByteArray sender() { return m_sender; }
+	QString subject() { return m_subject; }
+	QDateTime dateTime() { return m_dateTime; }
+	QByteArray mimeVersion() { return m_mimeVersion; }
+	QByteArray plainText() { return m_plainText; }
+	QByteArray plainTextCharset() { return m_plainTextCharset; }
+	QByteArray rtfBase64() { return m_rtfBase64; }
+	QByteArray xMrimVersion() { return m_xMrimVersion; }
+	quint32 xMrimFlags() { return m_xMrimFlags; }
+	quint32 xMrimMultichatType() { return m_xMrimMultichatType; }
+	bool hasPlainText() { return m_hasPlainText; }
+	bool hasRtfText() { return m_hasRtfText; }
+	bool isMultipart() { return m_isMultipart; }
+
 private:
-	void processBlock(const QTextBlock &block);
-	void processFragment(const QTextFragment &fragment);
-	void processCharFormat(const QTextCharFormat& format, const QString& text);
-	void processText(const QString& text);
-	void checkChar(QChar ch);
-	
-	int indexOfFont(QString fontFamily);
-	int indexOfColor(QRgb rgb);
-	
-	const QTextDocument* doc;
-	QTextCharFormat currentCharFormat;
-	int currentFont;
-	bool firstParsing;
-	bool controlCodeApplied;
-	QByteArray rtf;
-	QList<QByteArray> fonts;
-	QList<QRgb> colors;
+	void initData(const QByteArray & data);
+	QHash<QByteArray, QByteArray> values(QByteArray str);
+	QString subjectDecode(QByteArray subject);
+
+	QByteArray m_from;
+	QByteArray m_sender;
+	QString m_subject;
+	QDateTime m_dateTime;
+	QByteArray m_mimeVersion;
+	QByteArray m_plainText;
+	QByteArray m_plainTextCharset;
+	QByteArray m_rtfBase64;
+	QByteArray m_xMrimVersion;
+	quint32 m_xMrimFlags;
+	quint32 m_xMrimMultichatType;
+	bool m_hasPlainText;
+	bool m_hasRtfText;
+	bool m_isMultipart;
 };
 
 #endif

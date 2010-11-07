@@ -77,8 +77,11 @@ MessageEditor::MessageEditor(Account* account, Contact* contact, QWidget* parent
 
 	connect(messageEdit, SIGNAL(currentCharFormatChanged(const QTextCharFormat&)), this, SLOT(slotCurrentCharFormatChanged(const QTextCharFormat &)));
 
-	connect(m_contact, SIGNAL(statusChanged(OnlineStatus)), this, SLOT(checkContactStatus(OnlineStatus)));
-	checkContactStatus(m_contact->status());
+	if (!m_contact->isConference())
+	{
+		connect(m_contact, SIGNAL(statusChanged(OnlineStatus)), this, SLOT(checkContactStatus(OnlineStatus)));
+		checkContactStatus(m_contact->status());
+	}
 
 	fileMessageIn = NULL;
 	fileMessageOut = NULL;

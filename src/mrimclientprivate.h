@@ -27,6 +27,8 @@
 #include <QTcpSocket>
 #include <QTimer>
 
+#include "proto.h"
+
 class MRIMClient;
 class Account;
 
@@ -61,7 +63,7 @@ private:
 	}
 
 	void init();
-	quint32 sendPacket(quint32 msgtype, QByteArray data = QByteArray());
+	quint32 sendPacket(quint32 msgtype, QByteArray data = QByteArray(), quint32 protoVersionMinor = PROTO_VERSION_MINOR);
 	void processPacket(QByteArray header, QByteArray data);
 	
 	QByteArray packRtf(QByteArray rtf);
@@ -95,7 +97,7 @@ private:
 	void processProxy(QByteArray data, quint32 msgseq);
 	void processProxyAck(QByteArray data, quint32 msgseq);
 
-	void processStatusChanged(QByteArray data);
+	void processMicroblogChanged(QByteArray data);
 
 	MRIMClient* q;
 

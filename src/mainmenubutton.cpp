@@ -65,15 +65,15 @@ MainMenuButton::MainMenuButton(Account* account, ContactListWindow* w)
 	connect(addGroupAction, SIGNAL(triggered(bool)), this, SLOT(addGroup()));
 	connect(m_account->contactList(), SIGNAL(addGroupOnServerError(QString)), this, SLOT(addGroupError(QString)));
 
+	newConferenceAction = new QAction(QIcon(":icons/cl_new_conference.png"), tr("New conference"), this);
+	connect(newConferenceAction, SIGNAL(triggered(bool)), this, SLOT(createNewConference()));
+
 	menu->addAction(addContactAction);
 	menu->addAction(addSmsContactAction);
 	menu->addAction(addGroupAction);
 
-	/*menu->addSeparator();
-	menu->addAction(mainWindow->myWorldAction());
-	menu->addAction(mainWindow->myBlogAction());
-	menu->addAction(mainWindow->myPhotosAction());
-	menu->addAction(mainWindow->myVideosAction());*/
+	menu->addSeparator();
+	menu->addAction(newConferenceAction);
 
 	menu->addSeparator();
 	menu->addAction(QIcon(":icons/settings.png"), tr("Settings"), this, SLOT(showSettingsWindow()));
@@ -186,6 +186,7 @@ void MainMenuButton::checkOnlineStatus(OnlineStatus status)
 	addContactAction->setEnabled(connected);
 	addSmsContactAction->setEnabled(connected);
 	addGroupAction->setEnabled(connected);
+	newConferenceAction->setEnabled(connected);
 }
 
 void MainMenuButton::searchMoreContacts()
@@ -251,4 +252,18 @@ void MainMenuButton::showSettingsWindow()
 void MainMenuButton::setChatWindowsManager(ChatWindowsManager* cwm)
 {
 	chatWindowsManager = cwm;
+}
+
+void MainMenuButton::createNewConference()
+{
+	if (newConferenceWindow)
+	{
+		newConferenceWindow->show();
+		centerWindow(newConferenceWindow);
+		return;
+	}
+	
+	newConferenceWindow = new NewConferenceDialog(m_account);
+	connect(newConferenceWindow, SIGNAL(accepted(QString, QByteArray, QList<QByteArray>)), m_account->contactList(), SLOT(newConferenceOnServer(QString, QByteArray, QList<QByteArray>)));
+	newConferenceWindow->show();
 }

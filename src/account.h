@@ -45,11 +45,10 @@ public:
 	QByteArray email() const { return m_email; }
 	QByteArray password() const { return m_password; }
 
-	//void setInfo(const QByteArray& totalMessages, const QByteArray& unreadMessages, const QString& nickname, const QString& statusText);
-	void setTotalMessages(const QByteArray& totalMessages);
-	void setUnreadMessages(const QByteArray& unreadMessages);
-	void setNickName(QByteArray nickname);
-	void setStatusText(QByteArray statusText);
+	void setTotalMessages(const QString& totalMessages);
+	void setUnreadMessages(const QString& unreadMessages);
+	void setNickName(QString nickname);
+	void setStatusText(QString statusText);
 
 	QString nickname() const { return m_nickname; }
 	QString path() const;
@@ -68,9 +67,9 @@ public slots:
 signals:
 	void onlineStatusChanged(OnlineStatus status);
 	void nicknameChanged();
-	void totalMessagesChanged(const QByteArray& totalMessages);
+	void totalMessagesChanged(const QString& totalMessages);
 	void unreadLettersChanged(uint n);
-	void statusChanged(QByteArray text);
+	void statusChanged(QString text);
 	
 private slots:
 	void slotLoggedIn(quint32 status);
@@ -96,8 +95,6 @@ private:
 
 	bool m_isInAutoAway;
 	OnlineStatus m_statusBeforeAutoAway;
-
-	//void createDefaultEmoticonsTemplate(QString dir);
 };
 
 #endif

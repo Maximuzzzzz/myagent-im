@@ -30,6 +30,7 @@
 #include "contactinfo.h"
 #include "onlinestatus.h"
 #include "chatwindowsmanager.h"
+#include "newconferencedialog.h"
 
 class Account;
 class SearchContactsForm;
@@ -57,14 +58,19 @@ private slots:
 	void addGroup();
 	void addGroupError(QString);
 	void showSettingsWindow();
+	void createNewConference();
+
 private:
 	QAction* addContactAction;
 	QAction* addSmsContactAction;
 	QAction* addGroupAction;
+	QAction* deleteUserAction;
+	QAction* newConferenceAction;
 	Account* m_account;
 	ContactListWindow* mainWindow;
 	QPointer<SearchContactsForm> searchForm;
 	QPointer<SettingsWindow> settingsWindow;
+	QPointer<NewConferenceDialog> newConferenceWindow;
 
 	ChatWindowsManager* chatWindowsManager;
 };

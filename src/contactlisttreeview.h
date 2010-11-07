@@ -30,6 +30,7 @@ class Account;
 class Contact;
 class Action;
 class ContactContextMenu;
+class ConferenceContextMenu;
 class ContactGroupContextMenu;
 class ContactListSortFilterProxyModel;
 
@@ -61,6 +62,7 @@ private:
 	Account* account_;
 	ContactContextMenu* contactMenu;
 	ContactGroupContextMenu* groupMenu;
+	ConferenceContextMenu* conferenceMenu;
 	ContactListSortFilterProxyModel* contactListModel;
 };
 

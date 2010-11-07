@@ -26,6 +26,7 @@
 #include <QListWidget>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QFileDialog>
 
 #include "animatedtextbrowser.h"
 #include "message.h"
@@ -49,8 +50,12 @@ HistoryViewTab::HistoryViewTab(Xapian::Database* db, const QString& incomingName
 	datesListWidget->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Expanding);
 	connect(datesListWidget, SIGNAL(itemSelectionChanged()), this, SLOT(newDateSelectedInList()));
 
+	saveButton = new QPushButton(tr("Save all log..."));
+	connect(saveButton, SIGNAL(clicked(bool)), this, SLOT(slotSaveHistoryLog()));
+
 	dateLayout->addWidget(calendarWidget);
 	dateLayout->addWidget(datesListWidget);
+//	dateLayout->addWidget(saveButton);
 	dateLayout->setSizeConstraint(QLayout::SetFixedSize);
 
 	viewBrowser = new AnimatedTextBrowser;
@@ -181,4 +186,34 @@ void HistoryViewTab::showMessagesForDate(const QDate & date)
 	}
 }
 
+void HistoryViewTab::slotSaveHistoryLog()
+{
+	QString fileName = QFileDialog::getSaveFileName(this, tr("File to save"), QString(), tr("HTML file %1").arg("(*.html)"));
+	QFile fileToSave(fileName);
 
+	if (!fileToSave.open(QIODevice::WriteOnly))
+	{
+		//TODO: message about error
+		return;
+	}
+
+	Xapian::Enquire enquire(*database);
+/*	Xapian::Query query();
+	enquire.set_query(query);
+	quint32 j, k;
+	Xapian::MSet matches;
+	Xapian::MSetIterator i;
+	k = 0;
+	while (j >= 100000 - 1)
+	{
+		matches = enquire.get_mset(0 + k * 100000, 100000 + k * 100000 - 1);
+		j = 0;
+		for (i = matches.begin(); i != matches.end(); ++i)
+		{
+			Message* msg = HistoryLogger::createMessage(doc);
+			//TODO: Save to file
+			j++;
+		}
+		k++;
+	}*/
+}

@@ -52,13 +52,16 @@ private slots:
 	void rebuild();
 	void changeContactGroup(bool indeed);
 	void addContact(Contact* c);
+	void slotRemoveContactItem(Contact* c);
 
 private:
 	ContactList* contactList;
 	QStringList myFormats;
 	int groupRows;
 	QMap<ContactGroup*, ContactListItem*> groupsMap;
+	QMap<Contact*, ContactListItem*> contactsMap;
 	ContactListItem* phones;
+	ContactListItem* conferences;
 };
 
 #endif

@@ -65,14 +65,15 @@ ContactListWindow::ContactListWindow(Account* account)
 	setWindowTitle(account->email());
 
 	MRIMClient* mc = account->client();
-	connect (account, SIGNAL(statusChanged(QByteArray)), this, SLOT(slotStatusChanged(QByteArray)));
+	connect (account, SIGNAL(statusChanged(QString)), this, SLOT(slotMicroblogChanged(QString)));
 
 	createActions();
 
 	connect(mc, SIGNAL(loginRejected(QString)), this, SLOT(slotLoginRejected(QString)));
 	connect(mc, SIGNAL(loggedOut(quint32)), this, SLOT(slotLoggedOut(quint32)));
 	connect(mc, SIGNAL(contactAsksAuthorization(const QByteArray&, const QString&, const QString&)), this, SLOT(slotContactAsksAuthorization(const QByteArray&, const QString&, const QString&)));
-	connect(mc, SIGNAL(statusChanged(QByteArray)), this, SLOT(slotStatusChanged(QByteArray)));
+	connect(mc, SIGNAL(microblogChanged(QString)), this, SLOT(slotMicroblogChanged(QString)));
+	connect(mc, SIGNAL(conferenceAsked(const QByteArray&, const QString&)), m_account->contactList(), SLOT(addConferenceOnServer(const QByteArray&, const QString&)));
 
 	chatWindowsManager = new ChatWindowsManager(m_account, this);
 
@@ -114,7 +115,7 @@ ContactListWindow::ContactListWindow(Account* account)
 	connect(statusBar, SIGNAL(clicked()), this, SLOT(openStatusEditor()));
 
 	statusEditor = new StatusEditor(this);
-	connect(statusEditor, SIGNAL(sendStatus(const QString&)), this, SLOT(sendStatus(const QString&)));
+	connect(statusEditor, SIGNAL(sendMicrotext(const QString&)), this, SLOT(sendMicrotext(const QString&)));
 
 	statusButton = new StatusButton;
 	connect(statusButton, SIGNAL(statusChanged(OnlineStatus)), account, SLOT(setOnlineStatus(OnlineStatus)));
@@ -371,18 +372,18 @@ void ContactListWindow::openStatusEditor()
 	statusEditor->setGeometry(this->geometry().x(), statusBar->geometry().y() + this->geometry().y() - statusEditor->geometry().height() + statusBar->geometry().height(), this->geometry().width(), NULL);
 }
 
-void ContactListWindow::sendStatus(const QString& status)
+void ContactListWindow::sendMicrotext(const QString& microText)
 {
-	qDebug() << "ContactListWindow::sendStatus(" << status << ")";
-	m_account->client()->sendStatus(status);
-	statusBar->setStatus(status);
+	qDebug() << "ContactListWindow::sendMicrotext(" << microText << ")";
+	m_account->client()->sendMicrotext(microText);
+	statusBar->setStatus(microText);
 }
 
-void ContactListWindow::slotStatusChanged(QByteArray status)
+void ContactListWindow::slotMicroblogChanged(QString microText)
 {
-	qDebug() << "slotStatusChanged(" << status << ")";
-	statusEditor->setStatus(status);
-	statusBar->setStatus(status);
+	qDebug() << "slotMicroblogChanged(" << microText << ")";
+	statusEditor->setStatus(microText);
+	statusBar->setStatus(microText);
 }
 
 void ContactListWindow::slotSetOnlineStatus(OnlineStatus status)
@@ -406,3 +407,10 @@ void ContactListWindow::visibleWidget(Widgets w, bool st)
 			return;
 	}
 }
+
+/*void ContactListWindow::slotConferenceAck(const QByteArray& confChat, const QString& confName)
+{
+	qDebug() << "ContactListWindow::slotConferenceAck" << confChat << confName;
+
+	m_account->contactList()->addContact(ContactData(0, 0, 0, confChat, confName));
+}*/

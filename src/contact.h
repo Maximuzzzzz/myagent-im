@@ -50,7 +50,6 @@ public:
 	QStringList phones() const { return data.phones; }
 	QByteArray email() const { return data.email; }
 	ContactGroup* group() const { return m_group; }
-	bool changeGroup(quint32 group);
 	void setAuthorized();
 	quint32 setMyVisibility(bool alwaysVisible, bool alwaysInvisible);
 	void rename(const QString& nickname);
@@ -60,7 +59,9 @@ public:
 	bool isPhone() const;
 	bool isTemporary() const;
 	bool isHidden() const;
+	bool isConference() const;
 	bool hasPhone(QByteArray phoneNumber) const;
+	bool changeGroup(quint32 group);
 	
 	ContactData contactData() const { return data; }
 	

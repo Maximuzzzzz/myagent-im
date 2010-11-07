@@ -27,10 +27,35 @@
 #include <QDateTime>
 
 #include "onlinestatus.h"
+#include "contactgroup.h"
 
 class QAction;
 class Account;
 class Contact;
+
+class SubmenuMoveToGroup : public QMenu
+{
+Q_OBJECT
+public:
+	SubmenuMoveToGroup(QWidget* parent = 0);
+	~SubmenuMoveToGroup();
+
+	quint32 groupsCount() { return m_groups.count(); };
+
+signals:
+	void moveContact(quint32);
+
+public slots:
+	void addGroup(quint32 groupId, QString groupName);
+	void removeGroup(quint32 groupId);
+	void clearAll();
+
+private slots:
+	void moveContactTo();
+
+private:
+	QHash<quint32, QAction*> m_groups;
+};
 
 class ContactContextMenu : public QMenu
 {
@@ -49,6 +74,11 @@ private slots:
 	void askAuthorization();
 	void checkOnlineStatus(OnlineStatus status);
 	void showHistory();
+	void slotChangeGroup(quint32 groupId);
+	void slotGroupAdded(ContactGroup* group);
+	void slotGroupRemoved(ContactGroup* group);
+	void slotGroupsCleared();
+
 private:
 	void setVisibility();
 	
@@ -59,6 +89,7 @@ private:
 	QAction* alwaysInvisibleAction;
 	QAction* askAuthorizationAction;
 	QAction* historyAction;
+	SubmenuMoveToGroup* moveToGroup;
 	Account* m_account;
 	Contact* m_contact;
 };

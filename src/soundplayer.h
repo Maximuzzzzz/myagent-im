@@ -13,6 +13,7 @@ enum SoundType
 	STMessage,
 	STOtprav,
 	STRing,
+	STConference
 };
 
 class SoundPlayer : public QObject

@@ -268,6 +268,11 @@ bool Contact::isHidden() const
 	return data.flags & (CONTACT_FLAG_SHADOW | CONTACT_FLAG_REMOVED);
 }
 
+bool Contact::isConference() const
+{
+	return data.isConference();
+}
+
 void Contact::updateStatus()
 {
 	Task* task = new Tasks::RequestContactInfo(data.email, m_account->client(), this);

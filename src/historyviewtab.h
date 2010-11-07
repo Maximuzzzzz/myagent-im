@@ -25,6 +25,7 @@
 
 #include <QWidget>
 #include <QDate>
+#include <QPushButton>
 #include <xapian.h>
 
 class AnimatedTextBrowser;
@@ -41,11 +42,12 @@ private slots:
 	void updateDates(int year, int month);
 	void newDateSelectedInList();
 	void newDateSelectedInCalendar();
+	void slotSaveHistoryLog();
 private:
 	QList<QDate> monthChatDays(int year, int month);
 	void showMessage(const Xapian::Document& doc);
 	void showMessagesForDate(const QDate& date);
-private:
+
 	Xapian::Database* database;
 	QString incomingNickname;
 	QString outgoingNickname;
@@ -53,6 +55,7 @@ private:
 	QCalendarWidget* calendarWidget;
 	QListWidget* datesListWidget;
 	AnimatedTextBrowser* viewBrowser;
+	QPushButton* saveButton;
 };
 
 #endif

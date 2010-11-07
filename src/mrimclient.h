@@ -64,6 +64,7 @@ signals:
 	void messageStatus(quint32 id, quint32 status);
 	void contactModified(quint32 id, quint32 status);
 	void contactAdded(quint32 id, quint32 status, quint32 contactId);
+	void conferenceBegan(quint32 seq, quint32 status, quint32 contactId, QByteArray & chatAgent);
 	void contactInfoReceived(quint32 id, quint32 status, MRIMClient::ContactsInfo info, quint32 maxRows, quint32 serverTime);
 	void contactAuthorizedMe(const QByteArray& email);
 	void loggedOut(quint32 reason);
@@ -75,7 +76,8 @@ signals:
 	void fileTransferAck(quint32 status, QByteArray email, quint32 sessionId, QByteArray mirrorIps);
 	void proxy(QByteArray email, quint32 idRequest, quint32 dataType, QByteArray filesAnsi, QByteArray proxyIps, quint32 sessionId, quint32 unk1, quint32 unk2, quint32 unk3);
 	void proxyAck(quint32 status, QByteArray email, quint32 id_request, quint32 dataType, QByteArray filesAnsi, QByteArray ips, quint32 sessionId, quint32 unk1, quint32 unk2, quint32 unk3);
-	void statusChanged(QByteArray);
+	void microblogChanged(QString);
+	void conferenceAsked(const QByteArray& confChat, const QString& confName);
 	
 public slots:
 	void connectToServer(quint32 status);
@@ -87,6 +89,7 @@ public slots:
 	void sendTyping(QByteArray email);
 	quint32 changeContactGroup(quint32 groupID, Contact* c);
 	quint32 addContact(quint32 group, const QString& nickname, const QByteArray& email, const QString& authorizationMessage);
+	quint32 addConference(QString confName, QByteArray owner, QList<QByteArray> members);
 	quint32 addGroup(QString& name);
 	quint32 addSmsContact(const QString& nickname, const QStringList& phones);
 	quint32 removeContact(Contact* c);
@@ -103,7 +106,7 @@ public slots:
 	quint32 sendFileAck(quint32 status, QByteArray email, quint32 sessionId, QByteArray ips);
 	void sendProxy(FileMessage* fmsg, quint32 dataType);
 	void sendProxyAck(FileMessage* fmsg, quint32 status, quint32 dataType, quint32 sessionId, quint32 unk1, quint32 unk2, quint32 unk3);
-	quint32 sendStatus(const QString& text);
+	quint32 sendMicrotext(const QString& text);
 	
 private:
 	MRIMClientPrivate* p;

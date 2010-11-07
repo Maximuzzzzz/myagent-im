@@ -32,8 +32,8 @@
 #include "filemessage.h"
 #include "zlibbytearray.h"
 #include "mrimclient.h"
-#include "proto.h"
 #include "datetime.h"
+#include "mrimmime.h"
 
 MRIMClientPrivate::MRIMClientPrivate(Account* a, MRIMClient* parent)
 	: QObject(parent), account(a)
@@ -70,16 +70,24 @@ void MRIMClientPrivate::init()
 	connect(&socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(slotSocketError(QAbstractSocket::SocketError)));
 }
 
-quint32 MRIMClientPrivate::sendPacket(quint32 msgtype, QByteArray data)
+quint32 MRIMClientPrivate::sendPacket(quint32 msgtype, QByteArray data, quint32 protoVersionMinor)
 {
+
+/*
+For developers! You can use protoVersionMinor for migrating packets version from old to newer.
+Default version wrote in proto.h, protocol version at October 2010 = 0x16
+*/
+
 	qDebug() << "Send packet";
 	QByteArray headerBA;
 	MRIMDataStream header(&headerBA, QIODevice::WriteOnly);
 
 	if (sequence == 0) sequence = 1;
 
+	quint32 protoVersion = ((((quint32)(PROTO_VERSION_MAJOR))<<16)|(quint32)(protoVersionMinor));
+
 	header << quint32(CS_MAGIC);
-	header << quint32(PROTO_VERSION);
+	header << quint32(protoVersion);
 	header << quint32(sequence);
 	header << quint32(msgtype);
 	header << quint32(data.size());
@@ -103,7 +111,7 @@ void MRIMClientPrivate::slotConnectedToServer()
 
 	if (currentStatus == STATUS_OFFLINE && newStatus != STATUS_OFFLINE)
 		if (!gettingAddress)
-			sendPacket(MRIM_CS_HELLO);
+			sendPacket(MRIM_CS_HELLO, QByteArray(), 23);
 }
 
 void MRIMClientPrivate::slotDisconnectedFromServer()
@@ -132,7 +140,7 @@ void MRIMClientPrivate::slotSocketError(QAbstractSocket::SocketError error)
 
 void MRIMClientPrivate::ping()
 {
-	sendPacket(MRIM_CS_PING);
+	sendPacket(MRIM_CS_PING, QByteArray(), 23);
 }
 
 void MRIMClientPrivate::readData()
@@ -273,20 +281,11 @@ void MRIMClientPrivate::processPacket(QByteArray header, QByteArray data)
 		case MRIM_CS_PROXY_ACK:
 			processProxyAck(data, msgseq);
 			break;
-		case MRIM_SC_STATUS_TEXT: //doesn't work with current (9) protocol version
-			processStatusChanged(data);
+		case MRIM_SC_MICROBLOG_TEXT:
+			processMicroblogChanged(data);
 			break;
 		default:
 			qDebug() << "unknown message";
-			/*uchar* chhdr = (uchar*)header.data();
-			for (int i = 0; i < sizeof(mrim_packet_header_t); i++)
-				qDebug() << QString::number(chhdr[i], 16);
-			mrim_packet_header_t* hdr = (mrim_packet_header_t*)header.data();
-			qDebug() << "magic = " << QString::number(hdr->magic, 16);
-			qDebug() << "proto = " << QString::number(hdr->proto, 16);
-			qDebug() << "seq = " << QString::number(hdr->seq, 16);
-			qDebug() << "msg = " << QString::number(hdr->msg, 16);
-			qDebug() << "dlen = " << QString::number(hdr->dlen, 16);*/
 	}
 }
 
@@ -381,9 +380,56 @@ void MRIMClientPrivate::processHelloAck(QByteArray data)
 	out << QByteArray(account->email());
 	out << QByteArray(account->password());
 	qDebug() << "MRIMClientPrivate: processHelloAck, status = " << currentStatus;
-	out << quint32(newStatus);
-	out << QByteArray("myagent-im");
-	sendPacket(MRIM_CS_LOGIN2, ba);
+
+	out << /*quint32(newStatus);*/quint32(0xffffffff);
+	out << QByteArray("client=\"magent\" version=\"5.6\" build=\"3278\"");
+	out << QByteArray("ru"); //TODO: must depends upon system locale
+
+	out << quint32(16);
+	out << quint32(1);
+	out << QByteArray("geo-list");
+	out << QByteArray("MRA 5.6 (build 3278);");
+
+	quint8 i; //TODO: try to understand these arguments
+	for (i = 0; i <= 0x5c; )
+	{
+		out << quint8(i);
+
+		if (i == 9 || i == 0x1e || i == 0x2c)
+			out << quint32(0x01000000);
+		else
+			out << quint32(0x02000000);
+
+		if (i == 0)
+			out << quint32(0x00000cce);
+		else if (i == 1)
+			out << quint32(4);
+		else if (i == 2)
+			out << quint32(8);
+		else if (i == 3)
+			out << quint32(0x7fffffff);
+		else if (i == 4 || i == 6 || i == 7 || i == 0x2d || i == 0x2f)
+			out << quint32(1);
+		else if (i == 9)
+			out << QByteArray::fromHex("465d43504049505840745e585c5e184b4c425d47594a");
+		else if (i == 0x14)
+			out << quint32(0x00000501);
+		else if (i == 0x2c)
+			out << QByteArray("7af505217f0fe1a344cddd5094cddd0b");
+		else
+			out << quint32(0);
+
+		if (i == 3 || i == 4 || i == 0x1a || i == 0x54)
+			i += 2;
+		else if (i == 5)
+			i--;
+		else if (i == 0x2f)
+			i = 0x51;
+		else
+			i++;
+	}
+
+	sendPacket(MRIM_CS_LOGIN3, ba, 21);
 }
 
 void MRIMClientPrivate::processUserInfo(QByteArray data)
@@ -391,12 +437,11 @@ void MRIMClientPrivate::processUserInfo(QByteArray data)
 	qDebug() << "MRIM_CS_USER_INFO, bytes = " << data.size();
 	MRIMDataStream in(data);
 
-	QByteArray totalMessages, unreadMessages, nick;
-	QString statusText;
+	QString totalMessages, unreadMessages, nick, statusText;
+	QByteArray param;
+	QString descr;
 
-	QByteArray param, descr;
-
-	do //for (int i = 0; i < 10; i++)
+	do
 	{
 		in >> param >> descr;
 
@@ -417,7 +462,6 @@ void MRIMClientPrivate::processUserInfo(QByteArray data)
 		}
 		else if (param == "micblog.status.text")
 		{
-			qDebug() << "status text =" << descr.toHex();
 			statusText = descr;
 			account->setStatusText(descr);
 		}
@@ -425,14 +469,10 @@ void MRIMClientPrivate::processUserInfo(QByteArray data)
 			qDebug() << "something strange with user info";
 
 		qDebug() << param << " " << descr;
-	} while (param != "");
+	} while (in.device()->bytesAvailable());//while (param != "");
 
-	while (in.device()->bytesAvailable())
-	{
-		in >> param >> descr;
-	}
-
-	//account->setInfo(totalMessages, unreadMessages, codec->toUnicode(nick), statusText);
+	
+//		in >> param >> descr;
 }
 
 void MRIMClientPrivate::processContactList2(QByteArray data)
@@ -467,12 +507,12 @@ void MRIMClientPrivate::processContactList2(QByteArray data)
 	for (quint32 groupId = 0; groupId < nGroups; groupId++)
 	{
 		quint32 groupFlags;
-		QByteArray groupName;
+		QString groupName;
 
 		in >> groupFlags;
 		in >> groupName;
 
-		qDebug() << QString::number(groupFlags, 16) << " " << codec->toUnicode(groupName);
+		qDebug() << QString::number(groupFlags, 16) << " " << groupName/* << codec->toUnicode(groupName)*/;
 
 		int nFlags = groupMask.size();
 		quint32 uTmpAttr;
@@ -496,7 +536,7 @@ void MRIMClientPrivate::processContactList2(QByteArray data)
 		}
 
 		if (!(groupFlags & CONTACT_FLAG_REMOVED))
-			contactList->addGroup(groupId, groupFlags, codec->toUnicode(groupName));
+			contactList->addGroup(groupId, groupFlags, /*codec->toUnicode(groupName)*/ groupName);
 	}
 
 	quint32 id = 20;
@@ -515,6 +555,8 @@ void MRIMClientPrivate::processContactList2(QByteArray data)
 	}
 
 	contactList->endUpdating();
+
+	q->changeStatus(newStatus);
 }
 
 void MRIMClientPrivate::processAnketaInfo(QByteArray data, quint32 msgseq)
@@ -655,11 +697,43 @@ void MRIMClientPrivate::processMessageAck(QByteArray data)
 
 	MRIMDataStream in(data);
 
-	quint32 msgId, flags;
-	QByteArray from, text;
-	in >> msgId >> flags >> from >> text;
+	quint32 msgId, flags, conferenceType;
+	QByteArray from, text, confOwner, rtf;
+	QString confName;
+	in >> msgId >> flags >> from >> text >> rtf;
+
+	qDebug() << from;
+
+	QByteArray(data2);
+	in >> data2;
+	MRIMDataStream in2(data2);
+	in2 >> conferenceType >> confName;
+	qDebug() << "confName" << confName;
+	in2 >> confOwner;
 
 	qDebug() << "flags = " << QString::number(flags, 16);
+
+	QString plainText;
+	plainText = codec->toUnicode(text);
+
+	QByteArray rtfText;
+	quint32 backgroundColor = 0x00FFFFFF;
+
+	if (rtf != "")
+		if (flags & MESSAGE_FLAG_RTF)
+			unpackRtf(rtf, &rtfText, &backgroundColor);
+
+	if (flags & MESSAGE_FLAG_CONFERENCE && rtf == "" && plainText == "" && conferenceType == 5)
+	{
+		plainText = tr("User %1 left the conference").arg(codec->toUnicode(confOwner));
+		flags = flags & 0xffffff7f;
+	}
+
+	Message* newMsg = new Message(Message::Incoming, flags, plainText, rtfText, backgroundColor);
+
+	if (flags & MESSAGE_FLAG_CONFERENCE && rtf != "")
+		if (!account->contactList()->findContact(from))
+			emit q->conferenceAsked(from, confName);
 
 	if (!(flags & MESSAGE_FLAG_NORECV))
 	{
@@ -691,9 +765,6 @@ void MRIMClientPrivate::processMessageAck(QByteArray data)
 		return;
 	}
 
-	QString plainText;
-	plainText = codec->toUnicode(text);
-
 	if (flags & (MESSAGE_FLAG_SMS | MESSAGE_SMS_DELIVERY_REPORT))
 	{
 		emit q->messageReceived
@@ -703,21 +774,7 @@ void MRIMClientPrivate::processMessageAck(QByteArray data)
 		return;
 	}
 
-	QByteArray rtfText;
-	quint32 backgroundColor = 0x00FFFFFF;
-
-	if (flags & MESSAGE_FLAG_RTF)
-	{
-		QByteArray rtf;
-		in >> rtf;
-		unpackRtf(rtf, &rtfText, &backgroundColor);
-	}
-
-	emit q->messageReceived
-	(
-		from,
-		new Message(Message::Incoming, flags, plainText, rtfText, backgroundColor)
-	);
+	emit q->messageReceived(from, newMsg);
 }
 
 void MRIMClientPrivate::processMessageStatus(QByteArray data, quint32 msgseq)
@@ -748,12 +805,21 @@ void MRIMClientPrivate::processAddContactAck(QByteArray data, quint32 msgseq)
 
 	quint32 status;
 	quint32 contactId;
+	QByteArray chatAgent;
 	in >> status;
 	in >> contactId;
+	if (!in.atEnd())
+		in >> chatAgent;
 
-	qDebug() << "seq = " << msgseq << ", status = " << status << ", id = " << contactId;
+	qDebug() << "seq = " << msgseq << ", status = " << status << ", id = " << contactId << ", chatAgent = " << chatAgent;
 
-	emit q->contactAdded(msgseq, status, contactId);
+	if (chatAgent != "")
+		if (chatAgent.contains("@chat.agent"))
+			emit q->conferenceBegan(msgseq, status, contactId, chatAgent);
+		else
+			emit q->contactAdded(msgseq, status, contactId);
+	else
+		emit q->contactAdded(msgseq, status, contactId);
 }
 
 void MRIMClientPrivate::processAuthorizeAck(QByteArray data)
@@ -777,86 +843,68 @@ void MRIMClientPrivate::processOfflineMessageAck(QByteArray data)
 	in >> uidl;
 	in >> msg;
 
-	QByteArray replyData;
-	MRIMDataStream out(&replyData, QIODevice::WriteOnly);
+	MrimMIME mimeMsg(msg);
 
-	out << uidl;
-	sendPacket(MRIM_CS_DELETE_OFFLINE_MESSAGE, replyData);
+	/*qDebug() << mimeMsg.from();
+	qDebug() << mimeMsg.sender();
+	qDebug() << mimeMsg.subject();
+	qDebug() << mimeMsg.plainTextCharset();
+	qDebug() << mimeMsg.xMrimMultichatType();*/
 
-	quint32 flags;
-	QByteArray email;
+	qDebug() << mimeMsg.xMrimFlags() << MESSAGE_FLAG_NORECV << (mimeMsg.xMrimFlags() & MESSAGE_FLAG_NORECV);
+
 	QString plainText;
+	if (mimeMsg.hasPlainText())
+	{
+		QTextCodec* codec;
+		if (mimeMsg.plainTextCharset() == "" || mimeMsg.xMrimFlags() & MESSAGE_FLAG_CP1251)
+			codec = QTextCodec::codecForName("cp1251");
+		else
+			codec = QTextCodec::codecForName(mimeMsg.plainTextCharset());
+		plainText = codec->toUnicode(mimeMsg.plainText());
+	}
+
 	QByteArray rtfText;
-	quint32 backgroundColor;
-	QDateTime dateTime;
+	quint32 bgColor;
+	if (mimeMsg.hasRtfText() && mimeMsg.xMrimFlags() & MESSAGE_FLAG_RTF)
+		unpackRtf(mimeMsg.rtfBase64(), &rtfText, &bgColor);
 
-	QByteArray boundary;
+	qDebug() << rtfText;
 
-	QList<QByteArray> strings = msg.split('\n');
-	qDebug() << strings;
-	int i = 0;
-	while (i < strings.size() && !strings[i].isEmpty())
-	{
-		int index = strings[i].indexOf(' ');
-		if (index == -1)
-			continue;
+	if (mimeMsg.xMrimFlags() & MESSAGE_FLAG_CONFERENCE && mimeMsg.xMrimMultichatType() == 5)
+		plainText = tr("User %1 left the conference").arg(codec->toUnicode(mimeMsg.sender()));
 
-		QByteArray value = strings[i].right(strings[i].size() - index - 1);
+	Message* newMsg = new Message(Message::Incoming, mimeMsg.xMrimFlags(), plainText, rtfText, bgColor, mimeMsg.dateTime());
 
-		if (strings[i].startsWith("From: "))
-			email = value;
-		else if (strings[i].startsWith("X-MRIM-Flags: "))
-			flags = value.toUInt(NULL, 16);
-		else if (strings[i].startsWith("Boundary: "))
-			boundary = "--" + value + "--";
-		else if (strings[i].startsWith("Date: "))
-		{
-			qDebug() << "date = " << value;
-			dateTime = parseRFCDate(value);
-		}
-		++i;
-	}
-	++i;
+	if (mimeMsg.xMrimFlags() & MESSAGE_FLAG_CONFERENCE && mimeMsg.xMrimMultichatType() != 7)
+		if (!account->contactList()->findContact(mimeMsg.from()))
+			emit q->conferenceAsked(mimeMsg.from(), mimeMsg.subject());
 
-	if (email.isEmpty())
-	{
-		qDebug() << "offline message: unknown email";
-		return;
-	}
+/*	if (!(mimeMsg.xMrimFlags() & MESSAGE_FLAG_NORECV))
+	{*/
+		qDebug() << "sending reply";
 
-	qDebug() << "from = " << email;
-	qDebug() << "flags = " << QString::number(flags, 16);
-	qDebug() << "boundary = " << boundary;
-	qDebug() << "dateTime = " << dateTime.toString();
+		QByteArray replyData;
+		MRIMDataStream out(&replyData, QIODevice::WriteOnly);
 
-	if (flags & MESSAGE_FLAG_AUTHORIZE && i < strings.size() && strings[i] != boundary)
+		out << uidl;
+		sendPacket(MRIM_CS_DELETE_OFFLINE_MESSAGE, replyData);
+//	}
+
+	if (mimeMsg.xMrimFlags() & MESSAGE_FLAG_AUTHORIZE)
 	{
 		QString nickname, message;
-		unpackAuthorizationMessage(strings[i], nickname, message);
+		unpackAuthorizationMessage(mimeMsg.rtfBase64(), nickname, message);
 
-		emit q->contactAsksAuthorization(email, nickname, message);
+		emit q->contactAsksAuthorization(mimeMsg.from(), nickname, message);
 
 		return;
 	}
 
-	if (i < strings.size() && strings[i] != boundary)
-		plainText += codec->toUnicode(strings[i]);
-	++i;
+	if (mimeMsg.xMrimFlags() & MESSAGE_FLAG_CONFERENCE && mimeMsg.xMrimMultichatType() == 7)
+		return;
 
-	while (i < strings.size() && strings[i] != boundary)
-	{
-		plainText += "\n" + codec->toUnicode(strings[i]);
-		++i;
-	}
-
-	if ((flags & MESSAGE_FLAG_RTF) && (i+1) < strings.size())
-		unpackRtf(strings[i+1], &rtfText, &backgroundColor);
-
-	emit q->messageReceived
-	(
-		email,
-		new Message(Message::Incoming, flags, plainText, rtfText, backgroundColor, dateTime)
-	);
+	emit q->messageReceived(mimeMsg.from(), newMsg);
 }
 
 void MRIMClientPrivate::processFileTransfer(QByteArray data)
@@ -1006,15 +1054,15 @@ void MRIMClientPrivate::processProxyAck(QByteArray data, quint32 msgseq)
 	emit q->proxyAck(status, email, idRequest, dataType, filesAnsi, ips, sessionId, unk1, unk2, unk3);
 }
 
-void MRIMClientPrivate::processStatusChanged(QByteArray data)
+void MRIMClientPrivate::processMicroblogChanged(QByteArray data)
 {
-	qDebug() << "MRIMClientPrivate::processStatusChanged";
+	qDebug() << "MRIMClientPrivate::processMicroblogChanged";
 
 	MRIMDataStream in(data);
 
-	QByteArray status;
+	QString microText;
 
-	in >> status;
+	in >> microText;
 
-	emit q->statusChanged(status);
+	emit q->microblogChanged(microText);
 }

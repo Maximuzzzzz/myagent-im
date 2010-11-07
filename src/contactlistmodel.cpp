@@ -39,26 +39,32 @@ ContactListModel::ContactListModel(ContactList* contactList)
 	this->contactList = contactList;
 	
 	connect(contactList, SIGNAL(updated()), this, SLOT(rebuild()));
+
 	connect(contactList, SIGNAL(contactAdded(Contact*)), this, SLOT(addContact(Contact*)));
+	connect(contactList, SIGNAL(contactRemoved(Contact*)), this, SLOT(slotRemoveContactItem(Contact*)));
 	
 	rebuild();
 	
 	myFormats << "MyAgent-IM/Contact";
 	
 	phones = 0;
+	conferences = 0;
 }
 
 ContactListModel::~ContactListModel()
 {
 	contactList = 0;
 	phones = 0;
+	conferences = 0;
 }
 
 void ContactListModel::rebuild()
 {
 	clear();
 	groupsMap.clear();
+	contactsMap.clear();
 	phones = 0;
+	conferences = 0;
 	
 	if (contactList == NULL) return;
 	
@@ -182,7 +188,7 @@ bool ContactListModel::isGroup(const QModelIndex & index)
 
 void ContactListModel::addContact(Contact* c)
 {
-	qDebug() << "ContactListModel::addContact" << (void*)c;
+	qDebug() << "ContactListModel::addContact" << c->email();
 	if (c->isHidden())
 	{
 		qDebug() << "hidden contact:";
@@ -204,15 +210,25 @@ void ContactListModel::addContact(Contact* c)
 		
 		groupItem = phones;
 	}
+	else if (c->isConference())
+	{
+		qDebug() << "contact " << c->nickname() << " is conference";
+		if (!conferences)
+		{
+			qDebug() << "conference group doesn't exists"; //TODO: after deleting doesn't append again
+			conferences = new ContactListItem(tr("Conferences"));
+			invisibleRootItem()->insertRow(groupRows++, conferences);
+		}
+
+		groupItem = conferences;
+	}
 	else
 	{
 		connect(contactItem, SIGNAL(groupChanged(bool)), this, SLOT(changeContactGroup(bool)));
 		
 		ContactGroup* group = c->group();
 		if (!group)
-		{
 			groupItem = invisibleRootItem();
-		}
 		else
 		{
 			groupItem = groupsMap.value(group);
@@ -223,6 +239,30 @@ void ContactListModel::addContact(Contact* c)
 			}
 		}
 	}
-	
+
 	groupItem->appendRow(contactItem);
+	qDebug() << "appending contact" << c->email() << c->nickname() << "on" << contactItem;
+	contactsMap[c] = contactItem;
+}
+
+void ContactListModel::slotRemoveContactItem(Contact* c)
+{
+	qDebug() << "Deleting contact" << c->email() << c->nickname();
+
+	ContactListItem* removingContactItem = contactsMap.take(c);
+	removingContactItem->QStandardItem::parent()->takeRow(removingContactItem->row());
+	if (c->isConference())
+		if (conferences->rowCount() == 0)
+		{
+			/*invisibleRootItem()->takeRow(conferences->row());
+			delete conferences;
+			conferences = 0;*/
+		}
+	if (c->isPhone())
+		if (phones->rowCount() == 0)
+		{
+//			invisibleRootItem()->takeRow(phones->row());
+//			phones = 0;
+		}
+	delete c;
 }

@@ -45,6 +45,12 @@ ContactListItem::ContactListItem(Contact* contact)
 
 		setDragEnabled(false);
 	}
+	else if (m_contact->isConference())
+	{
+		setIcon(QIcon(":icons/msg_conference.png"));
+
+		setDragEnabled(false);
+	}
 	else
 	{
 		checkVisibility();
@@ -58,7 +64,8 @@ ContactListItem::ContactListItem(Contact* contact)
 	f.setPointSize(9);
 	setFont(f);
 
-	connect(m_contact, SIGNAL(renamed(QString)), this, SLOT(rename(const QString&)));
+	if (!m_contact->isConference())
+		connect(m_contact, SIGNAL(renamed(QString)), this, SLOT(rename(const QString&)));
 	connect(m_contact, SIGNAL(destroyed(QObject*)), this, SLOT(destroyItem()));
 }
 

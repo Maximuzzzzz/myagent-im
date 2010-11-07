@@ -45,7 +45,7 @@ public:
 	void endUpdating();
 
 	void addGroup(quint32 id, quint32 flags, const QString& name);
-	void addContact(const ContactData& data);
+	Contact* addContact(const ContactData& data);
 	void addContact(Contact* contact);
 
 	typedef QList<ContactGroup*>::const_iterator GroupsIterator;
@@ -84,12 +84,16 @@ public:
 
 signals:
 	void groupAdded(ContactGroup* group);
+	void groupRemoved(ContactGroup* group);
+	void groupsCleared();
 	void contactAdded(Contact* contact);
+	void contactRemoved(Contact*);
 	void updated();
 
 	void removeContactOnServerError(QString error);
 	void removeGroupOnServerError(QString error);
 	void addContactOnServerError(QString error);
+	void newConferenceOnServerError(QString error);
 	void addSmsContactOnServerError(QString error);
 	void addGroupOnServerError(QString error);
 	void renameGroupError(QString error);
@@ -98,6 +102,8 @@ public slots:
 	void changeContactStatus(quint32 status, QByteArray email);
 	void contactTyping(QByteArray email);
 	void slotContactAuthorized(const QByteArray& email);
+	bool newConferenceOnServer(QString confName, QByteArray owner, QList<QByteArray> members = QList<QByteArray>());
+	bool addConferenceOnServer(const QByteArray & chat, const QString & confName);
 
 private slots:
 	void checkOnlineStatus(OnlineStatus status);
@@ -105,6 +111,7 @@ private slots:
 	void removeContactOnServerEnd(quint32 status, bool timeout);
 	void removeGroupOnServerEnd(quint32 status, bool timeout);
 	void addContactOnServerEnd(quint32 status, bool timeout);
+	void newConferenceOnServerEnd(quint32 status, bool timeout);
 	void addSmsContactOnServerEnd(quint32 status, bool timeout);
 	void addGroupOnServerEnd(quint32 status, bool timeout);
 	void renameGroupEnd(quint32 status, bool timeout);

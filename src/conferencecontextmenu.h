@@ -20,39 +20,39 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef RTFEXPORTER_H
-#define RTFEXPORTER_H
+#ifndef CONFERENCECONTEXTMENU_H
+#define CONFERENCECONTEXTMENU_H
 
-#include <QTextDocument>
-#include <QTextCharFormat>
-#include <QTextFragment>
-#include <QColor>
+#include <QMenu>
+//#include <QDateTime>
 
-class RtfExporter
+#include "onlinestatus.h"
+//#include "contactgroup.h"
+
+class QAction;
+class Account;
+class Contact;
+
+class ConferenceContextMenu : public QMenu
 {
+Q_OBJECT
 public:
-	RtfExporter(const QTextDocument* _doc);
-	~RtfExporter();
-	
-	QByteArray toRtf();
+	ConferenceContextMenu(Account* account, QWidget* parent = 0);
+	~ConferenceContextMenu();
+
+	void setContact(Contact* c);
+private slots:
+	void exitConference();
+//	void renameContact();
+	void showHistory();
+	void checkOnlineStatus(OnlineStatus status);
+
 private:
-	void processBlock(const QTextBlock &block);
-	void processFragment(const QTextFragment &fragment);
-	void processCharFormat(const QTextCharFormat& format, const QString& text);
-	void processText(const QString& text);
-	void checkChar(QChar ch);
-	
-	int indexOfFont(QString fontFamily);
-	int indexOfColor(QRgb rgb);
-	
-	const QTextDocument* doc;
-	QTextCharFormat currentCharFormat;
-	int currentFont;
-	bool firstParsing;
-	bool controlCodeApplied;
-	QByteArray rtf;
-	QList<QByteArray> fonts;
-	QList<QRgb> colors;
+	QAction* exitConferenceAction;
+//	QAction* renameContactAction;
+	QAction* historyAction;
+	Account* m_account;
+	Contact* m_contact;
 };
 
 #endif

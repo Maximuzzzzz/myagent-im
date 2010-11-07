@@ -119,7 +119,6 @@ void SystemTrayIcon::updateTooltip()
 
 bool SystemTrayIcon::event(QEvent* e)
 {
-	qDebug() << "SystemTrayIcon::event type = " << e->type();
 	return QSystemTrayIcon::event(e);
 }
 

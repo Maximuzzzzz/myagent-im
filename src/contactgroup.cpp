@@ -20,26 +20,28 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QDebug>
+
 #include "contactgroup.h"
 
-ContactGroup::ContactGroup(quint32 id, quint32 flags, QString name)
-	: m_id(id), m_flags(flags), m_name(name)
+ContactGroup::ContactGroup(quint32 id, quint32 flags, QString name, bool isConf)
+	: m_id(id), m_flags(flags), m_name(name), m_isConf(isConf)
 {
 }
 
 ContactGroup::ContactGroup(QDataStream& stream)
 {
-	stream >> m_id >> m_flags >> m_name;
+	stream >> m_id >> m_flags >> m_name >> m_isConf;
 }
 
 QDataStream & operator <<(QDataStream & stream, ContactGroup* group)
 {
-	stream << group->id() << group->flags() << group->name();
+	stream << group->id() << group->flags() << group->name() << group->isConferences();
 	return stream;
 }
 
 QDataStream & operator >>(QDataStream & stream, ContactGroup* group)
 {
-	stream >> group->m_id >> group->m_flags >> group->m_name;
+	stream >> group->m_id >> group->m_flags >> group->m_name >> group->m_isConf;
 	return stream;
 }

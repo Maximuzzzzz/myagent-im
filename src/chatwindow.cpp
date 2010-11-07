@@ -96,12 +96,12 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s)
 		QHBoxLayout* bottomWidgetLayout = new QHBoxLayout;
 		bottomWidgetLayout->setContentsMargins(1, 1, 1, 1);
 		bottomWidgetLayout->setSpacing(1);
-		
+
 		editorsWidget = new QTabWidget;
 		editorsWidget->setStyleSheet("QTabWidget::pane { border: 0px; } QTabWidget::tab-bar { left: 1px; } QTabBar::tab { padding: 0px 32px 0px 32px; font: bold 9px; }");
 		editorsWidget->setTabPosition(QTabWidget::South);
 		editorsWidget->setTabShape(QTabWidget::Triangular);
-		
+
 		messageEditor = new MessageEditor(m_account, session->contact());
 		connect(messageEditor, SIGNAL(sendPressed()), this, SLOT(sendMessage()));
 		connect(messageEditor, SIGNAL(textChanged()), session, SLOT(sendTyping()));
@@ -112,43 +112,47 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s)
 
 		connect(messageEditor, SIGNAL(setSignalCheckSpelling(bool)), this, SIGNAL(setSignalCheckSpelling(bool)));
 		connect(this, SIGNAL(signalCheckSpellingSet(bool)), messageEditor, SLOT(setCheckSpelling(bool)));
-		
-		smsEditor = new SmsEditor(m_account, session->contact());
-		connect(smsEditor, SIGNAL(sendPressed()), this, SLOT(sendSms()));
-		
-		editorsWidget->addTab(messageEditor, tr("Text"));
-		editorsWidget->addTab(smsEditor, tr("SMS"));
 
-		connect(editorsWidget, SIGNAL(currentChanged(int)), this, SLOT(slotEditorActivate(int)));
-		
+		editorsWidget->addTab(messageEditor, tr("Text"));
+		if (!session->contact()->isConference())
+		{
+			smsEditor = new SmsEditor(m_account, session->contact());
+			connect(smsEditor, SIGNAL(sendPressed()), this, SLOT(sendSms()));
+
+			editorsWidget->addTab(smsEditor, tr("SMS"));
+
+			connect(editorsWidget, SIGNAL(currentChanged(int)), this, SLOT(slotEditorActivate(int)));
+
+		}
 		AvatarBoxWithHandle* avatarBoxWithHandle = new AvatarBoxWithHandle(m_account->avatarsPath(), m_account->email());
 		avatarBoxWithHandle->toggle(m_account->settings()->value("ChatWindow/BottomAvatarBoxState", false).toBool());
 		connect(avatarBoxWithHandle, SIGNAL(toggled(bool)), SLOT(saveBottomAvatarBoxState(bool)));
-		
+
 		bottomWidgetLayout->addWidget(editorsWidget);
 		bottomWidgetLayout->addWidget(avatarBoxWithHandle);
-		
+
 		bottomWidget->setLayout(bottomWidgetLayout);
-		
+
 		splitter->addWidget(bottomWidget);
-		
-		connect(session->contact(), SIGNAL(statusChanged(OnlineStatus)), this, SLOT(checkContactStatus(OnlineStatus)));
+
+		if (!session->contact()->isConference())
+			connect(session->contact(), SIGNAL(statusChanged(OnlineStatus)), this, SLOT(checkContactStatus(OnlineStatus)));
 		checkContactStatus(session->contact()->status());
 	}
 	else
 	{
-		setWindowTitle(session->contact()->nickname());
-		
+//		setWindowTitle(session->contact()->nickname());
+
 		smsEditor = new SmsEditor(s->account(), s->contact());
 		connect(smsEditor, SIGNAL(sendPressed()), this, SLOT(sendSms()));
 		splitter->addWidget(smsEditor);
 	}
-	
+
 	splitter->setStretchFactor(0, 7);
 	splitter->setStretchFactor(1, 3);
-	
+
 	layout->addWidget(splitter);
-	
+
 	statusBar = new QStatusBar();
 
 	layout->addWidget(statusBar);
@@ -156,9 +160,11 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s)
 	QPushButton* sendButton = new QPushButton(tr("Send"), this);
 	connect(sendButton, SIGNAL(clicked(bool)), this, SLOT(send()));	
 	connect(this, SIGNAL(messageEditorActivate()), messageEditor, SLOT(messageEditorActivate()));
-	connect(this, SIGNAL(smsEditorActivate()), smsEditor, SLOT(smsEditorActivate()));
+	if (!session->contact()->isConference())
+		connect(this, SIGNAL(smsEditorActivate()), smsEditor, SLOT(smsEditorActivate()));
 
-	connect(session->contact(), SIGNAL(typing()), this, SLOT(contactTyping()));
+	if (!session->contact()->isConference())
+		connect(session->contact(), SIGNAL(typing()), this, SLOT(contactTyping()));
 	connect(session, SIGNAL(messageDelivered(bool, Message*)), this, SLOT(messageDelivered(bool, Message*)));
 	connect(session, SIGNAL(messageAppended(const Message*)), this, SLOT(appendMessageToView(const Message*)));
 
@@ -205,7 +211,7 @@ quint32 ChatWindow::sendMessage()
 	
 	PlainTextExporter textExporter(messageEditor->document());
 	QString messageText = textExporter.toText();
-	
+
 	emit messageEditorActivate();
 
 	if (messageText.isEmpty())
@@ -213,6 +219,8 @@ quint32 ChatWindow::sendMessage()
 	
 	RtfExporter rtfExporter(messageEditor->document());
 	QByteArray messageRtf = rtfExporter.toRtf();
+	
+	qDebug() << "ChatWindow::sendMessage()" << messageRtf;
 	
 	messageEditor->clear();
 
@@ -332,7 +340,10 @@ void ChatWindow::messageDelivered(bool really, Message* msg)
 		QScrollBar* vScrollBar = chatView->verticalScrollBar();
 		vScrollBar->triggerAction(QAbstractSlider::SliderToMaximum);
 
-		theRM.getAudio()->play(STMessage);
+		if (session->contact()->email().contains("@chat.agent"))
+			theRM.getAudio()->play(STConference);
+		else
+			theRM.getAudio()->play(STMessage);
 
 		emit newMessage(this);
 	}
@@ -343,8 +354,11 @@ void ChatWindow::messageDelivered(bool really, Message* msg)
 void ChatWindow::checkContactStatus(OnlineStatus status)
 {
 	Contact* contact = session->contact();
-	setWindowTitle(contact->email() + " - " + status.description());
-	setWindowIcon(status.chatWindowIcon());
+	setWindowTitle(contact->nickname() + " - " + status.description());
+	if (contact->isConference())
+		setWindowIcon(QIcon(":/icons/msg_conference.png"));
+	else
+		setWindowIcon(status.chatWindowIcon());
 	emit setMainWindowIconAndTitle(windowIcon(), this);
 }
 
@@ -437,7 +451,10 @@ void ChatWindow::slotEditorActivate(int tab)
 
 void ChatWindow::slotTimeout()
 {
-	setWindowIcon(session->contact()->status().chatWindowIcon());
+	if (session->contact()->isConference())
+		setWindowIcon(QIcon(":/icons/msg_conference.png"));
+	else
+		setWindowIcon(session->contact()->status().chatWindowIcon());
 	emit setMainWindowIconAndTitle(windowIcon(), this);
 }
 
@@ -452,7 +469,12 @@ void ChatWindow::clearStatus()
 		setWindowIcon(currentIcon);
 	}
 	else
-		setWindowIcon(session->contact()->status().chatWindowIcon());
+	{
+		if (session->contact()->isConference())
+			setWindowIcon(QIcon(":/icons/msg_conference.png"));
+		else
+			setWindowIcon(session->contact()->status().chatWindowIcon());
+	}
 	emit setMainWindowIconAndTitle(windowIcon(), this);
 	if (timer->isActive())
 		timer->stop();
@@ -464,7 +486,10 @@ void ChatWindow::slotMakeRead()
 	if (isNewMessage)
 	{
 		isNewMessage = false;
-		setWindowIcon(session->contact()->status().chatWindowIcon());
+		if (session->contact()->isConference())
+			setWindowIcon(QIcon(":/icons/msg_conference.png"));
+		else
+			setWindowIcon(session->contact()->status().chatWindowIcon());
 		emit setMainWindowIconAndTitle(windowIcon(), this);
 	}
 }

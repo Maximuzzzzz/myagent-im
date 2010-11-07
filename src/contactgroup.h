@@ -29,12 +29,14 @@
 class ContactGroup
 {
 public:
-	ContactGroup(quint32 id, quint32 flags, QString name);
+	ContactGroup(quint32 id, quint32 flags, QString name, bool isConf = false);
 	ContactGroup(QDataStream& stream);
 	
 	quint32 id() const { return m_id; }
 	quint32 flags() const { return m_flags; }
 	QString name() const { return m_name; }
+
+	bool isConferences() const { return m_isConf; }
 
 	void setName(const QString& name) { m_name = name; }
 
@@ -42,6 +44,8 @@ private:
 	quint32 m_id;
 	quint32 m_flags;
 	QString m_name;
+
+	bool m_isConf;
 
 	friend QDataStream& operator<<(QDataStream& stream, ContactGroup* group);	
 	friend QDataStream& operator>>(QDataStream& stream, ContactGroup* group);

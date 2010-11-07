@@ -91,21 +91,6 @@ Account::~Account()
 	delete m_contactList;
 }
 
-/*void Account::setInfo(const QByteArray& totalMessages, const QByteArray& unreadMessages, const QString& nickname, const QString& statusText)
-{
-	qDebug() << "Account::setInfo unreadMessages = " << unreadMessages;
-	m_totalMessages  = totalMessages.toUInt();
-	m_unreadMessages = unreadMessages.toUInt();
-	m_nickname = nickname;
-
-	if (unreadMessages.toUInt() > 0)
-		theRM.getAudio()->play(STLetter);
-
-	emit nicknameChanged();
-	emit unreadLettersChanged(m_unreadMessages);
-	emit statusChanged(statusText);
-}*/
-
 QString Account::path() const
 {
 	QString basePath = theRM.basePath();
@@ -174,7 +159,7 @@ void Account::setOnlineStatus(OnlineStatus newStatus)
 		m_onlineStatus = newStatus;
 		if (m_isInAutoAway)
 			m_isInAutoAway = false;
-		m_client->changeStatus(m_onlineStatus.protocolStatus());
+		m_client->changeStatus(m_onlineStatus.protocolStatus()/*, m_onlineStatus.type()*/);
 		emit onlineStatusChanged(m_onlineStatus);
 	}
 }
@@ -248,7 +233,7 @@ void Account::setAutoAway(bool on)
 	}
 }
 
-void Account::setTotalMessages(const QByteArray& totalMessages)
+void Account::setTotalMessages(const QString& totalMessages)
 {
 	qDebug() << "Account::setTotalMessages = " << totalMessages;
 	m_totalMessages  = totalMessages.toUInt();
@@ -256,7 +241,7 @@ void Account::setTotalMessages(const QByteArray& totalMessages)
 	emit totalMessagesChanged(totalMessages);
 }
 
-void Account::setUnreadMessages(const QByteArray& unreadMessages)
+void Account::setUnreadMessages(const QString& unreadMessages)
 {
 	qDebug() << "Account::setUnreadMessages" << unreadMessages;
 	m_unreadMessages = unreadMessages.toUInt();
@@ -267,19 +252,16 @@ void Account::setUnreadMessages(const QByteArray& unreadMessages)
 	emit unreadLettersChanged(m_unreadMessages);
 }
 
-void Account::setNickName(QByteArray nickname)
+void Account::setNickName(QString nickname)
 {
 	qDebug() << "Account::setNickName" << nickname;
 
-	QTextCodec* codec = QTextCodec::codecForName("CP1251");
-	//if (codec->canEncode(nickname))
-	m_nickname = codec->toUnicode(nickname);
-	//m_nickname = nickname.fromAscii();
+	m_nickname = nickname;
 
 	emit nicknameChanged();
 }
 
-void Account::setStatusText(QByteArray statusText)
+void Account::setStatusText(QString statusText)
 {
 	qDebug() << "Account::setStatusText" << statusText;
 	emit statusChanged(statusText);

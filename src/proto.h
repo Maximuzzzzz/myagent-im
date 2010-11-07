@@ -1,8 +1,6 @@
 #ifndef MRIM_PROTO_H
 #define MRIM_PROTO_H
 
-
-
 #define PROTO_VERSION_MAJOR     1
 #define PROTO_VERSION_MINOR     9
 #define PROTO_VERSION ((((quint32)(PROTO_VERSION_MAJOR))<<16)|(quint32)(PROTO_VERSION_MINOR))
@@ -74,6 +72,7 @@ mrim_packet_header_t;
 	#define MESSAGE_FLAG_SPAMF_SPAM		0x00020000	// ����� ����������� �� ���� - ������� ����� � ���� ������ ;������� ������������, �������� � ������ ��������� ��������� ��� �������� ������ ��������
 	#define MESSAGE_FLAG_v1p16			0x00100000	// ��� ������������� �������
 	#define MESSAGE_FLAG_CP1251			0x00200000
+	#define MESSAGE_FLAG_CONFERENCE		0x00400000
 // LPS to e-mail ANSI
 // LPS message ANSI/UNICODE (see flags)
 // LPS rtf-formatted message (>=1.1) ???
@@ -337,12 +336,26 @@ enum {
 
 #define MRIM_CS_PROXY_HELLO_ACK		0x1047
 
-#define MRIM_SC_STATUS_TEXT			0x1063
+#define MRIM_SC_MICROBLOG_TEXT			0x1063
 // LPS status
 
-#define MRIM_CS_STATUS_TEXT			0x1064
+#define MRIM_CS_MICROBLOG_TEXT			0x1064
 // LPS status
 
+#define MRIM_CS_LOGIN3				0x1078
+// LPS login
+// LPS password
+// DWORD ??? = ffffffff
+// LPS version
+// locale
+// DWORD ??? = 10000000
+// DWORD ??? = 01000000
+// LPS ??? = geo-list
+// LPS version2
+// for ;;
+	// DWORD[2] id_argument
+	// DWORD ??? = 00000002 || 00000001
+	// DWORD data
 
 typedef struct mrim_connection_params_t
 {

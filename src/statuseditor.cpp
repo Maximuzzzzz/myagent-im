@@ -31,8 +31,6 @@
 
 StatusEditor::StatusEditor(QWidget *parent)
 {
-	maxSize = 500;
-
 	setWindowFlags(Qt::Popup);
 	QVBoxLayout* layout = new QVBoxLayout;
 	QLabel* label1 = new QLabel(tr("Microblog"));
@@ -46,7 +44,7 @@ StatusEditor::StatusEditor(QWidget *parent)
 	QWidget* twoLabels = new QWidget(bottomWidget);
 	sayButton = new QPushButton(tr("Say"));
 	sayButton->setEnabled(false);
-	connect(sayButton, SIGNAL(clicked(bool)), this, SLOT(slotSendStatus()));
+	connect(sayButton, SIGNAL(clicked(bool)), this, SLOT(slotSendMicrotext()));
 
 	QHBoxLayout* bottomLayout = new QHBoxLayout;
 	QVBoxLayout* twoLabelsLayout = new QVBoxLayout;
@@ -94,15 +92,15 @@ void StatusEditor::slotTextChanged(const QString& text)
 		sayButton->setEnabled(true);
 }
 
-void StatusEditor::slotSendStatus()
+void StatusEditor::slotSendMicrotext()
 {
 	qDebug() << "StatusEditor::slotSendStatus()";
-	emit sendStatus(editor->text());
+	emit sendMicrotext(editor->text());
 	close();
 }
 
-void StatusEditor::setStatus(QByteArray text)
+void StatusEditor::setStatus(QString text)
 {
-	QTextCodec* codec = QTextCodec::codecForName("CP1251");
-	editor->setText(codec->toUnicode(text));
+//	QTextCodec* codec = QTextCodec::codecForName("CP1251");
+	editor->setText(text/*codec->toUnicode(text)*/);
 }

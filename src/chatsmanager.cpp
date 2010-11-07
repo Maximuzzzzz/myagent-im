@@ -68,7 +68,10 @@ void ChatsManager::processMessage(QByteArray from, Message* msg)
 		if (msg->flags() & MESSAGE_FLAG_ALARM)
 			theRM.getAudio()->play(STRing);
 		else
-			theRM.getAudio()->play(STMessage);
+			if (from.contains("@chat.agent"))
+				theRM.getAudio()->play(STConference);
+			else
+				theRM.getAudio()->play(STMessage);
 	}
 	session->appendMessage(msg);
 }

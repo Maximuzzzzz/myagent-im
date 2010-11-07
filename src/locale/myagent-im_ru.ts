@@ -106,113 +106,113 @@
 <context>
     <name>ChatWindow</name>
     <message>
-        <location filename="../chatwindow.cpp" line="153"/>
+        <location filename="../chatwindow.cpp" line="160"/>
         <source>Send</source>
         <translation>Отправить</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="297"/>
+        <location filename="../chatwindow.cpp" line="308"/>
         <source>Contact is typing</source>
         <translation>Собеседник пишет вам сообщение</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="320"/>
+        <location filename="../chatwindow.cpp" line="331"/>
         <source>Message not delivered</source>
         <translation>Сообщение не доставлено</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="325"/>
+        <location filename="../chatwindow.cpp" line="336"/>
         <source>Resend</source>
         <translation>Переотправить</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="480"/>
-        <location filename="../chatwindow.cpp" line="505"/>
-        <location filename="../chatwindow.cpp" line="587"/>
-        <location filename="../chatwindow.cpp" line="610"/>
-        <location filename="../chatwindow.cpp" line="626"/>
-        <location filename="../chatwindow.cpp" line="634"/>
+        <location filename="../chatwindow.cpp" line="508"/>
+        <location filename="../chatwindow.cpp" line="533"/>
+        <location filename="../chatwindow.cpp" line="615"/>
+        <location filename="../chatwindow.cpp" line="638"/>
+        <location filename="../chatwindow.cpp" line="654"/>
+        <location filename="../chatwindow.cpp" line="662"/>
         <source>Files transferring</source>
         <translation>Передача файлов</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="481"/>
+        <location filename="../chatwindow.cpp" line="509"/>
         <source>You offered to your interlocutor to get files.</source>
         <translation>Вы предложили собеседнику принять файлы.</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="483"/>
-        <location filename="../chatwindow.cpp" line="508"/>
+        <location filename="../chatwindow.cpp" line="511"/>
+        <location filename="../chatwindow.cpp" line="536"/>
         <source>Basic size: </source>
         <translation>Общий размер:</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="486"/>
+        <location filename="../chatwindow.cpp" line="514"/>
         <source>Cancel transferring</source>
         <translation>Отменить передачу</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="506"/>
+        <location filename="../chatwindow.cpp" line="534"/>
         <source>Your interlocutor offered to you to get files.</source>
         <translation>Ваш собеседник предложил Вам получить файлы.</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="511"/>
+        <location filename="../chatwindow.cpp" line="539"/>
         <source>Receive</source>
         <translation>Принять</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="512"/>
+        <location filename="../chatwindow.cpp" line="540"/>
         <source>Save as...</source>
         <translation>Сохранить как...</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="513"/>
+        <location filename="../chatwindow.cpp" line="541"/>
         <source>Decline</source>
         <translation>Отказаться</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="588"/>
+        <location filename="../chatwindow.cpp" line="616"/>
         <source>File transferring began</source>
         <translation>Началась передача файлов</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="591"/>
+        <location filename="../chatwindow.cpp" line="619"/>
         <source>Break</source>
         <translation>Прервать</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="611"/>
+        <location filename="../chatwindow.cpp" line="639"/>
         <source>File transferring successful complete</source>
         <translation>Передача файлов успешно завершена</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="617"/>
+        <location filename="../chatwindow.cpp" line="645"/>
         <source>Open folder</source>
         <translation>Открыть папку</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="627"/>
+        <location filename="../chatwindow.cpp" line="655"/>
         <source>Error occured while file transfering</source>
         <translation>При передаче файлов произошла ошибка</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="635"/>
+        <location filename="../chatwindow.cpp" line="663"/>
         <source>Transferring canceled</source>
         <translation>Передача файлов отменена</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="261"/>
+        <location filename="../chatwindow.cpp" line="272"/>
         <source>Sms from number</source>
         <translation>Смс от номера</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="263"/>
+        <location filename="../chatwindow.cpp" line="274"/>
         <source>Sms status for number</source>
         <translation>Статус отправки смс на номер</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="265"/>
+        <location filename="../chatwindow.cpp" line="276"/>
         <source>Alarm clock:</source>
         <translation>Будильник:</translation>
     </message>
@@ -222,9 +222,32 @@
         <translation>Текст</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="117"/>
+        <location filename="../chatwindow.cpp" line="122"/>
         <source>SMS</source>
         <translation>SMS</translation>
+    </message>
+</context>
+<context>
+    <name>ConferenceContextMenu</name>
+    <message>
+        <location filename="../conferencecontextmenu.cpp" line="45"/>
+        <location filename="../conferencecontextmenu.cpp" line="70"/>
+        <source>Exit conference</source>
+        <translation>Выйти из конференции</translation>
+    </message>
+    <message>
+        <location filename="../conferencecontextmenu.cpp" line="51"/>
+        <source>History</source>
+        <translation>История сообщений</translation>
+    </message>
+    <message>
+        <location filename="../conferencecontextmenu.cpp" line="70"/>
+        <source>Are you sure you want to exit conference &apos;%1?&apos;</source>
+        <translation>Вы действительно хотите выйти из конференции &apos;%1?&apos;</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to exit conference %1?</source>
+        <translation type="obsolete">Вы действительно хотите выйти из конференции &apos;%1?&apos;</translation>
     </message>
 </context>
 <context>
@@ -240,14 +263,13 @@
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../contactcontextmenu.cpp" line="108"/>
+        <location filename="../contactcontextmenu.cpp" line="116"/>
         <source>Remove contact</source>
         <translation>Удаление контакта</translation>
     </message>
     <message>
-        <location filename="../contactcontextmenu.cpp" line="108"/>
         <source>Are you sure you want to remove contact</source>
-        <translation>Вы уверены, что хотите удалить контакт</translation>
+        <translation type="obsolete">Вы уверены, что хотите удалить контакт</translation>
     </message>
     <message>
         <location filename="../contactcontextmenu.cpp" line="54"/>
@@ -275,12 +297,17 @@
         <translation>История сообщений</translation>
     </message>
     <message>
-        <location filename="../contactcontextmenu.cpp" line="202"/>
+        <location filename="../contactcontextmenu.cpp" line="116"/>
+        <source>Are you sure you want to remove contact %1?</source>
+        <translation>Вы уверены, что хотите удалить контакт %1?</translation>
+    </message>
+    <message>
+        <location filename="../contactcontextmenu.cpp" line="211"/>
         <source>Rename contact</source>
         <translation>Переименовать контакт</translation>
     </message>
     <message>
-        <location filename="../contactcontextmenu.cpp" line="202"/>
+        <location filename="../contactcontextmenu.cpp" line="211"/>
         <source>Enter new name for user %1:</source>
         <translation>Введите новое имя для пользователя %1:</translation>
     </message>
@@ -520,97 +547,99 @@
 <context>
     <name>ContactList</name>
     <message>
-        <location filename="../contactlist.cpp" line="422"/>
-        <location filename="../contactlist.cpp" line="480"/>
-        <location filename="../contactlist.cpp" line="524"/>
-        <location filename="../contactlist.cpp" line="587"/>
-        <location filename="../contactlist.cpp" line="640"/>
+        <location filename="../contactlist.cpp" line="454"/>
+        <location filename="../contactlist.cpp" line="527"/>
+        <location filename="../contactlist.cpp" line="584"/>
+        <location filename="../contactlist.cpp" line="628"/>
+        <location filename="../contactlist.cpp" line="691"/>
+        <location filename="../contactlist.cpp" line="745"/>
         <source>Time is out</source>
         <translation>Время вышло</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="427"/>
-        <location filename="../contactlist.cpp" line="485"/>
+        <location filename="../contactlist.cpp" line="459"/>
+        <location filename="../contactlist.cpp" line="532"/>
+        <location filename="../contactlist.cpp" line="589"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="255"/>
+        <location filename="../contactlist.cpp" line="274"/>
         <source>Removing contact failed</source>
         <translation>Не удалось удалить контакт</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="501"/>
+        <location filename="../contactlist.cpp" line="605"/>
         <source>Group %1 already exists.</source>
         <translation>Группа %1 уже существует.</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="512"/>
+        <location filename="../contactlist.cpp" line="616"/>
         <source>Adding group is currently impossible</source>
         <translation>Добавление группы временно невозможно</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="526"/>
-        <location filename="../contactlist.cpp" line="589"/>
-        <location filename="../contactlist.cpp" line="642"/>
+        <location filename="../contactlist.cpp" line="630"/>
+        <location filename="../contactlist.cpp" line="693"/>
+        <location filename="../contactlist.cpp" line="747"/>
         <source>Incorrect data</source>
         <translation>Неверные данные</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="528"/>
-        <location filename="../contactlist.cpp" line="591"/>
-        <location filename="../contactlist.cpp" line="644"/>
+        <location filename="../contactlist.cpp" line="632"/>
+        <location filename="../contactlist.cpp" line="695"/>
+        <location filename="../contactlist.cpp" line="749"/>
         <source>Internal error</source>
         <translation>Внутренняя ошибка</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="530"/>
-        <location filename="../contactlist.cpp" line="593"/>
-        <location filename="../contactlist.cpp" line="646"/>
+        <location filename="../contactlist.cpp" line="634"/>
+        <location filename="../contactlist.cpp" line="697"/>
+        <location filename="../contactlist.cpp" line="751"/>
         <source>Invalid group name</source>
         <translation>Неправильное имя группы</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="532"/>
+        <location filename="../contactlist.cpp" line="636"/>
         <source>Number of groups exceeded</source>
         <translation>Превышено число групп</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="534"/>
-        <location filename="../contactlist.cpp" line="597"/>
-        <location filename="../contactlist.cpp" line="650"/>
+        <location filename="../contactlist.cpp" line="638"/>
+        <location filename="../contactlist.cpp" line="701"/>
+        <location filename="../contactlist.cpp" line="755"/>
         <source>Unknown error</source>
         <translation>Неизвестная ошибка</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="551"/>
-        <location filename="../contactlist.cpp" line="619"/>
+        <location filename="../contactlist.cpp" line="655"/>
+        <location filename="../contactlist.cpp" line="724"/>
         <source>Unknown group</source>
         <translation>Неизвестная группа</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="566"/>
+        <location filename="../contactlist.cpp" line="670"/>
         <source>Group is not empty</source>
         <translation>Группа не пуста</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="575"/>
+        <location filename="../contactlist.cpp" line="679"/>
         <source>Removing group is currently impossible</source>
         <translation>Удаление группы временно невозможно</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="595"/>
-        <location filename="../contactlist.cpp" line="648"/>
+        <location filename="../contactlist.cpp" line="699"/>
+        <location filename="../contactlist.cpp" line="753"/>
         <source>No such group</source>
         <translation>Группа не существует</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="628"/>
+        <location filename="../contactlist.cpp" line="733"/>
         <source>Renaming group is currently impossible</source>
         <translation>Переименование группы временно невозможно</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="459"/>
+        <location filename="../contactlist.cpp" line="563"/>
         <source>Contact %1 already exists</source>
         <translation>Контакт %1 уже существует</translation>
     </message>
@@ -618,7 +647,7 @@
 <context>
     <name>ContactListItem</name>
     <message>
-        <location filename="../contactlistitem.cpp" line="76"/>
+        <location filename="../contactlistitem.cpp" line="83"/>
         <source>Temporary</source>
         <translation>Временные</translation>
     </message>
@@ -626,45 +655,50 @@
 <context>
     <name>ContactListModel</name>
     <message>
-        <location filename="../contactlistmodel.cpp" line="201"/>
+        <location filename="../contactlistmodel.cpp" line="207"/>
         <source>Phone contacts</source>
         <translation>Телефонные контакты</translation>
+    </message>
+    <message>
+        <location filename="../contactlistmodel.cpp" line="219"/>
+        <source>Conferences</source>
+        <translation>Конференции</translation>
     </message>
 </context>
 <context>
     <name>ContactListWindow</name>
     <message>
-        <location filename="../contactlistwindow.cpp" line="209"/>
+        <location filename="../contactlistwindow.cpp" line="213"/>
         <source>Login rejected</source>
         <translation>Вход отклонен</translation>
     </message>
     <message>
-        <location filename="../contactlistwindow.cpp" line="227"/>
+        <location filename="../contactlistwindow.cpp" line="231"/>
         <source>Logout</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="../contactlistwindow.cpp" line="225"/>
+        <location filename="../contactlistwindow.cpp" line="229"/>
         <source>Someone else entered with your login</source>
         <translation>Кто-то еще вошел под Вашим логином</translation>
     </message>
     <message>
-        <location filename="../contactlistwindow.cpp" line="297"/>
+        <location filename="../contactlistwindow.cpp" line="301"/>
         <source>My world</source>
         <translation>Мой мир</translation>
     </message>
     <message>
-        <location filename="../contactlistwindow.cpp" line="301"/>
+        <location filename="../contactlistwindow.cpp" line="305"/>
         <source>My blog</source>
         <translation>Мой блог</translation>
     </message>
     <message>
-        <location filename="../contactlistwindow.cpp" line="305"/>
+        <location filename="../contactlistwindow.cpp" line="309"/>
         <source>My photos</source>
         <translation>Мои фото</translation>
     </message>
     <message>
-        <location filename="../contactlistwindow.cpp" line="309"/>
+        <location filename="../contactlistwindow.cpp" line="313"/>
         <source>My videos</source>
         <translation>Моё видео</translation>
     </message>
@@ -807,6 +841,24 @@
     </message>
 </context>
 <context>
+    <name>HistoryViewTab</name>
+    <message>
+        <location filename="../historyviewtab.cpp" line="53"/>
+        <source>Save all log...</source>
+        <translation>Сохранить всё...</translation>
+    </message>
+    <message>
+        <location filename="../historyviewtab.cpp" line="191"/>
+        <source>File to save</source>
+        <translation>Сохранить в файл</translation>
+    </message>
+    <message>
+        <location filename="../historyviewtab.cpp" line="191"/>
+        <source>HTML file %1</source>
+        <translation>Файл HTML %1</translation>
+    </message>
+</context>
+<context>
     <name>HistoryViewer</name>
     <message>
         <location filename="../historyviewer.cpp" line="62"/>
@@ -842,7 +894,7 @@
     <message>
         <location filename="../linkbutton.cpp" line="65"/>
         <source>Copy &amp;Link Location</source>
-        <translation>Скопировать адрес ссылки</translation>
+        <translation>Скопировать &amp;адрес ссылки</translation>
     </message>
 </context>
 <context>
@@ -896,6 +948,15 @@
     </message>
 </context>
 <context>
+    <name>MRIMClientPrivate</name>
+    <message>
+        <location filename="../mrimclientprivate.cpp" line="728"/>
+        <location filename="../mrimclientprivate.cpp" line="875"/>
+        <source>User %1 left the conference</source>
+        <translation>Пользователь %1 покинул конференцию</translation>
+    </message>
+</context>
+<context>
     <name>MainMenuButton</name>
     <message>
         <location filename="../mainmenubutton.cpp" line="52"/>
@@ -912,6 +973,11 @@
         <location filename="../mainmenubutton.cpp" line="163"/>
         <source>Add contact</source>
         <translation>Добавить контакт</translation>
+    </message>
+    <message>
+        <location filename="../mainmenubutton.cpp" line="68"/>
+        <source>New conference</source>
+        <translation>Новая конференция</translation>
     </message>
     <message>
         <location filename="../mainmenubutton.cpp" line="135"/>
@@ -931,23 +997,23 @@
     </message>
     <message>
         <location filename="../mainmenubutton.cpp" line="60"/>
-        <location filename="../mainmenubutton.cpp" line="209"/>
+        <location filename="../mainmenubutton.cpp" line="210"/>
         <source>Add contact for SMS</source>
         <translation>Добавить контакт для смс</translation>
     </message>
     <message>
         <location filename="../mainmenubutton.cpp" line="64"/>
-        <location filename="../mainmenubutton.cpp" line="218"/>
+        <location filename="../mainmenubutton.cpp" line="219"/>
         <source>Add group</source>
         <translation>Добавить группу</translation>
     </message>
     <message>
-        <location filename="../mainmenubutton.cpp" line="218"/>
+        <location filename="../mainmenubutton.cpp" line="219"/>
         <source>Enter group name:</source>
         <translation>Введите название группы:</translation>
     </message>
     <message>
-        <location filename="../mainmenubutton.cpp" line="228"/>
+        <location filename="../mainmenubutton.cpp" line="229"/>
         <source>Add group error</source>
         <translation>Ошибка при добавлении группы</translation>
     </message>
@@ -957,7 +1023,7 @@
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../mainmenubutton.cpp" line="233"/>
+        <location filename="../mainmenubutton.cpp" line="234"/>
         <source>Add sms contact error</source>
         <translation>Ошибка при добавлении смс-контакта</translation>
     </message>
@@ -965,12 +1031,12 @@
 <context>
     <name>Message</name>
     <message>
-        <location filename="../message.cpp" line="64"/>
+        <location filename="../message.cpp" line="65"/>
         <source>Interlocutor has tried to awake you</source>
         <translation>Собеседник попытался вас разбудить</translation>
     </message>
     <message>
-        <location filename="../message.cpp" line="66"/>
+        <location filename="../message.cpp" line="67"/>
         <source>You has tried to awake interlocutor</source>
         <translation>Вы попытались разбудить собеседника</translation>
     </message>
@@ -986,29 +1052,113 @@
 <context>
     <name>MessageEditor</name>
     <message>
-        <location filename="../messageeditor.cpp" line="203"/>
+        <location filename="../messageeditor.cpp" line="206"/>
         <source>Ignore interlocutor style</source>
         <translation>Игнорировать настройки собеседника</translation>
     </message>
     <message>
-        <location filename="../messageeditor.cpp" line="456"/>
+        <location filename="../messageeditor.cpp" line="443"/>
         <source>&lt;small&gt;Total size: &lt;/small&gt;</source>
         <translation>&lt;small&gt;Общий размер: &lt;/small&gt;</translation>
     </message>
     <message>
-        <location filename="../messageeditor.cpp" line="513"/>
+        <location filename="../messageeditor.cpp" line="500"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../messageeditor.cpp" line="516"/>
+        <location filename="../messageeditor.cpp" line="503"/>
         <source>&lt;small&gt;Status...&lt;/small&gt;</source>
         <translation>&lt;small&gt;Статус...&lt;/small&gt;</translation>
     </message>
     <message>
-        <location filename="../messageeditor.cpp" line="555"/>
+        <location filename="../messageeditor.cpp" line="542"/>
         <source>Select files to transfer</source>
         <translation>Выберите файлы для передачи</translation>
+    </message>
+</context>
+<context>
+    <name>NewConferenceDialog</name>
+    <message>
+        <location filename="../newconference.ui" line="14"/>
+        <source>New conference</source>
+        <translation>Новая конференция</translation>
+    </message>
+    <message>
+        <location filename="../newconference.ui" line="45"/>
+        <source>Conference type</source>
+        <translation>Тип конференции</translation>
+    </message>
+    <message>
+        <location filename="../newconference.ui" line="66"/>
+        <source>Choose the conference type. The members of conference could be added by</source>
+        <translation>Выберите тип конференции. Набор участников конференции определяется</translation>
+    </message>
+    <message>
+        <location filename="../newconference.ui" line="75"/>
+        <source>me and other members</source>
+        <translation>мной и другими участниками</translation>
+    </message>
+    <message>
+        <location filename="../newconference.ui" line="85"/>
+        <source>only me</source>
+        <translation>только мной</translation>
+    </message>
+    <message>
+        <location filename="../newconference.ui" line="104"/>
+        <source>Add members into conference</source>
+        <translation>Добавить пользователей в конференцию</translation>
+    </message>
+    <message>
+        <location filename="../newconference.ui" line="125"/>
+        <source>Type conference name and add members from list</source>
+        <translation>Введите тему конференции и выберите пользователей, которые будут участвовать в конференции</translation>
+    </message>
+    <message>
+        <location filename="../newconference.ui" line="140"/>
+        <source>Conference name:</source>
+        <translation>Тема конференции:</translation>
+    </message>
+    <message>
+        <location filename="../newconference.ui" line="153"/>
+        <source>Conference 1</source>
+        <translation>Конференция 1</translation>
+    </message>
+    <message>
+        <location filename="../newconference.ui" line="182"/>
+        <source>TextLabel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../newconference.ui" line="216"/>
+        <source>-&gt;</source>
+        <translation>-&gt;</translation>
+    </message>
+    <message>
+        <location filename="../newconference.ui" line="223"/>
+        <source>&lt;-</source>
+        <translation>&lt;-</translation>
+    </message>
+    <message>
+        <location filename="../newconference.ui" line="253"/>
+        <source>Conference members</source>
+        <translation>Участники конференции</translation>
+    </message>
+    <message>
+        <location filename="../newconference.ui" line="297"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../newconference.ui" line="304"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <location filename="../newconferencedialog.cpp" line="36"/>
+        <source>All contacts (%1)</source>
+        <translatorcomment>Все контакты (%1)</translatorcomment>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -1152,27 +1302,27 @@
 <context>
     <name>SettingsWindow</name>
     <message>
-        <location filename="../settingswindow.cpp" line="45"/>
+        <location filename="../settingswindow.cpp" line="46"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="99"/>
+        <location filename="../settingswindow.cpp" line="101"/>
         <source>Set away status after</source>
         <translation>Устанавливать статус &quot;Отошел&quot; после</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="107"/>
+        <location filename="../settingswindow.cpp" line="109"/>
         <source>minutes of idle</source>
         <translation>минут простоя</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="119"/>
+        <location filename="../settingswindow.cpp" line="121"/>
         <source>Common</source>
         <translation>Общие</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="144"/>
+        <location filename="../settingswindow.cpp" line="147"/>
         <source>Sending messages</source>
         <translation>Отправка сообщений</translation>
     </message>
@@ -1181,59 +1331,69 @@
         <translation type="obsolete">Настройки окон</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="204"/>
+        <location filename="../settingswindow.cpp" line="207"/>
         <source>Tabs in dialog window</source>
         <translation>Вкладки в окне сообщений</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="147"/>
+        <location filename="../settingswindow.cpp" line="150"/>
         <source>Send message on Enter pressed</source>
         <translation>Отправлять сообщение при нажатии Enter</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="148"/>
+        <location filename="../settingswindow.cpp" line="151"/>
         <source>Send message on double Enter pressed</source>
         <translation>Отправлять сообщение при двойном нажатии Enter</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="149"/>
+        <location filename="../settingswindow.cpp" line="152"/>
         <source>Send message on Ctrl+Enter pressed</source>
         <translation>Отправлять сообщение при нажатии Ctrl+Enter</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="150"/>
+        <location filename="../settingswindow.cpp" line="153"/>
         <source>Send message on Alt+S pressed</source>
         <translation>Отправлять сообщение при нажатии Alt+S</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="176"/>
+        <location filename="../settingswindow.cpp" line="179"/>
         <source>Messages</source>
         <translation>Сообщения</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="213"/>
+        <location filename="../settingswindow.cpp" line="216"/>
         <source>Windows</source>
         <translation>Окна</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="223"/>
+        <location filename="../settingswindow.cpp" line="226"/>
         <source>Closing chats</source>
         <translation>Закрытие диалогов</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="224"/>
+        <location filename="../settingswindow.cpp" line="227"/>
         <source>All chats will be closed. Continue?</source>
         <translation>Все диалоги будут закрыты. Продолжить?</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="239"/>
+        <location filename="../settingswindow.cpp" line="242"/>
         <source>Enable sounds</source>
         <translation>Включить звуки</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="247"/>
+        <location filename="../settingswindow.cpp" line="250"/>
         <source>Sounds</source>
         <translation>Звуки</translation>
+    </message>
+    <message>
+        <location filename="../settingswindow.cpp" line="264"/>
+        <source>Enable microblog</source>
+        <translation>Показать микроблог</translation>
+    </message>
+    <message>
+        <location filename="../settingswindow.cpp" line="272"/>
+        <source>View</source>
+        <translation>Вид</translation>
     </message>
 </context>
 <context>
@@ -1259,7 +1419,7 @@
     <message>
         <location filename="../statusbarwidget.cpp" line="57"/>
         <source>Say to your friends, what are you doing</source>
-        <translation>Скажи друзьям, что ты сейчас делаешь</translation>
+        <translation>Расскажи друзьям, что ты сейчас делаешь</translation>
     </message>
 </context>
 <context>
@@ -1291,6 +1451,14 @@
     </message>
 </context>
 <context>
+    <name>SubmenuMoveToGroup</name>
+    <message>
+        <location filename="../contactcontextmenu.cpp" line="273"/>
+        <source>Move to group</source>
+        <translation>Переместить в группу</translation>
+    </message>
+</context>
+<context>
     <name>SystemTrayIcon</name>
     <message>
         <source>Status</source>
@@ -1298,9 +1466,9 @@
     </message>
     <message>
         <location filename="../systemtrayicon.cpp" line="76"/>
-        <location filename="../systemtrayicon.cpp" line="165"/>
-        <location filename="../systemtrayicon.cpp" line="169"/>
-        <location filename="../systemtrayicon.cpp" line="177"/>
+        <location filename="../systemtrayicon.cpp" line="164"/>
+        <location filename="../systemtrayicon.cpp" line="168"/>
+        <location filename="../systemtrayicon.cpp" line="176"/>
         <source>Show contact list</source>
         <translation>Показать список контактов</translation>
     </message>
@@ -1310,12 +1478,12 @@
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="../systemtrayicon.cpp" line="130"/>
+        <location filename="../systemtrayicon.cpp" line="129"/>
         <source>New letter</source>
         <translation>Новое письмо</translation>
     </message>
     <message>
-        <location filename="../systemtrayicon.cpp" line="173"/>
+        <location filename="../systemtrayicon.cpp" line="172"/>
         <source>Hide contact list</source>
         <translation>Скрыть список контактов</translation>
     </message>

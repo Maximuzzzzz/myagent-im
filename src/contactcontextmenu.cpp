@@ -41,34 +41,42 @@ ContactContextMenu::ContactContextMenu(Account* account, QWidget* parent)
 	: QMenu(parent), m_account(account), m_contact(0)
 {
 	connect(m_account, SIGNAL(onlineStatusChanged(OnlineStatus)), this, SLOT(checkOnlineStatus(OnlineStatus)));
-	
+
 	showContactInfoAction = new QAction(QIcon(":icons/anketa.png"), tr("Info"), this);
 	connect(showContactInfoAction, SIGNAL(triggered()), this, SLOT(showContactInfo()));
-	
+
 	removeContactAction = new QAction(QIcon(":icons/cl_delete_contact.png"), tr("Remove"), this);
 	connect(removeContactAction, SIGNAL(triggered()), this, SLOT(removeContact()));
-	
+
 	renameContactAction = new QAction(QIcon(":icons/cl_rename_contact.png"), tr("Rename"), this);
 	connect(renameContactAction, SIGNAL(triggered()), this, SLOT(renameContact()));
-	
+
 	alwaysVisibleAction = new QAction(tr("I'm always visible for..."), this);
 	alwaysVisibleAction->setCheckable(true);
 	connect(alwaysVisibleAction, SIGNAL(triggered(bool)), this, SLOT(alwaysVisibleTriggered(bool)));
-	
+
 	alwaysInvisibleAction = new QAction(tr("I'm always invisible for..."), this);
 	alwaysInvisibleAction->setCheckable(true);
 	connect(alwaysInvisibleAction, SIGNAL(triggered(bool)), this, SLOT(alwaysInvisibleTriggered(bool)));
-	
+
 	askAuthorizationAction = new QAction(QIcon(":icons/authorize_request.png"), tr("Ask authorization"), this);
 	connect(askAuthorizationAction, SIGNAL(triggered()), this, SLOT(askAuthorization()));
 
 	historyAction = new QAction(QIcon(":icons/history.png"), tr("History"), this);
 	connect(historyAction, SIGNAL(triggered()), this, SLOT(showHistory()));
-	
+
+	connect(m_account->contactList(), SIGNAL(groupAdded(ContactGroup*)), this, SLOT(slotGroupAdded(ContactGroup*)));
+	connect(m_account->contactList(), SIGNAL(groupRemoved(ContactGroup*)), this, SLOT(slotGroupRemoved(ContactGroup*)));
+	connect(m_account->contactList(), SIGNAL(groupsCleared()), this, SLOT(slotGroupsCleared()));
+
+	moveToGroup = new SubmenuMoveToGroup(this);
+	connect(moveToGroup, SIGNAL(moveContact(quint32)),this, SLOT(slotChangeGroup(quint32)));
+
 	addAction(showContactInfoAction);
 	addAction(askAuthorizationAction);
 	addAction(renameContactAction);
 	addAction(historyAction);
+	addMenu(moveToGroup);
 	addSeparator();
 	addAction(alwaysVisibleAction);
 	addAction(alwaysInvisibleAction);
@@ -105,7 +113,7 @@ void ContactContextMenu::removeContact()
 	else
 		contactName = m_contact->email();
 
-	if (CenteredMessageBox::question(tr("Remove contact"), tr("Are you sure you want to remove contact") + " " + contactName + "?", QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel) == QMessageBox::Ok)
+	if (CenteredMessageBox::question(tr("Remove contact"), tr("Are you sure you want to remove contact %1?").arg(contactName), QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel) == QMessageBox::Ok)
 	{
 		qDebug() << "real removing";
 		m_account->contactList()->removeContactOnServer(m_contact);
@@ -183,6 +191,7 @@ void ContactContextMenu::checkOnlineStatus(OnlineStatus status)
 	removeContactAction->setEnabled(connected);
 	renameContactAction->setEnabled(connected);
 	showContactInfoAction->setEnabled(connected);
+	moveToGroup->setEnabled(connected);
 	
 	if (m_contact->status() == OnlineStatus::unauthorized)
 		askAuthorizationAction->setEnabled(connected);
@@ -227,3 +236,84 @@ void ContactContextMenu::showHistory()
 	historyViewer->setAttribute(Qt::WA_DeleteOnClose);
 	historyViewer->show();
 }
+
+void ContactContextMenu::slotChangeGroup(quint32 groupId)
+{
+	qDebug() << "ContactContextMenu::slotChangeGroup" << groupId;
+	m_contact->changeGroup(groupId);
+}
+
+void ContactContextMenu::slotGroupAdded(ContactGroup* group)
+{
+	qDebug() << "ContactContextMenu::slotGroupAdded";
+
+	moveToGroup->addGroup(group->id(), group->name());
+}
+
+void ContactContextMenu::slotGroupRemoved(ContactGroup* group)
+{
+	qDebug() << "ContactContextMenu::slotGroupRemoved";
+
+	moveToGroup->removeGroup(group->id());
+}
+
+void ContactContextMenu::slotGroupsCleared()
+{
+	qDebug() << "ContactContextMenu::slotGroupsCleared()";
+
+	moveToGroup->clearAll();
+}
+
+//-------------------------------------------------------------
+
+SubmenuMoveToGroup::SubmenuMoveToGroup(QWidget* parent)
+	: QMenu(parent)
+{
+	qDebug() << "SubmenuMoveToGroup::SubmenuMoveToGroup";
+	setTitle(tr("Move to group"));
+}
+
+SubmenuMoveToGroup::~SubmenuMoveToGroup()
+{
+	qDebug() << "SubmenuMoveToGroup::~SubmenuMoveToGroup()";
+}
+
+void SubmenuMoveToGroup::addGroup(quint32 groupId, QString groupName)
+{
+	qDebug() << "SubmenuMoveToGroup::addGroup" << groupId << groupName;
+	QAction* newAction = new QAction(QIcon(":icons/cl_add_group.png"), groupName, this);
+	addAction(newAction);
+	m_groups.insert(groupId, newAction);
+	connect(newAction, SIGNAL(triggered()), this, SLOT(moveContactTo()));
+}
+
+void SubmenuMoveToGroup::removeGroup(quint32 groupId)
+{
+	qDebug() << "SubmenuMoveToGroup::removeGroup" << groupId;
+	QAction* actionForRemove = m_groups.value(groupId);
+	disconnect(actionForRemove, SIGNAL(triggered()), this, SLOT(moveContactTo()));
+	m_groups.remove(groupId);
+	delete actionForRemove;
+}
+
+void SubmenuMoveToGroup::clearAll()
+{
+	qDebug() << "SubmenuMoveToGroup::clearAll()";
+	QHash<quint32, QAction*>::iterator it = m_groups.begin();
+	while (it != m_groups.end())
+	{
+		qDebug() << "deleting" << *it;
+		disconnect((*it), SIGNAL(triggered()), this, SLOT(moveContactTo()));
+		delete *it;
+		m_groups.erase(it);
+		it = m_groups.begin();
+	}
+}
+
+void SubmenuMoveToGroup::moveContactTo()
+{
+	qDebug() << "SubmenuMoveToGroup::moveContactTo()";
+	quint32 groupId = m_groups.key(qobject_cast<QAction*>(sender()));
+	emit moveContact(groupId);
+}
+

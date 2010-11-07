@@ -49,6 +49,8 @@ public:
 	void save(QDataStream& stream) const;
 	void load(QDataStream& stream);
 
+	bool isConference() const;
+
 	void prepareForSending(MRIMDataStream& stream) const;
 private:
 	static QTextCodec* codec;
