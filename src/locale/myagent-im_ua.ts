@@ -612,7 +612,7 @@
     <message>
         <location filename="../contactlist.cpp" line="587"/>
         <source>Contact %1 already exists</source>
-        <translation>Група %1 вже існує</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
