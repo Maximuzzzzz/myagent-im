@@ -50,12 +50,13 @@ MRIMClient::~MRIMClient()
 	qDebug() << "MRIMClient::~MRIMClient()";
 }
 
-void MRIMClient::connectToServer(quint32 status)
+void MRIMClient::connectToServer(QByteArray status)
 {
-	if (status == STATUS_OFFLINE || p->currentStatus != STATUS_OFFLINE)
+	if (OnlineStatus(status).protocolStatus() == STATUS_OFFLINE || p->currentStatus != (OnlineStatus::offline).id())
 		return;
-	
-	p->newStatus = status;
+
+	p->newStatus = OnlineStatus(status).id();
+	qDebug() << "p->newStatus" << p->newStatus;
 	p->manualDisconnect = false;
 	
 	if (!p->gettingAddress)
@@ -119,21 +120,28 @@ quint32 MRIMClient::searchContacts(const SearchParams& params)
 	return p->sendPacket(MRIM_CS_WP_REQUEST, data);
 }
 
-void MRIMClient::changeStatus(quint32 newStatus)
+void MRIMClient::changeStatus(QByteArray newStatus)
 {
 	qDebug() << "MRIMClient::changeStatus, status = " << newStatus;
-	if (newStatus == STATUS_OFFLINE || newStatus == STATUS_UNDETERMINATED)
+
+	OnlineStatus st(newStatus);
+
+	if (st.protocolStatus() == STATUS_OFFLINE || st.protocolStatus() == STATUS_UNDETERMINATED)
 		return;
 	
 	QByteArray data;
 	MRIMDataStream out(&data, QIODevice::WriteOnly);
 
-	out << quint32(newStatus) << QByteArray("status_" + QByteArray::number(newStatus)) << QByteArray::fromHex("1d04350432043804340438043c04") << quint32(0) << quint32(4294967295);
+	qDebug() << "changing status new" << quint32(st.protocolStatus()) << st.id() << st.statusDescr() << quint32(0) << quint32(0xffffff);
+
+	QString stDescr = st.statusDescr().setUtf16(0, st.statusDescr().size());
+
+	out << quint32(st.protocolStatus()) << st.id() << stDescr << quint32(0) << quint32(0xffffff);
 
 	qDebug() << data.toHex();
 	p->sendPacket(MRIM_CS_CHANGE_STATUS, data, 23);
 
-	p->currentStatus = newStatus;
+	p->currentStatus = st.id();
 }
 
 quint32 MRIMClient::sendMessage(QByteArray email, const Message* message)

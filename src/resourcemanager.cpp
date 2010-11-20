@@ -33,12 +33,16 @@ ResourceManager::ResourceManager(QObject *parent)
 	m_settings = new QSettings(basePath() + "/settings.txt", QSettings::IniFormat, this);
 #ifdef DATADIR
 	QString emoticonsPath = QLatin1String(DATADIR) + "/emoticons";
+	QString onlineStatusesPath = QLatin1String(DATADIR) + "/emoticons";
 	soundsPath = QLatin1String(DATADIR) + "/sounds";
 #else
 	QString emoticonsPath = QCoreApplication::applicationDirPath() + "/emoticons";
+	QString onlineStatusesPath = QCoreApplication::applicationDirPath() + "/emoticons";
 	soundsPath = QCoreApplication::applicationDirPath() + "/sounds";
 #endif
 	QDir::addSearchPath(emoticonsResourcePrefix(), emoticonsPath);
+	QDir::addSearchPath(statusesResourcePrefix(), onlineStatusesPath);
+	m_onlineStatuses.load(onlineStatusesPath + "/skin.txt");
 	m_emoticons.load(emoticonsPath + "/skin.txt", m_settings);
 	m_locations.load(":/region.txt");
 }
@@ -79,6 +83,11 @@ QString ResourceManager::basePath()
 QString ResourceManager::emoticonsResourcePrefix()
 {
 	return "smiles";
+}
+
+QString ResourceManager::statusesResourcePrefix()
+{
+	return "statuses";
 }
 
 void ResourceManager::setAudio(Audio* a)

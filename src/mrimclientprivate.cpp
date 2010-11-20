@@ -52,7 +52,7 @@ void MRIMClientPrivate::init()
 	pingTimer = new QTimer(this);
 	pingTime = 30000;
 
-	currentStatus = STATUS_OFFLINE;
+	currentStatus = (OnlineStatus::offline).id();
 
 	sequence = 1;
 	headerReceived = false;
@@ -109,7 +109,7 @@ void MRIMClientPrivate::slotConnectedToServer()
 {
 	//qDebug() << "MRIMClientPrivate::slotConnectedToServer() currentStatus = " << currentStatus << ", newStatus = " << newStatus << ", gettingAddress = " << gettingAddress;
 
-	if (currentStatus == STATUS_OFFLINE && newStatus != STATUS_OFFLINE)
+	if (currentStatus == (OnlineStatus::offline).id() && newStatus != (OnlineStatus::offline).id())
 		if (!gettingAddress)
 			sendPacket(MRIM_CS_HELLO, QByteArray(), 23);
 }
@@ -117,10 +117,10 @@ void MRIMClientPrivate::slotConnectedToServer()
 void MRIMClientPrivate::slotDisconnectedFromServer()
 {
 	//qDebug() << "MRIMClientPrivate slotDisconnectedFromServer, currentStatus = " << currentStatus << ", manualDisconnect = " << manualDisconnect;
-	if (currentStatus != STATUS_OFFLINE || !gettingAddress || manualDisconnect)
+	if (currentStatus != (OnlineStatus::offline).id() || !gettingAddress || manualDisconnect)
 	{
 		pingTimer->stop();
-		currentStatus = STATUS_OFFLINE;
+		currentStatus = (OnlineStatus::offline).id();
 		gettingAddress = false;
 		manualDisconnect = false;
 		emit q->disconnectedFromServer();
@@ -512,7 +512,7 @@ void MRIMClientPrivate::processContactList2(QByteArray data)
 		in >> groupFlags;
 		in >> groupName;
 
-		qDebug() << QString::number(groupFlags, 16) << " " << groupName/* << codec->toUnicode(groupName)*/;
+		qDebug() << QString::number(groupFlags, 16) << " " << groupName;
 
 		int nFlags = groupMask.size();
 		quint32 uTmpAttr;
@@ -536,7 +536,7 @@ void MRIMClientPrivate::processContactList2(QByteArray data)
 		}
 
 		if (!(groupFlags & CONTACT_FLAG_REMOVED))
-			contactList->addGroup(groupId, groupFlags, /*codec->toUnicode(groupName)*/ groupName);
+			contactList->addGroup(groupId, groupFlags, groupName);
 	}
 
 	quint32 id = 20;
@@ -568,6 +568,7 @@ void MRIMClientPrivate::processAnketaInfo(QByteArray data, quint32 msgseq)
 
 	quint32 status;
 	in >> status;
+
 	if (status != MRIM_ANKETA_INFO_STATUS_OK)
 	{
 		qDebug() << "Anketa status = " << status;
@@ -582,6 +583,7 @@ void MRIMClientPrivate::processAnketaInfo(QByteArray data, quint32 msgseq)
 
 	QVector<QString> fields;
 
+	qDebug() << "Fields:";
 	QByteArray str;
 	for (uint i = 0; i < numFields; i++)
 	{
@@ -590,6 +592,7 @@ void MRIMClientPrivate::processAnketaInfo(QByteArray data, quint32 msgseq)
 		qDebug() << codec->toUnicode(str);
 	}
 
+	qDebug() << "Values:";
 	while (!in.atEnd())
 		for (uint i = 0; i < numFields; i++)
 		{
@@ -604,6 +607,7 @@ void MRIMClientPrivate::processAnketaInfo(QByteArray data, quint32 msgseq)
 void MRIMClientPrivate::processLoginAcknowledged(QByteArray data)
 {
 	qDebug() << "MRIM_CS_LOGIN_ACK, bytes = " << data.size();
+	qDebug() << "statuses:" << currentStatus << newStatus;
 	currentStatus = newStatus;
 	emit q->loginAcknowledged(currentStatus);
 }
@@ -684,11 +688,16 @@ void MRIMClientPrivate::processUserStatus(QByteArray data)
 	MRIMDataStream in(data);
 
 	quint32 status;
-	in >> status;
-	QByteArray email;
-	in >> email;
+	QString statusDescr;
+	QByteArray statusId, email, ver;
+	quint32 unk2, unk3;
+	in >> status >> statusId >> statusDescr >> unk2 >> email >> unk3 >> ver;
+	qDebug() << "status:" << status << statusId << statusDescr;
+	qDebug() << "unks:" << unk2 << unk3;
 	qDebug() << "email = " << email;
-	emit q->contactStatusChanged(status, email);
+
+	OnlineStatus userStatus(statusId, statusDescr);
+	emit q->contactStatusChanged(userStatus, email);
 }
 
 void MRIMClientPrivate::processMessageAck(QByteArray data)

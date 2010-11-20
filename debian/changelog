@@ -1,6 +1,22 @@
-myagent-im (0.3.2) unstable; urgency=low
+myagent-im (0.4.0) unstable; urgency=low
 
   * Added tools to filter contacts
+  * Small filtering optimization
+
+  Dmitry Malakhov <abr_mail@mail.ru>:
+  * Some upgrade: all contacts in contact list will be unique
+  * Sorting contact list by status and by case insensitive nickname
+  * Added domain "corp.mail.ru" for entering
+  * Settings personalization
+  * Spelling button react at all opened chats
+  * New tab "View" in settings window
+  * Setting for visible/hiding microblog in tab "View"
+  * Ukrainian localization (thanks to Romek Marszcziwski)
+  * New protocol version: added packet MRIM_CS_LOGIN3
+  * Added conferences (beta)
+  * New version of contact list: adding or removing some contact will not open closed groups and will not move contact list to top
+  * Added "Move to group" in contact context menu
+  * Update RTF-parser: possible to send UTF-8 messages
 
  -- Alexander Volkov <volkov0aa@gmail.com>  Sat, 22 May 2010 20:52:09 +0400
 
@@ -17,9 +33,9 @@ myagent-im (0.3.1) unstable; urgency=low
   * Simplified tabs logic + probably fixed segfault when quiting app and
       there are tabs in chat window
 
-  Dmitry Malahov <abr_mail@mail.ru>:
+  Dmitry Malakhov <abr_mail@mail.ru>:
   * Added text statuses
-  * MRIMclien reads all data from account info packet
+  * MRIMclient reads all data from account info packet
   * Button for ignoring interlocutor style affects in all chatwindows
   * Added tooltip for button "Ignore"
 
@@ -27,7 +43,7 @@ myagent-im (0.3.1) unstable; urgency=low
 
 myagent-im (0.3.0) unstable; urgency=low
 
-  Dmitry Malahov <abr_mail@mail.ru>:
+  Dmitry Malakhov <abr_mail@mail.ru>:
   * Sending next message without waiting previous message will be delivered
   * Added message "message not delivered", if another contact didn't get the message
   * Sorting the contact list

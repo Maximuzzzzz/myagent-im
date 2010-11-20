@@ -1,6 +1,6 @@
 This work was packaged for Debian by:
 
-    Alexander Volkov <volkov0aa@gmail.com> on Sat, 10 Oct 2009 22:25:26 +0400
+    Alexander Volkov <volkov0aa@gmail.com> on Tue, 10 Nov 2010 00:00:00 +0400
 
 Home page:
 
@@ -10,6 +10,11 @@ Upstream Author(s):
 
     Alexander Volkov <volkov0aa@gmail.com>
     Dmitry Malahov <abr_mail@mail.ru>
+
+Translating:
+	Russian: Alexander Volkov <volkov0aa@gmail.com>
+			 Dmitry Malakhov <abr_mail@mail.ru>
+	Ukrainian: Romek Marszcziwski <marszcziwski@gmail.com>
 
 Copyright:
 
@@ -36,6 +41,6 @@ Public License version 2 can be found in `/usr/share/common-licenses/GPL-2'.
 
 The Debian packaging is:
 
-    Copyright (C) 2009 Alexander Volkov <volkov0aa@gmail.com>
+    Copyright (C) 2010 Dmitry Malakhov <abr_mail@mail.ru>
 
 and is licensed under the GPL version 3, see above.

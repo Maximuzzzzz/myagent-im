@@ -110,8 +110,10 @@ private:
 	bool headerReceived;
 	uint dataSize;
 	Account* account;
-	quint32 currentStatus;
-	quint32 newStatus;
+/*	quint32 currentStatus;
+	quint32 newStatus;*/
+	QByteArray currentStatus;
+	QByteArray newStatus;
 	bool gettingAddress;
 	bool manualDisconnect;
 };

@@ -40,7 +40,7 @@ bool Tasks::SearchContacts::exec()
 	if (!block())
 		return false;
 	
-	connect(mc, SIGNAL(contactInfoReceived(quint32,quint32,MRIMClient::ContactsInfo,quint32,quint32)), this, SLOT(checkResult(quint32,quint32,MRIMClient::ContactsInfo,quint32,quint32)));
+	connect(mc, SIGNAL(contactInfoReceived(quint32, quint32, MRIMClient::ContactsInfo, quint32, quint32)), this, SLOT(checkResult(quint32, quint32, MRIMClient::ContactsInfo, quint32, quint32)));
 	
 	setTimer(mc->getPingTime());
 	

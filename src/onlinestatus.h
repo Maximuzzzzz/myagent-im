@@ -28,20 +28,65 @@
 #include <QVariant>
 #include <QMetaType>
 
+class OnlineStatusInfo
+{
+	friend class OnlineStatuses;
+
+	QString id_;
+	QString icon_;
+	QString builtin_;
+
+	void clear() { id_ = icon_ = builtin_ = ""; }
+public:
+	const QString id() const { return id_; }
+	const QString icon() const { return icon_; }
+	const QString BuiltIn() const { return builtin_; }
+};
+
+class OnlineStatusSet
+{
+	friend class OnlineStatuses;
+
+	QString title_;
+	QList<OnlineStatusInfo*> onlineStatusInfos;
+public:
+	~OnlineStatusSet() { qDeleteAll(onlineStatusInfos); }
+	QString title() const { return title_; }
+};
+
+class OnlineStatuses
+{
+	Q_DECLARE_TR_FUNCTIONS(OnlineStatuses)
+public:
+	OnlineStatuses() {};
+	~OnlineStatuses() { qDeleteAll(onlineStatusSets); }
+	
+	void load(QString filename);
+	const OnlineStatusInfo* getOnlineStatusInfo(QString id) const
+		{ return idToOnlineStatusMap.value(id); }
+
+	int numberOfSets() const { return onlineStatusSets.size(); }
+
+private:
+	QMap<QString, OnlineStatusInfo*> idToOnlineStatusMap;
+	QList<OnlineStatusSet*> onlineStatusSets;
+};
+
 class OnlineStatus
 {
 	Q_DECLARE_TR_FUNCTIONS(OnlineStatus)
 public:
 	enum StatusType
 	{
-		Online = 1,		//Don't rearrange these strings!!!
-		Away = 2,		//
-		Invisible = 3,	//
-		Offline = 4,	//
-		Unauthorized = 5,	//
-		Connecting = 6,	//
-		Unknown = 7,	//
-		Null = 8		//
+		Online = 1,			//Don't rearrange these strings!!!
+		Away = 2,			//
+		Invisible = 3,		//
+		OtherOnline = 4,	//
+		Offline = 5,		//
+		Unauthorized = 6,	//
+		Connecting = 7,		//
+		Unknown = 8,		//
+		Null = 9			//
 	};
 	
 	static const OnlineStatus unknown;
@@ -51,26 +96,39 @@ public:
 	static const OnlineStatus online;
 	static const OnlineStatus connecting;
 	static const OnlineStatus unauthorized;
+	static const OnlineStatus chatOnline;
+	static const OnlineStatus dndOnline;
+	static const OnlineStatus otherOnline;
+
+	void setExtendedStatus(QString status);
 
 	StatusType type() const { return m_type; }
+	QByteArray id() const { return m_idStatus; }
+	QString statusDescr() { return m_statusDescr; }
 	QString description() const;
 	quint32 protocolStatus() const;
 	static OnlineStatus fromProtocolStatus(quint32 st);
-	QIcon contactListIcon() const;
-	QIcon chatWindowIcon() const;
+	QIcon statusIcon() const;
 	bool connected() const;
+
+	void setIdStatus(QByteArray status);
+	void setDescr(QString descr);
+
+	explicit OnlineStatus(QByteArray idStatus = "", QString statusDescr = "");
 	
-	explicit OnlineStatus(StatusType type = Unknown);
-	
-	bool operator==(OnlineStatus another) { return (m_type == another.m_type); }
-	bool operator!=(OnlineStatus another) { return (m_type != another.m_type); }
+	bool operator==(OnlineStatus another) { return (m_idStatus == another.m_idStatus); }
+//	bool operator===(OnlineStatus another) { return (m_idStatus == another.m_idStatus && m_statusDescr == another.m_statusDescr); }
+	bool operator!=(OnlineStatus another) { return (m_idStatus != another.m_idStatus && m_statusDescr != another.m_statusDescr); }
 	bool operator<=(OnlineStatus another) { return (m_type <= another.m_type); }
-	bool operator>=(OnlineStatus another) { return (m_type >= another.m_type); }
 	bool operator<(OnlineStatus another) { return (m_type < another.m_type); }
-	bool operator>(OnlineStatus another) { return (m_type > another.m_type); }
 
 private:
+	void setMType();
+
 	StatusType m_type;
+	QByteArray m_idStatus;
+	QString m_statusDescr;
+	OnlineStatuses* m_onlineStatuses;
 };
 
 Q_DECLARE_METATYPE(OnlineStatus)

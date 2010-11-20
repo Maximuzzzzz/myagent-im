@@ -25,6 +25,7 @@
 #include <QDir>
 #include <QCompleter>
 
+#include "onlinestatus.h"
 #include "resourcemanager.h"
 #include "proto.h"
 #include "centerwindow.h"
@@ -45,6 +46,28 @@ LoginDialog::LoginDialog(QWidget* parent)
 	emailBox->lineEdit()->setValidator(new QRegExpValidator(QRegExp("([a-z]|[A-Z]|[0-9])+([a-z]|[A-Z]|[0-9]|[_\\-\\.])*@(mail.ru|list.ru|inbox.ru|bk.ru|corp.mail.ru)"), emailBox));
 	passwordEdit->setValidator(new QRegExpValidator(QRegExp(".+"), passwordEdit));
 
+	QIcon onlineStatusIcon;
+	OnlineStatus onlineStatus;
+	onlineStatus = OnlineStatus::online;
+	onlineStatusIcon.addFile(theRM.statusesResourcePrefix() + ":" + theRM.onlineStatuses()->getOnlineStatusInfo("status_1")->icon(), QSize(), QIcon::Normal, QIcon::Off);
+	onlineStatusBox->addItem(onlineStatusIcon, onlineStatus.statusDescr());
+	onlineStatus = OnlineStatus::chatOnline;
+	QIcon chatStatusIcon;
+	chatStatusIcon.addFile(theRM.statusesResourcePrefix() + ":" + theRM.onlineStatuses()->getOnlineStatusInfo("status_chat")->icon(), QSize(), QIcon::Normal, QIcon::Off);
+	onlineStatusBox->addItem(chatStatusIcon, onlineStatus.statusDescr());
+	onlineStatus = OnlineStatus::away;	
+	QIcon awayStatusIcon;
+	awayStatusIcon.addFile(theRM.statusesResourcePrefix() + ":" + theRM.onlineStatuses()->getOnlineStatusInfo("status_2")->icon(), QSize(), QIcon::Normal, QIcon::Off);
+	onlineStatusBox->addItem(awayStatusIcon, onlineStatus.statusDescr());
+	onlineStatus = OnlineStatus::invisible;	
+	QIcon invisibleStatusIcon;
+	invisibleStatusIcon.addFile(theRM.statusesResourcePrefix() + ":" + theRM.onlineStatuses()->getOnlineStatusInfo("status_3")->icon(), QSize(), QIcon::Normal, QIcon::Off);
+	onlineStatusBox->addItem(invisibleStatusIcon, onlineStatus.statusDescr());
+	onlineStatus = OnlineStatus::dndOnline;
+	QIcon dndStatusIcon;
+	dndStatusIcon.addFile(theRM.statusesResourcePrefix() + ":" + theRM.onlineStatuses()->getOnlineStatusInfo("status_dnd")->icon(), QSize(), QIcon::Normal, QIcon::Off);
+	onlineStatusBox->addItem(dndStatusIcon, onlineStatus.statusDescr());
+
 	connect(emailBox->lineEdit(), SIGNAL(textEdited(const QString&)), SLOT(checkEmail()));
 	connect(passwordEdit, SIGNAL(textEdited(const QString&)), SLOT(checkPassword()));
 
@@ -59,12 +82,20 @@ LoginDialog::LoginDialog(QWidget* parent)
 
 OnlineStatus LoginDialog::status() const
 {
-	if (onlineStatusBox->currentText() == tr("Online"))
-		return OnlineStatus::online;
-	else if (onlineStatusBox->currentText() == tr("Away"))
-		return OnlineStatus::away;
-	else
-		return OnlineStatus::invisible;
+	switch (onlineStatusBox->currentIndex())
+	{
+		case 0:
+			return OnlineStatus::online;
+		case 1:
+			return OnlineStatus::chatOnline;
+		case 2:
+			return OnlineStatus::away;
+		case 3:
+			return OnlineStatus::invisible;
+		case 4:
+			return OnlineStatus::dndOnline;
+	}
+	return OnlineStatus();
 }
 
 void LoginDialog::setEmail(const QString & email)

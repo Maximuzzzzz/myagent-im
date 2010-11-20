@@ -84,12 +84,11 @@ void EmoticonMovie::load(const QString& id)
 		qDebug() << "EmoticonMovie::load: can't get emoticon for id = " << id;
 		return;
 	}
-	
+
 	QString filename = theRM.emoticonsResourcePrefix() + ":" + info->path();
-	//qDebug() << "loading movie id = " << id << ", filename = " << filename;
 	setFileName(filename);
 	id_ = id;
-	
+
 	jumpToFrame(0);
 	QSize size = currentPixmap().size();
 	//qDebug() << "EmoticonMovie::load currentPixmap size = " << size;

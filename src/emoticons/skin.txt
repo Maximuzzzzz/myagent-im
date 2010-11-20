@@ -1,5 +1,4 @@
  <ROOT>
-	path = "http://agent.mail.ru/skin"
 	<SMILES>
 		path = "/smiles"
 		ColumnsCount="8"
@@ -829,654 +828,257 @@
 			</STATIC_PNG>
 		</ITEMS>
 	</SMILES>
-	<FLASH>
-		path = "/flash"
-		ColumnsCount="6"
-		<ITEMS  width="56" height="56">
-			<OBJ01>
-				id = "flash_0"
-				alt = "Поцелуй"
-				tip = "Поцелуй"
-				preview = "1"
-				<ICON><DEFAULT>src="/mult_kiss.png"</DEFAULT></ICON>
-				<OBJECT>src = "/guby.swf"</OBJECT>
-			</OBJ01>
-			<OBJ02>
-				id = "flas_1" 
-				alt = "Пивка?;)" 
-				tip = "Пивка?;)" 
-				preview = "1"
-				<ICON><DEFAULT>src="/mult_beer.png"</DEFAULT></ICON>
-				<OBJECT>src = "/beer.swf"</OBJECT>
-			</OBJ02>
-			<OBJ03>
-				id = "flash_2" 
-				alt = "Задолбал!" 
-				tip = "Задолбал!" 
-				preview = "1"
-				<ICON><DEFAULT>src="/mult_bored.png"</DEFAULT></ICON>
-				<OBJECT>src = "/zadolbal.swf"</OBJECT>
-			</OBJ03>
-			<OBJ04>
-				id = "flash_3" 
-				alt = "Хочу к тебе!" 
-				tip = "Хочу к тебе!" 
-				preview = "1"
-				<ICON><DEFAULT>src="/mult_dog.png"</DEFAULT></ICON>
-				<OBJECT>src = "/sobaka.swf"</OBJECT>
-			</OBJ04>
-			<OBJ05>
-				id = "flash_4" 
-				alt = "Хны...!" 
-				tip = "Хны...!" 
-				preview = "1"
-				<ICON><DEFAULT>src="/mult_girl.png"</DEFAULT></ICON>
-				<OBJECT>src = "/devochka.swf"</OBJECT>
-			</OBJ05>
-			<OBJ06>
-				id = "flash_5" 
-				alt = "Отходняк..." 
-				tip = "Отходняк..." 
-				preview = "1"
-				<ICON><DEFAULT>src="/mult_hangover.png"</DEFAULT></ICON>
-				<OBJECT>src = "/bodun.swf"</OBJECT>
-			</OBJ06>
-			<OBJ07>
-				id = "flash_6" 
-				alt = "Сердце" 
-				tip = "Сердце" 
-				preview = "1"
-				<ICON><DEFAULT>src="/mult_heart.png"</DEFAULT></ICON>
-				<OBJECT>src = "/serdze.swf"</OBJECT>
-			</OBJ07>
-			<OBJ08>
-				id = "flash_7" 
-				alt = "Жжёшь!" 
-				tip = "Жжёшь!" 
-				preview = "1"
-				<ICON><DEFAULT>src="/mult_laugh.png"</DEFAULT></ICON>
-				<OBJECT>src = "/smeh.swf"</OBJECT>
-			</OBJ08>
-			<OBJ09>
-				id = "flash_8" 
-				alt = "А я сошла с ума..." 
-				tip = "А я сошла с ума..." 
-				preview = "1"
-				<ICON><DEFAULT>src="/mult_maddog.png"</DEFAULT></ICON>
-				<OBJECT>src = "/mad dog.swf"</OBJECT>
-			</OBJ09>
-			<OBJ10>
-				id = "flash_9" 
-				alt = "Миллион алых роз!" 
-				tip = "Миллион алых роз!" 
-				preview = "1"
-				<ICON><DEFAULT>src="/mult_roses.png"</DEFAULT></ICON>
-				<OBJECT>src = "/rosy.swf"</OBJECT>
-			</OBJ10>
-			<OBJ11>
-				id = "flash_10" 
-				alt = "Пристрелю!" 
-				tip = "Пристрелю!" 
-				preview = "1"
-				<ICON><DEFAULT>src="/mult_shoot.png"</DEFAULT></ICON>
-				<OBJECT>src = "/sobaka_strelyaet.swf"</OBJECT>
-			</OBJ11>
-			<OBJ12>
-				id = "flash_11" 
-				alt = "Я занят" 
-				tip = "Я занят" 
-				preview = "1"
-				<ICON><DEFAULT>src="/mult_working.png"</DEFAULT></ICON>
-				<OBJECT>src = "/rabotaet.swf"</OBJECT>
-			</OBJ12>
-			<OBJ13>
-				id = "flash_12" 
-				alt = "Круто!" 
-				tip = "Круто!" 
-				preview = "1"
-				<ICON><DEFAULT>src="/kot_cool.png"</DEFAULT></ICON>
-				<OBJECT>src = "/kot_cool.swf"</OBJECT>
-			</OBJ13>
-			<OBJ14>
-				id = "flash_13" 
-				alt = "Пока-пока" 
-				tip = "Пока-пока" 
-				preview = "1"
-				<ICON><DEFAULT>src="/kot_goodbye.png"</DEFAULT></ICON>
-				<OBJECT>src = "/kot_goodbye.swf"</OBJECT>
-			</OBJ14>
-			<OBJ15>
-				id = "flash_14" 
-				alt = "Спасибо!" 
-				tip = "Спасибо!" 
-				preview = "1"
-				<ICON><DEFAULT>src="/kot_spasibo.png"</DEFAULT></ICON>
-				<OBJECT>src = "/kot_spasibo.swf"</OBJECT>
-			</OBJ15>
-			<OBJ16>
-				id = "flash_15" 
-				alt = "Не дуться!" 
-				tip = "Не дуться!" 
-				preview = "1"
-				<ICON><DEFAULT>src="/kot_nedutza.png"</DEFAULT></ICON>
-				<OBJECT>src = "/kot_nedutza.swf"</OBJECT>
-			</OBJ16>
-			<OBJ17>
-				id = "flash_16" 
-				alt = "Обидели" 
-				tip = "Обидели" 
-				preview = "1"
-				<ICON><DEFAULT>src="/kot_obida.png"</DEFAULT></ICON>
-				<OBJECT>src = "/kot_obida.swf"</OBJECT>
-			</OBJ17>
-			<OBJ18>
-				id = "flash_17" 
-				alt = "Ух ты!" 
-				tip = "Ух ты!" 
-				preview = "1"
-				<ICON><DEFAULT>src="/kot_wow.png"</DEFAULT></ICON>
-				<OBJECT>src = "/kot_wow.swf"</OBJECT>
-			</OBJ18>
-		</ITEMS>
-	</FLASH>
 	<STATUSES>
-		path = "/statuses"
+		path = "/status"
 		ColumnsCount="6"
 		<ITEMS  width="25" height="25">
-			<SET01>
+			<SELECTABLE>
+				path = "/set01"
+				<ITEMS>
+					<OBJ07>
+						id = "status_5" 
+						icon = "/doma.png"
+					</OBJ07>					
+					<OBJ08>
+						id = "status_18" 
+						icon = "/na_rabote.png"
+					</OBJ08>					
+					<OBJ09>
+						id = "status_19" 
+						icon = "/na_vstreche.png"
+					</OBJ09>					
+					<OBJ10>
+						id = "status_7" 
+						icon = "/gde_ia.png"
+					</OBJ10>					
+					<OBJ11>
+						id = "status_10" 
+						icon = "/gulau.png"
+					</OBJ11>					
+					<OBJ12>
+						id = "status_47" 
+						icon = "/rocket.png"
+					</OBJ12>					
+					<OBJ13>
+						id = "status_22" 
+						icon = "/rabotau.png"
+					</OBJ13>					
+					<OBJ14>
+						id = "status_26" 
+						icon = "/v_institute.png"
+					</OBJ14>					
+					<OBJ15>
+						id = "status_24" 
+						icon = "/telefon.png"
+					</OBJ15>					
+					<OBJ16>
+						id = "status_27" 
+						icon = "/v_shkole.png"
+					</OBJ16>					
+					<OBJ17>
+						id = "status_23" 
+						icon = "/splu.png"
+					</OBJ17>					
+					<OBJ18>
+						id = "status_4" 
+						icon = "/boleu.png"
+					</OBJ18>					
+					<OBJ19>
+						id = "status_9" 
+						icon = "/gotovlu.png"
+					</OBJ19>					
+					<OBJ20>
+						id = "status_6" 
+						icon = "/em.png"
+					</OBJ20>					
+					<OBJ21>
+						id = "status_21" 
+						icon = "/pu_kofe.png"
+					</OBJ21>					
+					<OBJ22>
+						id = "status_20" 
+						icon = "/pivo.png"
+					</OBJ22>					
+					<OBJ23>
+						id = "status_17" 
+						icon = "/kuru.png"
+					</OBJ23>					
+					<OBJ24>
+						id = "status_8" 
+						icon = "/gizn_gavno.png"
+					</OBJ24>					
+					<OBJ25>
+						id = "status_15" 
+						icon = "/ia_utko.png"
+					</OBJ25>					
+					<OBJ26>
+						id = "status_16" 
+						icon = "/igrau.png"
+					</OBJ26>					
+					<OBJ27>
+						id = "status_28" 
+						icon = "/vi_oshiblis_nomerom.png"
+					</OBJ27>			
+					<OBJ28>
+						id = "status_51" 
+						icon = "/belka.png"
+					</OBJ28>			
+					<OBJ29>
+						id = "status_52" 
+						icon = "/star.png"
+					</OBJ29>			
+					<OBJ30>
+						id = "status_46" 
+						icon = "/cherep.png"
+					</OBJ30>					
+					<OBJ31>
+						id = "status_12" 
+						icon = "/ia_krivetko.png"
+					</OBJ31>					
+					<OBJ32>
+						id = "status_13" 
+						icon = "/ia_poteralsa.png"
+					</OBJ32>					
+					<OBJ33>
+						id = "status_11" 
+						icon = "/ia_inoplanet_razum.png"
+					</OBJ33>					
+					<OBJ34>
+						id = "status_14" 
+						icon = "/ia_soshl_asuma.png"
+					</OBJ34>					
+					<OBJ35>
+						id = "status_48" 
+						icon = "/kut.png"
+					</OBJ35>					
+					<OBJ36>
+						id = "status_53" 
+						icon = "/music.png"
+					</OBJ36>					
+					<OBJ37>
+						id = "status_29" 
+						icon = "/1.png"
+					</OBJ37>					
+					<OBJ38>
+						id = "status_30" 
+						icon = "/2.png"
+					</OBJ38>					
+					<OBJ39>
+						id = "status_32" 
+						icon = "/4.png"
+					</OBJ39>					
+					<OBJ40>
+						id = "status_33" 
+						icon = "/5.png"
+					</OBJ40>					
+					<OBJ41>
+						id = "status_40" 
+						icon = "/12.png"
+					</OBJ41>					
+					<OBJ43>
+						id = "status_41" 
+						icon = "/13.png"
+					</OBJ43>					
+					<OBJ44>
+						id = "status_34" 
+						icon = "/6.png"
+					</OBJ44>					
+					<OBJ45>
+						id = "status_35" 
+						icon = "/7.png"
+					</OBJ45>					
+					<OBJ46>
+						id = "status_36" 
+						icon = "/8.png"
+					</OBJ46>					
+					<OBJ47>
+						id = "status_37" 
+						icon = "/9.png"
+					</OBJ47>					
+					<OBJ48>
+						id = "status_38" 
+						icon = "/10.png"
+					</OBJ48>					
+					<OBJ49>
+						id = "status_39" 
+						icon = "/11.png"
+					</OBJ49>					
+					<OBJ50>
+						id = "status_42" 
+						icon = "/14.png"
+					</OBJ50>					
+					<OBJ51>
+						id = "status_43" 
+						icon = "/15.png"
+					</OBJ51>					
+					<OBJ52>
+						id = "status_49" 
+						icon = "/18.png"
+					</OBJ52>					
+					<OBJ53>
+						id = "status_44" 
+						icon = "/16.png"
+					</OBJ53>					
+					<OBJ54>
+						id = "status_45" 
+						icon = "/17.png"
+					</OBJ54>					
+					<OBJ55>
+						id = "status_50" 
+						icon = "/20.png"
+					</OBJ55>					
+				</ITEMS>
+			</SET01>
+			<AGENT_BUILT_IN>
 				path = "/set01"
 				<ITEMS>
 					<OBJ00>
 						id = "status_0" 
-						cl_status = "/status_offline.png"
-						title_status = "/status_offline_title.png"
-						icon = "/status_offline.ico"
-						icon_big = "/status_offline_big.ico"
-						icon_xp ="/status_offline_xp.ico"
-						icon_xp_big = "/status_offline_xp_big.ico"
+						icon = "/status_offline.png"
+						builtin = "1"
 					</OBJ00>					
 					<OBJ01>
 						id = "status_1" 
-						cl_status = "/status_online.png"
-						title_status = "/status_online_title.png"
-						icon = "/status_online.ico"
-						icon_big = "/status_online_big.ico"
-						icon_xp ="/status_online_xp.ico"
-						icon_xp_big = "/status_online_xp_big.ico"
+						icon = "/status_online.png"
+						builtin = "1"
 					</OBJ01>					
 					<OBJ02>
 						id = "status_2" 
-						cl_status = "/status_away.png"
-						title_status = "/status_away_title.png"
-						icon = "/status_away.ico"
-						icon_big = "/status_away_big.ico"
-						icon_xp ="/status_away_xp.ico"
-						icon_xp_big = "/status_away_xp_big.ico"
+						icon = "/status_away.png"
+						builtin = "1"
 					</OBJ02>					
 					<OBJ03>
 						id = "status_3" 
-						cl_status = "/status_invisible.png"
-						title_status = "/status_invisible_title.png"
-						icon = "/status_invisible.ico"
-						icon_big = "/status_invisible_big.ico"
-						icon_xp ="/status_invisible_xp.ico"
-						icon_xp_big = "/status_invisible_xp_big.ico"
+						icon = "/status_invisible.png"
+						builtin = "1"
 					</OBJ03>					
 					<OBJ04>
 						id = "status_chat" 
-						cl_status = "/chat.png"
-						title_status = "/chat.png"
-						icon = "/chat.ico"
-						icon_big = "/chat.ico"
-						icon_xp ="/chat_xp.ico"
-						icon_xp_big = "/chat_xp.ico"
+						icon = "/chat.png"
+						builtin = "1"
 					</OBJ04>					
 					<OBJ05>
 						id = "status_dnd" 
-						cl_status = "/dnd.png"
-						title_status = "/dnd.png"
-						icon = "/dnd.ico"
-						icon_big = "/dnd.ico"
-						icon_xp ="/dnd_xp.ico"
-						icon_xp_big = "/dnd_xp.ico"
+						icon = "/dnd.png"
+						builtin = "1"
 					</OBJ05>					
-					
-					
-					
+					<OBJ06>
+						id = "status_gray" 
+						icon = "/status_gray.png"
+						builtin = "1"
+					</OBJ06>					
 					<OBJ07>
-						id = "status_5" 
-						cl_status = "/doma.png"
-						title_status = "/doma.png"
-						icon = "/doma.ico"
-						icon_big = "/doma_big.ico"
-						icon_xp ="/doma_xp.ico"
-						icon_xp_big = "/doma_xp.ico"
+						id = "status_connecting" 
+						icon = "/status_connecting.png"
+						builtin = "1"
 					</OBJ07>					
 					<OBJ08>
-						id = "status_18" 
-						cl_status = "/na_rabote.png"
-						title_status = "/na_rabote.png"
-						icon = "/na_rabote.ico"
-						icon_big = "/na_rabote_big.ico"
-						icon_xp ="/na_rabote_xp.ico"
-						icon_xp_big = "/na_rabote_xp.ico"
+						id = "wrong_data" 
+						icon = "/wrong_data.png"
+						builtin = "1"
 					</OBJ08>					
-					<OBJ09>
-						id = "status_19" 
-						cl_status = "/na_vstreche.png"
-						title_status = "/na_vstreche.png"
-						icon = "/na_vstreche.ico"
-						icon_big = "/na_vstreche_big.ico"
-						icon_xp ="/na_vstreche_xp.ico"
-						icon_xp_big = "/na_vstreche_xp.ico"
-					</OBJ09>					
-					<OBJ10>
-						id = "status_7" 
-						cl_status = "/gde_ia.png"
-						title_status = "/gde_ia.png"
-						icon = "/gde_ia.ico"
-						icon_big = "/gde_ia_big.ico"
-						icon_xp ="/gde_ia_xp.ico"
-						icon_xp_big = "/gde_ia_xp.ico"
-					</OBJ10>					
-					<OBJ11>
-						id = "status_10" 
-						cl_status = "/gulau.png"
-						title_status = "/gulau.png"
-						icon = "/gulau.ico"
-						icon_big = "/gulau_big.ico"
-						icon_xp ="/gulau_xp.ico"
-						icon_xp_big = "/gulau_xp.ico"
-					</OBJ11>					
-					<OBJ12>
-						id = "status_47" 
-						cl_status = "/rocket.png"
-						title_status = "/rocket.png"
-						icon = "/rocket.ico"
-						icon_big = "/rocket.ico"
-						icon_xp ="/rocket_xp.ico"
-						icon_xp_big = "/rocket_xp.ico"
-					</OBJ12>					
-					<OBJ13>
-						id = "status_22" 
-						cl_status = "/rabotau.png"
-						title_status = "/rabotau.png"
-						icon = "/rabotau.ico"
-						icon_big = "/rabotau_big.ico"
-						icon_xp ="/rabotau_xp.ico"
-						icon_xp_big = "/rabotau_xp.ico"
-					</OBJ13>					
-					<OBJ14>
-						id = "status_26" 
-						cl_status = "/v_institute.png"
-						title_status = "/v_institute.png"
-						icon = "/v_institute.ico"
-						icon_big = "/v_institute_big.ico"
-						icon_xp ="/v_institute_xp.ico"
-						icon_xp_big = "/v_institute_xp.ico"
-					</OBJ14>					
-					<OBJ15>
-						id = "status_24" 
-						cl_status = "/telefon.png"
-						title_status = "/telefon.png"
-						icon = "/telefon.ico"
-						icon_big = "/telefon_big.ico"
-						icon_xp ="/telefon_xp.ico"
-						icon_xp_big = "/telefon_xp.ico"
-					</OBJ15>					
-					<OBJ16>
-						id = "status_27" 
-						cl_status = "/v_shkole.png"
-						title_status = "/v_shkole.png"
-						icon = "/v_shkole.ico"
-						icon_big = "/v_shkole_big.ico"
-						icon_xp ="/v_shkole_xp.ico"
-						icon_xp_big = "/v_shkole_xp.ico"
-					</OBJ16>					
-					<OBJ17>
-						id = "status_23" 
-						cl_status = "/splu.png"
-						title_status = "/splu.png"
-						icon = "/splu.ico"
-						icon_big = "/splu_big.ico"
-						icon_xp ="/splu_xp.ico"
-						icon_xp_big = "/splu_xp.ico"
-					</OBJ17>					
-					<OBJ18>
-						id = "status_4" 
-						cl_status = "/boleu.png"
-						title_status = "/boleu.png"
-						icon = "/boleu.ico"
-						icon_big = "/boleu_big.ico"
-						icon_xp ="/boleu_xp.ico"
-						icon_xp_big = "/boleu_xp.ico"
-					</OBJ18>					
-					<OBJ19>
-						id = "status_9" 
-						cl_status = "/gotovlu.png"
-						title_status = "/gotovlu.png"
-						icon = "/gotovlu.ico"
-						icon_big = "/gotovlu_big.ico"
-						icon_xp ="/gotovlu_xp.ico"
-						icon_xp_big = "/gotovlu_xp.ico"
-					</OBJ19>					
-					<OBJ20>
-						id = "status_6" 
-						cl_status = "/em.png"
-						title_status = "/em.png"
-						icon = "/em.ico"
-						icon_big = "/em_big.ico"
-						icon_xp ="/em_xp.ico"
-						icon_xp_big = "/em_xp.ico"
-					</OBJ20>					
-					<OBJ21>
-						id = "status_21" 
-						cl_status = "/pu_kofe.png"
-						title_status = "/pu_kofe.png"
-						icon = "/pu_kofe.ico"
-						icon_big = "/pu_kofe_big.ico"
-						icon_xp ="/pu_kofe_xp.ico"
-						icon_xp_big = "/pu_kofe_xp.ico"
-					</OBJ21>					
-					<OBJ22>
-						id = "status_20" 
-						cl_status = "/pivo.png"
-						title_status = "/pivo.png"
-						icon = "/pivo.ico"
-						icon_big = "/pivo_big.ico"
-						icon_xp ="/pivo_xp.ico"
-						icon_xp_big = "/pivo_xp_big.ico"
-					</OBJ22>					
-					<OBJ23>
-						id = "status_17" 
-						cl_status = "/kuru.png"
-						title_status = "/kuru.png"
-						icon = "/kuru.ico"
-						icon_big = "/kuru_big.ico"
-						icon_xp ="/kuru_xp.ico"
-						icon_xp_big = "/kuru_xp.ico"
-					</OBJ23>					
-					<OBJ24>
-						id = "status_8" 
-						cl_status = "/gizn_gavno.png"
-						title_status = "/gizn_gavno.png"
-						icon = "/gizn_gavno.ico"
-						icon_big = "/gizn_gavno_big.ico"
-						icon_xp ="/gizn_gavno_xp.ico"
-						icon_xp_big = "/gizn_gavno_xp.ico"
-					</OBJ24>					
-					<OBJ25>
-						id = "status_15" 
-						cl_status = "/ia_utko.png"
-						title_status = "/ia_utko.png"
-						icon = "/ia_utko.ico"
-						icon_big = "/ia_utko_big.ico"
-						icon_xp ="/ia_utko_xp.ico"
-						icon_xp_big = "/ia_utko_xp.ico"
-					</OBJ25>					
-					<OBJ26>
-						id = "status_16" 
-						cl_status = "/igrau.png"
-						title_status = "/igrau.png"
-						icon = "/igrau.ico"
-						icon_big = "/igrau_big.ico"
-						icon_xp ="/igrau_xp.ico"
-						icon_xp_big = "/igrau_xp.ico"
-					</OBJ26>					
-					<OBJ27>
-						id = "status_28" 
-						cl_status = "/vi_oshiblis_nomerom.png"
-						title_status = "/vi_oshiblis_nomerom.png"
-						icon = "/vi_oshiblis_nomerom.ico"
-						icon_big = "/vi_oshiblis_nomerom_big.ico"
-						icon_xp ="/vi_oshiblis_nomerom_xp.ico"
-						icon_xp_big = "/vi_oshiblis_nomerom_xp.ico"
-					</OBJ27>			
-					<OBJ28>
-						id = "status_51" 
-						cl_status = "/belka.png"
-						title_status = "/belka.png"
-						icon = "/belka.ico"
-						icon_big = "/belka.ico"
-						icon_xp ="/belka_xp.ico"
-						icon_xp_big = "/belka_xp.ico"
-					</OBJ28>			
-					<OBJ29>
-						id = "status_52" 
-						cl_status = "/star.png"
-						title_status = "/star.png"
-						icon = "/star.ico"
-						icon_big = "/star.ico"
-						icon_xp ="/star_xp.ico"
-						icon_xp_big = "/star_xp.ico"
-					</OBJ29>			
-					<OBJ30>
-						id = "status_46" 
-						cl_status = "/cherep.png"
-						title_status = "/cherep.png"
-						icon = "/cherep.ico"
-						icon_big = "/cherep.ico"
-						icon_xp ="/cherep_xp.ico"
-						icon_xp_big = "/cherep_xp.ico"
-					</OBJ30>					
-					<OBJ31>
-						id = "status_12" 
-						cl_status = "/ia_krivetko.png"
-						title_status = "/ia_krivetko.png"
-						icon = "/ia_krivetko.ico"
-						icon_big = "/ia_krivetko_big.ico"
-						icon_xp ="/ia_krivetko_xp.ico"
-						icon_xp_big = "/ia_krivetko_xp.ico"
-					</OBJ31>					
-					<OBJ32>
-						id = "status_13" 
-						cl_status = "/ia_poteralsa.png"
-						title_status = "/ia_poteralsa.png"
-						icon = "/ia_poteralsa.ico"
-						icon_big = "/ia_poteralsa_big.ico"
-						icon_xp ="/ia_poteralsa_xp.ico"
-						icon_xp_big = "/ia_poteralsae_xp.ico"
-					</OBJ32>					
-					<OBJ33>
-						id = "status_11" 
-						cl_status = "/ia_inoplanet_razum.png"
-						title_status = "/ia_inoplanet_razum.png"
-						icon = "/ia_inoplanet_razum.ico"
-						icon_big = "/ia_inoplanet_razum_big.ico"
-						icon_xp ="/ia_inoplanet_razum_xp.ico"
-						icon_xp_big = "/ia_inoplanet_razum_xp.ico"
-					</OBJ33>					
-					<OBJ34>
-						id = "status_14" 
-						cl_status = "/ia_soshl_asuma.png"
-						title_status = "/ia_soshl_asuma.png"
-						icon = "/ia_soshl_asuma.ico"
-						icon_big = "/ia_soshl_asuma_big.ico"
-						icon_xp ="/ia_soshl_asuma_xp.ico"
-						icon_xp_big = "/ia_soshl_asuma_xp.ico"
-					</OBJ34>					
-					<OBJ35>
-						id = "status_48" 
-						cl_status = "/kut.png"
-						title_status = "/kut.png"
-						icon = "/kut.ico"
-						icon_big = "/kut.ico"
-						icon_xp ="/kut_xp.ico"
-						icon_xp_big = "/kut_xp.ico"
-					</OBJ35>					
-					<OBJ36>
-						id = "status_53" 
-						cl_status = "/music.png"
-						title_status = "/music.png"
-						icon = "/music.ico"
-						icon_big = "/music.ico"
-						icon_xp ="/music_xp.ico"
-						icon_xp_big = "/music_xp.ico"
-					</OBJ36>					
-					<OBJ37>
-						id = "status_29" 
-						cl_status = "/1.png"
-						title_status = "/1.png"
-						icon = "/1.ico"
-						icon_big = "/1.ico"
-						icon_xp ="/1_xp.ico"
-						icon_xp_big = "/1_xp.ico"
-					</OBJ37>					
-					<OBJ38>
-						id = "status_30" 
-						cl_status = "/2.png"
-						title_status = "/2.png"
-						icon = "/2.ico"
-						icon_big = "/2.ico"
-						icon_xp ="/2_xp.ico"
-						icon_xp_big = "/2_xp.ico"
-					</OBJ38>					
-					<OBJ39>
-						id = "status_32" 
-						cl_status = "/4.png"
-						title_status = "/4.png"
-						icon = "/4.ico"
-						icon_big = "/4.ico"
-						icon_xp ="/4_xp.ico"
-						icon_xp_big = "/4_xp.ico"
-					</OBJ39>					
-					<OBJ40>
-						id = "status_33" 
-						cl_status = "/5.png"
-						title_status = "/5.png"
-						icon = "/5.ico"
-						icon_big = "/5.ico"
-						icon_xp ="/5_xp.ico"
-						icon_xp_big = "/5_xp.ico"
-					</OBJ40>					
-					<OBJ41>
-						id = "status_40" 
-						cl_status = "/12.png"
-						title_status = "/12.png"
-						icon = "/12.ico"
-						icon_big = "/12.ico"
-						icon_xp ="/12_xp.ico"
-						icon_xp_big = "/12_xp.ico"
-					</OBJ41>					
-					<OBJ43>
-						id = "status_41" 
-						cl_status = "/13.png"
-						title_status = "/13.png"
-						icon = "/13.ico"
-						icon_big = "/13.ico"
-						icon_xp ="/13_xp.ico"
-						icon_xp_big = "/13_xp.ico"
-					</OBJ43>					
-					<OBJ44>
-						id = "status_34" 
-						cl_status = "/6.png"
-						title_status = "/6.png"
-						icon = "/6.ico"
-						icon_big = "/6.ico"
-						icon_xp ="/6_xp.ico"
-						icon_xp_big = "/6_xp.ico"
-					</OBJ44>					
-					<OBJ45>
-						id = "status_35" 
-						cl_status = "/7.png"
-						title_status = "/7.png"
-						icon = "/7.ico"
-						icon_big = "/7.ico"
-						icon_xp ="/7_xp.ico"
-						icon_xp_big = "/7_xp.ico"
-					</OBJ45>					
-					<OBJ46>
-						id = "status_36" 
-						cl_status = "/8.png"
-						title_status = "/8.png"
-						icon = "/8.ico"
-						icon_big = "/8.ico"
-						icon_xp ="/8_xp.ico"
-						icon_xp_big = "/8_xp.ico"
-					</OBJ46>					
-					<OBJ47>
-						id = "status_37" 
-						cl_status = "/9.png"
-						title_status = "/9.png"
-						icon = "/9.ico"
-						icon_big = "/9.ico"
-						icon_xp ="/9_xp.ico"
-						icon_xp_big = "/9_xp.ico"
-					</OBJ47>					
-					<OBJ48>
-						id = "status_38" 
-						cl_status = "/10.png"
-						title_status = "/10.png"
-						icon = "/10.ico"
-						icon_big = "/10.ico"
-						icon_xp ="/10_xp.ico"
-						icon_xp_big = "/10_xp.ico"
-					</OBJ48>					
-					<OBJ49>
-						id = "status_39" 
-						cl_status = "/11.png"
-						title_status = "/11.png"
-						icon = "/11.ico"
-						icon_big = "/11.ico"
-						icon_xp ="/11_xp.ico"
-						icon_xp_big = "/11_xp.ico"
-					</OBJ49>					
-					<OBJ50>
-						id = "status_42" 
-						cl_status = "/14.png"
-						title_status = "/14.png"
-						icon = "/14.ico"
-						icon_big = "/14.ico"
-						icon_xp ="/14_xp.ico"
-						icon_xp_big = "/14_xp.ico"
-					</OBJ50>					
-					<OBJ51>
-						id = "status_43" 
-						cl_status = "/15.png"
-						title_status = "/15.png"
-						icon = "/15.ico"
-						icon_big = "/15.ico"
-						icon_xp ="/15_xp.ico"
-						icon_xp_big = "/15_xp.ico"
-					</OBJ51>					
-					<OBJ52>
-						id = "status_49" 
-						cl_status = "/18.png"
-						title_status = "/18.png"
-						icon = "/18.ico"
-						icon_big = "/18.ico"
-						icon_xp ="/18_xp.ico"
-						icon_xp_big = "/18_xp.ico"
-					</OBJ52>					
-					<OBJ53>
-						id = "status_44" 
-						cl_status = "/16.png"
-						title_status = "/16.png"
-						icon = "/16.ico"
-						icon_big = "/16.ico"
-						icon_xp ="/16_xp.ico"
-						icon_xp_big = "/16_xp.ico"
-					</OBJ53>					
-					<OBJ54>
-						id = "status_45" 
-						cl_status = "/17.png"
-						title_status = "/17.png"
-						icon = "/17.ico"
-						icon_big = "/17.ico"
-						icon_xp ="/17_xp.ico"
-						icon_xp_big = "/17_xp.ico"
-					</OBJ54>					
-					<OBJ55>
-						id = "status_50" 
-						cl_status = "/20.png"
-						title_status = "/20.png"
-						icon = "/20.ico"
-						icon_big = "/20.ico"
-						icon_xp ="/20_xp.ico"
-						icon_xp_big = "/20_xp.ico"
-					</OBJ55>					
 				</ITEMS>
-			</SET01>
+			</AGENT_BUILT_IN>
 		</ITEMS>		
 	</STATUSES>
 </ROOT>

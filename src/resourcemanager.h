@@ -29,6 +29,7 @@
 
 #include "emoticons.h"
 #include "locations.h"
+#include "onlinestatus.h"
 #include "audio.h"
 
 class ResourceManager : public QObject
@@ -42,8 +43,10 @@ public:
 	QString basePath();
 	QSettings* settings() { return m_settings; }
 	Emoticons& emoticons() { return m_emoticons; }
+	OnlineStatuses* onlineStatuses() { return (&m_onlineStatuses); }
 	const Locations& locations() const { return m_locations; }
 	QString emoticonsResourcePrefix();
+	QString statusesResourcePrefix();
 	const QString getSoundsPath() const { return soundsPath; }
 	void setAudio(Audio* a);
 	Audio* getAudio() { return audio; }
@@ -54,6 +57,7 @@ private:
 
 	QSettings* m_settings;
 	Emoticons m_emoticons;
+	OnlineStatuses m_onlineStatuses;
 	Locations m_locations;
 	QString soundsPath;
 	Audio* audio;

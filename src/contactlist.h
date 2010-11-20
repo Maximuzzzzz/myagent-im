@@ -99,7 +99,7 @@ signals:
 	void renameGroupError(QString error);
 
 public slots:
-	void changeContactStatus(quint32 status, QByteArray email);
+	void changeContactStatus(OnlineStatus status, QByteArray email);
 	void contactTyping(QByteArray email);
 	void slotContactAuthorized(const QByteArray& email);
 	bool newConferenceOnServer(QString confName, QByteArray owner, QList<QByteArray> members = QList<QByteArray>());

@@ -107,7 +107,7 @@ ContactListItem::ContactListItem(const QString& groupName)
 
 void ContactListItem::setStatusIcon(OnlineStatus status)
 {
-	setIcon(status.contactListIcon());
+	setIcon(status.statusIcon());
 }
 
 void ContactListItem::changeGroup(bool indeed)

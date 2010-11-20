@@ -96,6 +96,7 @@ void Emoticons::load(QString filename, QSettings* settings)
 		case SMILESET_END:
 			emoticonSets.append(emoticonSet);
 			emoticonSet = NULL;
+			break;
 		case OBJ_BEGIN:
 			state = Obj;
 			if (emoticonInfo)

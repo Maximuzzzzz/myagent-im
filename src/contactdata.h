@@ -24,6 +24,7 @@
 #define CONTACTDATA_H
 
 #include "mrimdatastream.h"
+#include "onlinestatus.h"
 
 #include <QStringList>
 #include <QVariant>
@@ -61,7 +62,7 @@ private:
 	QByteArray email;
 	QString nick;
 	quint32 internalFlags;
-	quint32 status;
+	OnlineStatus status;
 	QStringList phones;
 	
 	QString tailMask;

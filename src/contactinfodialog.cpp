@@ -153,10 +153,20 @@ void ContactInfoDialog::createContent(const ContactInfo & info)
 	emailLabel->setOpenExternalLinks(true);
 	infoLayout->addRow(tr("E-mail"), emailLabel);
 
+	Contact* contact = m_account->contactList()->findContact(m_email);
+
 	QHBoxLayout* statusLayout = new QHBoxLayout;
 	QLabel* statusIconLabel = new QLabel;
-	statusIconLabel->setPixmap(info.onlineStatus().contactListIcon().pixmap(16));
-	statusLayout->addWidget(new QLabel(info.onlineStatus().description()));
+	if (!contact)
+	{
+		statusIconLabel->setPixmap(info.onlineStatus().statusIcon().pixmap(16));
+		statusLayout->addWidget(new QLabel(info.onlineStatus().description()));
+	}
+	else
+	{
+		statusIconLabel->setPixmap(contact->status().statusIcon().pixmap(16));
+		statusLayout->addWidget(new QLabel(contact->status().statusDescr()));
+	}
 	statusLayout->addSpacing(4);
 	statusLayout->addWidget(statusIconLabel);
 	statusLayout->addStretch();
@@ -186,8 +196,6 @@ void ContactInfoDialog::createContent(const ContactInfo & info)
 
 	QHBoxLayout* phonesLayout = new QHBoxLayout;
 
-	Contact* contact = m_account->contactList()->findContact(m_email);
-	
 	QGroupBox* additionalPhonesBox = new QGroupBox(tr("Editable phones"));
 	QFormLayout* additionalPhonesLayout = new QFormLayout;
 	phoneEdit1 = new QLineEdit;

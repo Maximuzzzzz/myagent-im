@@ -81,7 +81,6 @@ signals:
 	void destroyed(Contact* obj = 0);
 	
 public slots:
-	void changeStatus(quint32 status);
 	void changeStatus(OnlineStatus status);
 	void contactTyping();
 

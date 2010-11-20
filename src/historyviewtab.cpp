@@ -27,6 +27,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QFileDialog>
+#include <QTextCodec>
 
 #include "animatedtextbrowser.h"
 #include "message.h"
@@ -55,7 +56,7 @@ HistoryViewTab::HistoryViewTab(Xapian::Database* db, const QString& incomingName
 
 	dateLayout->addWidget(calendarWidget);
 	dateLayout->addWidget(datesListWidget);
-//	dateLayout->addWidget(saveButton);
+	dateLayout->addWidget(saveButton);
 	dateLayout->setSizeConstraint(QLayout::SetFixedSize);
 
 	viewBrowser = new AnimatedTextBrowser;
@@ -181,9 +182,7 @@ void HistoryViewTab::showMessagesForDate(const QDate & date)
 	
 	viewBrowser->clear();
 	for (Xapian::MSetIterator i = matches.begin(); i != matches.end(); ++i)
-	{
 		showMessage(i.get_document());
-	}
 }
 
 void HistoryViewTab::slotSaveHistoryLog()
@@ -197,23 +196,33 @@ void HistoryViewTab::slotSaveHistoryLog()
 		return;
 	}
 
-	Xapian::Enquire enquire(*database);
-/*	Xapian::Query query();
-	enquire.set_query(query);
-	quint32 j, k;
-	Xapian::MSet matches;
-	Xapian::MSetIterator i;
-	k = 0;
-	while (j >= 100000 - 1)
+	//QDataStream out(&fileToSave);
+	fileToSave.write("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n<html>\n<head>\n<meta content=\"text/html; charset=UTF-8\" http-equiv=\"Content-Type\">\n<title>@MAIL.RU</title>\n<style>\n.headerin {font-weight: bold; FONT-SIZE: 12px; COLOR: red; FONT-FAMILY: Tahoma, Verdana, Arial, Sans Serif}\n.headerout {font-weight: bold; FONT-SIZE: 12px; COLOR: blue; FONT-FAMILY: Tahoma, Verdana, Arial, Sans Serif}\n.msg {FONT-SIZE: 12px; COLOR: black; FONT-FAMILY: Tahoma, Verdana, Arial, Sans Serif}\n</style>\n</head>\n<body scroll=auto style=\"background-color: rgb(255, 255, 255);\"leftmargin=4 topmargin=4 marginwidth=4 marginheight=4link=\"#000099\" vlink=\"#000099\" alink=\"#cc0000\">\n<table>\n");
+
+	Xapian::docid docid;
+	QTextCodec* codec = QTextCodec::codecForName("utf-8");
+//	QTextCodec* codecUTF16 = QTextCodec::codecForName("utf-16le");
+	for (docid = 0; docid <= database->get_lastdocid(); docid++)
 	{
-		matches = enquire.get_mset(0 + k * 100000, 100000 + k * 100000 - 1);
-		j = 0;
-		for (i = matches.begin(); i != matches.end(); ++i)
+		Xapian::Document doc;
+		try
 		{
-			Message* msg = HistoryLogger::createMessage(doc);
-			//TODO: Save to file
-			j++;
+			doc = database->get_document(docid);
 		}
-		k++;
-	}*/
+		catch(...)
+		{
+			qDebug() << "document with docid = " << docid << " is missing in database";
+			continue;
+		}
+		fileToSave.write("<TR>\n<TD>\n<FONT class=\"header");
+		if (doc.get_value(3) == "o")
+			fileToSave.write("out\">" + codec->fromUnicode(outgoingNickname) + " ("); //TODO: must be nickname, not email
+		else
+			fileToSave.write("in\">" + codec->fromUnicode(incomingNickname) + " (");
+		fileToSave.write(codec->fromUnicode(QString::fromStdString(doc.get_value(0)+doc.get_value(1))) + "):</FONT><BR/>\n"); //make readable date+time
+		std::string message(doc.get_data()); //parse rtf and take only text
+		fileToSave.write(QByteArray(message.c_str()) + "\n</TD>\n</TR>\n");
+	}
+
+	fileToSave.write("</table>\n</body>\n</html>");
 }

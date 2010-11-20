@@ -70,20 +70,11 @@ QString Contact::path() const
 	return dir.absolutePath();
 }
 
-void Contact::changeStatus(quint32 newStatus)
+void Contact::changeStatus(OnlineStatus newStatus)
 {
 	if (data.status != newStatus)
 	{
 		data.status = newStatus;
-		emit statusChanged(status());
-	}
-}
-
-void Contact::changeStatus(OnlineStatus newStatus)
-{
-	if (status() != newStatus)
-	{
-		data.status = newStatus.protocolStatus();
 		emit statusChanged(status());
 	}
 }
@@ -148,7 +139,7 @@ OnlineStatus Contact::status() const
 	if (data.internalFlags & CONTACT_INTFLAG_NOT_AUTHORIZED)
 		return OnlineStatus::unauthorized;
 	else
-		return OnlineStatus::fromProtocolStatus(data.status);
+		return data.status;
 }
 
 void Contact::rename(const QString& newNickname)

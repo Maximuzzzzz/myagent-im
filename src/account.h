@@ -72,7 +72,7 @@ signals:
 	void statusChanged(QString text);
 	
 private slots:
-	void slotLoggedIn(quint32 status);
+	void slotLoggedIn(QByteArray status);
 	void slotLoginRejected(QString reason);
 	void slotDisconnectedFromServer();
 

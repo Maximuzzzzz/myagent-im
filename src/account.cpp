@@ -58,11 +58,11 @@ Account::Account(QByteArray email, QByteArray password, QObject* parent)
 	HistoryManager* hm = new HistoryManager(this);
 	connect(m_chatsManager, SIGNAL(sessionCreated(ChatSession*)), hm, SLOT(createLogger(ChatSession*)));
 
-	connect(m_client, SIGNAL(loginAcknowledged(quint32)), this, SLOT(slotLoggedIn(quint32)));
+	connect(m_client, SIGNAL(loginAcknowledged(QByteArray)), this, SLOT(slotLoggedIn(QByteArray)));
 	connect(m_client, SIGNAL(loginRejected(QString)), this, SLOT(slotLoginRejected(QString)));
 	connect(m_client, SIGNAL(disconnectedFromServer()), this, SLOT(slotDisconnectedFromServer()));
 	
-	connect(m_client, SIGNAL(contactStatusChanged(quint32, QByteArray)), m_contactList, SLOT(changeContactStatus(quint32, QByteArray)));
+	connect(m_client, SIGNAL(contactStatusChanged(OnlineStatus, QByteArray)), m_contactList, SLOT(changeContactStatus(OnlineStatus, QByteArray)));
 	connect(m_client, SIGNAL(contactTyping(QByteArray)), m_contactList, SLOT(contactTyping(QByteArray)));
 	connect(m_client, SIGNAL(contactAuthorizedMe(const QByteArray&)), m_contactList, SLOT(slotContactAuthorized(const QByteArray&)));
 	connect(m_client, SIGNAL(newNumberOfUnreadLetters(quint32)), this, SLOT(setUnreadLetters(quint32)));
@@ -131,7 +131,7 @@ QString Account::avatarsPath() const
 
 void Account::setOnlineStatus(OnlineStatus newStatus)
 {
-	qDebug() << "Account.setOnlineStatus: onlineStatus = " << m_onlineStatus.description() << ", newStatus = " << newStatus.description();
+	qDebug() << "Account::setOnlineStatus: onlineStatus = " << m_onlineStatus.statusDescr() << ", newStatus = " << newStatus.statusDescr();
 	
 	if (m_onlineStatus == newStatus || newStatus == OnlineStatus::connecting)
 		return;
@@ -146,20 +146,20 @@ void Account::setOnlineStatus(OnlineStatus newStatus)
 		m_onlineStatus = OnlineStatus::connecting;
 		m_contactList->load();
 		emit onlineStatusChanged(m_onlineStatus);
-		m_client->connectToServer(newStatus.protocolStatus());
+		m_client->connectToServer(newStatus.id());
 	}
 	else if (m_onlineStatus == OnlineStatus::connecting)
 	{
 		m_client->disconnectFromServer();
 		emit onlineStatusChanged(m_onlineStatus);
-		m_client->connectToServer(newStatus.protocolStatus());
+		m_client->connectToServer(newStatus.id());
 	}
 	else
 	{
 		m_onlineStatus = newStatus;
 		if (m_isInAutoAway)
 			m_isInAutoAway = false;
-		m_client->changeStatus(m_onlineStatus.protocolStatus()/*, m_onlineStatus.type()*/);
+		m_client->changeStatus(m_onlineStatus.id());
 		emit onlineStatusChanged(m_onlineStatus);
 	}
 }
@@ -175,7 +175,7 @@ void Account::slotDisconnectedFromServer()
 	emit onlineStatusChanged(m_onlineStatus);
 }
 
-void Account::slotLoggedIn(quint32 status)
+void Account::slotLoggedIn(QByteArray status)
 {
 	QString basePath = theRM.basePath();
 	if (!basePath.isEmpty())
@@ -190,9 +190,10 @@ void Account::slotLoggedIn(quint32 status)
 				m_settings = new QSettings(path() + "/settings.txt", QSettings::IniFormat, this);
 		}
 	}
-	
-	OnlineStatus newStatus = OnlineStatus::fromProtocolStatus(status);
-	
+
+	OnlineStatus newStatus(status);
+
+	qDebug() << "newStatus" << status;
 	if (m_onlineStatus != newStatus)
 	{
 		m_onlineStatus = newStatus;

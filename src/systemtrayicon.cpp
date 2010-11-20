@@ -64,8 +64,10 @@ SystemTrayIcon::SystemTrayIcon(Account* a, ContactListWindow* w)
 	QActionGroup* statusActions = new QActionGroup(contextMenu);
 
 	statusActions->addAction(createStatusAction(OnlineStatus::online));
+	statusActions->addAction(createStatusAction(OnlineStatus::chatOnline));
 	statusActions->addAction(createStatusAction(OnlineStatus::away));
 	statusActions->addAction(createStatusAction(OnlineStatus::invisible));
+	statusActions->addAction(createStatusAction(OnlineStatus::dndOnline));
 	statusActions->addAction(createStatusAction(OnlineStatus::offline));
 
 	contextMenu->addActions(statusActions->actions());
@@ -89,7 +91,7 @@ SystemTrayIcon::~SystemTrayIcon()
 
 void SystemTrayIcon::showOnlineStatus(OnlineStatus status)
 {
-	setIcon(status.chatWindowIcon());
+	setIcon(status.statusIcon());
 }
 
 void SystemTrayIcon::processActivation(QSystemTrayIcon::ActivationReason reason)
@@ -179,6 +181,7 @@ void SystemTrayIcon::setupMainWindowVisibilityAction()
 
 void SystemTrayIcon::setOnlineStatus(OnlineStatus status)
 {
+	qDebug() << "SystemTrayIcon::setOnlineStatus";
 	if (status == this->status)
 		return;
 	
@@ -186,7 +189,7 @@ void SystemTrayIcon::setOnlineStatus(OnlineStatus status)
 	
 	this->status = status;
 	
-	qDebug() << "SystemTrayIcon status desc " << status.description();
+	qDebug() << "SystemTrayIcon status desc " << status.statusDescr();
 	
 	account->setOnlineStatus(status);
 }
@@ -199,7 +202,7 @@ void SystemTrayIcon::processStatusAction(QAction* action)
 
 QAction* SystemTrayIcon::createStatusAction(OnlineStatus status)
 {
-	QAction* action = new QAction(status.contactListIcon(), status.description(), this);
+	QAction* action = new QAction(status.statusIcon(), status.statusDescr(), this);
 	action->setData(QVariant::fromValue(status));
 	return action;
 }

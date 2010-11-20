@@ -128,7 +128,7 @@ void ContactList::addContact(Contact* contact)
 	if (!constructing) emit contactAdded(contact);
 }
 
-void ContactList::changeContactStatus(quint32 status, QByteArray email)
+void ContactList::changeContactStatus(OnlineStatus status, QByteArray email)
 {
 	Contact* contact = findContact(email);
 	if (contact)
@@ -233,9 +233,7 @@ void ContactList::endUpdating()
 	m_contacts = tmpContacts;
 	
 	for (int i = 0; i < m_contacts.size(); i++)
-	{
 		qDebug() << m_contacts.at(i)->email() << (void*)m_contacts.at(i);
-	}
 
 	constructing = false;
 	emit updated();
@@ -393,21 +391,15 @@ void ContactList::save() const
 void ContactList::checkOnlineStatus(OnlineStatus status)
 {
 	if (status == OnlineStatus::offline)
-	{
 		for (int i = 0; i < m_contacts.size(); i++)
-		{
 			m_contacts[i]->changeStatus(OnlineStatus::offline);
-		}
-	}
 }
 
 ContactGroup* ContactList::group(quint32 id) const
 {
 	for (int i = 0; i < m_groups.size(); i++)
-	{
 		if (m_groups.at(i)->id() == id)
 			return m_groups.at(i);
-	}
 	return NULL;
 }
 

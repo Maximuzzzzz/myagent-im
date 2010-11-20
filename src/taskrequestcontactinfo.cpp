@@ -38,7 +38,7 @@ bool RequestContactInfo::exec()
 	if (!block())
 		return false;
 	
-	connect(mc, SIGNAL(contactInfoReceived(quint32,quint32,MRIMClient::ContactsInfo,quint32,quint32)), this, SLOT(checkResult(quint32,quint32,MRIMClient::ContactsInfo,quint32,quint32)));
+	connect(mc, SIGNAL(contactInfoReceived(quint32, quint32, MRIMClient::ContactsInfo, quint32, quint32)), this, SLOT(checkResult(quint32, quint32, MRIMClient::ContactsInfo, quint32, quint32)));
 	
 	return checkCall(mc->requestContactInfo(m_email));
 }
@@ -48,7 +48,7 @@ void RequestContactInfo::checkResult(quint32 msgseq, quint32 status, MRIMClient:
 	qDebug() << "RequestContactInfo::checkResult";
 	if (isMyResponse(msgseq))
 	{
-		qDebug() << "contactinfo received, status = " << status;
+//		qDebug() << "contactinfo received, status = " << status;
 		
 		if (status == MRIM_ANKETA_INFO_STATUS_OK)
 		{

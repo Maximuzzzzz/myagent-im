@@ -4,7 +4,8 @@ CONFIG += qt # warn_on debug
 QT += network \
     phonon
 INCLUDEPATH += /usr/include/KDE
-TRANSLATIONS = locale/myagent-im_ru.ts
+TRANSLATIONS = locale/myagent-im_ru.ts \
+		locale/myagent-im_ua.ts
 LIBS += -laspell
 win32 { 
     QTPLUGIN += qjpeg \
@@ -41,7 +42,10 @@ unix {
         smiles_smiles \
         smiles_static_png \
         smiles \
+		statuses_set01 \
+ 		statuses \
         emoticons \
+		onlinestatus \
         data \
         desktop \
         appicon \
@@ -52,9 +56,16 @@ unix {
         locale/myagent-im_ru.qm
     emoticons.path = $$DATADIR/emoticons
     emoticons.files += emoticons/skin.txt
+    onlinestatus.path = $$DATADIR/emoticons
+    onlinestatus.files += emoticons/skin.txt
+	STATUSESDIR = $$DATADIR/emoticons/status
+	statuses.path = $$STATUSESDIR
+	statuses.files = emoticons/status/*
+	statuses_set01.path = $$STATUSESDIR/set01
+	statuses_set01.files = emoticons/status/set01/*
     SMILESDIR = $$DATADIR/emoticons/smiles
-    smiles.path = $$SMILESDIR
-    smiles.files = emoticons/smiles
+	smiles.path = $$SMILESDIR
+	smiles.files = emoticons/smiles/*
     smiles_animated.path = $$SMILESDIR/animated
     smiles_animated.files = emoticons/smiles/animated/*
     smiles_hands.path = $$SMILESDIR/hands
@@ -114,7 +125,6 @@ SOURCES += main.cpp \
     avatar.cpp \
     avatarwidget.cpp \
     mainmenubutton.cpp \
-    onlinestatus.cpp \
     contactcontextmenu.cpp \
     radiogroupbox.cpp \
     zodiac.cpp \
@@ -309,4 +319,5 @@ FORMS += logindialog.ui \
 	newconference.ui
 LEXSOURCES += emoticons.ll \
     rtf.ll \
-    plaintextparser.ll
+    plaintextparser.ll \
+	onlinestatus.ll

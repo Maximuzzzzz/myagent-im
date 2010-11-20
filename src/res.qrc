@@ -83,18 +83,6 @@
         <file>icons/projects/main_top_video_d.png</file>
         <file>icons/projects/main_top_video_h.png</file>
         <file>icons/projects/main_top_video_p.png</file>
-        <file>icons/status/status_offline.png</file>
-        <file>icons/status/status_invisible.png</file>
-        <file>icons/status/status_away.png</file>
-        <file>icons/status/status_online.png</file>
-        <file>icons/status/status_connecting.png</file>
-        <file>icons/status/status_gray.png</file>
-        <file>icons/status/msg_stat_offline.png</file>
-        <file>icons/status/msg_stat_private.png</file>
-        <file>icons/status/msg_stat_away.png</file>
-        <file>icons/status/msg_stat_online.png</file>
-        <file>icons/status/msg_stat_connect.png</file>
-        <file>icons/status/msg_stat_unauth.png</file>
         <file>icons/noavatar.png</file>
         <file>icons/noavatar_small.png</file>
         <file>icons/loadavatar.png</file>

@@ -130,7 +130,7 @@ void ContactInfoListWidget::setInfo(const QList<ContactInfo>& info)
 	{
 		int j = 1;
 		ContactInfoItem* nicknameItem = new ContactInfoItem;
-		nicknameItem->setIcon(info.at(i).onlineStatus().contactListIcon());
+		nicknameItem->setIcon(info.at(i).onlineStatus().statusIcon());
 		nicknameItem->setText(info.at(i).nickname());
 		infoListModel->setItem(i, j++, nicknameItem);
 		infoListModel->setItem(i, j++, new ContactInfoItem(info.at(i).email()));

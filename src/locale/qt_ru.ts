@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="ru_RU">
-<defaultcodec></defaultcodec>
+<!DOCTYPE TS>
+<TS version="2.0" language="ru_RU">
 <context>
     <name>AudioOutput</name>
     <message>
@@ -85,8 +85,7 @@ have libgstreamer-plugins-base installed.</source>
     </message>
     <message>
         <source>A required codec is missing. You need to install the following codec(s) to play this content: %0</source>
-        <translation type="unfinished">
-        </translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Could not open media source.</source>
@@ -5211,13 +5210,11 @@ Please choose a different file name.</source>
     </message>
     <message>
         <source>%1 takes at most %n argument(s). %2 is therefore invalid.</source>
-        <translation type="unfinished">
-        </translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>%1 requires at least %n argument(s). %2 is therefore invalid.</source>
-        <translation type="unfinished">
-        </translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>The first argument to %1 cannot be of type %2. It must be a numeric type, xs:yearMonthDuration or xs:dayTimeDuration.</source>

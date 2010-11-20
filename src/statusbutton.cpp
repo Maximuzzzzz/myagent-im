@@ -36,15 +36,14 @@ StatusButton::StatusButton(QWidget* parent)
 	QMenu* menu = new QMenu(this);
 	
 	menu->addAction(createAction(OnlineStatus::online));
+	menu->addAction(createAction(OnlineStatus::chatOnline));
 	menu->addAction(createAction(OnlineStatus::away));
 	menu->addAction(createAction(OnlineStatus::invisible));
+	menu->addAction(createAction(OnlineStatus::dndOnline));
 	menu->addAction(createAction(OnlineStatus::offline));
 	
 	setMenu(menu);
 	connect(menu, SIGNAL(triggered(QAction*)), this, SLOT(slotStatusChanged(QAction*)));
-	
-	setIcon(status.contactListIcon());
-	setText(status.description());
 }
 
 StatusButton::~StatusButton()
@@ -60,9 +59,9 @@ void StatusButton::setStatus(OnlineStatus status)
 	
 	this->status = status;
 	
-	setIcon(status.contactListIcon());
-	setText(status.description());
-	qDebug() << "StatusButton status desc " << status.description();
+	setIcon(status.statusIcon());
+	setText(status.statusDescr());
+	qDebug() << "StatusButton status desc " << status.statusDescr();
 	
 	emit statusChanged(status);
 }
@@ -75,7 +74,7 @@ void StatusButton::slotStatusChanged(QAction* action)
 
 QAction* StatusButton::createAction(OnlineStatus status)
 {
-	QAction* action = new QAction(status.contactListIcon(), status.description(), this);
+	QAction* action = new QAction(status.statusIcon(), status.statusDescr(), this);
 	action->setData(QVariant::fromValue(status));
 	return action;
 }

@@ -28,6 +28,8 @@
 #include <QMap>
 #include <QDateTime>
 
+#include "onlinestatus.h"
+
 class Account;
 class Contact;
 class ContactGroup;
@@ -55,9 +57,9 @@ public:
 	typedef QMap<quint32, QByteArray> SearchParams;
 signals:
 	void loginRejected(QString reason);
-	void loginAcknowledged(quint32 status);
+	void loginAcknowledged(QByteArray status);
 	void disconnectedFromServer();
-	void contactStatusChanged(quint32 status, QByteArray email);
+	void contactStatusChanged(OnlineStatus status, QByteArray email);
 	void contactTyping(QByteArray email);
 	void messageReceived(QByteArray from, Message* msg);
 	void fileReceived(FileMessage* fmsg);
@@ -80,10 +82,10 @@ signals:
 	void conferenceAsked(const QByteArray& confChat, const QString& confName);
 	
 public slots:
-	void connectToServer(quint32 status);
+	void connectToServer(QByteArray status);
 	quint32 requestContactInfo(QByteArray email);
 	quint32 searchContacts(const SearchParams& params);
-	void changeStatus(quint32 newStatus);
+	void changeStatus(QByteArray newStatus);
 	quint32 sendMessage(QByteArray email, const Message* message);
 	quint32 sendRtfMessage(QByteArray email, QString text, QByteArray message);
 	void sendTyping(QByteArray email);

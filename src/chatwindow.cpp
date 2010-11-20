@@ -354,11 +354,11 @@ void ChatWindow::messageDelivered(bool really, Message* msg)
 void ChatWindow::checkContactStatus(OnlineStatus status)
 {
 	Contact* contact = session->contact();
-	setWindowTitle(contact->nickname() + " - " + status.description());
+	setWindowTitle(contact->nickname() + " - " + status.statusDescr());
 	if (contact->isConference())
 		setWindowIcon(QIcon(":/icons/msg_conference.png"));
 	else
-		setWindowIcon(status.chatWindowIcon());
+		setWindowIcon(status.statusIcon());
 	emit setMainWindowIconAndTitle(windowIcon(), this);
 }
 
@@ -454,7 +454,7 @@ void ChatWindow::slotTimeout()
 	if (session->contact()->isConference())
 		setWindowIcon(QIcon(":/icons/msg_conference.png"));
 	else
-		setWindowIcon(session->contact()->status().chatWindowIcon());
+		setWindowIcon(session->contact()->status().statusIcon());
 	emit setMainWindowIconAndTitle(windowIcon(), this);
 }
 
@@ -473,7 +473,7 @@ void ChatWindow::clearStatus()
 		if (session->contact()->isConference())
 			setWindowIcon(QIcon(":/icons/msg_conference.png"));
 		else
-			setWindowIcon(session->contact()->status().chatWindowIcon());
+			setWindowIcon(session->contact()->status().statusIcon());
 	}
 	emit setMainWindowIconAndTitle(windowIcon(), this);
 	if (timer->isActive())
@@ -489,7 +489,7 @@ void ChatWindow::slotMakeRead()
 		if (session->contact()->isConference())
 			setWindowIcon(QIcon(":/icons/msg_conference.png"));
 		else
-			setWindowIcon(session->contact()->status().chatWindowIcon());
+			setWindowIcon(session->contact()->status().statusIcon());
 		emit setMainWindowIconAndTitle(windowIcon(), this);
 	}
 }

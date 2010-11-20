@@ -45,7 +45,7 @@ private slots:
 	
 private:
 	QByteArray m_email;
-	ContactInfo m_info;
+	ContactInfo m_info;	
 };
 
 }
