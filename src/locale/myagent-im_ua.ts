@@ -379,47 +379,47 @@
         <translation>E-mail</translation>
     </message>
     <message>
-        <location filename="../contactinfodialog.cpp" line="165"/>
+        <location filename="../contactinfodialog.cpp" line="175"/>
         <source>Nickname</source>
         <translation>Псевдонім</translation>
     </message>
     <message>
-        <location filename="../contactinfodialog.cpp" line="166"/>
+        <location filename="../contactinfodialog.cpp" line="176"/>
         <source>LastName</source>
         <translation>Прізвище</translation>
     </message>
     <message>
-        <location filename="../contactinfodialog.cpp" line="167"/>
+        <location filename="../contactinfodialog.cpp" line="177"/>
         <source>FirstName</source>
         <translation>Ім&apos;я</translation>
     </message>
     <message>
-        <location filename="../contactinfodialog.cpp" line="168"/>
+        <location filename="../contactinfodialog.cpp" line="178"/>
         <source>Sex</source>
         <translation>Стать</translation>
     </message>
     <message>
-        <location filename="../contactinfodialog.cpp" line="169"/>
+        <location filename="../contactinfodialog.cpp" line="179"/>
         <source>Age</source>
         <translation>Вік</translation>
     </message>
     <message>
-        <location filename="../contactinfodialog.cpp" line="170"/>
+        <location filename="../contactinfodialog.cpp" line="180"/>
         <source>Birthday</source>
         <translation>Дата народження</translation>
     </message>
     <message>
-        <location filename="../contactinfodialog.cpp" line="180"/>
+        <location filename="../contactinfodialog.cpp" line="190"/>
         <source>Zodiac</source>
         <translation>Знак зодіака</translation>
     </message>
     <message>
-        <location filename="../contactinfodialog.cpp" line="182"/>
+        <location filename="../contactinfodialog.cpp" line="192"/>
         <source>Location</source>
         <translation>Місце проживання</translation>
     </message>
     <message>
-        <location filename="../contactinfodialog.cpp" line="191"/>
+        <location filename="../contactinfodialog.cpp" line="199"/>
         <source>Editable phones</source>
         <translation>Телефони, що редагуються</translation>
     </message>
@@ -428,30 +428,30 @@
         <translation type="obsolete">Додаткові телефони</translation>
     </message>
     <message>
-        <location filename="../contactinfodialog.cpp" line="224"/>
-        <location filename="../contactinfodialog.cpp" line="239"/>
+        <location filename="../contactinfodialog.cpp" line="232"/>
+        <location filename="../contactinfodialog.cpp" line="247"/>
         <source>Primary phone</source>
         <translation>Основний телефон</translation>
     </message>
     <message>
-        <location filename="../contactinfodialog.cpp" line="225"/>
-        <location filename="../contactinfodialog.cpp" line="240"/>
+        <location filename="../contactinfodialog.cpp" line="233"/>
+        <location filename="../contactinfodialog.cpp" line="248"/>
         <source>Additional phone 1</source>
         <translation>Дод. телефон 1</translation>
     </message>
     <message>
-        <location filename="../contactinfodialog.cpp" line="226"/>
-        <location filename="../contactinfodialog.cpp" line="241"/>
+        <location filename="../contactinfodialog.cpp" line="234"/>
+        <location filename="../contactinfodialog.cpp" line="249"/>
         <source>Additional phone 2</source>
         <translation>Дод. телефон 2</translation>
     </message>
     <message>
-        <location filename="../contactinfodialog.cpp" line="231"/>
+        <location filename="../contactinfodialog.cpp" line="239"/>
         <source>Form phones</source>
         <translation>Анкетні телефони</translation>
     </message>
     <message>
-        <location filename="../contactinfodialog.cpp" line="163"/>
+        <location filename="../contactinfodialog.cpp" line="173"/>
         <source>Status</source>
         <translation>Онлайн-статус</translation>
     </message>
@@ -543,99 +543,99 @@
 <context>
     <name>ContactList</name>
     <message>
-        <location filename="../contactlist.cpp" line="454"/>
-        <location filename="../contactlist.cpp" line="527"/>
-        <location filename="../contactlist.cpp" line="584"/>
-        <location filename="../contactlist.cpp" line="628"/>
-        <location filename="../contactlist.cpp" line="691"/>
-        <location filename="../contactlist.cpp" line="745"/>
+        <location filename="../contactlist.cpp" line="446"/>
+        <location filename="../contactlist.cpp" line="519"/>
+        <location filename="../contactlist.cpp" line="576"/>
+        <location filename="../contactlist.cpp" line="620"/>
+        <location filename="../contactlist.cpp" line="683"/>
+        <location filename="../contactlist.cpp" line="737"/>
         <source>Time is out</source>
         <translation>Час вичерпано</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="459"/>
-        <location filename="../contactlist.cpp" line="532"/>
-        <location filename="../contactlist.cpp" line="589"/>
+        <location filename="../contactlist.cpp" line="451"/>
+        <location filename="../contactlist.cpp" line="524"/>
+        <location filename="../contactlist.cpp" line="581"/>
         <source>Error</source>
         <translation>Помилка</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="274"/>
+        <location filename="../contactlist.cpp" line="272"/>
         <source>Removing contact failed</source>
         <translation>Видалення контакта зазнало невдачі</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="605"/>
+        <location filename="../contactlist.cpp" line="597"/>
         <source>Group %1 already exists.</source>
         <translation>Група %1 вже існує.</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="616"/>
+        <location filename="../contactlist.cpp" line="608"/>
         <source>Adding group is currently impossible</source>
         <translation>Додавання групи тимчасово неможливо</translation>
+    </message>
+    <message>
+        <location filename="../contactlist.cpp" line="622"/>
+        <location filename="../contactlist.cpp" line="685"/>
+        <location filename="../contactlist.cpp" line="739"/>
+        <source>Incorrect data</source>
+        <translation>Невірні дані</translation>
+    </message>
+    <message>
+        <location filename="../contactlist.cpp" line="624"/>
+        <location filename="../contactlist.cpp" line="687"/>
+        <location filename="../contactlist.cpp" line="741"/>
+        <source>Internal error</source>
+        <translation>Внутрішня помилка</translation>
+    </message>
+    <message>
+        <location filename="../contactlist.cpp" line="626"/>
+        <location filename="../contactlist.cpp" line="689"/>
+        <location filename="../contactlist.cpp" line="743"/>
+        <source>Invalid group name</source>
+        <translation>Неправильне ім&apos;я групи</translation>
+    </message>
+    <message>
+        <location filename="../contactlist.cpp" line="628"/>
+        <source>Number of groups exceeded</source>
+        <translation>Перевищено число груп</translation>
     </message>
     <message>
         <location filename="../contactlist.cpp" line="630"/>
         <location filename="../contactlist.cpp" line="693"/>
         <location filename="../contactlist.cpp" line="747"/>
-        <source>Incorrect data</source>
-        <translation>Невірні дані</translation>
-    </message>
-    <message>
-        <location filename="../contactlist.cpp" line="632"/>
-        <location filename="../contactlist.cpp" line="695"/>
-        <location filename="../contactlist.cpp" line="749"/>
-        <source>Internal error</source>
-        <translation>Внутрішня помилка</translation>
-    </message>
-    <message>
-        <location filename="../contactlist.cpp" line="634"/>
-        <location filename="../contactlist.cpp" line="697"/>
-        <location filename="../contactlist.cpp" line="751"/>
-        <source>Invalid group name</source>
-        <translation>Неправильне ім&apos;я групи</translation>
-    </message>
-    <message>
-        <location filename="../contactlist.cpp" line="636"/>
-        <source>Number of groups exceeded</source>
-        <translation>Перевищено число груп</translation>
-    </message>
-    <message>
-        <location filename="../contactlist.cpp" line="638"/>
-        <location filename="../contactlist.cpp" line="701"/>
-        <location filename="../contactlist.cpp" line="755"/>
         <source>Unknown error</source>
         <translation>Невідома помилка</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="655"/>
-        <location filename="../contactlist.cpp" line="724"/>
+        <location filename="../contactlist.cpp" line="647"/>
+        <location filename="../contactlist.cpp" line="716"/>
         <source>Unknown group</source>
         <translation>Невідома група</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="670"/>
+        <location filename="../contactlist.cpp" line="662"/>
         <source>Group is not empty</source>
         <translation>Група не порожня</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="679"/>
+        <location filename="../contactlist.cpp" line="671"/>
         <source>Removing group is currently impossible</source>
         <translation>Видалення групи тимчасово неможливо</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="699"/>
-        <location filename="../contactlist.cpp" line="753"/>
+        <location filename="../contactlist.cpp" line="691"/>
+        <location filename="../contactlist.cpp" line="745"/>
         <source>No such group</source>
         <translation>Група не існує</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="733"/>
+        <location filename="../contactlist.cpp" line="725"/>
         <source>Renaming group is currently impossible</source>
         <translation>Перейменування групи тимчасово неможливо</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="563"/>
+        <location filename="../contactlist.cpp" line="555"/>
         <source>Contact %1 already exists</source>
         <translation>Контакт %1 вже існує</translation>
     </message>
@@ -839,17 +839,17 @@
 <context>
     <name>HistoryViewTab</name>
     <message>
-        <location filename="../historyviewtab.cpp" line="53"/>
+        <location filename="../historyviewtab.cpp" line="54"/>
         <source>Save all log...</source>
         <translation>Зберегти все...</translation>
     </message>
     <message>
-        <location filename="../historyviewtab.cpp" line="191"/>
+        <location filename="../historyviewtab.cpp" line="190"/>
         <source>File to save</source>
         <translation>Зберегти у файл</translation>
     </message>
     <message>
-        <location filename="../historyviewtab.cpp" line="191"/>
+        <location filename="../historyviewtab.cpp" line="190"/>
         <source>HTML file %1</source>
         <translation>Файл HTML %1</translation>
     </message>
@@ -896,58 +896,53 @@
 <context>
     <name>LoginDialog</name>
     <message>
-        <location filename="../logindialog.ui" line="13"/>
+        <location filename="../logindialog.ui" line="14"/>
         <source>Login</source>
         <translation>Вхід</translation>
     </message>
     <message>
-        <location filename="../logindialog.ui" line="25"/>
+        <location filename="../logindialog.ui" line="26"/>
         <source>E-mail:</source>
         <translation>E-mail:</translation>
     </message>
     <message>
-        <location filename="../logindialog.ui" line="39"/>
+        <location filename="../logindialog.ui" line="40"/>
         <source>Password:</source>
         <translation>Пароль:</translation>
     </message>
     <message>
-        <location filename="../logindialog.ui" line="57"/>
+        <location filename="../logindialog.ui" line="58"/>
         <source>Online status:</source>
         <translation>Онлайн-статус:</translation>
     </message>
     <message>
-        <location filename="../logindialog.ui" line="74"/>
-        <location filename="../logindialog.cpp" line="64"/>
         <source>Away</source>
-        <translation>Відійшов</translation>
+        <translation type="obsolete">Відійшов</translation>
     </message>
     <message>
-        <location filename="../logindialog.ui" line="83"/>
         <source>Invisible</source>
-        <translation>Невидимий</translation>
+        <translation type="obsolete">Невидимий</translation>
     </message>
     <message>
-        <location filename="../logindialog.ui" line="99"/>
+        <location filename="../logindialog.ui" line="72"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>
     <message>
-        <location filename="../logindialog.ui" line="109"/>
+        <location filename="../logindialog.ui" line="82"/>
         <source>Cancel</source>
         <translation>Відмінити</translation>
     </message>
     <message>
-        <location filename="../logindialog.ui" line="65"/>
-        <location filename="../logindialog.cpp" line="62"/>
         <source>Online</source>
-        <translation>Онлайн</translation>
+        <translation type="obsolete">Онлайн</translation>
     </message>
 </context>
 <context>
     <name>MRIMClientPrivate</name>
     <message>
-        <location filename="../mrimclientprivate.cpp" line="728"/>
-        <location filename="../mrimclientprivate.cpp" line="875"/>
+        <location filename="../mrimclientprivate.cpp" line="734"/>
+        <location filename="../mrimclientprivate.cpp" line="881"/>
         <source>User %1 left the conference</source>
         <translation>Користувач %1 залишив конференцію</translation>
     </message>
@@ -1121,11 +1116,6 @@
         <translation>Конференція 1</translation>
     </message>
     <message>
-        <location filename="../newconference.ui" line="182"/>
-        <source>TextLabel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../newconference.ui" line="216"/>
         <source>-&gt;</source>
         <translation>-&gt;</translation>
@@ -1171,34 +1161,28 @@
 <context>
     <name>OnlineStatus</name>
     <message>
-        <location filename="../onlinestatus.cpp" line="47"/>
         <source>Offline</source>
-        <translation>Не в мережі</translation>
+        <translation type="obsolete">Не в мережі</translation>
     </message>
     <message>
-        <location filename="../onlinestatus.cpp" line="49"/>
         <source>Invisible</source>
-        <translation>Невидимий</translation>
+        <translation type="obsolete">Невидимий</translation>
     </message>
     <message>
-        <location filename="../onlinestatus.cpp" line="51"/>
         <source>Away</source>
-        <translation>Відійшов</translation>
+        <translation type="obsolete">Відійшов</translation>
     </message>
     <message>
-        <location filename="../onlinestatus.cpp" line="53"/>
         <source>Online</source>
-        <translation>Онлайн</translation>
+        <translation type="obsolete">Онлайн</translation>
     </message>
     <message>
-        <location filename="../onlinestatus.cpp" line="55"/>
         <source>Connecting</source>
-        <translation>Підключення</translation>
+        <translation type="obsolete">Підключення</translation>
     </message>
     <message>
-        <location filename="../onlinestatus.cpp" line="57"/>
         <source>Unknown</source>
-        <translation>Невідомий</translation>
+        <translation type="obsolete">Невідомий</translation>
     </message>
 </context>
 <context>
@@ -1460,25 +1444,25 @@
         <translation type="obsolete">Онлайн-статус</translation>
     </message>
     <message>
-        <location filename="../systemtrayicon.cpp" line="76"/>
-        <location filename="../systemtrayicon.cpp" line="164"/>
-        <location filename="../systemtrayicon.cpp" line="168"/>
-        <location filename="../systemtrayicon.cpp" line="176"/>
+        <location filename="../systemtrayicon.cpp" line="78"/>
+        <location filename="../systemtrayicon.cpp" line="166"/>
+        <location filename="../systemtrayicon.cpp" line="170"/>
+        <location filename="../systemtrayicon.cpp" line="178"/>
         <source>Show contact list</source>
         <translation>Показати список контактів</translation>
     </message>
     <message>
-        <location filename="../systemtrayicon.cpp" line="81"/>
+        <location filename="../systemtrayicon.cpp" line="83"/>
         <source>Quit</source>
         <translation>Вихід</translation>
     </message>
     <message>
-        <location filename="../systemtrayicon.cpp" line="129"/>
+        <location filename="../systemtrayicon.cpp" line="131"/>
         <source>New letter</source>
         <translation>Новий лист</translation>
     </message>
     <message>
-        <location filename="../systemtrayicon.cpp" line="172"/>
+        <location filename="../systemtrayicon.cpp" line="174"/>
         <source>Hide contact list</source>
         <translation>Сховати список контактів</translation>
     </message>

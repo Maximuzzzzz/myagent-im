@@ -51,6 +51,9 @@ public:
 	void setAudio(Audio* a);
 	Audio* getAudio() { return audio; }
 
+	void saveOnlineStatus(QByteArray email, OnlineStatus st);
+	OnlineStatus loadOnlineStatus(QByteArray email);
+
 private:
 	ResourceManager(QObject* parent = 0);
 	ResourceManager(const ResourceManager& rm);

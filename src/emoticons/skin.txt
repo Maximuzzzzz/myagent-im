@@ -1077,6 +1077,26 @@
 						icon = "/wrong_data.png"
 						builtin = "1"
 					</OBJ08>					
+					<OBJ09>
+						id = "STATUS_OFFLINE" 
+						icon = "/status_offline.png"
+						builtin = "1"
+					</OBJ09>					
+					<OBJ10>
+						id = "STATUS_ONLINE" 
+						icon = "/status_online.png"
+						builtin = "1"
+					</OBJ10>					
+					<OBJ11>
+						id = "STATUS_AWAY" 
+						icon = "/status_away.png"
+						builtin = "1"
+					</OBJ11>					
+					<OBJ12>
+						id = "STATUS_INVISIBLE"
+						icon = "/status_invisible.png"
+						builtin = "1"
+					</OBJ12>					
 				</ITEMS>
 			</AGENT_BUILT_IN>
 		</ITEMS>		

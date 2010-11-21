@@ -28,6 +28,7 @@
 #include <QTimer>
 
 #include "proto.h"
+#include "onlinestatus.h"
 
 class MRIMClient;
 class Account;
@@ -110,10 +111,8 @@ private:
 	bool headerReceived;
 	uint dataSize;
 	Account* account;
-/*	quint32 currentStatus;
-	quint32 newStatus;*/
-	QByteArray currentStatus;
-	QByteArray newStatus;
+	OnlineStatus currentStatus;
+	OnlineStatus newStatus;
 	bool gettingAddress;
 	bool manualDisconnect;
 };

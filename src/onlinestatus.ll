@@ -183,6 +183,7 @@ void OnlineStatuses::load(QString filename)
 OnlineStatus::OnlineStatus(QByteArray idStatus, QString statusDescr)
 	: m_idStatus(idStatus), m_statusDescr(statusDescr)
 {
+	m_onlineStatuses = theRM.onlineStatuses();
 	setMType();
 	if (statusDescr != "" || m_type == OtherOnline)
 		if (idStatus == "status_chat")
@@ -193,7 +194,6 @@ OnlineStatus::OnlineStatus(QByteArray idStatus, QString statusDescr)
 			m_statusDescr = statusDescr;
 	else
 		m_statusDescr = description();
-	m_onlineStatuses = theRM.onlineStatuses();
 }
 
 QString OnlineStatus::description() const
@@ -244,12 +244,14 @@ QIcon OnlineStatus::statusIcon() const
 
 void OnlineStatus::setIdStatus(QByteArray status)
 {
+	qDebug() << "OnlineStatus::setIdStatus" << status;
 	m_idStatus = status;
 	setMType();
 	if (m_type != OtherOnline)
 	{
 		m_statusDescr = description();
 	}
+	qDebug() << m_type << description() << statusDescr();
 }
 
 quint32 OnlineStatus::protocolStatus() const
@@ -308,15 +310,22 @@ bool OnlineStatus::connected() const
 
 void OnlineStatus::setMType()
 {
+	qDebug() << "OnlineStatus::setMType()" << (m_onlineStatuses->getOnlineStatusInfo(m_idStatus) == NULL);
 	if (m_idStatus == "")
-		m_type = Unknown;
-	else if (m_idStatus == "status_0")
+		m_type = OtherOnline;
+	else if (m_onlineStatuses->getOnlineStatusInfo(m_idStatus) == NULL)
+	{
+		m_idStatus = "wrong_data";
+		m_statusDescr = tr("Wrong status data");
+		m_type = OtherOnline;
+	}
+	else if (m_idStatus == "status_0" || m_idStatus == "STATUS_OFFLINE")
 		m_type = Offline;
-	else if (m_idStatus == "status_1")
+	else if (m_idStatus == "status_1" || m_idStatus == "STATUS_ONLINE")
 		m_type = Online;
-	else if (m_idStatus == "status_2")
+	else if (m_idStatus == "status_2" || m_idStatus == "STATUS_AWAY")
 		m_type = Away;
-	else if (m_idStatus == "status_3")
+	else if (m_idStatus == "status_3" || m_idStatus == "STATUS_INVISIBLE")
 		m_type = Invisible;
 	else if (m_idStatus == "status_connecting")
 		m_type = Connecting;

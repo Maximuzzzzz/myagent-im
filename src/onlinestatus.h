@@ -63,7 +63,7 @@ public:
 	
 	void load(QString filename);
 	const OnlineStatusInfo* getOnlineStatusInfo(QString id) const
-		{ return idToOnlineStatusMap.value(id); }
+		{ return idToOnlineStatusMap.value(id, NULL); }
 
 	int numberOfSets() const { return onlineStatusSets.size(); }
 
@@ -117,9 +117,8 @@ public:
 	explicit OnlineStatus(QByteArray idStatus = "", QString statusDescr = "");
 	
 	bool operator==(OnlineStatus another) { return (m_idStatus == another.m_idStatus); }
-//	bool operator===(OnlineStatus another) { return (m_idStatus == another.m_idStatus && m_statusDescr == another.m_statusDescr); }
 	bool operator!=(OnlineStatus another) { return (m_idStatus != another.m_idStatus && m_statusDescr != another.m_statusDescr); }
-	bool operator<=(OnlineStatus another) { return (m_type <= another.m_type); }
+	bool operator<=(OnlineStatus another) { return (m_type <= another.m_type);  }
 	bool operator<(OnlineStatus another) { return (m_type < another.m_type); }
 
 private:

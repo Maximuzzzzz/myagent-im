@@ -58,7 +58,7 @@ Account::Account(QByteArray email, QByteArray password, QObject* parent)
 	HistoryManager* hm = new HistoryManager(this);
 	connect(m_chatsManager, SIGNAL(sessionCreated(ChatSession*)), hm, SLOT(createLogger(ChatSession*)));
 
-	connect(m_client, SIGNAL(loginAcknowledged(QByteArray)), this, SLOT(slotLoggedIn(QByteArray)));
+	connect(m_client, SIGNAL(loginAcknowledged(OnlineStatus)), this, SLOT(slotLoggedIn(OnlineStatus)));
 	connect(m_client, SIGNAL(loginRejected(QString)), this, SLOT(slotLoginRejected(QString)));
 	connect(m_client, SIGNAL(disconnectedFromServer()), this, SLOT(slotDisconnectedFromServer()));
 	
@@ -146,22 +146,24 @@ void Account::setOnlineStatus(OnlineStatus newStatus)
 		m_onlineStatus = OnlineStatus::connecting;
 		m_contactList->load();
 		emit onlineStatusChanged(m_onlineStatus);
-		m_client->connectToServer(newStatus.id());
+		m_client->connectToServer(newStatus);
 	}
 	else if (m_onlineStatus == OnlineStatus::connecting)
 	{
 		m_client->disconnectFromServer();
 		emit onlineStatusChanged(m_onlineStatus);
-		m_client->connectToServer(newStatus.id());
+		m_client->connectToServer(newStatus);
 	}
 	else
 	{
 		m_onlineStatus = newStatus;
 		if (m_isInAutoAway)
 			m_isInAutoAway = false;
-		m_client->changeStatus(m_onlineStatus.id());
+		m_client->changeStatus(m_onlineStatus);
 		emit onlineStatusChanged(m_onlineStatus);
 	}
+	if (m_onlineStatus.connected())
+		theRM.saveOnlineStatus(m_email, m_onlineStatus);
 }
 
 void Account::slotDisconnectedFromServer()
@@ -175,7 +177,7 @@ void Account::slotDisconnectedFromServer()
 	emit onlineStatusChanged(m_onlineStatus);
 }
 
-void Account::slotLoggedIn(QByteArray status)
+void Account::slotLoggedIn(OnlineStatus status)
 {
 	QString basePath = theRM.basePath();
 	if (!basePath.isEmpty())
@@ -191,12 +193,10 @@ void Account::slotLoggedIn(QByteArray status)
 		}
 	}
 
-	OnlineStatus newStatus(status);
-
-	qDebug() << "newStatus" << status;
-	if (m_onlineStatus != newStatus)
+	qDebug() << "status" << status.id() << "(" << status.statusDescr() << ")";
+	if (m_onlineStatus != status)
 	{
-		m_onlineStatus = newStatus;
+		m_onlineStatus = status;
 		emit onlineStatusChanged(m_onlineStatus);
 	}
 }

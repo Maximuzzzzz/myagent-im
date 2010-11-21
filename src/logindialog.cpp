@@ -33,6 +33,8 @@
 LoginDialog::LoginDialog(QWidget* parent)
  : QDialog(parent)
 {
+	extendedStatus = false;
+
 	setWindowFlags(Qt::Dialog & !Qt::WindowContextHelpButtonHint);
 	setupUi(this);
 	
@@ -69,6 +71,7 @@ LoginDialog::LoginDialog(QWidget* parent)
 	onlineStatusBox->addItem(dndStatusIcon, onlineStatus.statusDescr());
 
 	connect(emailBox->lineEdit(), SIGNAL(textEdited(const QString&)), SLOT(checkEmail()));
+	connect(emailBox, SIGNAL(editTextChanged(const QString&)), SLOT(checkOnlineStatus()));
 	connect(passwordEdit, SIGNAL(textEdited(const QString&)), SLOT(checkPassword()));
 
 	okButton->setDisabled(true);
@@ -94,6 +97,8 @@ OnlineStatus LoginDialog::status() const
 			return OnlineStatus::invisible;
 		case 4:
 			return OnlineStatus::dndOnline;
+		case 5:
+			return OnlineStatus(statusId, statusDescr);
 	}
 	return OnlineStatus();
 }
@@ -112,4 +117,36 @@ void LoginDialog::checkEmail()
 void LoginDialog::checkPassword()
 {
 	okButton->setEnabled(passwordEdit->hasAcceptableInput());
+}
+
+void LoginDialog::checkOnlineStatus()
+{
+	OnlineStatus st = theRM.loadOnlineStatus(email());
+	if (extendedStatus)
+	{
+		onlineStatusBox->removeItem(5);
+		extendedStatus = false;
+	}
+	if (st == OnlineStatus::online)
+		onlineStatusBox->setCurrentIndex(0);
+	else if (st == OnlineStatus::chatOnline)
+		onlineStatusBox->setCurrentIndex(1);
+	else if (st == OnlineStatus::away)
+		onlineStatusBox->setCurrentIndex(2);
+	else if (st == OnlineStatus::invisible)
+		onlineStatusBox->setCurrentIndex(3);
+	else if (st == OnlineStatus::dndOnline)
+		onlineStatusBox->setCurrentIndex(4);
+	else if (st.id() == "")
+		onlineStatusBox->setCurrentIndex(0);
+	else
+	{
+		QIcon onlineStatusIcon;
+		onlineStatusIcon.addFile(theRM.statusesResourcePrefix() + ":" + theRM.onlineStatuses()->getOnlineStatusInfo(st.id())->icon(), QSize(), QIcon::Normal, QIcon::Off);
+		onlineStatusBox->addItem(onlineStatusIcon, st.statusDescr());
+		onlineStatusBox->setCurrentIndex(5);		
+		extendedStatus = true;
+		statusId = st.id();
+		statusDescr = st.statusDescr();
+	}
 }

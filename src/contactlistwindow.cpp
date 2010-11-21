@@ -388,6 +388,7 @@ void ContactListWindow::slotMicroblogChanged(QString microText)
 
 void ContactListWindow::slotSetOnlineStatus(OnlineStatus status)
 {
+	qDebug() << "ContactListWindow::slotSetOnlineStatus" << status.id() << status.statusDescr();
 	statusButton->setStatus(status);
 	if (status == OnlineStatus::offline || status == OnlineStatus::connecting || status == OnlineStatus::unknown)
 	{

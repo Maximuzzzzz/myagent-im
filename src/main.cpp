@@ -75,6 +75,7 @@ int main(int argc, char *argv[])
 	if (ld->exec() == QDialog::Rejected)
 		return 0;
 
+	theRM.saveOnlineStatus(ld->email(), ld->status());
 	AccountManager am;
 	Account* account = am.getAccount(ld->email(), ld->password());
 	audio->setAccount(account);

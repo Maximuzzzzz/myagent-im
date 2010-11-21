@@ -29,7 +29,7 @@
 #include "proto.h"
 
 ContactListItem::ContactListItem(Contact* contact)
-{	
+{
 	m_contact = contact;
 	m_group = 0;
 	

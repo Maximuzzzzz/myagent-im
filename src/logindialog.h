@@ -41,6 +41,12 @@ public:
 private slots:
 	void checkEmail();
 	void checkPassword();
+	void checkOnlineStatus();
+
+private:
+	bool extendedStatus;
+	QByteArray statusId;
+	QString statusDescr;
 };
 
 #endif

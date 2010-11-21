@@ -57,7 +57,7 @@ public:
 	typedef QMap<quint32, QByteArray> SearchParams;
 signals:
 	void loginRejected(QString reason);
-	void loginAcknowledged(QByteArray status);
+	void loginAcknowledged(OnlineStatus status);
 	void disconnectedFromServer();
 	void contactStatusChanged(OnlineStatus status, QByteArray email);
 	void contactTyping(QByteArray email);
@@ -82,10 +82,10 @@ signals:
 	void conferenceAsked(const QByteArray& confChat, const QString& confName);
 	
 public slots:
-	void connectToServer(QByteArray status);
+	void connectToServer(OnlineStatus status);
 	quint32 requestContactInfo(QByteArray email);
 	quint32 searchContacts(const SearchParams& params);
-	void changeStatus(QByteArray newStatus);
+	void changeStatus(OnlineStatus newStatus);
 	quint32 sendMessage(QByteArray email, const Message* message);
 	quint32 sendRtfMessage(QByteArray email, QString text, QByteArray message);
 	void sendTyping(QByteArray email);

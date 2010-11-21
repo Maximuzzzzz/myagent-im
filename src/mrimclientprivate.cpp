@@ -52,7 +52,7 @@ void MRIMClientPrivate::init()
 	pingTimer = new QTimer(this);
 	pingTime = 30000;
 
-	currentStatus = (OnlineStatus::offline).id();
+	currentStatus = OnlineStatus::offline;
 
 	sequence = 1;
 	headerReceived = false;
@@ -109,7 +109,7 @@ void MRIMClientPrivate::slotConnectedToServer()
 {
 	//qDebug() << "MRIMClientPrivate::slotConnectedToServer() currentStatus = " << currentStatus << ", newStatus = " << newStatus << ", gettingAddress = " << gettingAddress;
 
-	if (currentStatus == (OnlineStatus::offline).id() && newStatus != (OnlineStatus::offline).id())
+	if (currentStatus.protocolStatus() == STATUS_OFFLINE && newStatus.protocolStatus() != STATUS_OFFLINE)
 		if (!gettingAddress)
 			sendPacket(MRIM_CS_HELLO, QByteArray(), 23);
 }
@@ -117,10 +117,10 @@ void MRIMClientPrivate::slotConnectedToServer()
 void MRIMClientPrivate::slotDisconnectedFromServer()
 {
 	//qDebug() << "MRIMClientPrivate slotDisconnectedFromServer, currentStatus = " << currentStatus << ", manualDisconnect = " << manualDisconnect;
-	if (currentStatus != (OnlineStatus::offline).id() || !gettingAddress || manualDisconnect)
+	if (currentStatus.protocolStatus() != STATUS_OFFLINE || !gettingAddress || manualDisconnect)
 	{
 		pingTimer->stop();
-		currentStatus = (OnlineStatus::offline).id();
+		currentStatus = OnlineStatus::offline;
 		gettingAddress = false;
 		manualDisconnect = false;
 		emit q->disconnectedFromServer();
@@ -379,7 +379,7 @@ void MRIMClientPrivate::processHelloAck(QByteArray data)
 
 	out << QByteArray(account->email());
 	out << QByteArray(account->password());
-	qDebug() << "MRIMClientPrivate: processHelloAck, status = " << currentStatus;
+	qDebug() << "MRIMClientPrivate: processHelloAck, status = " << currentStatus.id() << "(" << currentStatus.statusDescr() << ")";
 
 	out << /*quint32(newStatus);*/quint32(0xffffffff);
 	out << QByteArray("client=\"magent\" version=\"5.6\" build=\"3278\"");
@@ -583,7 +583,6 @@ void MRIMClientPrivate::processAnketaInfo(QByteArray data, quint32 msgseq)
 
 	QVector<QString> fields;
 
-	qDebug() << "Fields:";
 	QByteArray str;
 	for (uint i = 0; i < numFields; i++)
 	{
@@ -592,7 +591,6 @@ void MRIMClientPrivate::processAnketaInfo(QByteArray data, quint32 msgseq)
 		qDebug() << codec->toUnicode(str);
 	}
 
-	qDebug() << "Values:";
 	while (!in.atEnd())
 		for (uint i = 0; i < numFields; i++)
 		{
@@ -607,7 +605,6 @@ void MRIMClientPrivate::processAnketaInfo(QByteArray data, quint32 msgseq)
 void MRIMClientPrivate::processLoginAcknowledged(QByteArray data)
 {
 	qDebug() << "MRIM_CS_LOGIN_ACK, bytes = " << data.size();
-	qDebug() << "statuses:" << currentStatus << newStatus;
 	currentStatus = newStatus;
 	emit q->loginAcknowledged(currentStatus);
 }
@@ -696,7 +693,10 @@ void MRIMClientPrivate::processUserStatus(QByteArray data)
 	qDebug() << "unks:" << unk2 << unk3;
 	qDebug() << "email = " << email;
 
-	OnlineStatus userStatus(statusId, statusDescr);
+	OnlineStatus userStatus = OnlineStatus::fromProtocolStatus(status);
+	userStatus.setDescr(statusDescr);
+	if (statusId != "")
+		userStatus.setIdStatus(statusId);
 	emit q->contactStatusChanged(userStatus, email);
 }
 

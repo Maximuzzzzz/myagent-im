@@ -195,10 +195,10 @@ void ContactListModel::addContact(Contact* c)
 		qDebug() << c->email();
 		return;
 	}
-	
+
 	ContactListItem* contactItem = new ContactListItem(c);
 	QStandardItem* groupItem;
-	
+
 	if (c->isPhone())
 	{
 		qDebug() << "contact " << c->nickname() << " is phone";

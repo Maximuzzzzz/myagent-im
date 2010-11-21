@@ -11,7 +11,7 @@ QTextCodec* ContactData::codec = QTextCodec::codecForName("cp1251");
 
 ContactData::ContactData()
 {
-	status = OnlineStatus::offline;// = STATUS_OFFLINE;
+	status = OnlineStatus::offline;
 }
 
 ContactData::ContactData(const QByteArray& email)
@@ -22,7 +22,7 @@ ContactData::ContactData(const QByteArray& email)
 	this->email = email;
 	nick = email;
 	internalFlags = CONTACT_INTFLAG_NOT_AUTHORIZED;
-	status = OnlineStatus::offline;// = STATUS_OFFLINE;
+	status = OnlineStatus::offline;
 }
 
 ContactData::ContactData(quint32 id, quint32 flags, quint32 group, QByteArray email, QString nick, QStringList phones)
@@ -34,7 +34,7 @@ ContactData::ContactData(quint32 id, quint32 flags, quint32 group, QByteArray em
 	this->nick = nick;
 	this->phones = phones;
 	internalFlags = CONTACT_INTFLAG_NOT_AUTHORIZED;
-	status = OnlineStatus::offline;// = STATUS_OFFLINE;
+	status = OnlineStatus::offline;
 }
 
 ContactData::ContactData(quint32 contactId, MRIMDataStream& stream, const QByteArray& mask)
@@ -74,6 +74,7 @@ ContactData::ContactData(quint32 contactId, MRIMDataStream& stream, const QByteA
 
 	if (statusId != "")
 	{
+		qDebug() << "statusId" << statusId;
 		status.setIdStatus(statusId);
 		status.setDescr(statusDescr);
 	}
@@ -131,7 +132,7 @@ void ContactData::load(QDataStream & stream)
 	stream >> email;
 	stream >> nick;
 	stream >> internalFlags;
-	status = OnlineStatus::offline;// = STATUS_OFFLINE;
+	status = OnlineStatus::offline;
 	stream >> phones;
 	stream >> tailMask;
 	stream >> tailData;

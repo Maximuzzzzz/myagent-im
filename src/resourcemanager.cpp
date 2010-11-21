@@ -94,3 +94,16 @@ void ResourceManager::setAudio(Audio* a)
 {
 	audio = a;
 }
+
+void ResourceManager::saveOnlineStatus(QByteArray email, OnlineStatus st)
+{
+	m_settings->setValue(email + "/lastOnlineStatus", st.id());
+	m_settings->setValue(email + "/lastOnlineStatusDescr", st.statusDescr());
+}
+
+OnlineStatus ResourceManager::loadOnlineStatus(QByteArray email)
+{
+	QByteArray stId = m_settings->value(email + "/lastOnlineStatus", "").toByteArray();
+	QString stDescr = m_settings->value(email + "/lastOnlineStatusDescr", "").toString();
+	return OnlineStatus(stId, stDescr);
+}
