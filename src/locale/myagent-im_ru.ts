@@ -111,93 +111,93 @@
         <translation>Отправить</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="308"/>
+        <location filename="../chatwindow.cpp" line="314"/>
         <source>Contact is typing</source>
         <translation>Собеседник пишет вам сообщение</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="331"/>
+        <location filename="../chatwindow.cpp" line="337"/>
         <source>Message not delivered</source>
         <translation>Сообщение не доставлено</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="336"/>
+        <location filename="../chatwindow.cpp" line="342"/>
         <source>Resend</source>
         <translation>Переотправить</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="508"/>
-        <location filename="../chatwindow.cpp" line="533"/>
-        <location filename="../chatwindow.cpp" line="615"/>
-        <location filename="../chatwindow.cpp" line="638"/>
-        <location filename="../chatwindow.cpp" line="654"/>
-        <location filename="../chatwindow.cpp" line="662"/>
+        <location filename="../chatwindow.cpp" line="514"/>
+        <location filename="../chatwindow.cpp" line="539"/>
+        <location filename="../chatwindow.cpp" line="621"/>
+        <location filename="../chatwindow.cpp" line="644"/>
+        <location filename="../chatwindow.cpp" line="660"/>
+        <location filename="../chatwindow.cpp" line="668"/>
         <source>Files transferring</source>
         <translation>Передача файлов</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="509"/>
+        <location filename="../chatwindow.cpp" line="515"/>
         <source>You offered to your interlocutor to get files.</source>
         <translation>Вы предложили собеседнику принять файлы.</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="511"/>
-        <location filename="../chatwindow.cpp" line="536"/>
+        <location filename="../chatwindow.cpp" line="517"/>
+        <location filename="../chatwindow.cpp" line="542"/>
         <source>Basic size: </source>
         <translation>Общий размер:</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="514"/>
+        <location filename="../chatwindow.cpp" line="520"/>
         <source>Cancel transferring</source>
         <translation>Отменить передачу</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="534"/>
+        <location filename="../chatwindow.cpp" line="540"/>
         <source>Your interlocutor offered to you to get files.</source>
         <translation>Ваш собеседник предложил Вам получить файлы.</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="539"/>
+        <location filename="../chatwindow.cpp" line="545"/>
         <source>Receive</source>
         <translation>Принять</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="540"/>
+        <location filename="../chatwindow.cpp" line="546"/>
         <source>Save as...</source>
         <translation>Сохранить как...</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="541"/>
+        <location filename="../chatwindow.cpp" line="547"/>
         <source>Decline</source>
         <translation>Отказаться</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="616"/>
+        <location filename="../chatwindow.cpp" line="622"/>
         <source>File transferring began</source>
         <translation>Началась передача файлов</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="619"/>
+        <location filename="../chatwindow.cpp" line="625"/>
         <source>Break</source>
         <translation>Прервать</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="639"/>
+        <location filename="../chatwindow.cpp" line="645"/>
         <source>File transferring successful complete</source>
         <translation>Передача файлов успешно завершена</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="645"/>
+        <location filename="../chatwindow.cpp" line="651"/>
         <source>Open folder</source>
         <translation>Открыть папку</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="655"/>
+        <location filename="../chatwindow.cpp" line="661"/>
         <source>Error occured while file transfering</source>
         <translation>При передаче файлов произошла ошибка</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="663"/>
+        <location filename="../chatwindow.cpp" line="669"/>
         <source>Transferring canceled</source>
         <translation>Передача файлов отменена</translation>
     </message>
@@ -945,8 +945,8 @@
 <context>
     <name>MRIMClientPrivate</name>
     <message>
-        <location filename="../mrimclientprivate.cpp" line="734"/>
-        <location filename="../mrimclientprivate.cpp" line="881"/>
+        <location filename="../mrimclientprivate.cpp" line="765"/>
+        <location filename="../mrimclientprivate.cpp" line="905"/>
         <source>User %1 left the conference</source>
         <translation>Пользователь %1 покинул конференцию</translation>
     </message>
@@ -1026,12 +1026,12 @@
 <context>
     <name>Message</name>
     <message>
-        <location filename="../message.cpp" line="65"/>
+        <location filename="../message.cpp" line="59"/>
         <source>Interlocutor has tried to awake you</source>
         <translation>Собеседник попытался вас разбудить</translation>
     </message>
     <message>
-        <location filename="../message.cpp" line="67"/>
+        <location filename="../message.cpp" line="61"/>
         <source>You has tried to awake interlocutor</source>
         <translation>Вы попытались разбудить собеседника</translation>
     </message>
@@ -1166,28 +1166,54 @@
 <context>
     <name>OnlineStatus</name>
     <message>
+        <location filename="../onlinestatus.cpp" line="27"/>
+        <source>Ready to talk</source>
+        <translation>Готов пообщаться</translation>
+    </message>
+    <message>
+        <location filename="../onlinestatus.cpp" line="29"/>
+        <source>Don&apos;t disturb</source>
+        <translation>Не беспокоить</translation>
+    </message>
+    <message>
+        <location filename="../onlinestatus.cpp" line="41"/>
         <source>Offline</source>
-        <translation type="obsolete">Не в сети</translation>
+        <translation>Не в сети</translation>
     </message>
     <message>
+        <location filename="../onlinestatus.cpp" line="43"/>
         <source>Invisible</source>
-        <translation type="obsolete">Невидим</translation>
+        <translation>Невидим</translation>
     </message>
     <message>
+        <location filename="../onlinestatus.cpp" line="45"/>
         <source>Away</source>
-        <translation type="obsolete">Отошел</translation>
+        <translation>Отошел</translation>
     </message>
     <message>
+        <location filename="../onlinestatus.cpp" line="47"/>
         <source>Online</source>
-        <translation type="obsolete">Онлайн</translation>
+        <translation>Онлайн</translation>
     </message>
     <message>
+        <location filename="../onlinestatus.cpp" line="49"/>
+        <source>Extended</source>
+        <translation>Расширенный</translation>
+    </message>
+    <message>
+        <location filename="../onlinestatus.cpp" line="51"/>
         <source>Connecting</source>
-        <translation type="obsolete">Подключение</translation>
+        <translation>Подключение</translation>
     </message>
     <message>
+        <location filename="../onlinestatus.cpp" line="53"/>
         <source>Unknown</source>
-        <translation type="obsolete">Неизвестный</translation>
+        <translation>Неизвестный</translation>
+    </message>
+    <message>
+        <location filename="../onlinestatus.cpp" line="154"/>
+        <source>Wrong status data</source>
+        <translation>Ошибка данных</translation>
     </message>
 </context>
 <context>

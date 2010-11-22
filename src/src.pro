@@ -193,7 +193,8 @@ SOURCES += main.cpp \
 	newconferencedialog.cpp \
 	tasknewconference.cpp \
 	mrimmime.cpp \
-	conferencecontextmenu.cpp
+	conferencecontextmenu.cpp \
+	onlinestatus.cpp
 HEADERS += mrimclient.h \
     soundplayer.h \
     audio.h \
@@ -239,6 +240,7 @@ HEADERS += mrimclient.h \
     avatarwidget.h \
     mainmenubutton.h \
     onlinestatus.h \
+	onlinestatuses.h \
     contactcontextmenu.h \
     radiogroupbox.h \
     zodiac.h \
@@ -320,4 +322,4 @@ FORMS += logindialog.ui \
 LEXSOURCES += emoticons.ll \
     rtf.ll \
     plaintextparser.ll \
-	onlinestatus.ll
+	onlinestatuses.ll

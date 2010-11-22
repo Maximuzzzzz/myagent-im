@@ -52,23 +52,23 @@ LoginDialog::LoginDialog(QWidget* parent)
 	OnlineStatus onlineStatus;
 	onlineStatus = OnlineStatus::online;
 	onlineStatusIcon.addFile(theRM.statusesResourcePrefix() + ":" + theRM.onlineStatuses()->getOnlineStatusInfo("status_1")->icon(), QSize(), QIcon::Normal, QIcon::Off);
-	onlineStatusBox->addItem(onlineStatusIcon, onlineStatus.statusDescr());
+	onlineStatusBox->addItem(onlineStatusIcon, onlineStatus.description());
 	onlineStatus = OnlineStatus::chatOnline;
 	QIcon chatStatusIcon;
 	chatStatusIcon.addFile(theRM.statusesResourcePrefix() + ":" + theRM.onlineStatuses()->getOnlineStatusInfo("status_chat")->icon(), QSize(), QIcon::Normal, QIcon::Off);
-	onlineStatusBox->addItem(chatStatusIcon, onlineStatus.statusDescr());
+	onlineStatusBox->addItem(chatStatusIcon, onlineStatus.description());
 	onlineStatus = OnlineStatus::away;	
 	QIcon awayStatusIcon;
 	awayStatusIcon.addFile(theRM.statusesResourcePrefix() + ":" + theRM.onlineStatuses()->getOnlineStatusInfo("status_2")->icon(), QSize(), QIcon::Normal, QIcon::Off);
-	onlineStatusBox->addItem(awayStatusIcon, onlineStatus.statusDescr());
+	onlineStatusBox->addItem(awayStatusIcon, onlineStatus.description());
 	onlineStatus = OnlineStatus::invisible;	
 	QIcon invisibleStatusIcon;
 	invisibleStatusIcon.addFile(theRM.statusesResourcePrefix() + ":" + theRM.onlineStatuses()->getOnlineStatusInfo("status_3")->icon(), QSize(), QIcon::Normal, QIcon::Off);
-	onlineStatusBox->addItem(invisibleStatusIcon, onlineStatus.statusDescr());
+	onlineStatusBox->addItem(invisibleStatusIcon, onlineStatus.description());
 	onlineStatus = OnlineStatus::dndOnline;
 	QIcon dndStatusIcon;
 	dndStatusIcon.addFile(theRM.statusesResourcePrefix() + ":" + theRM.onlineStatuses()->getOnlineStatusInfo("status_dnd")->icon(), QSize(), QIcon::Normal, QIcon::Off);
-	onlineStatusBox->addItem(dndStatusIcon, onlineStatus.statusDescr());
+	onlineStatusBox->addItem(dndStatusIcon, onlineStatus.description());
 
 	connect(emailBox->lineEdit(), SIGNAL(textEdited(const QString&)), SLOT(checkEmail()));
 	connect(emailBox, SIGNAL(editTextChanged(const QString&)), SLOT(checkOnlineStatus()));

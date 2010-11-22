@@ -707,23 +707,26 @@ void MRIMClientPrivate::processMessageAck(QByteArray data)
 	MRIMDataStream in(data);
 
 	quint32 msgId, flags, conferenceType;
-	QByteArray from, text, confOwner, rtf;
-	QString confName;
-	in >> msgId >> flags >> from >> text >> rtf;
-
+	QByteArray from, confOwner, rtf, text;
+	QString confName, plainText;
+	in >> msgId >> flags >> from;
+	if (flags & MESSAGE_FLAG_AUTHORIZE)
+		in >> text;
+	else
+		in >> plainText;
+	in >> rtf;
 	qDebug() << from;
 
 	QByteArray(data2);
 	in >> data2;
 	MRIMDataStream in2(data2);
 	in2 >> conferenceType >> confName;
-	qDebug() << "confName" << confName;
+	qDebug() << "confName" << confName << conferenceType;
 	in2 >> confOwner;
 
 	qDebug() << "flags = " << QString::number(flags, 16);
-
-	QString plainText;
-	plainText = codec->toUnicode(text);
+	qDebug() << "texts" << plainText << text;
+	qDebug() << "confOwner" << confOwner;
 
 	QByteArray rtfText;
 	quint32 backgroundColor = 0x00FFFFFF;
@@ -731,18 +734,6 @@ void MRIMClientPrivate::processMessageAck(QByteArray data)
 	if (rtf != "")
 		if (flags & MESSAGE_FLAG_RTF)
 			unpackRtf(rtf, &rtfText, &backgroundColor);
-
-	if (flags & MESSAGE_FLAG_CONFERENCE && rtf == "" && plainText == "" && conferenceType == 5)
-	{
-		plainText = tr("User %1 left the conference").arg(codec->toUnicode(confOwner));
-		flags = flags & 0xffffff7f;
-	}
-
-	Message* newMsg = new Message(Message::Incoming, flags, plainText, rtfText, backgroundColor);
-
-	if (flags & MESSAGE_FLAG_CONFERENCE && rtf != "")
-		if (!account->contactList()->findContact(from))
-			emit q->conferenceAsked(from, confName);
 
 	if (!(flags & MESSAGE_FLAG_NORECV))
 	{
@@ -755,6 +746,28 @@ void MRIMClientPrivate::processMessageAck(QByteArray data)
 			out << from;
 		out << msgId;
 		sendPacket(MRIM_CS_MESSAGE_RECV, replyData);
+	}
+
+	if (flags & MESSAGE_FLAG_CONFERENCE)
+	{
+		if (flags & MESSAGE_FLAG_NOTIFY)
+		{
+			qDebug() << "Somebody's typing in conference";
+			return;
+		}
+		switch (conferenceType)
+		{
+			case 0:
+				if (!account->contactList()->findContact(from))
+					emit q->conferenceAsked(from, confName);
+				break;
+			case 5:
+				plainText = tr("User %1 left the conference").arg(codec->toUnicode(confOwner));
+				flags = flags & 0xffffff7f;
+				break;
+			case 7:
+				return;
+		}
 	}
 
 	if (flags & MESSAGE_FLAG_NOTIFY)
@@ -783,7 +796,10 @@ void MRIMClientPrivate::processMessageAck(QByteArray data)
 		return;
 	}
 
-	emit q->messageReceived(from, newMsg);
+	emit q->messageReceived
+	(
+		from, new Message(Message::Incoming, flags, plainText, rtfText, backgroundColor, confOwner)
+	);
 }
 
 void MRIMClientPrivate::processMessageStatus(QByteArray data, quint32 msgseq)
@@ -880,14 +896,23 @@ void MRIMClientPrivate::processOfflineMessageAck(QByteArray data)
 
 	qDebug() << rtfText;
 
-	if (mimeMsg.xMrimFlags() & MESSAGE_FLAG_CONFERENCE && mimeMsg.xMrimMultichatType() == 5)
-		plainText = tr("User %1 left the conference").arg(codec->toUnicode(mimeMsg.sender()));
-
-	Message* newMsg = new Message(Message::Incoming, mimeMsg.xMrimFlags(), plainText, rtfText, bgColor, mimeMsg.dateTime());
-
-	if (mimeMsg.xMrimFlags() & MESSAGE_FLAG_CONFERENCE && mimeMsg.xMrimMultichatType() != 7)
-		if (!account->contactList()->findContact(mimeMsg.from()))
-			emit q->conferenceAsked(mimeMsg.from(), mimeMsg.subject());
+	Message* newMsg;
+	if (mimeMsg.xMrimFlags() & MESSAGE_FLAG_CONFERENCE)
+	{
+		switch(mimeMsg.xMrimMultichatType())
+		{
+			case 5:
+				plainText = tr("User %1 left the conference").arg(codec->toUnicode(mimeMsg.sender()));
+				break;
+			case 7:
+				if (!account->contactList()->findContact(mimeMsg.from()))
+					emit q->conferenceAsked(mimeMsg.from(), mimeMsg.subject());
+				break;
+		}
+		newMsg = new Message(Message::Incoming, mimeMsg.xMrimFlags(), plainText, rtfText, bgColor, mimeMsg.sender(), mimeMsg.dateTime());
+	}
+	else
+		newMsg = new Message(Message::Incoming, mimeMsg.xMrimFlags(), plainText, rtfText, bgColor, "", mimeMsg.dateTime());
 
 /*	if (!(mimeMsg.xMrimFlags() & MESSAGE_FLAG_NORECV))
 	{*/

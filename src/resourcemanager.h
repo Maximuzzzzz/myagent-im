@@ -30,6 +30,7 @@
 #include "emoticons.h"
 #include "locations.h"
 #include "onlinestatus.h"
+#include "onlinestatuses.h"
 #include "audio.h"
 
 class ResourceManager : public QObject

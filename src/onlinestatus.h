@@ -28,49 +28,7 @@
 #include <QVariant>
 #include <QMetaType>
 
-class OnlineStatusInfo
-{
-	friend class OnlineStatuses;
-
-	QString id_;
-	QString icon_;
-	QString builtin_;
-
-	void clear() { id_ = icon_ = builtin_ = ""; }
-public:
-	const QString id() const { return id_; }
-	const QString icon() const { return icon_; }
-	const QString BuiltIn() const { return builtin_; }
-};
-
-class OnlineStatusSet
-{
-	friend class OnlineStatuses;
-
-	QString title_;
-	QList<OnlineStatusInfo*> onlineStatusInfos;
-public:
-	~OnlineStatusSet() { qDeleteAll(onlineStatusInfos); }
-	QString title() const { return title_; }
-};
-
-class OnlineStatuses
-{
-	Q_DECLARE_TR_FUNCTIONS(OnlineStatuses)
-public:
-	OnlineStatuses() {};
-	~OnlineStatuses() { qDeleteAll(onlineStatusSets); }
-	
-	void load(QString filename);
-	const OnlineStatusInfo* getOnlineStatusInfo(QString id) const
-		{ return idToOnlineStatusMap.value(id, NULL); }
-
-	int numberOfSets() const { return onlineStatusSets.size(); }
-
-private:
-	QMap<QString, OnlineStatusInfo*> idToOnlineStatusMap;
-	QList<OnlineStatusSet*> onlineStatusSets;
-};
+#include "onlinestatuses.h"
 
 class OnlineStatus
 {

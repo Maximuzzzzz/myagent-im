@@ -30,15 +30,9 @@
 #include "plaintextparser.h"
 #include "proto.h"
 
-Message::Message(Type type, quint32 flags, QString plainText, QByteArray rtfText, quint32 backgroundColor, QDateTime dateTime)
-	: m_type(type), m_dateTime(dateTime), m_flags(flags), m_plainText(plainText), m_rtfText(rtfText), m_backgroundColor(backgroundColor)
+Message::Message(Type type, quint32 flags, QString plainText, QByteArray rtfText, quint32 backgroundColor, QByteArray confUser, QDateTime dateTime)
+	: m_type(type), m_dateTime(dateTime), m_flags(flags), m_plainText(plainText), m_rtfText(rtfText), m_backgroundColor(backgroundColor), m_confUser(confUser)
 {
-/*	m_type = type;
-	m_flags = flags;
-	m_plainText = plainText;
-	m_rtfText = rtfText;
-	m_backgroundColor = backgroundColor;
-	m_dateTime = dateTime;*/
 }
 
 Message::~Message()

@@ -36,7 +36,7 @@ Q_DECLARE_TR_FUNCTIONS(Message)
 public:
 	enum Type { Incoming, Outgoing, Error };
 	
-	Message(Type type, quint32 flags, QString plainText, QByteArray rtfText, quint32 backgroundColor, QDateTime dateTime = QDateTime::currentDateTime());
+	Message(Type type, quint32 flags, QString plainText, QByteArray rtfText, quint32 backgroundColor, QByteArray confUser = "", QDateTime dateTime = QDateTime::currentDateTime());
 	
 	~Message();
 	
@@ -45,7 +45,9 @@ public:
 	const QByteArray rtfText() const { return m_rtfText; }
 	const QDateTime dateTime() const { return m_dateTime; }
 	Type type() const { return m_type; }
-	quint32 getId() { return m_id; }
+	quint32 getId() const { return m_id; }
+	QByteArray getConfUser() const { return m_confUser; }
+	bool isConfMessage() const { return m_confUser != ""; }
 
 	void setId(quint32 id);
 
@@ -60,6 +62,7 @@ private:
 	QByteArray m_rtfText; // phone number for sms
 	quint32 m_backgroundColor;
 	quint32 m_id;
+	QByteArray m_confUser;
 
 	bool m_ignoreStyle;
 };

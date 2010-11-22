@@ -26,6 +26,8 @@
 #include <QTranslator>
 #include <QLocale>
 
+#include <QTextCodec>
+
 #include "accountmanager.h"
 #include "contactlist.h"
 #include "logindialog.h"

@@ -278,9 +278,15 @@ void ChatWindow::appendMessageToView(const Message* msg, bool newIncoming)
 	{
 		QString nick;
 		if (msg->type() == Message::Outgoing)
-			nick = "<font color=blue>" + session->account()->nickname();
+			if (msg->isConfMessage())
+				nick = "<font color=blue>" + session->account()->contactList()->findContact(msg->getConfUser())->nickname();
+			else
+				nick = "<font color=blue>" + session->account()->nickname();
 		else
-			nick = "<font color=red><b>" + session->contact()->nickname() + "</b>";
+			if (msg->isConfMessage())
+				nick = "<font color=red><b>" + session->account()->contactList()->findContact(msg->getConfUser())->nickname();
+			else
+				nick = "<font color=red><b>" + session->contact()->nickname() + "</b>";
 		
 		prompt = nick + " (" + msg->dateTime().time().toString() + ") :</font><br>";
 	}
