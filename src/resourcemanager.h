@@ -52,8 +52,10 @@ public:
 	void setAudio(Audio* a);
 	Audio* getAudio() { return audio; }
 
-	void saveOnlineStatus(QByteArray email, OnlineStatus st);
 	OnlineStatus loadOnlineStatus(QByteArray email);
+
+	static const int maxDefaultStatuses;
+	static const int minDefaultStatuses;
 
 private:
 	ResourceManager(QObject* parent = 0);

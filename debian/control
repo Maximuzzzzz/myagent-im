@@ -1,5 +1,5 @@
 Source: myagent-im
-Version: 0.4.0.0
+Version: 0.4.1.0
 Section: net
 Priority: extra
 Maintainer: Alexander Volkov <volkov0aa@gmail.com>
@@ -11,3 +11,4 @@ Architecture: amd64
 Depends: aspell-ru, phonon-backend
 Description: Instant messaging application for Mail.ru
  Instant messenger with basic Mail.ru protocol support
+

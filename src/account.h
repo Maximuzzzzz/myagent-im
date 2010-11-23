@@ -63,6 +63,7 @@ public:
 	void setAutoAway(bool on);
 public slots:
 	void setOnlineStatus(OnlineStatus status);
+	void saveOnlineStatus(OnlineStatus st);
 
 signals:
 	void onlineStatusChanged(OnlineStatus status);
@@ -87,6 +88,7 @@ private:
 	QString m_nickname;
 	
 	OnlineStatus m_onlineStatus;
+	qint32 m_pointerOnlineStatus;
 	
 	QPointer<ContactList> m_contactList;
 	QPointer<MRIMClient> m_client;

@@ -55,6 +55,9 @@ Account::Account(QByteArray email, QByteArray password, QObject* parent)
 	if (!accountPath.isEmpty())
 		m_settings = new QSettings(accountPath + "/settings.txt", QSettings::IniFormat, this);
 
+	m_pointerOnlineStatus = m_settings->value("Statuses/statusPointer", -1).toLongLong();
+	if (m_pointerOnlineStatus > theRM.maxDefaultStatuses - 1)
+		m_pointerOnlineStatus = theRM.maxDefaultStatuses - 1;
 	HistoryManager* hm = new HistoryManager(this);
 	connect(m_chatsManager, SIGNAL(sessionCreated(ChatSession*)), hm, SLOT(createLogger(ChatSession*)));
 
@@ -163,7 +166,7 @@ void Account::setOnlineStatus(OnlineStatus newStatus)
 		emit onlineStatusChanged(m_onlineStatus);
 	}
 	if (m_onlineStatus.connected())
-		theRM.saveOnlineStatus(m_email, m_onlineStatus);
+		saveOnlineStatus(m_onlineStatus);
 }
 
 void Account::slotDisconnectedFromServer()
@@ -266,4 +269,49 @@ void Account::setStatusText(QString statusText)
 {
 	qDebug() << "Account::setStatusText" << statusText;
 	emit statusChanged(statusText);
+}
+
+void Account::saveOnlineStatus(OnlineStatus st)
+{
+	m_settings->setValue("Statuses/lastOnlineStatus", st.id());
+	m_settings->setValue("Statuses/lastOnlineStatusDescr", st.statusDescr());
+
+	if (theRM.onlineStatuses()->getOnlineStatusInfo(st.id())->BuiltIn() == "1")
+	{
+		m_settings->remove("Statuses/statusPointer");
+	}
+	else
+	{
+		if (m_pointerOnlineStatus == -1)
+		{
+			OnlineStatus tmp;
+			int i;
+			for (i = 0; i <= m_settings->value("Statuses/count", theRM.maxDefaultStatuses - 1).toInt(); i++)
+			{
+				if (i == 10)
+					break;
+				if (!m_settings->value("Statuses/statuschecked" + QByteArray::number(i), (i < theRM.minDefaultStatuses) ? true : false).toBool())
+				{
+					i++;
+					break;
+				}
+				if (m_settings->value("Statuses/statusid" + QByteArray::number(i), tmp.getDefIdStatus(i)).toByteArray() == st.id() &&
+				 m_settings->value("Statuses/statusdescr" + QByteArray::number(i), tmp.getDefDescrStatus(i)).toString() == st.statusDescr())
+				{
+					m_settings->setValue("Statuses/lastOnlineStatus", st.id());
+					i++;
+					break;
+				}
+			}
+			m_pointerOnlineStatus = i - 1;
+		}
+		if (m_settings->value("Statuses/count", theRM.minDefaultStatuses).toInt() < m_pointerOnlineStatus + 1)
+			m_settings->setValue("Statuses/count", m_pointerOnlineStatus + 1);
+
+		m_settings->setValue("Statuses/statuschecked" + QByteArray::number(m_pointerOnlineStatus), true);
+		m_settings->setValue("Statuses/statusid" + QByteArray::number(m_pointerOnlineStatus), st.id());
+		m_settings->setValue("Statuses/statusdescr" + QByteArray::number(m_pointerOnlineStatus), st.statusDescr());
+
+		m_settings->setValue("Statuses/statusPointer", m_pointerOnlineStatus);
+	}
 }

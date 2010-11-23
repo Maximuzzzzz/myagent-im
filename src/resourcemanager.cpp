@@ -27,6 +27,9 @@
 #include "resourcemanager.h"
 #include "proto.h"
 
+const int ResourceManager::maxDefaultStatuses = 10;
+const int ResourceManager::minDefaultStatuses = 5;
+
 ResourceManager::ResourceManager(QObject *parent)
 	: QObject(parent)
 {
@@ -95,15 +98,39 @@ void ResourceManager::setAudio(Audio* a)
 	audio = a;
 }
 
-void ResourceManager::saveOnlineStatus(QByteArray email, OnlineStatus st)
-{
-	m_settings->setValue(email + "/lastOnlineStatus", st.id());
-	m_settings->setValue(email + "/lastOnlineStatusDescr", st.statusDescr());
-}
-
 OnlineStatus ResourceManager::loadOnlineStatus(QByteArray email)
 {
+	QDir dir = basePath() + "/" + email;
+	if (!dir.exists())
+		return OnlineStatus("", "");
+
+	QSettings* userSettings = new QSettings(dir.absolutePath() + "/settings.txt", QSettings::IniFormat, this);
+
 	QByteArray stId = m_settings->value(email + "/lastOnlineStatus", "").toByteArray();
 	QString stDescr = m_settings->value(email + "/lastOnlineStatusDescr", "").toString();
+
+	if (stId != "")
+	{
+		m_settings->remove(email + "/lastOnlineStatus"); //compatible with old version
+		m_settings->remove(email + "/lastOnlineStatusDescr"); //for deleting garbage
+
+		if (userSettings->value("Statuses/lastOnlineStatus", "").toByteArray() == "")
+			userSettings->setValue("Statuses/lastOnlineStatus", stId);
+		if (userSettings->value("Statuses/lastOnlineStatusDescr", "").toString() == "")
+			userSettings->setValue("Statuses/lastOnlineStatusDescr", stDescr);
+
+		if (m_onlineStatuses.getOnlineStatusInfo(stId)->BuiltIn() == "1")
+		{
+			userSettings->remove("Statuses/statusPointer");
+			return OnlineStatus(stId);
+		}
+
+		return OnlineStatus(stId, stDescr);
+	}
+	else
+	{
+		stId = userSettings->value("Statuses/lastOnlineStatus", "").toByteArray();
+		stDescr = userSettings->value("Statuses/lastOnlineStatusDescr", "").toString();
+	}
 	return OnlineStatus(stId, stDescr);
 }

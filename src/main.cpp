@@ -26,8 +26,6 @@
 #include <QTranslator>
 #include <QLocale>
 
-#include <QTextCodec>
-
 #include "accountmanager.h"
 #include "contactlist.h"
 #include "logindialog.h"
@@ -77,9 +75,9 @@ int main(int argc, char *argv[])
 	if (ld->exec() == QDialog::Rejected)
 		return 0;
 
-	theRM.saveOnlineStatus(ld->email(), ld->status());
 	AccountManager am;
 	Account* account = am.getAccount(ld->email(), ld->password());
+	account->saveOnlineStatus(ld->status());
 	audio->setAccount(account);
 	ContactListWindow clw(account);
 	clw.show();

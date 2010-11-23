@@ -1198,12 +1198,12 @@
     <message>
         <location filename="../onlinestatus.cpp" line="51"/>
         <source>Connecting</source>
-        <translation type="unfinished">Підключення</translation>
+        <translation>Підключення</translation>
     </message>
     <message>
         <location filename="../onlinestatus.cpp" line="53"/>
         <source>Unknown</source>
-        <translation type="unfinished">Невідомий</translation>
+        <translation>Невідомий</translation>
     </message>
     <message>
         <location filename="../onlinestatus.cpp" line="154"/>

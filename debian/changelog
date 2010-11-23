@@ -1,3 +1,11 @@
+myagent-im (0.4.1) unstable; urgency=low
+
+  Dmitry Malakhov <abr_mail@mail.ru>:
+  * Added extended statuses
+  * Fixed some bugs with conferences
+
+ -- Dmitry Malakhov <abr_mail@mail.ru>  Mon, 22 Nov 2010 12:31:09 +0400
+
 myagent-im (0.4.0) unstable; urgency=low
 
   * Added tools to filter contacts

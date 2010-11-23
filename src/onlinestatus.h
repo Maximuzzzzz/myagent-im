@@ -57,6 +57,7 @@ public:
 	static const OnlineStatus chatOnline;
 	static const OnlineStatus dndOnline;
 	static const OnlineStatus otherOnline;
+	static const OnlineStatus wrongData;
 
 	void setExtendedStatus(QString status);
 
@@ -68,6 +69,8 @@ public:
 	static OnlineStatus fromProtocolStatus(quint32 st);
 	QIcon statusIcon() const;
 	bool connected() const;
+	QByteArray getDefIdStatus(int at) { return (m_defaultIdStatuses.size() > at) ? m_defaultIdStatuses.at(at) : ""; }
+	QString getDefDescrStatus(int at) { return (m_defaultDescrStatuses.size() > at) ? m_defaultDescrStatuses.at(at) : ""; }
 
 	void setIdStatus(QByteArray status);
 	void setDescr(QString descr);
@@ -86,6 +89,8 @@ private:
 	QByteArray m_idStatus;
 	QString m_statusDescr;
 	OnlineStatuses* m_onlineStatuses;
+	QList<QByteArray> m_defaultIdStatuses;
+	QList<QString> m_defaultDescrStatuses;
 };
 
 Q_DECLARE_METATYPE(OnlineStatus)

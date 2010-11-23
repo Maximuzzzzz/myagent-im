@@ -52,23 +52,23 @@ LoginDialog::LoginDialog(QWidget* parent)
 	OnlineStatus onlineStatus;
 	onlineStatus = OnlineStatus::online;
 	onlineStatusIcon.addFile(theRM.statusesResourcePrefix() + ":" + theRM.onlineStatuses()->getOnlineStatusInfo("status_1")->icon(), QSize(), QIcon::Normal, QIcon::Off);
-	onlineStatusBox->addItem(onlineStatusIcon, onlineStatus.description());
+	onlineStatusBox->addItem(onlineStatusIcon, onlineStatus.statusDescr());
 	onlineStatus = OnlineStatus::chatOnline;
 	QIcon chatStatusIcon;
 	chatStatusIcon.addFile(theRM.statusesResourcePrefix() + ":" + theRM.onlineStatuses()->getOnlineStatusInfo("status_chat")->icon(), QSize(), QIcon::Normal, QIcon::Off);
-	onlineStatusBox->addItem(chatStatusIcon, onlineStatus.description());
+	onlineStatusBox->addItem(chatStatusIcon, onlineStatus.statusDescr());
 	onlineStatus = OnlineStatus::away;	
 	QIcon awayStatusIcon;
 	awayStatusIcon.addFile(theRM.statusesResourcePrefix() + ":" + theRM.onlineStatuses()->getOnlineStatusInfo("status_2")->icon(), QSize(), QIcon::Normal, QIcon::Off);
-	onlineStatusBox->addItem(awayStatusIcon, onlineStatus.description());
+	onlineStatusBox->addItem(awayStatusIcon, onlineStatus.statusDescr());
 	onlineStatus = OnlineStatus::invisible;	
 	QIcon invisibleStatusIcon;
 	invisibleStatusIcon.addFile(theRM.statusesResourcePrefix() + ":" + theRM.onlineStatuses()->getOnlineStatusInfo("status_3")->icon(), QSize(), QIcon::Normal, QIcon::Off);
-	onlineStatusBox->addItem(invisibleStatusIcon, onlineStatus.description());
+	onlineStatusBox->addItem(invisibleStatusIcon, onlineStatus.statusDescr());
 	onlineStatus = OnlineStatus::dndOnline;
 	QIcon dndStatusIcon;
 	dndStatusIcon.addFile(theRM.statusesResourcePrefix() + ":" + theRM.onlineStatuses()->getOnlineStatusInfo("status_dnd")->icon(), QSize(), QIcon::Normal, QIcon::Off);
-	onlineStatusBox->addItem(dndStatusIcon, onlineStatus.description());
+	onlineStatusBox->addItem(dndStatusIcon, onlineStatus.statusDescr());
 
 	connect(emailBox->lineEdit(), SIGNAL(textEdited(const QString&)), SLOT(checkEmail()));
 	connect(emailBox, SIGNAL(editTextChanged(const QString&)), SLOT(checkOnlineStatus()));
@@ -127,7 +127,7 @@ void LoginDialog::checkOnlineStatus()
 		onlineStatusBox->removeItem(5);
 		extendedStatus = false;
 	}
-	if (st == OnlineStatus::online)
+	if (st == OnlineStatus::online || st.id() == "" || st == OnlineStatus::wrongData || st == OnlineStatus::unknown || st == OnlineStatus::offline || st == OnlineStatus::connecting)
 		onlineStatusBox->setCurrentIndex(0);
 	else if (st == OnlineStatus::chatOnline)
 		onlineStatusBox->setCurrentIndex(1);
@@ -137,8 +137,6 @@ void LoginDialog::checkOnlineStatus()
 		onlineStatusBox->setCurrentIndex(3);
 	else if (st == OnlineStatus::dndOnline)
 		onlineStatusBox->setCurrentIndex(4);
-	else if (st.id() == "")
-		onlineStatusBox->setCurrentIndex(0);
 	else
 	{
 		QIcon onlineStatusIcon;
