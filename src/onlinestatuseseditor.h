@@ -20,28 +20,69 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef STATUSBUTTON_H
-#define STATUSBUTTON_H
+#ifndef ONLINESTATUSESEDITOR_H
+#define ONLINESTATUSESEDITOR_H
 
-//#include <QPushButton>
-#include <QMenu>
+#include <QWidget>
+#include <QMap>
+#include <QPushButton>
+#include <QLineEdit>
+#include <QBoxLayout>
+#include <QCheckBox>
 
-#include "buttonwithmenu.h"
 #include "onlinestatus.h"
-#include "statusmenu.h"
+#include "onlinestatusselector.h"
 
-class QAction;
+class Account;
+class OnlineStatusesEditor;
 
-class StatusButton : public ButtonWithMenu
+class StatusRow : public QHBoxLayout
 {
 Q_OBJECT
 public:
-	StatusButton(StatusMenu* sm, QWidget* parent = 0);
+	StatusRow(OnlineStatusesEditor* parent, qint32 id);
+	~StatusRow();
 
-	~StatusButton();
+	qint32 id() { return m_id; }
+	bool checked() { return m_checkBox->isChecked(); }
+	QByteArray statusId() { return m_statusId; }
+	QString statusDescr() { return m_statusDescr->text(); }
+	bool changed() { return m_changed; }
 
 private slots:
-	void slotStatusChanged(OnlineStatus status);
+	void showStatusSelector();
+	void statusSelected(QString id);
+	void statusChanged();
+
+private:
+	OnlineStatusesEditor* m_parent;
+	OnlineStatusSelector* m_selector;
+	QCheckBox* m_checkBox;
+	QPushButton* m_buttonIcon;
+	QLineEdit* m_statusDescr;
+	QByteArray m_statusId;
+	qint32 m_id;
+	bool m_changed;
+};
+
+class OnlineStatusesEditor : public QWidget
+{
+Q_OBJECT
+	friend class StatusRow;
+public:
+	OnlineStatusesEditor(Account* account);
+	~OnlineStatusesEditor();
+
+signals:
+	void statusChanged(qint32 i, OnlineStatus);
+	void statusesChanged();
+
+private slots:
+	void saveStatuses();
+
+private:
+	Account* m_account;
+	QList<StatusRow*> statusRows;
 };
 
 #endif

@@ -75,19 +75,37 @@ void EmoticonMovie::setPaused(bool paused)
 	QMovie::setPaused(paused);
 }
 
-void EmoticonMovie::load(const QString& id)
+void EmoticonMovie::load(const QString& id, int from)
 {
-	const EmoticonInfo* info = theRM.emoticons().getEmoticonInfo(id);
-
-	if (!info)
+	if (from == 0)
 	{
-		qDebug() << "EmoticonMovie::load: can't get emoticon for id = " << id;
-		return;
-	}
+		const EmoticonInfo* info = theRM.emoticons().getEmoticonInfo(id);
 
-	QString filename = theRM.emoticonsResourcePrefix() + ":" + info->path();
-	setFileName(filename);
-	id_ = id;
+		if (!info)
+		{
+			qDebug() << "EmoticonMovie::load: can't get emoticon for id = " << id;
+			return;
+		}
+
+		QString filename = theRM.emoticonsResourcePrefix() + ":" + info->path();
+		setFileName(filename);
+		id_ = id;
+
+	}
+	else if (from == 1)
+	{
+		const OnlineStatusInfo* info = theRM.onlineStatuses()->getOnlineStatusInfo(id);
+
+		if (!info)
+		{
+			qDebug() << "EmoticonMovie::load: can't get online status for id = " << id;
+			return;
+		}
+
+		QString filename = theRM.statusesResourcePrefix() + ":" + info->icon();
+		setFileName(filename);
+		id_ = id;
+	}
 
 	jumpToFrame(0);
 	QSize size = currentPixmap().size();

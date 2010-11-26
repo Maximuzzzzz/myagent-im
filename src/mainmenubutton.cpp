@@ -40,7 +40,6 @@
 #include "contactlistwindow.h"
 #include "editphonesdialog.h"
 #include "inputlinedialog.h"
-#include "settingswindow.h"
 #include "centerwindow.h"
 #include "centeredmessagebox.h"
 
@@ -244,6 +243,7 @@ void MainMenuButton::showSettingsWindow()
 	}
 
 	settingsWindow = new SettingsWindow(m_account, mainWindow);
+	connect(settingsWindow, SIGNAL(statusesCountChanged()), this, SIGNAL(statusesCountChanged()));
 	settingsWindow->setChatWindowsManager(chatWindowsManager);
 	centerWindow(settingsWindow);
 	settingsWindow->show();

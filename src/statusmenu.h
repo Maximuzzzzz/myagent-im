@@ -20,28 +20,37 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef STATUSBUTTON_H
-#define STATUSBUTTON_H
+#ifndef STATUSMENU_H
+#define STATUSMENU_H
 
-//#include <QPushButton>
 #include <QMenu>
 
-#include "buttonwithmenu.h"
 #include "onlinestatus.h"
-#include "statusmenu.h"
+#include "account.h"
 
-class QAction;
-
-class StatusButton : public ButtonWithMenu
+class StatusMenu : public QMenu
 {
 Q_OBJECT
 public:
-	StatusButton(StatusMenu* sm, QWidget* parent = 0);
+	StatusMenu(Account* acc, QWidget* parent = 0);
 
-	~StatusButton();
+	~StatusMenu();
+
+public slots:
+	void updateExtendedStatuses();
+
+signals:
+	void showOnlineStatusesEditor();
+	void statusChanged(OnlineStatus status, qint32 id);
 
 private slots:
-	void slotStatusChanged(OnlineStatus status);
+	QAction* createStatusAction(OnlineStatus status);
+	void slotActionTriggered(QAction* action);
+
+private:
+	Account* m_account;
+	QActionGroup* extendedActions;
+	QAction* mainSeparator;
 };
 
 #endif

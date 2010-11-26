@@ -20,28 +20,34 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef STATUSBUTTON_H
-#define STATUSBUTTON_H
+#ifndef ONLINESTATUSESSELECTOR_H
+#define ONLINESTATUSESSELECTOR_H
 
-//#include <QPushButton>
-#include <QMenu>
+#include <QFrame>
 
-#include "buttonwithmenu.h"
-#include "onlinestatus.h"
-#include "statusmenu.h"
+class QToolBox;
+class EmoticonMovie;
 
-class QAction;
-
-class StatusButton : public ButtonWithMenu
+class OnlineStatusSelector : public QFrame
 {
 Q_OBJECT
 public:
-	StatusButton(StatusMenu* sm, QWidget* parent = 0);
+	OnlineStatusSelector(QWidget *parent = 0);
+	~OnlineStatusSelector();
 
-	~StatusButton();
+signals:
+	void selected(QString id);
 
 private slots:
-	void slotStatusChanged(OnlineStatus status);
+	void slotClicked(QString id);
+	void correctSize();
+
+private:
+	QWidget* createStatusIconsWidget(int emoticonsPerRow);
+	void setCurrentLayout();
+
+private:
+	QWidget* statuses;
 };
 
 #endif

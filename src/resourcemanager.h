@@ -48,7 +48,7 @@ public:
 	const Locations& locations() const { return m_locations; }
 	QString emoticonsResourcePrefix();
 	QString statusesResourcePrefix();
-	const QString getSoundsPath() const { return soundsPath; }
+	QString soundsResourcePrefix();
 	void setAudio(Audio* a);
 	Audio* getAudio() { return audio; }
 
@@ -65,7 +65,6 @@ private:
 	Emoticons m_emoticons;
 	OnlineStatuses m_onlineStatuses;
 	Locations m_locations;
-	QString soundsPath;
 	Audio* audio;
 };
 

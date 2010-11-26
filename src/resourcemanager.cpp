@@ -37,14 +37,15 @@ ResourceManager::ResourceManager(QObject *parent)
 #ifdef DATADIR
 	QString emoticonsPath = QLatin1String(DATADIR) + "/emoticons";
 	QString onlineStatusesPath = QLatin1String(DATADIR) + "/emoticons";
-	soundsPath = QLatin1String(DATADIR) + "/sounds";
+	QString soundsPath = QLatin1String(DATADIR) + "/sounds";
 #else
 	QString emoticonsPath = QCoreApplication::applicationDirPath() + "/emoticons";
 	QString onlineStatusesPath = QCoreApplication::applicationDirPath() + "/emoticons";
-	soundsPath = QCoreApplication::applicationDirPath() + "/sounds";
+	QString soundsPath = QCoreApplication::applicationDirPath() + "/sounds";
 #endif
 	QDir::addSearchPath(emoticonsResourcePrefix(), emoticonsPath);
 	QDir::addSearchPath(statusesResourcePrefix(), onlineStatusesPath);
+	QDir::addSearchPath(soundsResourcePrefix(), soundsPath);
 	m_onlineStatuses.load(onlineStatusesPath + "/skin.txt");
 	m_emoticons.load(emoticonsPath + "/skin.txt", m_settings);
 	m_locations.load(":/region.txt");
@@ -93,6 +94,11 @@ QString ResourceManager::statusesResourcePrefix()
 	return "statuses";
 }
 
+QString ResourceManager::soundsResourcePrefix()
+{
+	return "sounds";
+}
+
 void ResourceManager::setAudio(Audio* a)
 {
 	audio = a;
@@ -119,7 +125,7 @@ OnlineStatus ResourceManager::loadOnlineStatus(QByteArray email)
 		if (userSettings->value("Statuses/lastOnlineStatusDescr", "").toString() == "")
 			userSettings->setValue("Statuses/lastOnlineStatusDescr", stDescr);
 
-		if (m_onlineStatuses.getOnlineStatusInfo(stId)->BuiltIn() == "1")
+		if (m_onlineStatuses.getOnlineStatusInfo(stId)->builtIn() == "1")
 		{
 			userSettings->remove("Statuses/statusPointer");
 			return OnlineStatus(stId);

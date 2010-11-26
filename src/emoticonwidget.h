@@ -32,7 +32,7 @@ class EmoticonWidget : public QWidget
 {
 Q_OBJECT
 public:
-	EmoticonWidget(const QString& emoticonId, QWidget* parent = 0);
+	EmoticonWidget(const QString& emoticonId, QWidget* parent = 0, int from = 0);
 	EmoticonWidget(EmoticonMovie* m, QWidget* parent = 0);
 	~EmoticonWidget();
 

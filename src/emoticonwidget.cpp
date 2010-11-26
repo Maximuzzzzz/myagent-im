@@ -30,13 +30,13 @@
 
 #include "emoticonmovie.h"
 
-EmoticonWidget::EmoticonWidget(const QString& emoticonId, QWidget* parent)
+EmoticonWidget::EmoticonWidget(const QString& emoticonId, QWidget* parent, int from)
 	: QWidget(parent), movie(NULL), draggable(false)
 {
 	init();
 	
 	EmoticonMovie* m = new EmoticonMovie(this);
-	m->load(emoticonId);
+	m->load(emoticonId, from);
 	setMovie(m);
 }
 
@@ -56,7 +56,7 @@ void EmoticonWidget::init()
 
 EmoticonWidget::~EmoticonWidget()
 {
-	qDebug() << Q_FUNC_INFO;
+//	qDebug() << Q_FUNC_INFO;
 }
 
 void EmoticonWidget::setMovie(EmoticonMovie* m)

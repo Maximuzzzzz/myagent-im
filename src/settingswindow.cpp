@@ -96,7 +96,8 @@ void SettingsWindow::createCommonPage()
 
 	QVBoxLayout* layout = new QVBoxLayout;
 
-	QHBoxLayout* hl = new QHBoxLayout;
+	QHBoxLayout* hl1 = new QHBoxLayout;
+	QHBoxLayout* hl2 = new QHBoxLayout;
 
 	awayCheckBox = new QCheckBox(tr("Set away status after"));
 	awayCheckBox->setChecked(m_account->settings()->value("Common/autoAwayEnabled", false).toBool());
@@ -107,13 +108,22 @@ void SettingsWindow::createCommonPage()
 	connect(awayCheckBox, SIGNAL(toggled(bool)), minutesEdit, SLOT(setEnabled(bool)));
 	minutesEdit->setEnabled(awayCheckBox->isChecked());
 	QLabel* tailLabel = new QLabel(tr("minutes of idle"));
+	QLabel* labelOnlineStatuses = new QLabel("Type extended online statuses count (5-10):");
+	onlineStatusesCount = new QLineEdit;
+	onlineStatusesCount->setValidator(new QIntValidator(5, 10, minutesEdit));
+	onlineStatusesCount->setFixedWidth(minutesEdit->fontMetrics().size(Qt::TextSingleLine, "1000").width());
+	onlineStatusesCount->setText(m_account->settings()->value("Statuses/count", theRM.minDefaultStatuses).toString());
 
-	hl->addWidget(awayCheckBox);
-	hl->addWidget(minutesEdit);
-	hl->addWidget(tailLabel);
-	hl->addStretch();
+	hl1->addWidget(awayCheckBox);
+	hl1->addWidget(minutesEdit);
+	hl1->addWidget(tailLabel);
+	hl1->addStretch();
+	hl2->addWidget(labelOnlineStatuses);
+	hl2->addWidget(onlineStatusesCount);
+	hl2->addStretch();
 
-	layout->addLayout(hl);
+	layout->addLayout(hl1);
+	layout->addLayout(hl2);
 	layout->addStretch();
 
 	commonSettingsPage->setLayout(layout);
@@ -136,6 +146,11 @@ void SettingsWindow::saveCommonSettings()
 {
 	m_account->settings()->setValue("Common/autoAwayEnabled", awayCheckBox->isChecked());
 	m_account->settings()->setValue("Common/autoAwayMinutes", minutesEdit->text());
+	if (onlineStatusesCount->text().toInt() >= 5 && onlineStatusesCount->text().toInt() <= 10)
+	{
+		m_account->settings()->setValue("Statuses/count", onlineStatusesCount->text());
+		emit statusesCountChanged();
+	}
 }
 
 void SettingsWindow::createMessagesPage()
@@ -205,7 +220,6 @@ void SettingsWindow::createWindowsPage()
 	QVBoxLayout* layout = new QVBoxLayout;
 
 	tabWindows = new QCheckBox(tr("Tabs in dialog window"));
-	//tabWindows->setChecked(chatWindowsManager->settings()->value("Windows/UseTabs", true).toBool());
 	tabWindows->setChecked(m_account->settings()->value("Windows/UseTabs", true).toBool());
 
 	layout->addWidget(tabWindows);

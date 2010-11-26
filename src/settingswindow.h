@@ -47,6 +47,9 @@ public:
 
 	void setChatWindowsManager(ChatWindowsManager* cwm);
 
+signals:
+	void statusesCountChanged();
+
 private slots:
 	void saveSettings();
 
@@ -72,6 +75,7 @@ private:
 	// common page widgets
 	QCheckBox* awayCheckBox;
 	QLineEdit* minutesEdit;
+	QLineEdit* onlineStatusesCount;
 
 	//messages page widgets
 	QRadioButton* enterButton;

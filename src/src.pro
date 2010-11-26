@@ -194,7 +194,10 @@ SOURCES += main.cpp \
 	tasknewconference.cpp \
 	mrimmime.cpp \
 	conferencecontextmenu.cpp \
-	onlinestatus.cpp
+	onlinestatus.cpp \
+	onlinestatuseseditor.cpp \
+	onlinestatusselector.cpp \
+	statusmenu.cpp
 HEADERS += mrimclient.h \
     soundplayer.h \
     audio.h \
@@ -311,7 +314,10 @@ HEADERS += mrimclient.h \
 	newconferencedialog.h \
 	tasknewconference.h \
 	mrimmime.h \
-	conferencecontextmenu.h
+	conferencecontextmenu.h \
+	onlinestatuseseditor.h \
+	onlinestatusselector.h \
+	statusmenu.h
 FORMS += logindialog.ui \
     searchcontacts.ui \
     addcontact.ui \

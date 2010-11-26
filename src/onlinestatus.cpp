@@ -21,8 +21,8 @@ const OnlineStatus OnlineStatus::wrongData = OnlineStatus("wrong_data");
 OnlineStatus::OnlineStatus(QByteArray idStatus, QString statusDescr)
 	: m_idStatus(idStatus), m_statusDescr(statusDescr)
 {
-	m_defaultIdStatuses << "1" << "2" << "3" << "4" << "5" << "6" << "7" << "8" << "9" << "10";
-	m_defaultDescrStatuses << "1" << "2" << "3" << "4" << "5" << "6" << "7" << "8" << "9" << "10";
+	m_defaultIdStatuses << "status_22" << "status_17" << "status_21" << "status_14" << "status_27" << "status_23" << "status_5" << "status_6" << "status_4" << "status_52";
+	m_defaultDescrStatuses << tr("Working") << tr("Smoking") << tr("Coffee") << tr("In love") << tr("Education") << tr("Dreaming") << tr("Home") << tr("Breakfast") << tr("Sick") << tr("All people are alike, only I'm a star");
 	m_onlineStatuses = theRM.onlineStatuses();
 	setMType();
 	if (statusDescr != "" || m_type == OtherOnline)

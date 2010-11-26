@@ -668,37 +668,42 @@
 <context>
     <name>ContactListWindow</name>
     <message>
-        <location filename="../contactlistwindow.cpp" line="213"/>
+        <location filename="../contactlistwindow.cpp" line="226"/>
         <source>Login rejected</source>
         <translation>Вход отклонен</translation>
     </message>
     <message>
-        <location filename="../contactlistwindow.cpp" line="231"/>
+        <location filename="../contactlistwindow.cpp" line="244"/>
         <source>Logout</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="../contactlistwindow.cpp" line="229"/>
+        <location filename="../contactlistwindow.cpp" line="242"/>
         <source>Someone else entered with your login</source>
         <translation>Кто-то еще вошел под Вашим логином</translation>
     </message>
     <message>
-        <location filename="../contactlistwindow.cpp" line="301"/>
+        <location filename="../contactlistwindow.cpp" line="109"/>
+        <source>My status</source>
+        <translation>Мой статус</translation>
+    </message>
+    <message>
+        <location filename="../contactlistwindow.cpp" line="314"/>
         <source>My world</source>
         <translation>Мой мир</translation>
     </message>
     <message>
-        <location filename="../contactlistwindow.cpp" line="305"/>
+        <location filename="../contactlistwindow.cpp" line="318"/>
         <source>My blog</source>
         <translation>Мой блог</translation>
     </message>
     <message>
-        <location filename="../contactlistwindow.cpp" line="309"/>
+        <location filename="../contactlistwindow.cpp" line="322"/>
         <source>My photos</source>
         <translation>Мои фото</translation>
     </message>
     <message>
-        <location filename="../contactlistwindow.cpp" line="313"/>
+        <location filename="../contactlistwindow.cpp" line="326"/>
         <source>My videos</source>
         <translation>Моё видео</translation>
     </message>
@@ -920,14 +925,6 @@
         <translation>Онлайн-статус:</translation>
     </message>
     <message>
-        <source>Away</source>
-        <translation type="obsolete">Отошел</translation>
-    </message>
-    <message>
-        <source>Invisible</source>
-        <translation type="obsolete">Невидим</translation>
-    </message>
-    <message>
         <location filename="../logindialog.ui" line="72"/>
         <source>Ok</source>
         <translation></translation>
@@ -936,10 +933,6 @@
         <location filename="../logindialog.ui" line="82"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
-    </message>
-    <message>
-        <source>Online</source>
-        <translation type="obsolete">Онлайн</translation>
     </message>
 </context>
 <context>
@@ -954,71 +947,71 @@
 <context>
     <name>MainMenuButton</name>
     <message>
-        <location filename="../mainmenubutton.cpp" line="52"/>
+        <location filename="../mainmenubutton.cpp" line="51"/>
         <source>Menu</source>
         <translation>Меню</translation>
     </message>
     <message>
-        <location filename="../mainmenubutton.cpp" line="82"/>
+        <location filename="../mainmenubutton.cpp" line="81"/>
         <source>Quit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="../mainmenubutton.cpp" line="57"/>
-        <location filename="../mainmenubutton.cpp" line="163"/>
+        <location filename="../mainmenubutton.cpp" line="56"/>
+        <location filename="../mainmenubutton.cpp" line="162"/>
         <source>Add contact</source>
         <translation>Добавить контакт</translation>
     </message>
     <message>
-        <location filename="../mainmenubutton.cpp" line="68"/>
+        <location filename="../mainmenubutton.cpp" line="67"/>
         <source>New conference</source>
         <translation>Новая конференция</translation>
     </message>
     <message>
-        <location filename="../mainmenubutton.cpp" line="135"/>
-        <location filename="../mainmenubutton.cpp" line="140"/>
+        <location filename="../mainmenubutton.cpp" line="134"/>
+        <location filename="../mainmenubutton.cpp" line="139"/>
         <source>Search results</source>
         <translation>Результаты поиска</translation>
     </message>
     <message>
-        <location filename="../mainmenubutton.cpp" line="135"/>
+        <location filename="../mainmenubutton.cpp" line="134"/>
         <source>Time is out</source>
         <translation>Время вышло</translation>
     </message>
     <message>
-        <location filename="../mainmenubutton.cpp" line="163"/>
+        <location filename="../mainmenubutton.cpp" line="162"/>
         <source>Contact is already in contact list</source>
         <translation>Контакт уже в списке</translation>
     </message>
     <message>
-        <location filename="../mainmenubutton.cpp" line="60"/>
-        <location filename="../mainmenubutton.cpp" line="210"/>
+        <location filename="../mainmenubutton.cpp" line="59"/>
+        <location filename="../mainmenubutton.cpp" line="209"/>
         <source>Add contact for SMS</source>
         <translation>Добавить контакт для смс</translation>
     </message>
     <message>
-        <location filename="../mainmenubutton.cpp" line="64"/>
-        <location filename="../mainmenubutton.cpp" line="219"/>
+        <location filename="../mainmenubutton.cpp" line="63"/>
+        <location filename="../mainmenubutton.cpp" line="218"/>
         <source>Add group</source>
         <translation>Добавить группу</translation>
     </message>
     <message>
-        <location filename="../mainmenubutton.cpp" line="219"/>
+        <location filename="../mainmenubutton.cpp" line="218"/>
         <source>Enter group name:</source>
         <translation>Введите название группы:</translation>
     </message>
     <message>
-        <location filename="../mainmenubutton.cpp" line="229"/>
+        <location filename="../mainmenubutton.cpp" line="228"/>
         <source>Add group error</source>
         <translation>Ошибка при добавлении группы</translation>
     </message>
     <message>
-        <location filename="../mainmenubutton.cpp" line="79"/>
+        <location filename="../mainmenubutton.cpp" line="78"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../mainmenubutton.cpp" line="234"/>
+        <location filename="../mainmenubutton.cpp" line="233"/>
         <source>Add sms contact error</source>
         <translation>Ошибка при добавлении смс-контакта</translation>
     </message>
@@ -1166,54 +1159,122 @@
 <context>
     <name>OnlineStatus</name>
     <message>
-        <location filename="../onlinestatus.cpp" line="27"/>
+        <location filename="../onlinestatus.cpp" line="25"/>
+        <source>Working</source>
+        <translation>Работаю</translation>
+    </message>
+    <message>
+        <location filename="../onlinestatus.cpp" line="25"/>
+        <source>Smoking</source>
+        <translation>Курю</translation>
+    </message>
+    <message>
+        <location filename="../onlinestatus.cpp" line="25"/>
+        <source>Coffee</source>
+        <translation>Пью кофе</translation>
+    </message>
+    <message>
+        <location filename="../onlinestatus.cpp" line="25"/>
+        <source>In love</source>
+        <translation>Влюблен</translation>
+    </message>
+    <message>
+        <location filename="../onlinestatus.cpp" line="25"/>
+        <source>Education</source>
+        <translation>Учусь</translation>
+    </message>
+    <message>
+        <location filename="../onlinestatus.cpp" line="25"/>
+        <source>Dreaming</source>
+        <translation>Сплю</translation>
+    </message>
+    <message>
+        <location filename="../onlinestatus.cpp" line="25"/>
+        <source>Home</source>
+        <translation>Дома</translation>
+    </message>
+    <message>
+        <location filename="../onlinestatus.cpp" line="25"/>
+        <source>Breakfast</source>
+        <translation>Трапезничаю</translation>
+    </message>
+    <message>
+        <location filename="../onlinestatus.cpp" line="25"/>
+        <source>Sick</source>
+        <translation>Болен</translation>
+    </message>
+    <message>
+        <location filename="../onlinestatus.cpp" line="25"/>
+        <source>All people are alike, only I&apos;m a star</source>
+        <translation>Все люди как люди, одна я - звезда</translation>
+    </message>
+    <message>
+        <location filename="../onlinestatus.cpp" line="30"/>
         <source>Ready to talk</source>
         <translation>Готов пообщаться</translation>
     </message>
     <message>
-        <location filename="../onlinestatus.cpp" line="29"/>
+        <location filename="../onlinestatus.cpp" line="32"/>
         <source>Don&apos;t disturb</source>
         <translation>Не беспокоить</translation>
     </message>
     <message>
-        <location filename="../onlinestatus.cpp" line="41"/>
+        <location filename="../onlinestatus.cpp" line="47"/>
         <source>Offline</source>
         <translation>Не в сети</translation>
     </message>
     <message>
-        <location filename="../onlinestatus.cpp" line="43"/>
+        <location filename="../onlinestatus.cpp" line="49"/>
         <source>Invisible</source>
         <translation>Невидим</translation>
     </message>
     <message>
-        <location filename="../onlinestatus.cpp" line="45"/>
+        <location filename="../onlinestatus.cpp" line="51"/>
         <source>Away</source>
         <translation>Отошел</translation>
     </message>
     <message>
-        <location filename="../onlinestatus.cpp" line="47"/>
+        <location filename="../onlinestatus.cpp" line="53"/>
         <source>Online</source>
         <translation>Онлайн</translation>
     </message>
     <message>
-        <location filename="../onlinestatus.cpp" line="49"/>
+        <location filename="../onlinestatus.cpp" line="55"/>
         <source>Extended</source>
         <translation>Расширенный</translation>
     </message>
     <message>
-        <location filename="../onlinestatus.cpp" line="51"/>
+        <location filename="../onlinestatus.cpp" line="57"/>
         <source>Connecting</source>
-        <translation>Подключение</translation>
+        <translation>Соединение</translation>
     </message>
     <message>
-        <location filename="../onlinestatus.cpp" line="53"/>
+        <location filename="../onlinestatus.cpp" line="59"/>
         <source>Unknown</source>
         <translation>Неизвестный</translation>
     </message>
     <message>
-        <location filename="../onlinestatus.cpp" line="154"/>
+        <location filename="../onlinestatus.cpp" line="160"/>
         <source>Wrong status data</source>
         <translation>Ошибка данных</translation>
+    </message>
+</context>
+<context>
+    <name>OnlineStatusesEditor</name>
+    <message>
+        <location filename="../onlinestatuseseditor.cpp" line="93"/>
+        <source>Statuses editor</source>
+        <translation>Редактирование статусов</translation>
+    </message>
+    <message>
+        <location filename="../onlinestatuseseditor.cpp" line="106"/>
+        <source>Save</source>
+        <translation>Сохранить</translation>
+    </message>
+    <message>
+        <location filename="../onlinestatuseseditor.cpp" line="107"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
     </message>
 </context>
 <context>
@@ -1317,22 +1378,22 @@
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="101"/>
+        <location filename="../settingswindow.cpp" line="102"/>
         <source>Set away status after</source>
         <translation>Устанавливать статус &quot;Отошел&quot; после</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="109"/>
+        <location filename="../settingswindow.cpp" line="110"/>
         <source>minutes of idle</source>
         <translation>минут простоя</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="121"/>
+        <location filename="../settingswindow.cpp" line="131"/>
         <source>Common</source>
         <translation>Общие</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="147"/>
+        <location filename="../settingswindow.cpp" line="162"/>
         <source>Sending messages</source>
         <translation>Отправка сообщений</translation>
     </message>
@@ -1341,67 +1402,67 @@
         <translation type="obsolete">Настройки окон</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="207"/>
+        <location filename="../settingswindow.cpp" line="222"/>
         <source>Tabs in dialog window</source>
         <translation>Вкладки в окне сообщений</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="150"/>
+        <location filename="../settingswindow.cpp" line="165"/>
         <source>Send message on Enter pressed</source>
         <translation>Отправлять сообщение при нажатии Enter</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="151"/>
+        <location filename="../settingswindow.cpp" line="166"/>
         <source>Send message on double Enter pressed</source>
         <translation>Отправлять сообщение при двойном нажатии Enter</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="152"/>
+        <location filename="../settingswindow.cpp" line="167"/>
         <source>Send message on Ctrl+Enter pressed</source>
         <translation>Отправлять сообщение при нажатии Ctrl+Enter</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="153"/>
+        <location filename="../settingswindow.cpp" line="168"/>
         <source>Send message on Alt+S pressed</source>
         <translation>Отправлять сообщение при нажатии Alt+S</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="179"/>
+        <location filename="../settingswindow.cpp" line="194"/>
         <source>Messages</source>
         <translation>Сообщения</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="216"/>
+        <location filename="../settingswindow.cpp" line="230"/>
         <source>Windows</source>
         <translation>Окна</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="226"/>
+        <location filename="../settingswindow.cpp" line="240"/>
         <source>Closing chats</source>
         <translation>Закрытие диалогов</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="227"/>
+        <location filename="../settingswindow.cpp" line="241"/>
         <source>All chats will be closed. Continue?</source>
         <translation>Все диалоги будут закрыты. Продолжить?</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="242"/>
+        <location filename="../settingswindow.cpp" line="256"/>
         <source>Enable sounds</source>
         <translation>Включить звуки</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="250"/>
+        <location filename="../settingswindow.cpp" line="264"/>
         <source>Sounds</source>
         <translation>Звуки</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="264"/>
+        <location filename="../settingswindow.cpp" line="278"/>
         <source>Enable microblog</source>
         <translation>Показать микроблог</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="272"/>
+        <location filename="../settingswindow.cpp" line="286"/>
         <source>View</source>
         <translation>Вид</translation>
     </message>
@@ -1461,6 +1522,14 @@
     </message>
 </context>
 <context>
+    <name>StatusMenu</name>
+    <message>
+        <location filename="../statusmenu.cpp" line="31"/>
+        <source>Edit statuses...</source>
+        <translation>Редактировать статус...</translation>
+    </message>
+</context>
+<context>
     <name>SubmenuMoveToGroup</name>
     <message>
         <location filename="../contactcontextmenu.cpp" line="273"/>
@@ -1475,25 +1544,33 @@
         <translation type="obsolete">Онлайн-статус</translation>
     </message>
     <message>
-        <location filename="../systemtrayicon.cpp" line="78"/>
-        <location filename="../systemtrayicon.cpp" line="166"/>
-        <location filename="../systemtrayicon.cpp" line="170"/>
-        <location filename="../systemtrayicon.cpp" line="178"/>
+        <source>My status</source>
+        <translation type="obsolete">Мой статус</translation>
+    </message>
+    <message>
+        <source>Edit statuses...</source>
+        <translation type="obsolete">Редактировать статус...</translation>
+    </message>
+    <message>
+        <location filename="../systemtrayicon.cpp" line="67"/>
+        <location filename="../systemtrayicon.cpp" line="149"/>
+        <location filename="../systemtrayicon.cpp" line="153"/>
+        <location filename="../systemtrayicon.cpp" line="161"/>
         <source>Show contact list</source>
         <translation>Показать список контактов</translation>
     </message>
     <message>
-        <location filename="../systemtrayicon.cpp" line="83"/>
+        <location filename="../systemtrayicon.cpp" line="71"/>
         <source>Quit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="../systemtrayicon.cpp" line="131"/>
+        <location filename="../systemtrayicon.cpp" line="114"/>
         <source>New letter</source>
         <translation>Новое письмо</translation>
     </message>
     <message>
-        <location filename="../systemtrayicon.cpp" line="174"/>
+        <location filename="../systemtrayicon.cpp" line="157"/>
         <source>Hide contact list</source>
         <translation>Скрыть список контактов</translation>
     </message>

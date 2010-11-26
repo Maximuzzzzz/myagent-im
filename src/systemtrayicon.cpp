@@ -36,14 +36,12 @@
 #include "mrimclient.h"
 #include "audio.h"
 
-SystemTrayIcon::SystemTrayIcon(Account* a, ContactListWindow* w)
+SystemTrayIcon::SystemTrayIcon(Account* a, ContactListWindow* w, StatusMenu* sm)
  : QSystemTrayIcon(w), mainWindow(w), account(a)
 {
 	updateTooltip();
 	setOnlineStatus(OnlineStatus::offline);
 	connect(account, SIGNAL(nicknameChanged()), this, SLOT(updateTooltip()));	
-	connect(account, SIGNAL(onlineStatusChanged(OnlineStatus)), this, SLOT(showOnlineStatus(OnlineStatus)));
-
 	connect(account->client(), SIGNAL(newLetter(QString, QString, QDateTime)), this, SLOT(newLetter(QString, QString, QDateTime)));
 
 	connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(processActivation(QSystemTrayIcon::ActivationReason)));
@@ -61,16 +59,7 @@ SystemTrayIcon::SystemTrayIcon(Account* a, ContactListWindow* w)
 
 	contextMenu->addAction(accountWidgetAction);
 
-	QActionGroup* statusActions = new QActionGroup(contextMenu);
-
-	statusActions->addAction(createStatusAction(OnlineStatus::online));
-	statusActions->addAction(createStatusAction(OnlineStatus::chatOnline));
-	statusActions->addAction(createStatusAction(OnlineStatus::away));
-	statusActions->addAction(createStatusAction(OnlineStatus::invisible));
-	statusActions->addAction(createStatusAction(OnlineStatus::dndOnline));
-	statusActions->addAction(createStatusAction(OnlineStatus::offline));
-
-	contextMenu->addActions(statusActions->actions());
+	contextMenu->addMenu(sm);
 
 	contextMenu->addSeparator();
 
@@ -78,7 +67,6 @@ SystemTrayIcon::SystemTrayIcon(Account* a, ContactListWindow* w)
 		contextMenu->addAction(tr("Show contact list"), this, SLOT(toggleMainWindowVisibility()));
 
 	connect(contextMenu, SIGNAL(aboutToShow()), this, SLOT(slotContextMenuAboutToShow()));
-	connect(statusActions, SIGNAL(triggered(QAction*)), this, SLOT(processStatusAction(QAction*)));
 
 	contextMenu->addAction(QIcon(":icons/exit.png"), tr("Quit"), qApp, SLOT(quit()));
 	setContextMenu(contextMenu);
@@ -87,11 +75,6 @@ SystemTrayIcon::SystemTrayIcon(Account* a, ContactListWindow* w)
 SystemTrayIcon::~SystemTrayIcon()
 {
 	delete contextMenu;
-}
-
-void SystemTrayIcon::showOnlineStatus(OnlineStatus status)
-{
-	setIcon(status.statusIcon());
 }
 
 void SystemTrayIcon::processActivation(QSystemTrayIcon::ActivationReason reason)
@@ -182,28 +165,6 @@ void SystemTrayIcon::setupMainWindowVisibilityAction()
 void SystemTrayIcon::setOnlineStatus(OnlineStatus status)
 {
 	qDebug() << "SystemTrayIcon::setOnlineStatus";
-	if (status == this->status)
-		return;
-	
-	qDebug() << "SystemTrayIcon::setStatus " << status.type();
-	
-	this->status = status;
-	
-	qDebug() << "SystemTrayIcon status desc " << status.statusDescr();
-	
-	account->setOnlineStatus(status);
-}
-
-void SystemTrayIcon::processStatusAction(QAction* action)
-{
-	OnlineStatus newStatus = action->data().value<OnlineStatus>();
-	setOnlineStatus(newStatus);
-}
-
-QAction* SystemTrayIcon::createStatusAction(OnlineStatus status)
-{
-	QAction* action = new QAction(status.statusIcon(), status.statusDescr(), this);
-	action->setData(QVariant::fromValue(status));
-	return action;
+	setIcon(status.statusIcon());
 }
 

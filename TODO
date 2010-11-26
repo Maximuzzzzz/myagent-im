@@ -7,7 +7,6 @@
 - Add links at services mail.ru in contact context menu
 - Add group "old archives", which contains deleted users, history of whom was not deleted. Deleting contact from this group will delete log
 - Add interlocutors list in conferences
-- Add possibility to edit extended statuses
 - Automatically login (saving passwords)
 - In active chat window: when incomes message by user, window chat of which is not opened, imposition chat windows appears
 - Add multicast

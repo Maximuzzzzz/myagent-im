@@ -20,63 +20,70 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef MAINMENUBUTTON_H
-#define MAINMENUBUTTON_H
+#ifndef ONLINESTATUSES_H
+#define ONLINESTATUSES_H
 
-#include <QPointer>
+#include <QCoreApplication>
+#include <QIcon>
+#include <QVariant>
+#include <QMetaType>
 
-#include <buttonwithmenu.h>
-
-#include "contactinfo.h"
-#include "onlinestatus.h"
-#include "chatwindowsmanager.h"
-#include "newconferencedialog.h"
-#include "settingswindow.h"
-
-class Account;
-class SearchContactsForm;
-class ContactListWindow;
-
-class MainMenuButton : public ButtonWithMenu
+class OnlineStatusInfo
 {
-Q_OBJECT
+	friend class OnlineStatuses;
+
+	QString id_;
+	QString icon_;
+	QString builtin_;
+
+	void clear() { id_ = icon_ = builtin_ = ""; }
 public:
-	MainMenuButton(Account* account, ContactListWindow* w);
-	void setChatWindowsManager(ChatWindowsManager* cwm);
-	SettingsWindow* getSettingsWindow() { return settingsWindow; }
+	const QString id() const { return id_; }
+	const QString icon() const { return icon_; }
+	const QString builtIn() const { return builtin_; }
+};
 
-signals:
-	void statusesCountChanged();
+class OnlineStatusSet
+{
+	friend class OnlineStatuses;
 
-private slots:
-	void searchContacts();
-	void showSearchResults(quint32 status, bool timeout);
-	void showAddContactDialog(const ContactInfo& info);
-	void showAddContactDialogEnd();
-	void checkOnlineStatus(OnlineStatus);
-	void beginSearch();
-	void searchMoreContacts();
-	void newSearch();
-	void addSmsContact();
-	void addSmsContactError(QString);
-	void addGroup();
-	void addGroupError(QString);
-	void showSettingsWindow();
-	void createNewConference();
+	QString title_;
+	QList<OnlineStatusInfo*> onlineStatusInfos;
+
+	typedef QList<OnlineStatusInfo*>::const_iterator const_iterator;
+	const_iterator begin() const { return onlineStatusInfos.begin(); }
+	const_iterator end() const { return onlineStatusInfos.end(); }
+
+public:
+	~OnlineStatusSet() { qDeleteAll(onlineStatusInfos); }
+	QString title() const { return title_; }
+	int size();
+	void addStatusesSet(QStringList & list);
+};
+
+class OnlineStatuses
+{
+public:
+	OnlineStatuses() {};
+	~OnlineStatuses() { qDeleteAll(onlineStatusSets); }
+	
+	void load(QString filename);
+	const OnlineStatusInfo* getOnlineStatusInfo(QString id) const
+		{ return idToOnlineStatusMap.value(id, NULL); }
+
+	typedef QList<OnlineStatusSet*>::const_iterator const_iterator;
+	const_iterator begin() const { return onlineStatusSets.begin(); }
+	const_iterator end() const { return onlineStatusSets.end(); }
+
+	const QStringList statusesList() const { return m_onlineStatusIds; }
+
+	int numberOfSets() const { return onlineStatusSets.size(); }
+	int statusesCount();
 
 private:
-	QAction* addContactAction;
-	QAction* addSmsContactAction;
-	QAction* addGroupAction;
-	QAction* deleteUserAction;
-	QAction* newConferenceAction;
-	Account* m_account;
-	ContactListWindow* mainWindow;
-	QPointer<SearchContactsForm> searchForm;
-	QPointer<SettingsWindow> settingsWindow;
-	QPointer<NewConferenceDialog> newConferenceWindow;
-
-	ChatWindowsManager* chatWindowsManager;
+	QMap<QString, OnlineStatusInfo*> idToOnlineStatusMap;
+	QList<OnlineStatusSet*> onlineStatusSets;
+	QStringList m_onlineStatusIds;
 };
 
 #endif

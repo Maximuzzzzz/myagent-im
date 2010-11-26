@@ -20,62 +20,26 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QMenu>
 #include <QAction>
 #include <QDebug>
 
 #include "statusbutton.h"
-#include "resourcemanager.h"
-#include "proto.h"
 
-StatusButton::StatusButton(QWidget* parent)
+StatusButton::StatusButton(StatusMenu* sm, QWidget* parent)
 	: ButtonWithMenu(parent)
 {
 	setStyleSheet("QPushButton { text-align: left; }");
 	
-	QMenu* menu = new QMenu(this);
-	
-	menu->addAction(createAction(OnlineStatus::online));
-	menu->addAction(createAction(OnlineStatus::chatOnline));
-	menu->addAction(createAction(OnlineStatus::away));
-	menu->addAction(createAction(OnlineStatus::invisible));
-	menu->addAction(createAction(OnlineStatus::dndOnline));
-	menu->addAction(createAction(OnlineStatus::offline));
-	
-	setMenu(menu);
-	connect(menu, SIGNAL(triggered(QAction*)), this, SLOT(slotStatusChanged(QAction*)));
+	setMenu(sm);
 }
 
 StatusButton::~StatusButton()
 {
 }
 
-void StatusButton::setStatus(OnlineStatus status)
+void StatusButton::slotStatusChanged(OnlineStatus status)
 {
-	if (status == this->status)
-		return;
-	
-	qDebug() << "StatusButton::setStatus " << status.type();
-	
-	this->status = status;
-	
+	qDebug() << "StatusButton::slotStatusChanged";
 	setIcon(status.statusIcon());
 	setText(status.statusDescr());
-	qDebug() << "StatusButton status desc " << status.statusDescr();
-	
-	emit statusChanged(status);
 }
-
-void StatusButton::slotStatusChanged(QAction* action)
-{
-	OnlineStatus newStatus = action->data().value<OnlineStatus>();
-	setStatus(newStatus);
-}
-
-QAction* StatusButton::createAction(OnlineStatus status)
-{
-	QAction* action = new QAction(status.statusIcon(), status.statusDescr(), this);
-	action->setData(QVariant::fromValue(status));
-	return action;
-}
-

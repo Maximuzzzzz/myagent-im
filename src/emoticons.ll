@@ -192,7 +192,6 @@ void Emoticons::load(QString filename, QSettings* settings)
 	defaultFavouriteEmoticons << "<###20###img009>" << "<###20###img007>" << "<###20###img016>" << "<###20###img026>" << "<###20###img015>" << "431" << "432" << "308";
 
 	m_favouriteEmoticons = settings->value("favouriteEmoticons", defaultFavouriteEmoticons).toStringList();
-	//m_favouriteEmoticons = defaultFavouriteEmoticons;
 
 	m_maxSetSize = 0;
 	for (const_iterator i = begin(); i != end(); ++i)

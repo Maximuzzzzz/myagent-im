@@ -28,6 +28,7 @@
 #include <QPointer>
 
 #include "onlinestatus.h"
+#include "onlinestatuseseditor.h"
 #include "chatsmanager.h"
 #include "mrimclient.h"
 #include "contactlist.h"
@@ -59,11 +60,14 @@ public:
 	uint unreadLetters() const { return m_unreadMessages; }
 
 	QSettings* settings() { return m_settings; }
+	OnlineStatusesEditor* onlineStatusesEditor() { return m_onlineStatusesEditor; }
 
 	void setAutoAway(bool on);
 public slots:
-	void setOnlineStatus(OnlineStatus status);
+	void setOnlineStatus(OnlineStatus status, qint32 id = -1);
 	void saveOnlineStatus(OnlineStatus st);
+	void showOnlineStatusesEditor();
+	void extendedStatusChanged(qint32 id, OnlineStatus status);
 
 signals:
 	void onlineStatusChanged(OnlineStatus status);
@@ -71,6 +75,7 @@ signals:
 	void totalMessagesChanged(const QString& totalMessages);
 	void unreadLettersChanged(uint n);
 	void statusChanged(QString text);
+	void extendedStatusesChanged();
 	
 private slots:
 	void slotLoggedIn(OnlineStatus status);
@@ -78,7 +83,7 @@ private slots:
 	void slotDisconnectedFromServer();
 
 	void setUnreadLetters(quint32 n);
-	
+
 private:
 	QByteArray m_email;
 	QByteArray m_password;
@@ -94,6 +99,7 @@ private:
 	QPointer<MRIMClient> m_client;
 	QPointer<ChatsManager> m_chatsManager;
 	QPointer<QSettings> m_settings;
+	QPointer<OnlineStatusesEditor> m_onlineStatusesEditor;
 
 	bool m_isInAutoAway;
 	OnlineStatus m_statusBeforeAutoAway;

@@ -84,7 +84,6 @@ private slots:
 	void sendMicrotext(const QString& microText);
 	void slotMicroblogChanged(QString microText);
 	void slotSetOnlineStatus(OnlineStatus status);
-//	void slotConferenceAck(const QByteArray& confChat, const QString& confName);
 
 private:
 	void writeSettings();

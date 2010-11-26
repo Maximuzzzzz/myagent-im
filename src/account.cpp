@@ -34,6 +34,7 @@
 #include "chatsmanager.h"
 #include "historymanager.h"
 #include "audio.h"
+#include "centerwindow.h"
 
 Account::Account(QByteArray email, QByteArray password, QObject* parent)
 	: QObject(parent)
@@ -51,13 +52,14 @@ Account::Account(QByteArray email, QByteArray password, QObject* parent)
 	m_chatsManager = new ChatsManager(this);
 
 	QString accountPath = path();
-	qDebug() << "accountPath =" << accountPath;
 	if (!accountPath.isEmpty())
 		m_settings = new QSettings(accountPath + "/settings.txt", QSettings::IniFormat, this);
 
 	m_pointerOnlineStatus = m_settings->value("Statuses/statusPointer", -1).toLongLong();
 	if (m_pointerOnlineStatus > theRM.maxDefaultStatuses - 1)
 		m_pointerOnlineStatus = theRM.maxDefaultStatuses - 1;
+
+
 	HistoryManager* hm = new HistoryManager(this);
 	connect(m_chatsManager, SIGNAL(sessionCreated(ChatSession*)), hm, SLOT(createLogger(ChatSession*)));
 
@@ -132,17 +134,21 @@ QString Account::avatarsPath() const
 	return dir.absolutePath();
 }
 
-void Account::setOnlineStatus(OnlineStatus newStatus)
+void Account::setOnlineStatus(OnlineStatus newStatus, qint32 id)
 {
 	qDebug() << "Account::setOnlineStatus: onlineStatus = " << m_onlineStatus.statusDescr() << ", newStatus = " << newStatus.statusDescr();
-	
-	if (m_onlineStatus == newStatus || newStatus == OnlineStatus::connecting)
+
+	if (m_onlineStatus.connected())
+		m_pointerOnlineStatus = id;
+
+	if ((m_onlineStatus == newStatus && m_onlineStatus.statusDescr() == newStatus.statusDescr()) || newStatus == OnlineStatus::connecting)
 		return;
 	
 	if (newStatus == OnlineStatus::offline)
 	{
 		qDebug() << "newStatus = offline";
 		m_client->disconnectFromServer();
+		emit onlineStatusChanged(newStatus);
 	}
 	else if (m_onlineStatus == OnlineStatus::offline)
 	{
@@ -276,10 +282,8 @@ void Account::saveOnlineStatus(OnlineStatus st)
 	m_settings->setValue("Statuses/lastOnlineStatus", st.id());
 	m_settings->setValue("Statuses/lastOnlineStatusDescr", st.statusDescr());
 
-	if (theRM.onlineStatuses()->getOnlineStatusInfo(st.id())->BuiltIn() == "1")
-	{
+	if (theRM.onlineStatuses()->getOnlineStatusInfo(st.id())->builtIn() == "1")
 		m_settings->remove("Statuses/statusPointer");
-	}
 	else
 	{
 		if (m_pointerOnlineStatus == -1)
@@ -314,4 +318,26 @@ void Account::saveOnlineStatus(OnlineStatus st)
 
 		m_settings->setValue("Statuses/statusPointer", m_pointerOnlineStatus);
 	}
+}
+
+void Account::showOnlineStatusesEditor()
+{
+	if (m_onlineStatusesEditor)
+		return;
+	qDebug() << "Statuses editor isn't exists";
+	m_onlineStatusesEditor = new OnlineStatusesEditor(this);
+	centerWindow(m_onlineStatusesEditor);
+
+	connect(m_onlineStatusesEditor, SIGNAL(statusesChanged()), this, SIGNAL(extendedStatusesChanged()));
+	connect(m_onlineStatusesEditor, SIGNAL(statusChanged(qint32, OnlineStatus)), this, SLOT(extendedStatusChanged(qint32, OnlineStatus)));
+
+	m_onlineStatusesEditor->show();
+}
+
+void Account::extendedStatusChanged(qint32 id, OnlineStatus status)
+{
+	qDebug() << "Account::extendedStatusChanged" << id << m_pointerOnlineStatus;
+
+	if (id == m_pointerOnlineStatus)
+		setOnlineStatus(status, id);
 }

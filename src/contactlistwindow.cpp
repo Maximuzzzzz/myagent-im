@@ -54,6 +54,7 @@
 #include "filtercontactslineedit.h"
 #include "triggeroptionbutton.h"
 #include "audio.h"
+#include "statusmenu.h"
 
 ContactListWindow::ContactListWindow(Account* account)
 	: m_account(account)
@@ -104,6 +105,11 @@ ContactListWindow::ContactListWindow(Account* account)
 
 	contactsTreeView->setModel(proxyModel);
 
+	StatusMenu* statusesMenu = new StatusMenu(m_account);
+	statusesMenu->setTitle(tr("My status"));
+
+	connect(statusesMenu, SIGNAL(statusChanged(OnlineStatus, qint32)), account, SLOT(setOnlineStatus(OnlineStatus, qint32)));
+
 	connect(contactsTreeView, SIGNAL(contactItemActivated(Contact*)), this, SLOT(slotContactItemActivated(Contact*)));
 	connect(proxyModel, SIGNAL(modelRebuilded()), contactsTreeView, SLOT(expandAll()));
 
@@ -117,13 +123,17 @@ ContactListWindow::ContactListWindow(Account* account)
 	statusEditor = new StatusEditor(this);
 	connect(statusEditor, SIGNAL(sendMicrotext(const QString&)), this, SLOT(sendMicrotext(const QString&)));
 
-	statusButton = new StatusButton;
-	connect(statusButton, SIGNAL(statusChanged(OnlineStatus)), account, SLOT(setOnlineStatus(OnlineStatus)));
+	statusButton = new StatusButton(statusesMenu);
+	connect(account, SIGNAL(onlineStatusChanged(OnlineStatus)), statusButton, SLOT(slotStatusChanged(OnlineStatus)));
+
 	connect(account, SIGNAL(onlineStatusChanged(OnlineStatus)), this, SLOT(slotSetOnlineStatus(OnlineStatus)));
+	connect(account, SIGNAL(extendedStatusesChanged()), statusesMenu, SLOT(updateExtendedStatuses()));
 
 	mainMenuButton = new MainMenuButton(account, this);
 	mainMenuButton->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Ignored);
 	mainMenuButton->setChatWindowsManager(chatWindowsManager);
+
+	connect(mainMenuButton, SIGNAL(statusesCountChanged()), statusesMenu, SLOT(updateExtendedStatuses()));
 
 	QVBoxLayout* layout = new QVBoxLayout;
 	layout->setContentsMargins(1, 1, 1, 1);
@@ -147,7 +157,10 @@ ContactListWindow::ContactListWindow(Account* account)
 
 	readSettings();
 
-	sysTray = new SystemTrayIcon(m_account, this);
+	sysTray = new SystemTrayIcon(m_account, this, statusesMenu);
+
+	connect(account, SIGNAL(onlineStatusChanged(OnlineStatus)), sysTray, SLOT(setOnlineStatus(OnlineStatus)));
+
 	sysTray->show();
 
 	connect(&idleDetector, SIGNAL(secondsIdle(int)), SLOT(checkAutoAwayTime(int)));
@@ -389,7 +402,6 @@ void ContactListWindow::slotMicroblogChanged(QString microText)
 void ContactListWindow::slotSetOnlineStatus(OnlineStatus status)
 {
 	qDebug() << "ContactListWindow::slotSetOnlineStatus" << status.id() << status.statusDescr();
-	statusButton->setStatus(status);
 	if (status == OnlineStatus::offline || status == OnlineStatus::connecting || status == OnlineStatus::unknown)
 	{
 		statusBar->setActive(false);
@@ -408,10 +420,3 @@ void ContactListWindow::visibleWidget(Widgets w, bool st)
 			return;
 	}
 }
-
-/*void ContactListWindow::slotConferenceAck(const QByteArray& confChat, const QString& confName)
-{
-	qDebug() << "ContactListWindow::slotConferenceAck" << confChat << confName;
-
-	m_account->contactList()->addContact(ContactData(0, 0, 0, confChat, confName));
-}*/

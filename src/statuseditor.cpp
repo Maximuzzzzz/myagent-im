@@ -101,6 +101,5 @@ void StatusEditor::slotSendMicrotext()
 
 void StatusEditor::setStatus(QString text)
 {
-//	QTextCodec* codec = QTextCodec::codecForName("CP1251");
-	editor->setText(text/*codec->toUnicode(text)*/);
+	editor->setText(text);
 }
