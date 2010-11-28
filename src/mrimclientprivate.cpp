@@ -710,12 +710,19 @@ void MRIMClientPrivate::processMessageAck(QByteArray data)
 	QByteArray from, confOwner, rtf, text;
 	QString confName, plainText;
 	in >> msgId >> flags >> from;
-	if (flags & MESSAGE_FLAG_AUTHORIZE)
+	if (flags & MESSAGE_FLAG_AUTHORIZE || flags & MESSAGE_FLAG_CP1251)
+	{
 		in >> text;
+		QTextCodec* c = QTextCodec::codecForName("cp1251");
+		plainText = c->toUnicode(text);
+	}
 	else
 		in >> plainText;
 	in >> rtf;
-	qDebug() << from;
+	qDebug() << "from =" << from;
+	qDebug() << "text =" << text;
+	qDebug() << "plainText" << plainText;
+	qDebug() << "rtf =" << rtf;
 
 	QByteArray(data2);
 	in >> data2;
@@ -725,7 +732,6 @@ void MRIMClientPrivate::processMessageAck(QByteArray data)
 	in2 >> confOwner;
 
 	qDebug() << "flags = " << QString::number(flags, 16);
-	qDebug() << "texts" << plainText << text;
 	qDebug() << "confOwner" << confOwner;
 
 	QByteArray rtfText;

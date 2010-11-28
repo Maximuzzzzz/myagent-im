@@ -53,7 +53,8 @@ unix {
     target.path = $$BINDIR
     data.path = $$DATADIR
     data.files += locale/qt_ru.qm \
-        locale/myagent-im_ru.qm
+        locale/myagent-im_ru.qm \
+		locale/myagent-im_ua.qm
     emoticons.path = $$DATADIR/emoticons
     emoticons.files += emoticons/skin.txt
     onlinestatus.path = $$DATADIR/emoticons

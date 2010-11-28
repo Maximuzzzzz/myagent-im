@@ -59,7 +59,6 @@ Account::Account(QByteArray email, QByteArray password, QObject* parent)
 	if (m_pointerOnlineStatus > theRM.maxDefaultStatuses - 1)
 		m_pointerOnlineStatus = theRM.maxDefaultStatuses - 1;
 
-
 	HistoryManager* hm = new HistoryManager(this);
 	connect(m_chatsManager, SIGNAL(sessionCreated(ChatSession*)), hm, SLOT(createLogger(ChatSession*)));
 

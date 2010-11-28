@@ -103,6 +103,8 @@ void ChatSession::sendTyping()
 
 bool ChatSession::sendSms(QByteArray number, QString text)
 {
+	m_account->contactList()->setLastSmsFrom(number, m_contact);
+
 	Task* task = new Tasks::SendSms(number, text, m_account->client());
 	connect(task, SIGNAL(done(quint32, bool)), this, SLOT(slotSmsStatus(quint32, bool)));
 

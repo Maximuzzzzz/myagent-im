@@ -326,3 +326,24 @@ void Contact::changePhonesEnd(quint32 status, bool timeout)
 	data.phones = task->phones();
 	emit phonesChanged();
 }
+
+QIcon Contact::chatWindowIcon(QString type)
+{
+	qDebug() << "Contact" << nickname() << isPhone() << isConference();
+	if (type == "")
+	{
+		if (isConference())
+			return QIcon(":icons/msg_conference.png");
+		else if (isPhone())
+			return QIcon(":icons/phone.png");
+		else
+			return status().statusIcon();
+	}
+	else
+	{
+		QIcon currentIcon;
+		currentIcon.addFile(":icons/" + type + "_32x32.png");
+		currentIcon.addFile(":icons/" + type + "_16x16.png");
+		return currentIcon;
+	}
+}

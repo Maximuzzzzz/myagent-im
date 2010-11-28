@@ -1,3 +1,4 @@
+- There'are empty messages appear
 - If user or interlocutor writes message one after another, there's no reason to write message header again
 - Ignore list
 - Saving history in html-file
@@ -10,6 +11,7 @@
 - Automatically login (saving passwords)
 - In active chat window: when incomes message by user, window chat of which is not opened, imposition chat windows appears
 - Add multicast
+- Add microblog for contacts
 - Adding and deleting groups in contact list without fully contact list updating
 - Bug: when incomes message from conference, which is not in the contact list, chat window appears and closes immediately
 - Delete "Conferences" and "Phones" groups, when child items are absent

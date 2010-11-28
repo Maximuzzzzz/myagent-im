@@ -104,6 +104,7 @@ public slots:
 	void slotContactAuthorized(const QByteArray& email);
 	bool newConferenceOnServer(QString confName, QByteArray owner, QList<QByteArray> members = QList<QByteArray>());
 	bool addConferenceOnServer(const QByteArray & chat, const QString & confName);
+	void setLastSmsFrom(QByteArray & number, Contact* c);
 
 private slots:
 	void checkOnlineStatus(OnlineStatus status);
@@ -121,6 +122,8 @@ private:
 	QList<ContactGroup*> m_hiddenGroups;
 	QList<Contact*> m_contacts;
 	QList<Contact*> tmpContacts;
+
+	QMap<QByteArray, Contact*> lastSmsFrom;
 
 	bool constructing;
 

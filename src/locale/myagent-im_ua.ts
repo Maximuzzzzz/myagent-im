@@ -681,7 +681,7 @@
     <message>
         <location filename="../contactlistwindow.cpp" line="109"/>
         <source>My status</source>
-        <translation type="unfinished"></translation>
+        <translation>Мій статус</translation>
     </message>
     <message>
         <location filename="../contactlistwindow.cpp" line="314"/>
@@ -1156,62 +1156,62 @@
     <message>
         <location filename="../onlinestatus.cpp" line="25"/>
         <source>Working</source>
-        <translation type="unfinished"></translation>
+        <translation>Працюю</translation>
     </message>
     <message>
         <location filename="../onlinestatus.cpp" line="25"/>
         <source>Smoking</source>
-        <translation type="unfinished"></translation>
+        <translation>Курю</translation>
     </message>
     <message>
         <location filename="../onlinestatus.cpp" line="25"/>
         <source>Coffee</source>
-        <translation type="unfinished"></translation>
+        <translation>П&apos;ю каву</translation>
     </message>
     <message>
         <location filename="../onlinestatus.cpp" line="25"/>
         <source>In love</source>
-        <translation type="unfinished"></translation>
+        <translation>Закоханий</translation>
     </message>
     <message>
         <location filename="../onlinestatus.cpp" line="25"/>
         <source>Education</source>
-        <translation type="unfinished"></translation>
+        <translation>Навчання</translation>
     </message>
     <message>
         <location filename="../onlinestatus.cpp" line="25"/>
         <source>Dreaming</source>
-        <translation type="unfinished"></translation>
+        <translation>Сплю</translation>
     </message>
     <message>
         <location filename="../onlinestatus.cpp" line="25"/>
         <source>Home</source>
-        <translation type="unfinished"></translation>
+        <translation>Вдома</translation>
     </message>
     <message>
         <location filename="../onlinestatus.cpp" line="25"/>
         <source>Breakfast</source>
-        <translation type="unfinished"></translation>
+        <translation>Трапеза</translation>
     </message>
     <message>
         <location filename="../onlinestatus.cpp" line="25"/>
         <source>Sick</source>
-        <translation type="unfinished"></translation>
+        <translation>Хворію</translation>
     </message>
     <message>
         <location filename="../onlinestatus.cpp" line="25"/>
         <source>All people are alike, only I&apos;m a star</source>
-        <translation type="unfinished"></translation>
+        <translation>Всі люди як люди, одна я - зірка</translation>
     </message>
     <message>
         <location filename="../onlinestatus.cpp" line="30"/>
         <source>Ready to talk</source>
-        <translation type="unfinished"></translation>
+        <translation>Готовий до розмови</translation>
     </message>
     <message>
         <location filename="../onlinestatus.cpp" line="32"/>
         <source>Don&apos;t disturb</source>
-        <translation type="unfinished"></translation>
+        <translation>Не турбувати</translation>
     </message>
     <message>
         <location filename="../onlinestatus.cpp" line="47"/>
@@ -1236,7 +1236,7 @@
     <message>
         <location filename="../onlinestatus.cpp" line="55"/>
         <source>Extended</source>
-        <translation type="unfinished"></translation>
+        <translation>Розширений</translation>
     </message>
     <message>
         <location filename="../onlinestatus.cpp" line="57"/>
@@ -1251,7 +1251,7 @@
     <message>
         <location filename="../onlinestatus.cpp" line="160"/>
         <source>Wrong status data</source>
-        <translation type="unfinished"></translation>
+        <translation>Помилка даних</translation>
     </message>
 </context>
 <context>
@@ -1259,7 +1259,7 @@
     <message>
         <location filename="../onlinestatuseseditor.cpp" line="93"/>
         <source>Statuses editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Редактор статусів</translation>
     </message>
     <message>
         <location filename="../onlinestatuseseditor.cpp" line="106"/>
@@ -1407,6 +1407,11 @@
         <translation>Відправляти повідомлення при натисненні Enter</translation>
     </message>
     <message>
+        <location filename="../settingswindow.cpp" line="111"/>
+        <source>Type extended online statuses count (5-10):</source>
+        <translation>Кількість статусів розширеного онлайн типу (5-10):</translation>
+    </message>
+    <message>
         <location filename="../settingswindow.cpp" line="166"/>
         <source>Send message on double Enter pressed</source>
         <translation>Відправляти повідомлення при подвійному натисненні Enter</translation>
@@ -1521,7 +1526,7 @@
     <message>
         <location filename="../statusmenu.cpp" line="31"/>
         <source>Edit statuses...</source>
-        <translation type="unfinished"></translation>
+        <translation>Редагувати статуси...</translation>
     </message>
 </context>
 <context>

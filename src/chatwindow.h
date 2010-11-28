@@ -90,7 +90,7 @@ private slots:
 	void saveTopAvatarBoxState(bool checked);
 	void saveBottomAvatarBoxState(bool checked);
 	
-	void slotEditorActivate(int);
+	void slotEditorActivate(int tab);
 
 	void slotTimeout();
 	void clearStatus();
@@ -104,6 +104,7 @@ private slots:
 	void transferStarted(quint32 sessId);
 
 	void slotFileTransferred(FileMessage::Status action, QString filesInHtml, QString destination);
+	void setContactStatusIcon(QString type = "");
 
 protected:
 	QTimer* timer;

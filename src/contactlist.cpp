@@ -191,6 +191,16 @@ Contact* ContactList::getContact(const QByteArray& email)
 
 Contact* ContactList::findContactWithPhone(const QByteArray& phoneNumber)
 {
+	qDebug() << phoneNumber;
+
+	Contact* c = lastSmsFrom.value(phoneNumber, NULL);
+	if (c)
+	{
+		qDebug() << "Contact found" << c->nickname();
+		return c;
+	}
+	qDebug() << "Contact didn't find";
+
 	QList<Contact*>::iterator it = m_contacts.begin();
 	
 	while (it != m_contacts.end() && !(*it)->hasPhone(phoneNumber))
@@ -759,4 +769,10 @@ void ContactList::renameGroupEnd(quint32 status, bool timeout)
 	group->setName(name);
 
 	emit updated();
+}
+
+void ContactList::setLastSmsFrom(QByteArray & number, Contact* c)
+{
+	qDebug() << "setLastSmsFrom" << number.right(11) << c->nickname();
+	lastSmsFrom[number.right(11)] = c;
 }

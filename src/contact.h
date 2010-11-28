@@ -62,6 +62,7 @@ public:
 	bool isConference() const;
 	bool hasPhone(QByteArray phoneNumber) const;
 	bool changeGroup(quint32 group);
+	QIcon chatWindowIcon(QString type = "");
 	
 	ContactData contactData() const { return data; }
 	

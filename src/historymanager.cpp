@@ -42,6 +42,7 @@ HistoryManager::~HistoryManager()
 
 void HistoryManager::createLogger(ChatSession* session)
 {
+
 	Contact* contact = session->contact();
 	qDebug() << "HistoryManager::createLogger " << contact->email();
 	if (!contact->isPhone())

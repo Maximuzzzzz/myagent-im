@@ -106,6 +106,7 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s)
 		connect(messageEditor, SIGNAL(sendPressed()), this, SLOT(sendMessage()));
 		connect(messageEditor, SIGNAL(textChanged()), session, SLOT(sendTyping()));
 		connect(messageEditor, SIGNAL(wakeupPressed()), this, SLOT(wakeupContact()));
+		connect(this, SIGNAL(messageEditorActivate()), messageEditor, SLOT(messageEditorActivate()));
 
 		connect(messageEditor, SIGNAL(setIgnore(bool)), this, SIGNAL(setIgnore(bool)));
 		connect(this, SIGNAL(ignoreSet(bool)), messageEditor, SLOT(slotIgnoreSet(bool)));
@@ -137,16 +138,28 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s)
 
 		if (!session->contact()->isConference())
 			connect(session->contact(), SIGNAL(statusChanged(OnlineStatus)), this, SLOT(checkContactStatus(OnlineStatus)));
-		checkContactStatus(session->contact()->status());
+
+		if (!session->contact()->isConference())
+			connect(this, SIGNAL(smsEditorActivate()), smsEditor, SLOT(smsEditorActivate()));
+
+		if (!session->contact()->isConference())
+			connect(session->contact(), SIGNAL(typing()), this, SLOT(contactTyping()));
+
+		connect(messageEditor, SIGNAL(filesTransfer(FileMessage*)), session, SLOT(fileTransfer(FileMessage*)));
+		connect(messageEditor, SIGNAL(filesTransfer(FileMessage*)), this, SLOT(fileTransferring(FileMessage*)));
+		connect(session, SIGNAL(signalFileReceived(FileMessage*)), messageEditor, SLOT(fileReceived(FileMessage*)));
+		connect(session, SIGNAL(signalFileReceived(FileMessage*)), this, SLOT(fileReceiving(FileMessage*)));
 	}
 	else
 	{
-//		setWindowTitle(session->contact()->nickname());
+		setWindowTitle(session->contact()->nickname());
 
 		smsEditor = new SmsEditor(s->account(), s->contact());
 		connect(smsEditor, SIGNAL(sendPressed()), this, SLOT(sendSms()));
 		splitter->addWidget(smsEditor);
 	}
+
+	checkContactStatus(session->contact()->status());
 
 	splitter->setStretchFactor(0, 7);
 	splitter->setStretchFactor(1, 3);
@@ -159,19 +172,9 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s)
 
 	QPushButton* sendButton = new QPushButton(tr("Send"), this);
 	connect(sendButton, SIGNAL(clicked(bool)), this, SLOT(send()));	
-	connect(this, SIGNAL(messageEditorActivate()), messageEditor, SLOT(messageEditorActivate()));
-	if (!session->contact()->isConference())
-		connect(this, SIGNAL(smsEditorActivate()), smsEditor, SLOT(smsEditorActivate()));
 
-	if (!session->contact()->isConference())
-		connect(session->contact(), SIGNAL(typing()), this, SLOT(contactTyping()));
 	connect(session, SIGNAL(messageDelivered(bool, Message*)), this, SLOT(messageDelivered(bool, Message*)));
 	connect(session, SIGNAL(messageAppended(const Message*)), this, SLOT(appendMessageToView(const Message*)));
-
-	connect(messageEditor, SIGNAL(filesTransfer(FileMessage*)), session, SLOT(fileTransfer(FileMessage*)));
-	connect(messageEditor, SIGNAL(filesTransfer(FileMessage*)), this, SLOT(fileTransferring(FileMessage*)));
-	connect(session, SIGNAL(signalFileReceived(FileMessage*)), messageEditor, SLOT(fileReceived(FileMessage*)));
-	connect(session, SIGNAL(signalFileReceived(FileMessage*)), this, SLOT(fileReceiving(FileMessage*)));
 
 	connect(session, SIGNAL(smsDelivered(QByteArray,QString)), this, SLOT(appendSmsToView(QByteArray, QString)));
 	connect(session, SIGNAL(smsFailed()), this, SLOT(smsFailed()));
@@ -181,9 +184,7 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s)
 
 	ChatSession::MessageIterator it = session->messagesBegin();
 	for (; it != session->messagesEnd(); ++it)
-	{
 		appendMessageToView(*it, false);
-	}
 	session->clearHash();
 
 	shakeTimeLine = new QTimeLine(2000, this);
@@ -254,12 +255,8 @@ void ChatWindow::appendMessageToView(const Message* msg, bool newIncoming)
 		qDebug() << "IsActiveWindow: " << isActiveWindow();
 		if (newIncoming && (!isVisible()))
 		{
-			QIcon currentIcon;
-			currentIcon.addFile(":icons/message_32x32.png");
-			currentIcon.addFile(":icons/message_16x16.png");
-			setWindowIcon(currentIcon);
+			setContactStatusIcon("message");
 			isNewMessage = true;
-			emit setMainWindowIconAndTitle(currentIcon, this);
 		}
 	}
 	show();
@@ -292,7 +289,9 @@ void ChatWindow::appendMessageToView(const Message* msg, bool newIncoming)
 	}
 
 	cursor.insertHtml(prompt);
-	if (messageEditor->isIgnoreFont())
+	if (session->contact()->isPhone())
+		cursor.insertFragment(msg->documentFragment());
+	else if (messageEditor->isIgnoreFont())
 		cursor.insertFragment(msg->documentFragment(messageEditor->getDefFont(), messageEditor->getDefFontColor(), messageEditor->getDefBkColor()));
 	else
 		cursor.insertFragment(msg->documentFragment());
@@ -311,14 +310,11 @@ void ChatWindow::appendMessageToView(const Message* msg, bool newIncoming)
 
 void ChatWindow::contactTyping()
 {
+	qDebug() << "ChatWindow::contactTyping()";
 	statusBar->showMessage(tr("Contact is typing"), 7000);
 
 	timer->start(7000);
-	QIcon currentIcon;
-	currentIcon.addFile(":icons/typing_32x32.png");
-	currentIcon.addFile(":icons/typing_16x16.png");
-	setWindowIcon(currentIcon);
-	emit setMainWindowIconAndTitle(currentIcon, this);
+	setContactStatusIcon("typing");
 }
 
 void ChatWindow::messageDelivered(bool really, Message* msg)
@@ -359,13 +355,10 @@ void ChatWindow::messageDelivered(bool really, Message* msg)
 
 void ChatWindow::checkContactStatus(OnlineStatus status)
 {
+	qDebug() << "ChatWindow::checkContactStatus";
 	Contact* contact = session->contact();
 	setWindowTitle(contact->nickname() + " - " + status.statusDescr());
-	if (contact->isConference())
-		setWindowIcon(QIcon(":/icons/msg_conference.png"));
-	else
-		setWindowIcon(status.statusIcon());
-	emit setMainWindowIconAndTitle(windowIcon(), this);
+	setContactStatusIcon();
 }
 
 ChatWindow::~ ChatWindow()
@@ -444,12 +437,15 @@ void ChatWindow::saveBottomAvatarBoxState(bool checked)
 
 void ChatWindow::editorActivate()
 {
-	slotEditorActivate(editorsWidget->currentIndex());
+	if (session->contact()->isPhone())
+		slotEditorActivate(1);
+	else
+		slotEditorActivate(editorsWidget->currentIndex());
 }
 
 void ChatWindow::slotEditorActivate(int tab)
 {
-	if (tab == 0)
+	if (tab == 0 && !session->contact()->isPhone())
 		emit messageEditorActivate();
 	else if (tab == 1)
 		emit smsEditorActivate();
@@ -457,46 +453,29 @@ void ChatWindow::slotEditorActivate(int tab)
 
 void ChatWindow::slotTimeout()
 {
-	if (session->contact()->isConference())
-		setWindowIcon(QIcon(":/icons/msg_conference.png"));
-	else
-		setWindowIcon(session->contact()->status().statusIcon());
-	emit setMainWindowIconAndTitle(windowIcon(), this);
+	qDebug() << "ChatWindow::slotTimeout()";
+	setContactStatusIcon();
 }
 
 void ChatWindow::clearStatus()
 {
+	qDebug() << "ChatWindow::clearStatus()";
 	statusBar->clearMessage();
 	if (isNewMessage)
-	{
-		QIcon currentIcon;
-		currentIcon.addFile(":icons/message_32x32.png");
-		currentIcon.addFile(":icons/message_16x16.png");
-		setWindowIcon(currentIcon);
-	}
+		setContactStatusIcon("message");
 	else
-	{
-		if (session->contact()->isConference())
-			setWindowIcon(QIcon(":/icons/msg_conference.png"));
-		else
-			setWindowIcon(session->contact()->status().statusIcon());
-	}
-	emit setMainWindowIconAndTitle(windowIcon(), this);
+		setContactStatusIcon();
 	if (timer->isActive())
 		timer->stop();
 }
 
 void ChatWindow::slotMakeRead()
 {
-	qDebug() << "ChatWindow::slotMakeRead";
+	qDebug() << "ChatWindow::slotMakeRead" << isNewMessage;
 	if (isNewMessage)
 	{
 		isNewMessage = false;
-		if (session->contact()->isConference())
-			setWindowIcon(QIcon(":/icons/msg_conference.png"));
-		else
-			setWindowIcon(session->contact()->status().statusIcon());
-		emit setMainWindowIconAndTitle(windowIcon(), this);
+		setContactStatusIcon();
 	}
 }
 
@@ -677,8 +656,8 @@ void ChatWindow::slotFileTransferred(FileMessage::Status action, QString filesIn
 	vScrollBar->triggerAction(QAbstractSlider::SliderToMaximum);
 }
 
-/*void ChatWindow::setIgnore(bool ignore)
+void ChatWindow::setContactStatusIcon(QString type)
 {
-qDebug() << "Ignore set as" << ignore;
-	ignoreFont = ignore;
-}*/
+	setWindowIcon(session->contact()->chatWindowIcon(type));
+	emit setMainWindowIconAndTitle(windowIcon(), this);
+}

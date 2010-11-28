@@ -1412,6 +1412,11 @@
         <translation>Отправлять сообщение при нажатии Enter</translation>
     </message>
     <message>
+        <location filename="../settingswindow.cpp" line="111"/>
+        <source>Type extended online statuses count (5-10):</source>
+        <translation>Введите количество дополнительных статусов (5-10):</translation>
+    </message>
+    <message>
         <location filename="../settingswindow.cpp" line="166"/>
         <source>Send message on double Enter pressed</source>
         <translation>Отправлять сообщение при двойном нажатии Enter</translation>

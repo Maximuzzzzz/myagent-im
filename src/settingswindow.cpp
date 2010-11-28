@@ -108,7 +108,7 @@ void SettingsWindow::createCommonPage()
 	connect(awayCheckBox, SIGNAL(toggled(bool)), minutesEdit, SLOT(setEnabled(bool)));
 	minutesEdit->setEnabled(awayCheckBox->isChecked());
 	QLabel* tailLabel = new QLabel(tr("minutes of idle"));
-	QLabel* labelOnlineStatuses = new QLabel("Type extended online statuses count (5-10):");
+	QLabel* labelOnlineStatuses = new QLabel(tr("Type extended online statuses count (5-10):"));
 	onlineStatusesCount = new QLineEdit;
 	onlineStatusesCount->setValidator(new QIntValidator(5, 10, minutesEdit));
 	onlineStatusesCount->setFixedWidth(minutesEdit->fontMetrics().size(Qt::TextSingleLine, "1000").width());
