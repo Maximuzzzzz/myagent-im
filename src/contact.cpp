@@ -49,9 +49,13 @@ Contact::Contact(Account* account)
 void Contact::update(const ContactData & contactData, ContactGroup * group)
 {
 	qDebug() << "Contact::update email = " << data.email << "contactData email = " << contactData.email;
+	qDebug() << "Nickname = " << contactData.nick;
 	data = contactData;
+	qDebug() << "New nickname = " << data.nick;
 	m_group = group;
 
+	if (isConference())
+		m_activeConference = true;
 	emit statusChanged(status());
 	emit renamed(data.nick);
 	emit phonesChanged();
@@ -237,7 +241,7 @@ bool Contact::isPhone() const
 
 bool Contact::isTemporary() const
 {
-	return (m_group == 0) && !isPhone();
+	return (m_group == 0) && !isPhone() && !(isConference() && m_activeConference);
 }
 
 void Contact::load(QDataStream& stream)

@@ -537,10 +537,12 @@ void ContactList::newConferenceOnServerEnd(quint32 status, bool timeout)
 
 	Tasks::NewConference* task = qobject_cast<Tasks::NewConference*>(sender());
 
+	qDebug() << "Contact name:" << task->contactData().nick;
 	Contact* contact = findContact(task->contactData().email);
 	if (contact)
-	{
-		if (contact->isTemporary())
+//	{
+		contact->update(task->contactData(), contact->group());
+/*		if (contact->isTemporary())
 		{
 			qDebug() << "addContactOnServerEnd remove temporary contact";
 			m_contacts.removeAll(contact);
@@ -550,11 +552,10 @@ void ContactList::newConferenceOnServerEnd(quint32 status, bool timeout)
 		{
 			qDebug() << "ContactList::addContactOnServerEnd: strange error: contact added but it is already in contactlist";
 			return;
-		}
-	}
-
-	qDebug() << "Conference name:" << task->contactData().nick;
-	contact = addContact(task->contactData());
+		}*/
+//	}
+	else
+		contact = addContact(task->contactData());
 }
 
 bool ContactList::addSmsContactOnServer(const QString & nickname, const QStringList & phones)

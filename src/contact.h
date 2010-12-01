@@ -63,7 +63,7 @@ public:
 	bool hasPhone(QByteArray phoneNumber) const;
 	bool changeGroup(quint32 group);
 	QIcon chatWindowIcon(QString type = "");
-	
+
 	ContactData contactData() const { return data; }
 	
 	void load(QDataStream& stream);
@@ -99,6 +99,7 @@ private:
 	ContactData data;
 	ContactGroup* m_group;
 	Account* m_account;
+	bool m_activeConference;
 };
 
 #endif

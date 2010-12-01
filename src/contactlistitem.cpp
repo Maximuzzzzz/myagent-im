@@ -64,8 +64,7 @@ ContactListItem::ContactListItem(Contact* contact)
 	f.setPointSize(9);
 	setFont(f);
 
-	if (!m_contact->isConference())
-		connect(m_contact, SIGNAL(renamed(QString)), this, SLOT(rename(const QString&)));
+	connect(m_contact, SIGNAL(renamed(QString)), this, SLOT(rename(const QString&)));
 	connect(m_contact, SIGNAL(destroyed(QObject*)), this, SLOT(destroyItem()));
 }
 
@@ -146,5 +145,6 @@ void ContactListItem::checkVisibility()
 
 void ContactListItem::rename(const QString & nickname)
 {
+	qDebug() << "ContactListItem::rename" << nickname;
 	setText(nickname);
 }

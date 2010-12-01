@@ -1,7 +1,4 @@
-- There'are empty messages appear
-- If user or interlocutor writes message one after another, there's no reason to write message header again
 - Ignore list
-- Saving history in html-file
 - Check contact adding and autorization
 - Deleting history during deleting contact (by user choise)
 - Filter for conferences
@@ -9,7 +6,6 @@
 - Add group "old archives", which contains deleted users, history of whom was not deleted. Deleting contact from this group will delete log
 - Add interlocutors list in conferences
 - Automatically login (saving passwords)
-- In active chat window: when incomes message by user, window chat of which is not opened, imposition chat windows appears
 - Add multicast
 - Add microblog for contacts
 - Adding and deleting groups in contact list without fully contact list updating

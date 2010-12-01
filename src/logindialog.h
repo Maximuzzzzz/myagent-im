@@ -47,6 +47,8 @@ private:
 	bool extendedStatus;
 	QByteArray statusId;
 	QString statusDescr;
+
+	QList<QByteArray> statusList;
 };
 
 #endif

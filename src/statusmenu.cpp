@@ -39,12 +39,18 @@ StatusMenu::StatusMenu(Account* acc, QWidget* parent)
 
 	QActionGroup* statusActions = new QActionGroup(this);
 
-	statusActions->addAction(createStatusAction(OnlineStatus::online));
-	statusActions->addAction(createStatusAction(OnlineStatus::chatOnline));
-	statusActions->addAction(createStatusAction(OnlineStatus::away));
-	statusActions->addAction(createStatusAction(OnlineStatus::invisible));
-	statusActions->addAction(createStatusAction(OnlineStatus::dndOnline));
-	statusActions->addAction(createStatusAction(OnlineStatus::offline));
+	OnlineStatus onlineStatus;
+	QList<QByteArray> statuses;
+	statuses << "status_1" << "status_dating" << "status_chat" << "status_2" << "status_3" << "status_dnd";
+	QList<QByteArray>::const_iterator it;
+	for (it = statuses.begin(); it != statuses.end(); ++it)
+	{
+		onlineStatus.setIdStatus(*it);
+		if (theRM.onlineStatuses()->getOnlineStatusInfo(onlineStatus.id())->available() == "1")
+			statusActions->addAction(createStatusAction(onlineStatus));
+	}
+	onlineStatus.setIdStatus("status_0");
+	statusActions->addAction(createStatusAction(onlineStatus));
 
 	addActions(statusActions->actions());
 

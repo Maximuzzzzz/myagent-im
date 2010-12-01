@@ -50,7 +50,7 @@ private slots:
 	void changeGroup(bool indeed);
 	void destroyItem();
 	void checkVisibility();
-	void rename(const QString& nickname);
+	void rename(const QString & nickname);
 private:
 	Contact* m_contact;
 	ContactGroup* m_group;

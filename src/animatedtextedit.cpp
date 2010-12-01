@@ -59,7 +59,7 @@ void AnimatedTextEdit::insertFromMimeData(const QMimeData * source)
 		qDebug() << "insertFromMimeData: " << source->data("text/rtf");
 		QTextDocument selectionDoc;
 		RtfParser rtfParser;
-		rtfParser.parse(source->data("text/rtf"), &selectionDoc);
+		rtfParser.parseToTextDocument(source->data("text/rtf"), &selectionDoc);
 		this->textCursor().insertFragment(QTextDocumentFragment(&selectionDoc));
 		this->ensureCursorVisible();
 	}

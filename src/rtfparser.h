@@ -27,6 +27,7 @@
 #include <QStack>
 #include <QTextCharFormat>
 #include <QTextCursor>
+#include <QPointer>
 #include "emoticons.h"
 
 class QTextDocument;
@@ -46,6 +47,8 @@ public:
 	RtfLevel();
 	RtfLevel(RtfParser* p);
 	RtfLevel(const RtfLevel&);
+	~RtfLevel();
+
 	void setFontTbl() { m_bFontTable = true; }
 	void setColors() { m_bColors = true; resetColors(); }
 	void setRed(unsigned char val) { setColor(val, &m_nRed); }
@@ -88,7 +91,17 @@ private:
 
 	//enum State { Free, FontTable, ColorTable };
 	//State state;
-	
+
+	QString openFontTag();
+	QString openStyleAttribute();
+	QString closeFontTag();
+	QString closeStyleAttribute();
+	QString finishFontTag();
+	QString finishUrlTag();
+	QString finishTags();
+	QString closeTags();
+	QString closeUrlTag();
+
 // True when parsing the fonts table
 	bool m_bFontTable;
 // True when parsing the colors table.
@@ -108,6 +121,16 @@ private:
 	bool m_bBold;
 	bool m_bItalic;
 	bool m_bUnderline;
+
+	bool m_isUrlTag;
+	bool m_isUrlEditing;
+	bool m_isFontTag;
+	bool m_isFontEditing;
+	bool m_isStyleAttribute;
+
+	bool m_textSet;
+
+	QString m_html;
 };
 
 class RtfParser
@@ -117,7 +140,9 @@ public:
 	RtfParser();
 	~RtfParser();
 	
-	void parse(QByteArray rtf, QTextDocument* doc, int defR = -1, int defG = -1, int defB = -1, int defSize = -1, QString fontFamily = "");
+	void parse(QByteArray rtf, int defR = -1, int defG = -1, int defB = -1, int defSize = 1, QString fontFamily = "");
+	void parseToTextDocument(QByteArray rtf, QTextDocument* doc, int defR = -1, int defG = -1, int defB = -1, int defSize = -1, QString fontFamily = "");
+	void parseToHTML(QByteArray rtf, QString & html);
 	
 private:	
 	// Fonts table.
@@ -129,6 +154,11 @@ private:
 	
 	RtfLevel curLevel;
 	QStack<RtfLevel> levels;
+
+	QTextDocument* m_doc;
+	QString m_html;
+
+	int m_type;
 };
 
 #endif

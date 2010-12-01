@@ -14,6 +14,7 @@ const OnlineStatus OnlineStatus::online = OnlineStatus("status_1");
 const OnlineStatus OnlineStatus::connecting = OnlineStatus("status_connecting");
 const OnlineStatus OnlineStatus::unauthorized = OnlineStatus("status_gray");
 const OnlineStatus OnlineStatus::chatOnline = OnlineStatus("status_chat");
+const OnlineStatus OnlineStatus::seekFriends = OnlineStatus("status_dating");
 const OnlineStatus OnlineStatus::dndOnline = OnlineStatus("status_dnd");
 const OnlineStatus OnlineStatus::otherOnline = OnlineStatus("");
 const OnlineStatus OnlineStatus::wrongData = OnlineStatus("wrong_data");
@@ -25,18 +26,7 @@ OnlineStatus::OnlineStatus(QByteArray idStatus, QString statusDescr)
 	m_defaultDescrStatuses << tr("Working") << tr("Smoking") << tr("Coffee") << tr("In love") << tr("Education") << tr("Dreaming") << tr("Home") << tr("Breakfast") << tr("Sick") << tr("All people are alike, only I'm a star");
 	m_onlineStatuses = theRM.onlineStatuses();
 	setMType();
-	if (statusDescr != "" || m_type == OtherOnline)
-		if (idStatus == "status_chat")
-			m_statusDescr = tr("Ready to talk");
-		else if (idStatus == "status_dnd")
-			m_statusDescr = tr("Don't disturb");
-		else
-			m_statusDescr = statusDescr;
-	else
-	{
-		m_statusDescr = description();
-		qDebug() << m_statusDescr << description();
-	}
+	setDescr(statusDescr);
 }
 
 QString OnlineStatus::description() const
@@ -89,11 +79,9 @@ void OnlineStatus::setIdStatus(QByteArray status)
 {
 	m_idStatus = status;
 	setMType();
+	setDescr(m_statusDescr);
 	if (m_type != OtherOnline)
-	{
 		m_statusDescr = description();
-		qDebug() << m_statusDescr << description();
-	}
 }
 
 quint32 OnlineStatus::protocolStatus() const
@@ -178,5 +166,15 @@ void OnlineStatus::setMType()
 
 void OnlineStatus::setDescr(QString descr)
 {
-	m_statusDescr = descr;
+	if (descr != "" || m_type == OtherOnline)
+		if (m_idStatus == "status_chat")
+			m_statusDescr = tr("Free for chat");
+		else if (m_idStatus == "status_dnd")
+			m_statusDescr = tr("Do not disturb");
+		else if (m_idStatus == "status_dating")
+			m_statusDescr = tr("Get acquainted");
+		else
+			m_statusDescr = descr;
+	else
+		m_statusDescr = description();
 }

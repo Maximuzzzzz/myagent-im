@@ -66,9 +66,9 @@ QTextDocumentFragment Message::documentFragment(int defR, int defG, int defB, in
 	{
 		RtfParser rtfParser;
 		if (defR > -1)
-			rtfParser.parse(m_rtfText, &doc, defR, defG, defB, defSize, fontFamily);
+			rtfParser.parseToTextDocument(m_rtfText, &doc, defR, defG, defB, defSize, fontFamily);
 		else
-			rtfParser.parse(m_rtfText, &doc); /*TODO: add font family and all values will be taken from chatwindow*/
+			rtfParser.parseToTextDocument(m_rtfText, &doc); /*TODO: add font family and all values will be taken from chatwindow*/
 	}
 	else
 	{

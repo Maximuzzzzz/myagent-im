@@ -100,6 +100,12 @@ RtfLevel::RtfLevel(const RtfLevel &l) :
 	init();
 }
 
+RtfLevel::~RtfLevel()
+{
+	if (m_textSet)
+		m_html += finishTags();
+}
+
 void RtfLevel::init()
 {
 	m_nFontColor = 0;
@@ -109,6 +115,14 @@ void RtfLevel::init()
 	m_bBold = false;
 	m_bItalic = false;
 	m_bUnderline = false;
+
+	m_isUrlTag = false;
+	m_isUrlEditing = false;
+	m_isFontTag = false;
+	m_isFontEditing = false;
+	m_isStyleAttribute = false;
+
+	m_textSet = false;
 
 	codec = QTextCodec::codecForName("cp1251");
 }
@@ -155,10 +169,15 @@ void RtfLevel::setFont(int nFont)
 
 void RtfLevel::setFont(QString fontFamily)
 {
-	QTextCharFormat fmt;
-	//qDebug() << "font name = " << parser->fonts[nFont-1].name;
-	fmt.setFontFamily(fontFamily);
-	parser->cursor.mergeCharFormat(fmt);
+	if (parser->m_type == 0)
+	{
+		QTextCharFormat fmt;
+		//qDebug() << "font name = " << parser->fonts[nFont-1].name;
+		fmt.setFontFamily(fontFamily);
+		parser->cursor.mergeCharFormat(fmt);
+	}
+	else if (parser->m_type == 1)
+		m_html += openFontTag() + openStyleAttribute() + "font-family: " + fontFamily + QString(";");
 }
 
 void RtfLevel::setText(const char* str)
@@ -198,16 +217,21 @@ void RtfLevel::setText(const char* str)
 	else
 	{
 		QString text = codec->toUnicode(str);
-		//qDebug() << "insert text " << text;
-		parser->cursor.insertText(text);
+		qDebug() << "insert text " << text;
+		if (parser->m_type == 0)
+			parser->cursor.insertText(text);
+		else if (parser->m_type == 1)
+		{
+			m_html += closeTags() + text;
+			m_textSet = true;
+			parser->m_html += text;
+		}
 	}
 }
 
 void RtfLevel::setUrl(const char* str)
 {
-	qDebug() << "RtfLevel::setUrl";
 	QString text = codec->toUnicode(str);
-	//qDebug() << "url = " << text;
 	QUrl url(text);
 	if (!url.isValid())
 	{
@@ -215,15 +239,26 @@ void RtfLevel::setUrl(const char* str)
 		setText(str);
 		return;
 	}
-	QTextCharFormat cf = parser->cursor.charFormat();
-	QTextCharFormat fmt = cf;
-	fmt.setAnchorHref(text);
-	fmt.setAnchor(true);
-	fmt.setForeground(Qt::blue);
-	fmt.setFontUnderline(true);
-	parser->cursor.setCharFormat(fmt);
-	parser->cursor.insertText(text);
-	parser->cursor.setCharFormat(cf);
+	if (parser->m_type == 0)
+	{
+		QTextCharFormat cf = parser->cursor.charFormat();
+		QTextCharFormat fmt = cf;
+		fmt.setAnchorHref(text);
+		fmt.setAnchor(true);
+		fmt.setForeground(Qt::blue);
+		fmt.setFontUnderline(true);
+		parser->cursor.setCharFormat(fmt);
+		parser->cursor.insertText(text);
+		parser->cursor.setCharFormat(cf);
+	}
+	else if (parser->m_type == 1)
+	{
+		m_html += finishUrlTag() + closeTags() + "<a href=\"" + text + "\">" + text + "</a>";
+		m_textSet = true;
+		parser->m_html += "<a href=\"" + text + "\">" + text + "</a>";
+/*		m_isUrlTag = true;
+		m_isUrlEditing = true;*/
+	}
 }
 
 void RtfLevel::setImage(QString id)
@@ -234,12 +269,24 @@ void RtfLevel::setImage(QString id)
 		if (!info)
 		{
 			//qDebug() << "RtfLevel::setImage: insert text " << id;
-			parser->cursor.insertText(id);
+			if (parser->m_type == 0)
+				parser->cursor.insertText(id);
+			else if (parser->m_type == 1)
+				m_html += closeTags() + id;
 		}
 		else
 		{
-			EmoticonFormat fmt(parser->cursor.charFormat(), id);
-			parser->cursor.insertText(QString(QChar::ObjectReplacementCharacter), fmt);
+			if (parser->m_type == 0)
+			{
+				EmoticonFormat fmt(parser->cursor.charFormat(), id);
+				parser->cursor.insertText(QString(QChar::ObjectReplacementCharacter), fmt);
+			}
+			else if (parser->m_type == 1)
+			{
+				m_html += closeTags() + id;
+				m_textSet = true;
+				parser->m_html += id;
+			}
 		}
 	}
 }
@@ -260,40 +307,89 @@ void RtfLevel::setSmile(const char* str)
 	if (!info)
 	{
 		qDebug() << "PlainTextParser::setSmile: insert text " << smile;
-		parser->cursor.insertText(smile);
+		if (parser->m_type == 0)
+			parser->cursor.insertText(smile);
+		else if (parser->m_type == 1)
+		{
+			m_html += closeTags() + smile;
+			m_textSet = true;
+			parser->m_html += smile;
+		}
 	}
 	else
 	{
-		EmoticonFormat fmt(parser->cursor.charFormat(), id);
-		parser->cursor.insertText(QString(QChar::ObjectReplacementCharacter), fmt);
+		if (parser->m_type == 0)
+		{
+			EmoticonFormat fmt(parser->cursor.charFormat(), id);
+			parser->cursor.insertText(QString(QChar::ObjectReplacementCharacter), fmt);
+		}
+		else if (parser->m_type == 1)
+		{
+			m_html += closeTags() + QString(QChar::ObjectReplacementCharacter);
+			m_textSet = true;
+			parser->m_html += QString(":") + id + QString(":");
+		}
 	}
 }
 
 void RtfLevel::startParagraph()
 {
-	//qDebug() << "start block";
-	parser->cursor.insertBlock();
+	if (parser->m_type == 0)
+		parser->cursor.insertBlock();
 }
 
 void RtfLevel::setItalic(bool b)
 {
-	QTextCharFormat fmt;
-	fmt.setFontItalic(b);
-	parser->cursor.mergeCharFormat(fmt);
+	if (parser->m_type == 0)
+	{
+		QTextCharFormat fmt;
+		fmt.setFontItalic(b);
+		parser->cursor.mergeCharFormat(fmt);
+	}
+	else if (parser->m_type == 1)
+	{
+		if (b)
+			m_html += closeTags() + "<i>";
+		else if (m_bItalic)
+			m_html += closeTags() + "</i>";
+		m_bItalic = b;
+	}
 }
 
 void RtfLevel::setBold(bool b)
 {
-	QTextCharFormat fmt;
-	fmt.setFontWeight(b? QFont::Bold : QFont::Normal);
-	parser->cursor.mergeCharFormat(fmt);
+	if (parser->m_type == 0)
+	{
+		QTextCharFormat fmt;
+		fmt.setFontWeight(b? QFont::Bold : QFont::Normal);
+		parser->cursor.mergeCharFormat(fmt);
+	}
+	else if (parser->m_type == 1)
+	{
+		if (b)
+			m_html += closeTags() + "<b>";
+		else if (m_bBold)
+			m_html += closeTags() + "</b>";
+		m_bBold = b;
+	}
 }
 
 void RtfLevel::setUnderline(bool b)
 {
-	QTextCharFormat fmt;
-	fmt.setFontUnderline(b);
-	parser->cursor.mergeCharFormat(fmt);
+	if (parser->m_type == 0)
+	{
+		QTextCharFormat fmt;
+		fmt.setFontUnderline(b);
+		parser->cursor.mergeCharFormat(fmt);
+	}
+	else if (parser->m_type == 1)
+	{
+		if (b)
+			m_html += closeTags() + "<u>";
+		else if (m_bUnderline)
+			m_html += closeTags() + "</u>";
+		m_bUnderline = b;
+	}
 }
 
 void RtfLevel::setFontColor(unsigned short nColor)
@@ -309,10 +405,17 @@ void RtfLevel::setFontColor(unsigned short nColor)
 		c = parser->colors[m_nFontColor-1];
 	
 	//qDebug() << "color = " << c;
-	
-	QTextCharFormat fmt;
-	fmt.setForeground(c);
-	parser->cursor.mergeCharFormat(fmt);
+
+	if (parser->m_type == 0)
+	{
+		QTextCharFormat fmt;
+		fmt.setForeground(c);
+		parser->cursor.mergeCharFormat(fmt);
+	}
+	else if (parser->m_type == 1)
+	{
+		m_html += openStyleAttribute() + "color: rgb(" + QString::number(c.red()) + ", " + QString::number(c.green()) + ", " + QString::number(c.blue()) + QString(");");
+	}
 }
 
 void RtfLevel::setBackgroundColor(unsigned short nColor)
@@ -328,28 +431,139 @@ void RtfLevel::setBackgroundColor(unsigned short nColor)
 		c = parser->colors[m_nBackgroundColor-1];
 	
 	//qDebug() << "color = " << c;
-	
-	QTextCharFormat fmt;
-	fmt.setBackground(c);
-	parser->cursor.mergeCharFormat(fmt);
+
+	if (parser->m_type == 0)
+	{
+		QTextCharFormat fmt;
+		fmt.setBackground(c);
+		parser->cursor.mergeCharFormat(fmt);
+	}
 }
 
 void RtfLevel::setFontSizeHalfPoints(unsigned short sizeInHalfPoints)
 {
-	QTextCharFormat fmt;
-	fmt.setFontPointSize(sizeInHalfPoints/2);
-	parser->cursor.mergeCharFormat(fmt);
+	if (parser->m_type == 0)
+	{
+		QTextCharFormat fmt;
+		fmt.setFontPointSize(sizeInHalfPoints/2);
+		parser->cursor.mergeCharFormat(fmt);
+	}
+	else if (parser->m_type == 1)
+	{
+		if (m_nFontSize != sizeInHalfPoints)
+			m_html += openStyleAttribute() + "font-size: " + QString::number(sizeInHalfPoints + 10) + QString("pt;");
+		m_nFontSize = sizeInHalfPoints;
+	}
 }
 
 void RtfLevel::storeCharFormat()
 {
-	previousCharFormat = parser->cursor.charFormat();
+	if (parser->m_type == 0)
+		previousCharFormat = parser->cursor.charFormat();
 }
 
 void RtfLevel::restoreCharFormat()
 {
-	parser->cursor.setCharFormat(previousCharFormat);
+	if (parser->m_type == 0)
+		parser->cursor.setCharFormat(previousCharFormat);
 }
+
+QString RtfLevel::openFontTag()
+{
+	if (!m_isFontTag)
+	{
+		QString res = finishTags();
+		m_isFontTag = true;
+		m_isFontEditing = true;
+		return res + "<font";
+	}
+	else
+		return "";
+}
+
+QString RtfLevel::closeFontTag()
+{
+	if (m_isFontTag)
+	{
+		m_isFontTag = false;
+		return closeStyleAttribute() + ">";
+	}
+	else
+		return "";
+}
+
+QString RtfLevel::openStyleAttribute()
+{
+	if (!m_isStyleAttribute)
+	{
+		m_isStyleAttribute = true;
+		return openFontTag() + " style=\"";
+	}
+	else
+		return "";
+}
+
+QString RtfLevel::closeStyleAttribute()
+{
+	if (m_isStyleAttribute)
+	{
+		m_isStyleAttribute = false;
+		return QString("\"");
+	}
+	else
+		return "";
+}
+
+QString RtfLevel::finishFontTag()
+{
+	if (m_isFontEditing)
+	{
+		m_isFontEditing = false;
+		return closeFontTag() + "</font>";
+	}
+	else
+		return "";
+}
+
+QString RtfLevel::finishUrlTag()
+{
+	if (m_isUrlEditing)
+	{
+		m_isUrlEditing = false;
+		return closeUrlTag() + "</a>";
+	}
+	else
+		return "";
+}
+
+QString RtfLevel::finishTags()
+{
+	return finishUrlTag() + finishFontTag();
+}
+
+QString RtfLevel::closeTags()
+{
+	if (m_isFontTag || m_isUrlTag)
+	{
+		m_isFontTag = false;
+		m_isUrlTag = false;
+		return closeStyleAttribute() + ">";
+	}
+	else
+		return "";
+}
+
+QString RtfLevel::closeUrlTag()
+{
+	if (m_isUrlTag)
+	{
+		m_isUrlTag = false;
+		return QString(">");
+	}
+	else
+		return "";
+}
+
 
 RtfParser::RtfParser()
 	: curLevel(this)
@@ -418,9 +632,10 @@ static char h2d(char c)
 }
 
 
-void RtfParser::parse(QByteArray rtf, QTextDocument* doc, int defR, int defG, int defB, int defSize, QString fontFamily)
+void RtfParser::parse(QByteArray rtf, int defR, int defG, int defB, int defSize, QString fontFamily)
 {
-	cursor = QTextCursor(doc);
+	if (m_type == 0)
+		cursor = QTextCursor(m_doc);
 	
 	YY_BUFFER_STATE yy_current_buffer = yy_scan_bytes(rtf.data(), rtf.size());
 	for (;;)
@@ -462,7 +677,10 @@ void RtfParser::parse(QByteArray rtf, QTextDocument* doc, int defR, int defG, in
 			}
 		case UNICODE_CHAR:
 			{
-				cursor.insertText(QChar((unsigned short)(atol(yytext + 2))));
+				if (m_type == 0)
+					cursor.insertText(QChar((unsigned short)(atol(yytext + 2))));
+				else if (m_type == 1)
+					m_html += QChar((unsigned short)(atol(yytext + 2)));
 				break;
 			}
 		case SLASH:
@@ -564,4 +782,18 @@ void RtfParser::parse(QByteArray rtf, QTextDocument* doc, int defR, int defG, in
 	yy_current_buffer = NULL;
 	
 	levels.clear();
+}
+
+void RtfParser::parseToTextDocument(QByteArray rtf, QTextDocument* doc, int defR, int defG, int defB, int defSize, QString fontFamily)
+{
+	m_type = 0;
+	m_doc = doc;
+	parse(rtf, defR, defG, defB, defSize, fontFamily);
+}
+
+void RtfParser::parseToHTML(QByteArray rtf, QString & html)
+{
+	m_type = 1;
+	parse(rtf);
+	html = m_html;
 }

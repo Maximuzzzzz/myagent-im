@@ -882,7 +882,7 @@ void MRIMClientPrivate::processOfflineMessageAck(QByteArray data)
 	qDebug() << mimeMsg.plainTextCharset();
 	qDebug() << mimeMsg.xMrimMultichatType();*/
 
-	qDebug() << mimeMsg.xMrimFlags() << MESSAGE_FLAG_NORECV << (mimeMsg.xMrimFlags() & MESSAGE_FLAG_NORECV);
+	qDebug() << mimeMsg.xMrimFlags() << mimeMsg.xMrimMultichatType();
 
 	QString plainText;
 	if (mimeMsg.hasPlainText())
@@ -902,25 +902,7 @@ void MRIMClientPrivate::processOfflineMessageAck(QByteArray data)
 
 	qDebug() << rtfText;
 
-	Message* newMsg;
-	if (mimeMsg.xMrimFlags() & MESSAGE_FLAG_CONFERENCE)
-	{
-		switch(mimeMsg.xMrimMultichatType())
-		{
-			case 5:
-				plainText = tr("User %1 left the conference").arg(codec->toUnicode(mimeMsg.sender()));
-				break;
-			case 7:
-				if (!account->contactList()->findContact(mimeMsg.from()))
-					emit q->conferenceAsked(mimeMsg.from(), mimeMsg.subject());
-				break;
-		}
-		newMsg = new Message(Message::Incoming, mimeMsg.xMrimFlags(), plainText, rtfText, bgColor, mimeMsg.sender(), mimeMsg.dateTime());
-	}
-	else
-		newMsg = new Message(Message::Incoming, mimeMsg.xMrimFlags(), plainText, rtfText, bgColor, "", mimeMsg.dateTime());
-
-/*	if (!(mimeMsg.xMrimFlags() & MESSAGE_FLAG_NORECV))
+	/*if (!(mimeMsg.xMrimFlags() & MESSAGE_FLAG_NORECV))
 	{*/
 		qDebug() << "sending reply";
 
@@ -929,7 +911,27 @@ void MRIMClientPrivate::processOfflineMessageAck(QByteArray data)
 
 		out << uidl;
 		sendPacket(MRIM_CS_DELETE_OFFLINE_MESSAGE, replyData);
-//	}
+	//}
+
+	Message* newMsg;
+	if (mimeMsg.xMrimFlags() & MESSAGE_FLAG_CONFERENCE)
+	{
+		switch(mimeMsg.xMrimMultichatType())
+		{
+			case 0:
+				if (!account->contactList()->findContact(mimeMsg.from()))
+					emit q->conferenceAsked(mimeMsg.from(), mimeMsg.subject());
+				break;
+			case 5:
+				plainText = tr("User %1 left the conference").arg(codec->toUnicode(mimeMsg.sender()));
+				break;
+			case 7:
+				return;
+		}
+		newMsg = new Message(Message::Incoming, mimeMsg.xMrimFlags(), plainText, rtfText, bgColor, mimeMsg.sender(), mimeMsg.dateTime());
+	}
+	else
+		newMsg = new Message(Message::Incoming, mimeMsg.xMrimFlags(), plainText, rtfText, bgColor, "", mimeMsg.dateTime());
 
 	if (mimeMsg.xMrimFlags() & MESSAGE_FLAG_AUTHORIZE)
 	{
@@ -940,9 +942,6 @@ void MRIMClientPrivate::processOfflineMessageAck(QByteArray data)
 
 		return;
 	}
-
-	if (mimeMsg.xMrimFlags() & MESSAGE_FLAG_CONFERENCE && mimeMsg.xMrimMultichatType() == 7)
-		return;
 
 	emit q->messageReceived(mimeMsg.from(), newMsg);
 }

@@ -37,6 +37,8 @@ class EmoticonInfo
 	QString id_;
 	QString alt_;
 	QString tip_;
+	QString width_;
+	QString height_;
 	QString iconPath_;
 
 	void clear() { id_ = alt_ = tip_ = iconPath_ = ""; }
@@ -44,6 +46,8 @@ public:
 	const QString id() const { return id_; }
 	const QString alt() const { return alt_; }
 	const QString tip() const { return tip_; }
+	const QString width() const { return width_; }
+	const QString height() const { return height_; }
 	const QString path() const { return iconPath_; }
 };
 
@@ -52,15 +56,20 @@ class EmoticonSet
 	friend class Emoticons;
 
 	QString title_;
+	QString logo_;
 	QList<EmoticonInfo*> emoticonInfos;
+	QStringList m_list;
 public:
 	~EmoticonSet() { qDeleteAll(emoticonInfos); }
 	QString title() const { return title_; }
+	QString logo() const { return logo_; }
 
 	typedef QList<EmoticonInfo*>::const_iterator const_iterator;
 	const_iterator begin() const { return emoticonInfos.begin(); }
 	const_iterator end() const { return emoticonInfos.end(); }
 	int size() const { return emoticonInfos.size(); }
+
+	QStringList list() { return m_list; }
 };
 
 class Emoticons

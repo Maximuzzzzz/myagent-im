@@ -63,7 +63,7 @@ void Emoticons::load(QString filename, QSettings* settings)
 	enum States { Initial, Smiles, Smileset, Obj, Icon };
 	States state = Initial;
 
-	enum Attrs { Empty, Path, Id, Alt, Tip, Src, Title };
+	enum Attrs { Empty, Path, Id, Alt, Tip, Src, Title, Logo, Width, Height };
 	Attrs attr = Empty;
 
 	QTextCodec* codec = QTextCodec::codecForName("cp1251");
@@ -94,6 +94,9 @@ void Emoticons::load(QString filename, QSettings* settings)
 			emoticonSet = new EmoticonSet;
 			break;
 		case SMILESET_END:
+			if (emoticonSet->logo_ != "")
+				emoticonSet->logo_ = smilesetPath + emoticonSet->logo_;
+			qDebug() << "emoticonSet:" << emoticonSet->title_ << emoticonSet->logo_;
 			emoticonSets.append(emoticonSet);
 			emoticonSet = NULL;
 			break;
@@ -106,7 +109,10 @@ void Emoticons::load(QString filename, QSettings* settings)
 		case OBJ_END:
 			idToEmoticonMap[emoticonInfo->id()] = emoticonInfo;
 			if (emoticonSet)
+			{
 				emoticonSet->emoticonInfos.append(emoticonInfo);
+				emoticonSet->m_list.append(emoticonInfo->id());
+			}
 			emoticonInfo = NULL;
 			break;
 		case ICON_:
@@ -130,6 +136,8 @@ void Emoticons::load(QString filename, QSettings* settings)
 						smilesetPath = smilesPath + str;
 					else if (attr == Title)
 						emoticonSet->title_ = str;
+					else if (attr == Logo)
+						emoticonSet->logo_ = str;
 				}
 				else if (state == Obj)
 				{
@@ -143,6 +151,12 @@ void Emoticons::load(QString filename, QSettings* settings)
 						break;
 					case Tip:
 						emoticonInfo->tip_ = str;
+						break;
+					case Width:
+						emoticonInfo->width_ = str;
+						break;
+					case Height:
+						emoticonInfo->height_ = str;
 						break;
 					default:
 						break;
@@ -171,6 +185,12 @@ void Emoticons::load(QString filename, QSettings* settings)
 					attr = Src;
 				else if (attrName == "title")
 					attr = Title;
+				else if (attrName == "width")
+					attr = Width;
+				else if (attrName == "height")
+					attr = Height;
+				else if (attrName == "logo")
+					attr = Logo;
 				else
 					attr = Empty;
 			}

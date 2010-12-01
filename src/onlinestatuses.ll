@@ -61,7 +61,7 @@ void OnlineStatuses::load(QString filename)
 	enum States { Initial, Status, Statusset, Obj };
 	States state = Initial;
 
-	enum Attrs { Empty, Path, Id, Icon, BuiltIn };
+	enum Attrs { Empty, Path, Id, Icon, BuiltIn, Available };
 	Attrs attr = Empty;
 
 	QTextCodec* codec = QTextCodec::codecForName("cp1251");
@@ -138,6 +138,9 @@ void OnlineStatuses::load(QString filename)
 					case BuiltIn:
 						onlineStatusInfo->builtin_ = str;
 						break;
+					case Available:
+						onlineStatusInfo->available_ = str;
+						break;
 					default:
 						break;
 					}
@@ -156,6 +159,8 @@ void OnlineStatuses::load(QString filename)
 					attr = Icon;
 				else if (attrName == "builtin")
 					attr = BuiltIn;
+				else if (attrName == "available")
+					attr = Available;
 				else
 					attr = Empty;
 			}

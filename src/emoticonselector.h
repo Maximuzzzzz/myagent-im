@@ -24,16 +24,48 @@
 #define EMOTICONSELECTOR_H
 
 #include <QFrame>
+#include <QTabWidget>
+#include <QGridLayout>
 
 class QToolBox;
 class EmoticonMovie;
+class EmoticonSelector;
+
+class EmoticonSelectorPage : public QWidget
+{
+Q_OBJECT
+public:
+	EmoticonSelectorPage(EmoticonSelector* parent, QStringList set, bool isFav = false);
+        ~EmoticonSelectorPage();
+
+	void correctSize();
+
+private slots:
+	void setupFavouriteEmoticons();
+
+private:
+	QWidget* createEmoticonsWidget(/*int emoticonsPerRow*/);
+	void setCurrentLayout();
+	QStringList m_set;
+
+private:
+	typedef QList<EmoticonMovie*> MovieList;
+	MovieList movieList;
+	QWidget* emotions;
+	EmoticonSelector* m_parentSelector;
+	QGridLayout* gridLayout;
+	bool m_isFav;
+};
 
 class EmoticonSelector : public QFrame
 {
 Q_OBJECT
 public:
-	EmoticonSelector(QWidget *parent = 0);
+	EmoticonSelector(QWidget* parent = 0);
 	~EmoticonSelector();
+
+public slots:
+	void  slotClicked(QString id);
 
 signals:
 	void selected(QString id);
@@ -42,19 +74,9 @@ signals:
 protected:
 	virtual void closeEvent(QCloseEvent* event);
 
-private slots:
-	void slotClicked(QString id);
-	void correctSize();
-	void setupFavouriteEmoticons();
-
 private:
-	QWidget* createFavouriteEmoticonsWidget(int emoticonsPerRow);
-	void setCurrentLayout();
-
-private:
-	typedef QList<EmoticonMovie*> MovieList;
-	MovieList movieList;
-	QWidget* emotions;
+	QList<EmoticonSelectorPage*> pages;
+	QTabWidget* tabs;
 };
 
 #endif

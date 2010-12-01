@@ -26,6 +26,7 @@
 #include <QWidget>
 #include <QDate>
 #include <QPushButton>
+#include <QProgressBar>
 #include <xapian.h>
 
 class AnimatedTextBrowser;
@@ -56,6 +57,7 @@ private:
 	QListWidget* datesListWidget;
 	AnimatedTextBrowser* viewBrowser;
 	QPushButton* saveButton;
+	QProgressBar* progressBar;
 };
 
 #endif

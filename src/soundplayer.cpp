@@ -1,5 +1,5 @@
 #include <QDebug>
-#include <Phonon/MediaObject>
+//#include <Phonon/MediaObject>
 
 #include "resourcemanager.h"
 #include "soundplayer.h"

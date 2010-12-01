@@ -35,12 +35,14 @@ class OnlineStatusInfo
 	QString id_;
 	QString icon_;
 	QString builtin_;
+	QString available_;
 
-	void clear() { id_ = icon_ = builtin_ = ""; }
+	void clear() { id_ = icon_ = builtin_ = available_ = ""; }
 public:
 	const QString id() const { return id_; }
 	const QString icon() const { return icon_; }
 	const QString builtIn() const { return builtin_; }
+	const QString available() const { return available_; }
 };
 
 class OnlineStatusSet

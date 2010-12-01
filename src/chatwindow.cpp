@@ -55,8 +55,7 @@
 #include "audio.h"
 
 ChatWindow::ChatWindow(Account* account, ChatSession* s)
-	: QWidget(),
-	m_account(account), session(s), messageEditor(0), smsEditor(0)
+        : m_account(account), session(s), messageEditor(0), smsEditor(0)
 {
 	qDebug() << Q_FUNC_INFO << "{";
 
@@ -65,12 +64,14 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s)
 
 	isNewMessage = false;
 
+	connect(s->contact(), SIGNAL(renamed(QString)), this, SLOT(contactUpdated()));
+
 	timer = new QTimer(this);
 	timer->setSingleShot(true);
 	connect(timer, SIGNAL(timeout()), this, SLOT(slotTimeout()));
 
 	splitter = new QSplitter(Qt::Vertical, this);
-	
+
 	QWidget* chatWidget = new QWidget;
 	QHBoxLayout* chatWidgetLayout = new QHBoxLayout;
 	chatWidgetLayout->setContentsMargins(1, 1, 1, 1);
@@ -105,6 +106,7 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s)
 		messageEditor = new MessageEditor(m_account, session->contact());
 		connect(messageEditor, SIGNAL(sendPressed()), this, SLOT(sendMessage()));
 		connect(messageEditor, SIGNAL(textChanged()), session, SLOT(sendTyping()));
+		connect(messageEditor, SIGNAL(textChanged()), this, SLOT(sendButtonEnabledProcess()));
 		connect(messageEditor, SIGNAL(wakeupPressed()), this, SLOT(wakeupContact()));
 		connect(this, SIGNAL(messageEditorActivate()), messageEditor, SLOT(messageEditorActivate()));
 
@@ -170,8 +172,10 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s)
 
 	layout->addWidget(statusBar);
 
-	QPushButton* sendButton = new QPushButton(tr("Send"), this);
-	connect(sendButton, SIGNAL(clicked(bool)), this, SLOT(send()));	
+	sendButton = new QPushButton(tr("Send"), this);
+	sendButton->setEnabled(false);
+	connect(sendButton, SIGNAL(clicked(bool)), this, SLOT(send()));
+	connect(m_account, SIGNAL(onlineStatusChanged(OnlineStatus)), this, SLOT(sendButtonEnabledProcess()));
 
 	connect(session, SIGNAL(messageDelivered(bool, Message*)), this, SLOT(messageDelivered(bool, Message*)));
 	connect(session, SIGNAL(messageAppended(const Message*)), this, SLOT(appendMessageToView(const Message*)));
@@ -207,17 +211,17 @@ void ChatWindow::send()
 
 quint32 ChatWindow::sendMessage()
 {
-	if (!m_account->onlineStatus().connected())
-		return 0;
-	
+/*	if (!m_account->onlineStatus().connected() || (session->contact()->isConference() && session->contact()->isTemporary()))
+		return 0;*/
+
 	PlainTextExporter textExporter(messageEditor->document());
 	QString messageText = textExporter.toText();
 
-	emit messageEditorActivate();
+/*	emit messageEditorActivate();
 
 	if (messageText.isEmpty())
 		return 0;
-	
+*/
 	RtfExporter rtfExporter(messageEditor->document());
 	QByteArray messageRtf = rtfExporter.toRtf();
 	
@@ -266,26 +270,45 @@ void ChatWindow::appendMessageToView(const Message* msg, bool newIncoming)
 
 	QString prompt;
 	if (msg->flags() & MESSAGE_FLAG_SMS)
+	{
 		prompt = "<font color=red>" + tr("Sms from number") + " " + msg->rtfText() + " (" + msg->dateTime().time().toString() + ") :</font><br>";
+		lastMessageFrom = "";
+	}
 	else if (msg->flags() & MESSAGE_SMS_DELIVERY_REPORT)
+	{
 		prompt = msg->dateTime().time().toString() + " <b>" + tr("Sms status for number") + " " + msg->rtfText() + "</b> :<br>";
+		lastMessageFrom = "";
+	}
 	else if (msg->flags() & MESSAGE_FLAG_ALARM)
+	{
 		prompt = "<font color=green>" + msg->dateTime().time().toString() + " <b>" + tr("Alarm clock:")  + " <b></font>";
+		lastMessageFrom = "";
+	}
 	else
 	{
 		QString nick;
+		QByteArray currMessageFrom;
 		if (msg->type() == Message::Outgoing)
-			if (msg->isConfMessage())
-				nick = "<font color=blue>" + session->account()->contactList()->findContact(msg->getConfUser())->nickname();
-			else
-				nick = "<font color=blue>" + session->account()->nickname();
+		{
+			nick = "<font color=blue>" + session->account()->nickname();
+			currMessageFrom = session->account()->email();
+		}
 		else
 			if (msg->isConfMessage())
+			{
 				nick = "<font color=red><b>" + session->account()->contactList()->findContact(msg->getConfUser())->nickname();
+				currMessageFrom = msg->getConfUser();
+			}
 			else
+			{
 				nick = "<font color=red><b>" + session->contact()->nickname() + "</b>";
-		
-		prompt = nick + " (" + msg->dateTime().time().toString() + ") :</font><br>";
+				currMessageFrom = session->contact()->email();
+			}
+
+		prompt = "";
+		if (currMessageFrom != lastMessageFrom)
+			prompt = nick + " (" + msg->dateTime().time().toString() + ") :</font><br>";
+		lastMessageFrom = currMessageFrom;
 	}
 
 	cursor.insertHtml(prompt);
@@ -357,7 +380,10 @@ void ChatWindow::checkContactStatus(OnlineStatus status)
 {
 	qDebug() << "ChatWindow::checkContactStatus";
 	Contact* contact = session->contact();
-	setWindowTitle(contact->nickname() + " - " + status.statusDescr());
+	if (contact->isConference())
+		setWindowTitle(contact->nickname());
+	else
+		setWindowTitle(contact->nickname() + " - " + status.statusDescr());
 	setContactStatusIcon();
 }
 
@@ -660,4 +686,26 @@ void ChatWindow::setContactStatusIcon(QString type)
 {
 	setWindowIcon(session->contact()->chatWindowIcon(type));
 	emit setMainWindowIconAndTitle(windowIcon(), this);
+}
+
+void ChatWindow::contactUpdated()
+{
+	if (session->contact()->isConference())
+		setWindowTitle(session->contact()->nickname());
+	else
+		setWindowTitle(session->contact()->nickname() + " - " + session->contact()->status().statusDescr());
+	sendButtonEnabledProcess();
+	emit setMainWindowIconAndTitle(windowIcon(), this);
+}
+
+void ChatWindow::sendButtonEnabledProcess()
+{
+	qDebug() << "sendButtonEnabledProcess()";
+	PlainTextExporter textExporter(messageEditor->document());
+	QString messageText = textExporter.toText();
+
+	if (!m_account->onlineStatus().connected() || (session->contact()->isConference() && session->contact()->isTemporary()) || messageText.isEmpty())
+		sendButton->setEnabled(false);
+	else
+		sendButton->setEnabled(true);
 }

@@ -26,14 +26,111 @@
 
 #include <cmath>
 #include <QLabel>
-#include <QGridLayout>
 
 #include "emoticonmovie.h"
 #include "emoticonwidget.h"
 #include "resourcemanager.h"
 #include "favouriteemoticonsdialog.h"
 
-EmoticonSelector::EmoticonSelector(QWidget *parent)
+EmoticonSelectorPage::EmoticonSelectorPage(EmoticonSelector* parent, QStringList set, bool isFav)
+	: QWidget(parent), m_set(set), m_isFav(isFav)
+{
+	m_parentSelector = parent;
+	setCurrentLayout();
+
+	setFixedSize(sizeHint());
+}
+
+void EmoticonSelectorPage::correctSize()
+{
+	gridLayout->setHorizontalSpacing((m_parentSelector->width() - gridLayout->sizeHint().width()) / (gridLayout->columnCount() - 1));
+}
+
+QWidget* EmoticonSelectorPage::createEmoticonsWidget(/*int emoticonsPerRow*/)
+{
+	QWidget* setWidget = new QWidget;
+	QVBoxLayout* layout = new QVBoxLayout;
+	layout->setSpacing(15);
+	gridLayout = new QGridLayout;
+	gridLayout->setHorizontalSpacing(10);
+
+	int row = 0;
+	int col = 0;
+	int width = 0;
+
+	foreach (QString emoticonId, m_set)
+	{
+		const EmoticonInfo* info = theRM.emoticons().getEmoticonInfo(emoticonId);
+		EmoticonWidget* w = new EmoticonWidget(info->id(), this);
+
+		if (width + w->geometry().width() > 230)
+		{
+			col = 0;
+			width = 0;
+			row++;
+		}
+
+		w->setToolTip(info->tip());
+		connect(w, SIGNAL(clicked(QString)), m_parentSelector, SIGNAL(selected(QString)));
+		gridLayout->addWidget(w, row, col);
+
+		col++;
+		width += w->geometry().width();
+	}
+
+	layout->addLayout(gridLayout);
+
+	if (m_isFav)
+	{
+		QHBoxLayout* labelLayout = new QHBoxLayout;
+		QLabel* settingsLabel = new QLabel("<a href=x>" + tr("Select") + "</a>");
+		connect(settingsLabel, SIGNAL(linkActivated( const QString& )), this, SLOT(setupFavouriteEmoticons()));
+		labelLayout->addStretch();
+		labelLayout->addWidget(settingsLabel);
+		layout->addLayout(labelLayout);
+	}
+
+	setWidget->setLayout(layout);
+
+	return setWidget;
+}
+
+EmoticonSelectorPage::~EmoticonSelectorPage()
+{
+	qDeleteAll(movieList);
+}
+
+void EmoticonSelectorPage::setupFavouriteEmoticons()
+{
+	FavouriteEmoticonsDialog dlg;
+	connect (&dlg, SIGNAL(doubleClicked(QString)), m_parentSelector, SLOT(slotClicked(QString)));
+	if (dlg.exec() == QDialog::Accepted)
+	{
+		delete this->layout();
+		delete emotions;
+
+		setCurrentLayout();
+		correctSize();
+	}
+}
+
+void EmoticonSelectorPage::setCurrentLayout()
+{
+	QVBoxLayout* layout = new QVBoxLayout;
+	layout->setContentsMargins(0, 0, 0, 0);
+	//layout->setSpacing(2);
+
+	int setSize = m_set.size();
+	int numberOfFavouriteEmoticons = theRM.emoticons().favouriteEmoticons().size();
+	setSize = setSize > numberOfFavouriteEmoticons ? setSize : numberOfFavouriteEmoticons;
+	//int emoticonsPerRow = static_cast<int>(ceil(sqrt((double)setSize)));
+
+	emotions = createEmoticonsWidget(/*emoticonsPerRow*/);
+	layout->addWidget(emotions);
+	setLayout(layout);
+}
+
+EmoticonSelector::EmoticonSelector(QWidget* parent)
 	: QFrame(parent)
 {
 	setWindowFlags(Qt::Popup);
@@ -41,67 +138,32 @@ EmoticonSelector::EmoticonSelector(QWidget *parent)
 
 	setFrameStyle(QFrame::Panel | QFrame::Raised);
 
-	setCurrentLayout();
-
-	setFixedSize(sizeHint());
-}
-
-void EmoticonSelector::correctSize()
-{
-	setFixedSize(sizeHint());
-}
-
-QWidget* EmoticonSelector::createFavouriteEmoticonsWidget(int emoticonsPerRow)
-{
-	QWidget* setWidget = new QWidget;
 	QVBoxLayout* layout = new QVBoxLayout;
-	layout->setSpacing(15);
-	QGridLayout* setLayout = new QGridLayout;
-	setLayout->setSpacing(2);
 
-	int row = 0;
-	int col = 0;
+	tabs = new QTabWidget;
+	tabs->setStyleSheet("QTabWidget::pane { border: 0px; } QTabWidget::tab-bar { left: 1px; } QTabBar::tab { padding: 5px 5px 5px 5px; font: bold 10px; }");
+	tabs->setTabPosition(QTabWidget::South);
 
-	foreach (QString emoticonId, theRM.emoticons().favouriteEmoticons())
+	EmoticonSelectorPage* page;
+	for (Emoticons::const_iterator it = theRM.emoticons().begin(); it != theRM.emoticons().end(); ++it)
 	{
-		const EmoticonInfo* info = theRM.emoticons().getEmoticonInfo(emoticonId);
-
-		EmoticonWidget* w = new EmoticonWidget(info->id(), this);
-		w->setToolTip(info->tip());
-		connect(w, SIGNAL(clicked(QString)), this, SLOT(slotClicked(QString)));
-		setLayout->addWidget(w, row, col);
-		if (col == emoticonsPerRow)
-		{
-			col = 0;
-			row++;
-		}
+		EmoticonSelectorPage* page = new EmoticonSelectorPage(this, (*it)->list());
+		if ((*it)->logo() != "")
+			tabs->addTab(page, QIcon(theRM.statusesResourcePrefix() + ":" + (*it)->logo()), "");
 		else
-			col++;
+			tabs->addTab(page, QIcon(""), tr("unk"));
+		pages.append(page);
 	}
+	page = new EmoticonSelectorPage(this, theRM.emoticons().favouriteEmoticons(), true);
+	tabs->addTab(page, QIcon(), tr("fav"));
 
-	QHBoxLayout* labelLayout = new QHBoxLayout;
-	QLabel* settingsLabel = new QLabel(tr("<a href=x>Select</a>"));
-	connect(settingsLabel, SIGNAL(linkActivated( const QString& )), this, SLOT(setupFavouriteEmoticons()));
-	labelLayout->addStretch();
-	labelLayout->addWidget(settingsLabel);
+	layout->setContentsMargins(1, 1, 1, 1);
+	layout->addWidget(tabs);
+	setLayout(layout);
 
-	layout->addLayout(setLayout);
-	layout->addLayout(labelLayout);
-
-	setWidget->setLayout(layout);
-
-	return setWidget;
-}
-
-EmoticonSelector::~EmoticonSelector()
-{
-	qDeleteAll(movieList);
-}
-
-void EmoticonSelector::slotClicked(QString id)
-{
-	emit selected(id);
-	qDebug() << "DblClicked";
+	setFixedSize(sizeHint());
+	for (QList<EmoticonSelectorPage*>::const_iterator it = pages.begin(); it != pages.end(); ++it)
+		(*it)->correctSize();
 }
 
 void EmoticonSelector::closeEvent(QCloseEvent* /*event*/)
@@ -109,31 +171,13 @@ void EmoticonSelector::closeEvent(QCloseEvent* /*event*/)
 	emit closed();
 }
 
-void EmoticonSelector::setupFavouriteEmoticons()
+EmoticonSelector::~EmoticonSelector()
 {
-	FavouriteEmoticonsDialog dlg;
-	connect (&dlg, SIGNAL(doubleClicked(QString)), this, SLOT(slotClicked(QString)));
-	if (dlg.exec() == QDialog::Accepted)
-	{
-		delete this->layout();
-		delete emotions;
-
-		setCurrentLayout();
-	}
+    qDeleteAll(pages);
 }
 
-void EmoticonSelector::setCurrentLayout()
+void EmoticonSelector::slotClicked(QString id)
 {
-	QVBoxLayout* layout = new QVBoxLayout;
-	layout->setContentsMargins(0, 0, 0, 0);
-	//layout->setSpacing(2);
-
-	int maxSetSize = theRM.emoticons().maxSetSize();
-	int numberOfFavouriteEmoticons = theRM.emoticons().favouriteEmoticons().size();
-	maxSetSize = maxSetSize > numberOfFavouriteEmoticons ? maxSetSize : numberOfFavouriteEmoticons;
-	int emoticonsPerRow = static_cast<int>(ceil(sqrt((double)maxSetSize)));
-
-	emotions = createFavouriteEmoticonsWidget(emoticonsPerRow);
-	layout->addWidget(emotions);
-	setLayout(layout);
+	emit selected(id);
+	qDebug() << "DblClicked";
 }

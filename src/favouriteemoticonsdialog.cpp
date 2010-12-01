@@ -25,9 +25,6 @@ FavouriteEmoticonsDialog::FavouriteEmoticonsDialog()
 
 	QToolBox* toolBox = new QToolBox;
 
-	int maxSetSize = theRM.emoticons().maxSetSize();
-	int emoticonsPerRow = static_cast<int>(ceil(sqrt((double)maxSetSize)));
-
 	Emoticons::const_iterator set_it = theRM.emoticons().begin();
 	Emoticons::const_iterator setEnd_it = theRM.emoticons().end();
 
@@ -45,21 +42,26 @@ FavouriteEmoticonsDialog::FavouriteEmoticonsDialog()
 
 		int row = 0;
 		int col = 0;
+		int width = 0;
 
 		for (; info_it != infoEnd_it; ++info_it)
 		{
 			EmoticonWidget* w = new EmoticonWidget((*info_it)->id(), this);
+
+			if (width + w->geometry().width() > 120)
+			{
+				col = 0;
+				width = 0;
+				row++;
+			}
+
 			w->setDragEnabled(true);
 			w->setToolTip((*info_it)->tip());
 			connect(w, SIGNAL(doubleClicked(QString)), SLOT(slotDoubleClicked(QString)));
 			setLayout->addWidget(w, row, col);
-			if (col == emoticonsPerRow)
-			{
-				col = 0;
-				row++;
-			}
-			else
-				col++;
+
+			col++;
+			width += w->geometry().width();
 
 			nEmoticons++;
 		}

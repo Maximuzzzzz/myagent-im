@@ -48,9 +48,9 @@ class ChatWindow : public QWidget
 {
 Q_OBJECT
 public:
-	ChatWindow(Account* account, ChatSession* s);
+        ChatWindow(Account* account, ChatSession* s);
 	~ChatWindow();
-	
+
 public slots:
 	void messageDelivered(bool, Message*);
 	void shake();
@@ -105,6 +105,8 @@ private slots:
 
 	void slotFileTransferred(FileMessage::Status action, QString filesInHtml, QString destination);
 	void setContactStatusIcon(QString type = "");
+	void contactUpdated();
+	void sendButtonEnabledProcess();
 
 protected:
 	QTimer* timer;
@@ -127,6 +129,9 @@ private:
 
 	QTabWidget* editorsWidget;
 	QStatusBar* statusBar;
+	QPushButton* sendButton;
+
+	QByteArray lastMessageFrom;
 };
 
 #endif

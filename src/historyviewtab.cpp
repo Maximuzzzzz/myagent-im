@@ -32,11 +32,14 @@
 #include "animatedtextbrowser.h"
 #include "message.h"
 #include "historylogger.h"
+#include "rtfparser.h"
 
 HistoryViewTab::HistoryViewTab(Xapian::Database* db, const QString& incomingName, const QString& outgoingName, QWidget *parent)
 	: QWidget(parent), database(db), incomingNickname(incomingName), outgoingNickname(outgoingName)
 {
-	QHBoxLayout* layout = new QHBoxLayout;
+	QVBoxLayout* layout = new QVBoxLayout;
+
+	QHBoxLayout* layoutMain = new QHBoxLayout;
 
 	QVBoxLayout* dateLayout = new QVBoxLayout;
 
@@ -61,10 +64,17 @@ HistoryViewTab::HistoryViewTab(Xapian::Database* db, const QString& incomingName
 
 	viewBrowser = new AnimatedTextBrowser;
 
-	layout->addLayout(dateLayout);
-	layout->addWidget(viewBrowser);
+	layoutMain->addLayout(dateLayout);
+	layoutMain->addWidget(viewBrowser);
+
+	progressBar = new QProgressBar;
+
+	layout->addLayout(layoutMain);
+	layout->addWidget(progressBar);
 
 	setLayout(layout);
+
+	progressBar->setVisible(false);
 
 	updateDates(calendarWidget->yearShown(), calendarWidget->monthShown());
 	newDateSelectedInCalendar();
@@ -202,6 +212,8 @@ void HistoryViewTab::slotSaveHistoryLog()
 	Xapian::docid docid;
 	QTextCodec* codec = QTextCodec::codecForName("utf-8");
 //	QTextCodec* codecUTF16 = QTextCodec::codecForName("utf-16le");
+	progressBar->setMaximum(0x7fffffff);
+	progressBar->setVisible(true);
 	for (docid = 0; docid <= database->get_lastdocid(); docid++)
 	{
 		Xapian::Document doc;
@@ -221,8 +233,14 @@ void HistoryViewTab::slotSaveHistoryLog()
 			fileToSave.write("in\">" + codec->fromUnicode(incomingNickname) + " (");
 		fileToSave.write(codec->fromUnicode(QString::fromStdString(doc.get_value(0)+doc.get_value(1))) + "):</FONT><BR/>\n"); //make readable date+time
 		std::string message(doc.get_data()); //parse rtf and take only text
-		fileToSave.write(QByteArray(message.c_str()) + "\n</TD>\n</TR>\n");
+		RtfParser rtfParser;
+		QString mess;
+		rtfParser.parseToHTML(message.c_str(), mess);
+		fileToSave.write(codec->fromUnicode(mess) + "\n</TD>\n</TR>\n");
+		progressBar->setValue(double(docid / database->get_lastdocid()) * 0x7fffffff);
 	}
+	progressBar->setValue(0);
+	progressBar->setVisible(false);
 
 	fileToSave.write("</table>\n</body>\n</html>");
 }

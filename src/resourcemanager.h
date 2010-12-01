@@ -51,6 +51,7 @@ public:
 	QString soundsResourcePrefix();
 	void setAudio(Audio* a);
 	Audio* getAudio() { return audio; }
+	QString locale() { return m_locale; }
 
 	OnlineStatus loadOnlineStatus(QByteArray email);
 
@@ -66,6 +67,7 @@ private:
 	OnlineStatuses m_onlineStatuses;
 	Locations m_locations;
 	Audio* audio;
+	QString m_locale;
 };
 
 #define theRM ResourceManager::self()

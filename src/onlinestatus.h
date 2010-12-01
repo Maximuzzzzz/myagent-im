@@ -55,6 +55,7 @@ public:
 	static const OnlineStatus connecting;
 	static const OnlineStatus unauthorized;
 	static const OnlineStatus chatOnline;
+	static const OnlineStatus seekFriends;
 	static const OnlineStatus dndOnline;
 	static const OnlineStatus otherOnline;
 	static const OnlineStatus wrongData;
@@ -82,15 +83,16 @@ public:
 	bool operator<=(OnlineStatus another) { return (m_type <= another.m_type);  }
 	bool operator<(OnlineStatus another) { return (m_type < another.m_type); }
 
-private:
+private slots:
 	void setMType();
 
+private:
 	StatusType m_type;
 	QByteArray m_idStatus;
 	QString m_statusDescr;
 	OnlineStatuses* m_onlineStatuses;
 	QList<QByteArray> m_defaultIdStatuses;
-	QList<QString> m_defaultDescrStatuses;
+	QStringList m_defaultDescrStatuses;
 };
 
 Q_DECLARE_METATYPE(OnlineStatus)

@@ -138,10 +138,15 @@ ChatWindow* ChatWindowsManager::createWindow(ChatSession* session)
 
 void ChatWindowsManager::changeIconAndTitle(const QIcon& icon, ChatWindow* sender)
 {
+	qDebug() << "ChatWindowsManager::changeIconAndTitle";
 	int tabIndex = tabs->indexOf(sender);
 	if (tabIndex != -1)
 	{
+		ChatSession* session = windows.key(sender);
+		qDebug() << "Nickname" << session->contact()->nickname();
 		tabs->setTabIcon(tabIndex, icon);
+		if (!(session->contact()->isConference() && session->contact()->isTemporary()))
+			tabs->setTabText(tabIndex, session->contact()->nickname());
 		if (tabIndex == tabs->currentIndex())
 			changeTab(tabIndex);
 	}

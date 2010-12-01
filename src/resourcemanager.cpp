@@ -23,6 +23,7 @@
 #include <QDir>
 #include <QDebug>
 #include <QCoreApplication>
+#include <QLocale>
 
 #include "resourcemanager.h"
 #include "proto.h"
@@ -46,8 +47,13 @@ ResourceManager::ResourceManager(QObject *parent)
 	QDir::addSearchPath(emoticonsResourcePrefix(), emoticonsPath);
 	QDir::addSearchPath(statusesResourcePrefix(), onlineStatusesPath);
 	QDir::addSearchPath(soundsResourcePrefix(), soundsPath);
-	m_onlineStatuses.load(onlineStatusesPath + "/skin.txt");
-	m_emoticons.load(emoticonsPath + "/skin.txt", m_settings);
+	m_locale = QLocale::system().name();
+	qDebug() << "loc:" << (emoticonsPath + "/skin/" + m_locale + "/skin.txt");
+	QFile f(emoticonsPath + "/skin/" + m_locale + "/skin.txt");
+	if (!f.exists())
+		m_locale = "en";
+	m_onlineStatuses.load(onlineStatusesPath + "/skin/" + m_locale + "/skin.txt");
+	m_emoticons.load(emoticonsPath + "/skin/" + m_locale + "/skin.txt", m_settings);
 	m_locations.load(":/region.txt");
 }
 
