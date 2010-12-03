@@ -5,7 +5,7 @@ QT += network \
     phonon
 INCLUDEPATH += /usr/include
 TRANSLATIONS = locale/myagent-im_ru_RU.ts \
-		locale/myagent-im_ua_UA.ts
+	locale/myagent-im_uk_UA.ts
 LIBS += -laspell
 win32 { 
     QTPLUGIN += qjpeg \
@@ -26,63 +26,61 @@ win32 {
         -llibquartz
 }
 unix { 
-	LIBS += -lxapian
-	CONFIG += link_pkgconfig
-	PKGCONFIG += xscrnsaver
+    LIBS += -lxapian
+    CONFIG += link_pkgconfig
+    PKGCONFIG += xscrnsaver
 }
 unix { 
-	isEmpty(PREFIX):PREFIX = /usr/local
-	BINDIR = $$PREFIX/bin
-	DATADIR = $$PREFIX/share/myagent-im
-	DEFINES += DATADIR=\\\"$$DATADIR\\\"
-	INSTALLS += target \
-	smiles_animated \
-	smiles_set03 \
-	smiles_set04 \
-	smiles_set05 \
-	smiles_smiles \
-	smiles_static_png \
-	smiles \
-	statuses_set01 \
-	statuses \
-	skins \
-	data \
-	desktop \
-	appicon \
-	sounds
-	target.path = $$BINDIR
-	data.path = $$DATADIR
-	data.files += locale/qt_ru_Ru.qm \
-		locale/myagent-im_ru_RU.qm \
-		locale/myagent-im_ua_UA.qm
-	skins.path = $$DATADIR/emoticons/skin
-	skins.files = emoticons/skin/*
-	STATUSESDIR = $$DATADIR/emoticons/status
-	statuses.path = $$STATUSESDIR
-	statuses.files = emoticons/status/*
-	statuses_set01.path = $$STATUSESDIR/set01
-	statuses_set01.files = emoticons/status/set01/*
-	SMILESDIR = $$DATADIR/emoticons/smiles
-	smiles.path = $$SMILESDIR
-	smiles.files = emoticons/smiles/*
-	smiles_animated.path = $$SMILESDIR/animated
-	smiles_animated.files = emoticons/smiles/animated/*
-	smiles_set03.path = $$SMILESDIR/set03
-	smiles_set03.files = emoticons/smiles/set03/*
-	smiles_set04.path = $$SMILESDIR/set04
-	smiles_set04.files = emoticons/smiles/set04/*
-	smiles_set05.path = $$SMILESDIR/set05
-	smiles_set05.files = emoticons/smiles/set05/*
-	smiles_smiles.path = $$SMILESDIR/smiles
-	smiles_smiles.files = emoticons/smiles/smiles/*
-	smiles_static_png.path = $$SMILESDIR/static_png
-	smiles_static_png.files = emoticons/smiles/static_png/*
-	desktop.path = $$PREFIX/share/applications
-	desktop.files += myagent-im.desktop
-	sounds.path = $$DATADIR/sounds
-	sounds.files = sounds/*
-	appicon.path = $$PREFIX/share/pixmaps
-	appicon.files += myagent-im.png
+    isEmpty(PREFIX):PREFIX = /usr/local
+    BINDIR = $$PREFIX/bin
+    DATADIR = $$PREFIX/share/myagent-im
+    DEFINES += DATADIR=\\\"$$DATADIR\\\"
+    INSTALLS += target \
+        smiles_animated \
+        smiles_set03 \
+        smiles_set04 \
+        smiles_set05 \
+        smiles_smiles \
+        smiles_static_png \
+        smiles \
+        statuses_set01 \
+        statuses \
+        skins \
+        data \
+        desktop \
+        appicon \
+        sounds
+    target.path = $$BINDIR
+    data.path = $$DATADIR
+    data.files += locale/*.qm
+    skins.path = $$DATADIR/emoticons/skin
+    skins.files = emoticons/skin/*
+    STATUSESDIR = $$DATADIR/emoticons/status
+    statuses.path = $$STATUSESDIR
+    statuses.files = emoticons/status/*
+    statuses_set01.path = $$STATUSESDIR/set01
+    statuses_set01.files = emoticons/status/set01/*
+    SMILESDIR = $$DATADIR/emoticons/smiles
+    smiles.path = $$SMILESDIR
+    smiles.files = emoticons/smiles/*
+    smiles_animated.path = $$SMILESDIR/animated
+    smiles_animated.files = emoticons/smiles/animated/*
+    smiles_set03.path = $$SMILESDIR/set03
+    smiles_set03.files = emoticons/smiles/set03/*
+    smiles_set04.path = $$SMILESDIR/set04
+    smiles_set04.files = emoticons/smiles/set04/*
+    smiles_set05.path = $$SMILESDIR/set05
+    smiles_set05.files = emoticons/smiles/set05/*
+    smiles_smiles.path = $$SMILESDIR/smiles
+    smiles_smiles.files = emoticons/smiles/smiles/*
+    smiles_static_png.path = $$SMILESDIR/static_png
+    smiles_static_png.files = emoticons/smiles/static_png/*
+    desktop.path = $$PREFIX/share/applications
+    desktop.files += myagent-im.desktop
+    sounds.path = $$DATADIR/sounds
+    sounds.files = sounds/*
+    appicon.path = $$PREFIX/share/pixmaps
+    appicon.files += myagent-im.png
 }
 RESOURCES += res.qrc
 SOURCES += main.cpp \
@@ -191,14 +189,15 @@ SOURCES += main.cpp \
     lineedit.cpp \
     filtercontactslineedit.cpp \
     triggeroptionbutton.cpp \
-	newconferencedialog.cpp \
-	tasknewconference.cpp \
-	mrimmime.cpp \
-	conferencecontextmenu.cpp \
-	onlinestatus.cpp \
-	onlinestatuseseditor.cpp \
-	onlinestatusselector.cpp \
-	statusmenu.cpp
+    newconferencedialog.cpp \
+    tasknewconference.cpp \
+    mrimmime.cpp \
+    conferencecontextmenu.cpp \
+    onlinestatus.cpp \
+    onlinestatuseseditor.cpp \
+    onlinestatusselector.cpp \
+    statusmenu.cpp \
+    aboutdialog.cpp
 HEADERS += mrimclient.h \
     soundplayer.h \
     audio.h \
@@ -244,7 +243,7 @@ HEADERS += mrimclient.h \
     avatarwidget.h \
     mainmenubutton.h \
     onlinestatus.h \
-	onlinestatuses.h \
+    onlinestatuses.h \
     contactcontextmenu.h \
     radiogroupbox.h \
     zodiac.h \
@@ -312,21 +311,24 @@ HEADERS += mrimclient.h \
     lineedit.h \
     filtercontactslineedit.h \
     triggeroptionbutton.h \
-	newconferencedialog.h \
-	tasknewconference.h \
-	mrimmime.h \
-	conferencecontextmenu.h \
-	onlinestatuseseditor.h \
-	onlinestatusselector.h \
-	statusmenu.h
+    newconferencedialog.h \
+    tasknewconference.h \
+    mrimmime.h \
+    conferencecontextmenu.h \
+    onlinestatuseseditor.h \
+    onlinestatusselector.h \
+    statusmenu.h \
+    aboutdialog.h
 FORMS += logindialog.ui \
     searchcontacts.ui \
     addcontact.ui \
     askauthorization.ui \
     authorize.ui \
     editphones.ui \
-	newconference.ui
+    newconference.ui \
+    aboutdialog.ui \
+    aboutdialog.ui
 LEXSOURCES += emoticons.ll \
     rtf.ll \
     plaintextparser.ll \
-	onlinestatuses.ll
+    onlinestatuses.ll

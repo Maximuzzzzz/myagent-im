@@ -45,6 +45,7 @@ MRIMClientPrivate::MRIMClientPrivate(Account* a, MRIMClient* parent)
 
 MRIMClientPrivate::~MRIMClientPrivate()
 {
+	socket.disconnectFromHost();
 }
 
 void MRIMClientPrivate::init()

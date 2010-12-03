@@ -217,14 +217,11 @@ void FileMessage::slotReadyRead()
 
 	QByteArray in(fm_socket->readAll());
 
-	//qDebug() << in;
-	//qDebug() << in.toHex();
-
 	if (in[0] == char(239) && transferStatus == WAITING_FOR_HELLO) /*TODO: interpretate packet fully*/
 	{
 		qDebug() << "Proxy said hello";
 		sayHello();
-		emit startTransferring(fm_sessionId); //Is this right?
+//		emit startTransferring(fm_sessionId);
 	}
 	else if (transferStatus == WAITING_FOR_HELLO && in.contains("MRA_FT_HELLO") && in.contains(fm_contEmail))
 	{
@@ -239,14 +236,14 @@ void FileMessage::slotReadyRead()
 			if (!isMirror)
 			{
 				sayHello();
-				emit startTransferring(fm_sessionId); //Is this right?
+				emit startTransferring(fm_sessionId);
 			}
 		}
 		else if (fm_type == Incoming)
 		{
 			if (isMirror && !useProxy)
 				sayHello();
-			emit startTransferring(fm_sessionId); //Is this right?
+			emit startTransferring(fm_sessionId);
 			getFile();
 		}
 	}

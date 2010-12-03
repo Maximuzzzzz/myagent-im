@@ -51,7 +51,7 @@ ResourceManager::ResourceManager(QObject *parent)
 	qDebug() << "loc:" << (emoticonsPath + "/skin/" + m_locale + "/skin.txt");
 	QFile f(emoticonsPath + "/skin/" + m_locale + "/skin.txt");
 	if (!f.exists())
-		m_locale = "en";
+		m_locale = "en_US";
 	m_onlineStatuses.load(onlineStatusesPath + "/skin/" + m_locale + "/skin.txt");
 	m_emoticons.load(emoticonsPath + "/skin/" + m_locale + "/skin.txt", m_settings);
 	m_locations.load(":/region.txt");

@@ -20,64 +20,31 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef MAINMENUBUTTON_H
-#define MAINMENUBUTTON_H
+#include "aboutdialog.h"
 
-#include <QPointer>
+#include <QDesktopServices>
+#include <QUrl>
 
-#include <buttonwithmenu.h>
-
-#include "contactinfo.h"
-#include "onlinestatus.h"
-#include "chatwindowsmanager.h"
-#include "newconferencedialog.h"
-#include "settingswindow.h"
-
-class Account;
-class SearchContactsForm;
-class ContactListWindow;
-
-class MainMenuButton : public ButtonWithMenu
+AboutDialog::AboutDialog()
 {
-Q_OBJECT
-public:
-	MainMenuButton(Account* account, ContactListWindow* w);
-	void setChatWindowsManager(ChatWindowsManager* cwm);
-	SettingsWindow* getSettingsWindow() { return settingsWindow; }
+	setAttribute(Qt::WA_DeleteOnClose);
+	setupUi(this);
 
-signals:
-	void statusesCountChanged();
+	connect(buttonOK, SIGNAL(clicked(bool)), this, SLOT(close()));
+	connect(linkLabel, SIGNAL(linkActivated(QString)), this, SLOT(openHomeURL()));
+	connect(licenseLabel, SIGNAL(linkActivated(QString)), this, SLOT(openLicenseURL()));
+}
 
-private slots:
-	void searchContacts();
-	void showSearchResults(quint32 status, bool timeout);
-	void showAddContactDialog(const ContactInfo& info);
-	void showAddContactDialogEnd();
-	void checkOnlineStatus(OnlineStatus);
-	void beginSearch();
-	void searchMoreContacts();
-	void newSearch();
-	void addSmsContact();
-	void addSmsContactError(QString);
-	void addGroup();
-	void addGroupError(QString);
-	void showSettingsWindow();
-	void showAboutDialog();
-	void createNewConference();
+AboutDialog::~AboutDialog()
+{
+}
 
-private:
-	QAction* addContactAction;
-	QAction* addSmsContactAction;
-	QAction* addGroupAction;
-	QAction* deleteUserAction;
-	QAction* newConferenceAction;
-	Account* m_account;
-	ContactListWindow* mainWindow;
-	QPointer<SearchContactsForm> searchForm;
-	QPointer<SettingsWindow> settingsWindow;
-	QPointer<NewConferenceDialog> newConferenceWindow;
+void AboutDialog::openHomeURL()
+{
+	QDesktopServices::openUrl(QUrl("http://code.google.com/p/myagent-im"));
+}
 
-	ChatWindowsManager* chatWindowsManager;
-};
-
-#endif
+void AboutDialog::openLicenseURL()
+{
+	QDesktopServices::openUrl(QUrl("http://www.gnu.org/licenses"));
+}

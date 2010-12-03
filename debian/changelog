@@ -3,6 +3,11 @@ myagent-im (0.4.2) unstable; urgency=low
   Dmitry Malakhov <abr_mail@mail.ru>:
   * Fixed some bugs with statuses and conferences
   * Added possibility to edit extended statuses
+  * Added new smiles
+  * New version of smiles selector
+  * Localization skin.txt
+  * Saving history to html file
+  * New version of online status menues
 
  -- Dmitry Malakhov <abr_mail@mail.ru>  Mon, 26 Nov 2010 15:00:00 +0400
 

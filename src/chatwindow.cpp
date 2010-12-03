@@ -55,7 +55,8 @@
 #include "audio.h"
 
 ChatWindow::ChatWindow(Account* account, ChatSession* s)
-        : m_account(account), session(s), messageEditor(0), smsEditor(0)
+	: QWidget(),
+	m_account(account), session(s), messageEditor(0), smsEditor(0)
 {
 	qDebug() << Q_FUNC_INFO << "{";
 
@@ -211,17 +212,9 @@ void ChatWindow::send()
 
 quint32 ChatWindow::sendMessage()
 {
-/*	if (!m_account->onlineStatus().connected() || (session->contact()->isConference() && session->contact()->isTemporary()))
-		return 0;*/
-
 	PlainTextExporter textExporter(messageEditor->document());
 	QString messageText = textExporter.toText();
 
-/*	emit messageEditorActivate();
-
-	if (messageText.isEmpty())
-		return 0;
-*/
 	RtfExporter rtfExporter(messageEditor->document());
 	QByteArray messageRtf = rtfExporter.toRtf();
 	
@@ -294,16 +287,27 @@ void ChatWindow::appendMessageToView(const Message* msg, bool newIncoming)
 			currMessageFrom = session->account()->email();
 		}
 		else
+		{
 			if (msg->isConfMessage())
 			{
-				nick = "<font color=red><b>" + session->account()->contactList()->findContact(msg->getConfUser())->nickname();
-				currMessageFrom = msg->getConfUser();
+				Contact* c = session->account()->contactList()->findContact(msg->getConfUser());
+				if (c == 0)
+				{
+					nick = "<font color=red><b>" + msg->getConfUser();
+					currMessageFrom = msg->getConfUser();
+				}
+				else
+				{
+					nick = "<font color=red><b>" + c->nickname();
+					currMessageFrom = c->email();
+				}
 			}
 			else
 			{
 				nick = "<font color=red><b>" + session->contact()->nickname() + "</b>";
 				currMessageFrom = session->contact()->email();
 			}
+		}
 
 		prompt = "";
 		if (currMessageFrom != lastMessageFrom)

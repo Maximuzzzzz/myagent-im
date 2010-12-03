@@ -74,8 +74,7 @@ bool ContactListSortFilterProxyModel::lessThan(const QModelIndex& left, const QM
 	if (!contact2)
 		return false;
 
-	if ((contact1->status() <= OnlineStatus::invisible && contact2->status() <= OnlineStatus::invisible) ||
-	 contact1->status() == contact2->status())
+	if ((contact1->status().connected() && contact2->status().connected()) || contact1->status() == contact2->status())
 	{
 		int cmp = contact1->nickname().compare(contact2->nickname(), Qt::CaseInsensitive);
 		if (cmp == 0)

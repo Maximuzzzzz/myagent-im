@@ -4,212 +4,212 @@
 		ColumnsCount="8"
 		<ITEMS width="25" height="25">
 			<SET03>
-				title = "Колобки"
+				title = "РљРѕР»РѕР±РєРё"
 				path = "/set03"
 				logo = "/smile.gif"
 				<ITEMS>
 					<OBJ01>
 						id = "400" 
-						alt = ":Ангелочек:"
-						tip = "Ангелочек"
+						alt = ":РђРЅРіРµР»РѕС‡РµРє:"
+						tip = "РђРЅРіРµР»РѕС‡РµРє"
 						<ICON><DEFAULT>src="/angel.gif"</DEFAULT></ICON>
 					</OBJ01>
 					<OBJ02>
 						id = "401" 
-						alt = ":Тошнит:"
-						tip = "Тошнит"
+						alt = ":РўРѕС€РЅРёС‚:"
+						tip = "РўРѕС€РЅРёС‚"
 						<ICON><DEFAULT>src="/bad.gif"</DEFAULT></ICON>
 					</OBJ02>
 					<OBJ03>
 						id = "402" 
-						alt = ":Улыбка до ушей:"
-						tip = "Улыбка до ушей"
+						alt = ":РЈР»С‹Р±РєР° РґРѕ СѓС€РµР№:"
+						tip = "РЈР»С‹Р±РєР° РґРѕ СѓС€РµР№"
 						<ICON><DEFAULT>src="/biggrin.gif"</DEFAULT></ICON>
 					</OBJ03>
 					<OBJ04>
 						id = "403" 
-						alt = ":Дразнюсь:"
-						tip = "Дразнюсь"
+						alt = ":Р”СЂР°Р·РЅСЋСЃСЊ:"
+						tip = "Р”СЂР°Р·РЅСЋСЃСЊ"
 						<ICON><DEFAULT>src="/blum.gif"</DEFAULT></ICON>
 					</OBJ04>
 					<OBJ05>
 						id = "404" 
-						alt = ":Смущаюсь:"
-						tip = "Смущаюсь"
+						alt = ":РЎРјСѓС‰Р°СЋСЃСЊ:"
+						tip = "РЎРјСѓС‰Р°СЋСЃСЊ"
 						<ICON><DEFAULT>src="/blush.gif"</DEFAULT></ICON>
 					</OBJ05>
 					<OBJ06>
 						id = "405" 
-						alt = ":Рыдаю:"
-						tip = "Рыдаю"
+						alt = ":Р С‹РґР°СЋ:"
+						tip = "Р С‹РґР°СЋ"
 						<ICON><DEFAULT>src="/cray.gif"</DEFAULT></ICON>
 					</OBJ06>
 					<OBJ07>
 						id = "406" 
-						alt = ":Сумасшествие:"
-						tip = "Сумасшествие"
+						alt = ":РЎСѓРјР°СЃС€РµСЃС‚РІРёРµ:"
+						tip = "РЎСѓРјР°СЃС€РµСЃС‚РІРёРµ"
 						<ICON><DEFAULT>src="/crazy.gif"</DEFAULT></ICON>
 					</OBJ07>
 					<OBJ08>
 						id = "407" 
-						alt = ":Танцую:"
-						tip = "Танцую"
+						alt = ":РўР°РЅС†СѓСЋ:"
+						tip = "РўР°РЅС†СѓСЋ"
 						<ICON><DEFAULT>src="/dance.gif"</DEFAULT></ICON>
 					</OBJ08>
 					<OBJ09>
 						id = "408" 
-						alt = ":Чертовски злюсь:"
-						tip = "Чертовски злюсь"
+						alt = ":Р§РµСЂС‚РѕРІСЃРєРё Р·Р»СЋСЃСЊ:"
+						tip = "Р§РµСЂС‚РѕРІСЃРєРё Р·Р»СЋСЃСЊ"
 						<ICON><DEFAULT>src="/diablo.gif"</DEFAULT></ICON>
 					</OBJ09>
 					<OBJ10>
 						id = "409" 
-						alt = ":Я круче:"
-						tip = "Я круче"
+						alt = ":РЇ РєСЂСѓС‡Рµ:"
+						tip = "РЇ РєСЂСѓС‡Рµ"
 						<ICON><DEFAULT>src="/dirol.gif"</DEFAULT></ICON>
 					</OBJ10>
 					<OBJ11>
 						id = "410" 
-						alt = ":Пиво:"
-						tip = "Пиво"
+						alt = ":РџРёРІРѕ:"
+						tip = "РџРёРІРѕ"
 						<ICON><DEFAULT>src="/drinks.gif"</DEFAULT></ICON>
 					</OBJ11>
 					<OBJ12>
 						id = "411" 
-						alt = ":Ты что!:"
-						tip = "Ты что!"
+						alt = ":РўС‹ С‡С‚Рѕ!:"
+						tip = "РўС‹ С‡С‚Рѕ!"
 						<ICON><DEFAULT>src="/fool.gif"</DEFAULT></ICON>
 					</OBJ12>
 					<OBJ13>
 						id = "412" 
-						alt = ":Дарю цветочек:"
-						tip = "Дарю цветочек"
+						alt = ":Р”Р°СЂСЋ С†РІРµС‚РѕС‡РµРє:"
+						tip = "Р”Р°СЂСЋ С†РІРµС‚РѕС‡РµРє"
 						<ICON><DEFAULT>src="/give_rose.gif"</DEFAULT></ICON>
 					</OBJ13>
 					<OBJ14>
 						id = "413" 
-						alt = ":Ок!:"
-						tip = "Ок!"
+						alt = ":РћРє!:"
+						tip = "РћРє!"
 						<ICON><DEFAULT>src="/good.gif"</DEFAULT></ICON>
 					</OBJ14>
 					<OBJ15>
 						id = "414" 
-						alt = ":Целую:"
-						tip = "Целую"
+						alt = ":Р¦РµР»СѓСЋ:"
+						tip = "Р¦РµР»СѓСЋ"
 						<ICON><DEFAULT>src="/kiss_mini.gif"</DEFAULT></ICON>
 					</OBJ15>
 					<OBJ16>
 						id = "415" 
-						alt = ":Поцеловали:"
-						tip = "Поцеловали"
+						alt = ":РџРѕС†РµР»РѕРІР°Р»Рё:"
+						tip = "РџРѕС†РµР»РѕРІР°Р»Рё"
 						<ICON><DEFAULT>src="/man_in_love.gif"</DEFAULT></ICON>
 					</OBJ16>
 					<OBJ17>
 						id = "416" 
-						alt = ":Хихикаю:"
-						tip = "Хихикаю"
+						alt = ":РҐРёС…РёРєР°СЋ:"
+						tip = "РҐРёС…РёРєР°СЋ"
 						<ICON><DEFAULT>src="/mocking.gif"</DEFAULT></ICON>
 					</OBJ17>
 					<OBJ18>
 						id = "417" 
-						alt = ":Слушаю музыку:"
-						tip = "Слушаю музыку"
+						alt = ":РЎР»СѓС€Р°СЋ РјСѓР·С‹РєСѓ:"
+						tip = "РЎР»СѓС€Р°СЋ РјСѓР·С‹РєСѓ"
 						<ICON><DEFAULT>src="/music.gif"</DEFAULT></ICON>
 					</OBJ18>
 					<OBJ19>
 						id = "418" 
-						alt = ":Не-а:"
-						tip = "Не-а"
+						alt = ":РќРµ-Р°:"
+						tip = "РќРµ-Р°"
 						<ICON><DEFAULT>src="/nea.gif"</DEFAULT></ICON>
 					</OBJ19>
 					<OBJ20>
 						id = "419" 
-						alt = ":Извини:"
-						tip = "Извини"
+						alt = ":РР·РІРёРЅРё:"
+						tip = "РР·РІРёРЅРё"
 						<ICON><DEFAULT>src="/pardon.gif"</DEFAULT></ICON>
 					</OBJ20>
 					<OBJ21>
 						id = "420" 
-						alt = ":Лопну от смеха:"
-						tip = "Лопну от смеха"
+						alt = ":Р›РѕРїРЅСѓ РѕС‚ СЃРјРµС…Р°:"
+						tip = "Р›РѕРїРЅСѓ РѕС‚ СЃРјРµС…Р°"
 						<ICON><DEFAULT>src="/rofl.gif"</DEFAULT></ICON>
 					</OBJ21>
 					<OBJ22>
 						id = "421" 
-						alt = ":Мечтаю:"
-						tip = "Мечтаю"
+						alt = ":РњРµС‡С‚Р°СЋ:"
+						tip = "РњРµС‡С‚Р°СЋ"
 						<ICON><DEFAULT>src="/rolleyes.gif"</DEFAULT></ICON>
 					</OBJ22>
 					<OBJ23>
 						id = "422" 
-						alt = ":В печали:"
-						tip = "В печали"
+						alt = ":Р’ РїРµС‡Р°Р»Рё:"
+						tip = "Р’ РїРµС‡Р°Р»Рё"
 						<ICON><DEFAULT>src="/sad.gif"</DEFAULT></ICON>
 					</OBJ23>
 					<OBJ24>
 						id = "423" 
-						alt = ":Надо подумать:"
-						tip = "Надо подумать"
+						alt = ":РќР°РґРѕ РїРѕРґСѓРјР°С‚СЊ:"
+						tip = "РќР°РґРѕ РїРѕРґСѓРјР°С‚СЊ"
 						<ICON><DEFAULT>src="/scratch_one-s_head.gif"</DEFAULT></ICON>
 					</OBJ24>
 					<OBJ25>
 						id = "424" 
-						alt = ":Ой, ё:"
-						tip = "Ой, ё"
+						alt = ":РћР№, С‘:"
+						tip = "РћР№, С‘"
 						<ICON><DEFAULT>src="/shok.gif"</DEFAULT></ICON>
 					</OBJ25>
 					<OBJ26>
 						id = "425" 
-						alt = ":Кричу:"
-						tip = "Кричу"
+						alt = ":РљСЂРёС‡Сѓ:"
+						tip = "РљСЂРёС‡Сѓ"
 						<ICON><DEFAULT>src="/shout.gif"</DEFAULT></ICON>
 					</OBJ26>
 					<OBJ27>
 						id = "426" 
-						alt = ":Улыбаюсь:"
-						tip = "Улыбаюсь"
+						alt = ":РЈР»С‹Р±Р°СЋСЃСЊ:"
+						tip = "РЈР»С‹Р±Р°СЋСЃСЊ"
 						<ICON><DEFAULT>src="/smile.gif"</DEFAULT></ICON>
 					</OBJ27>
 					<OBJ28>
 						id = "427" 
-						alt = ":Не знаю:"
-						tip = "Не знаю"
+						alt = ":РќРµ Р·РЅР°СЋ:"
+						tip = "РќРµ Р·РЅР°СЋ"
 						<ICON><DEFAULT>src="/unknw.gif"</DEFAULT></ICON>
 					</OBJ28>
 					<OBJ29>
 						id = "428" 
-						alt = ":В изнеможении:"
-						tip = "В изнеможении"
+						alt = ":Р’ РёР·РЅРµРјРѕР¶РµРЅРёРё:"
+						tip = "Р’ РёР·РЅРµРјРѕР¶РµРЅРёРё"
 						<ICON><DEFAULT>src="/wacko2.gif"</DEFAULT></ICON>
 					</OBJ29>
 					<OBJ30>
 						id = "429" 
-						alt = ":Подмигиваю:"
-						tip = "Подмигиваю"
+						alt = ":РџРѕРґРјРёРіРёРІР°СЋ:"
+						tip = "РџРѕРґРјРёРіРёРІР°СЋ"
 						<ICON><DEFAULT>src="/wink.gif"</DEFAULT></ICON>
 					</OBJ30>
 					<OBJ31>
 						id = "430" 
-						alt = ":Уррра!:"
-						tip = "Уррра!"
+						alt = ":РЈСЂСЂСЂР°!:"
+						tip = "РЈСЂСЂСЂР°!"
 						<ICON><DEFAULT>src="/yahoo.gif"</DEFAULT></ICON>
 					</OBJ31>
 					<OBJ32>
 						id = "431" 
-						alt = ":Бойан:"
-						tip = "Бойан"
+						alt = ":Р‘РѕР№Р°РЅ:"
+						tip = "Р‘РѕР№Р°РЅ"
 						<ICON><DEFAULT>src="/boian.png"</DEFAULT></ICON>
 					</OBJ32>
 					<OBJ33>
 						id = "432" 
-						alt = ":Ктулху:"
-						tip = "Ктулху"
+						alt = ":РљС‚СѓР»С…Сѓ:"
+						tip = "РљС‚СѓР»С…Сѓ"
 						<ICON><DEFAULT>src="/kut.png"</DEFAULT></ICON>
 					</OBJ33>
 				</ITEMS>
 			</SET03>
 			<SET01>
-				title = "Классические"
+				title = "РљР»Р°СЃСЃРёС‡РµСЃРєРёРµ"
 				path = "/smiles"
 				logo = "/biggrin.gif"
 				<ITEMS>
@@ -325,12 +325,12 @@
 					</OBJ24>
 					<OBJ25>
 						id = "<###20###img032>" 
-						tip = "Чертенок"
+						tip = "Р§РµСЂС‚РµРЅРѕРє"
 						<ICON><DEFAULT>src="/devil.gif"</DEFAULT></ICON>
 					</OBJ25>
 					<OBJ26>
 						id = "<###20###img033>" 
-						tip = "Вампирчик"
+						tip = "Р’Р°РјРїРёСЂС‡РёРє"
 						<ICON><DEFAULT>src="/vampire.gif"</DEFAULT></ICON>
 					</OBJ26>
 					<OBJ27>
@@ -360,7 +360,7 @@
 					</OBJ31>
 					<OBJ32>
 						id = "<###20###img039>" 
-						tip = "Сердце"
+						tip = "РЎРµСЂРґС†Рµ"
 						<ICON><DEFAULT>src="/heart.gif"</DEFAULT></ICON>
 					</OBJ32>
 					<OBJ33>
@@ -370,12 +370,12 @@
 					</OBJ33>
 					<OBJ34>
 						id = "<###20###img041>"
-						tip = "Сплю"
+						tip = "РЎРїР»СЋ"
 						<ICON><DEFAULT>src="/sleepy.gif"</DEFAULT></ICON>
 					</OBJ34>
 					<OBJ35>
 						id = "<###20###img000>" 
-						tip = "Отлично!"
+						tip = "РћС‚Р»РёС‡РЅРѕ!"
 						<ICON><DEFAULT>src="/live.gif"</DEFAULT></ICON>
 					</OBJ35>
 					<OBJ36>
@@ -390,218 +390,218 @@
 					</OBJ37>
 					<OBJ38>
 						id = "<###20###img003>"
-						tip = "Левая \"коза\""
+						tip = "Р›РµРІР°СЏ \"РєРѕР·Р°\""
 						<ICON><DEFAULT>src="/koza_left.gif"</DEFAULT></ICON>
 					</OBJ38>
 					<OBJ39>
 						id = "<###20###img004>"
-						tip = "Правая \"коза\""
+						tip = "РџСЂР°РІР°СЏ \"РєРѕР·Р°\""
 						<ICON><DEFAULT>src="/koza_right.gif"</DEFAULT></ICON>
 					</OBJ39>
 					<OBJ40>
 						id = "<###20###img005>"
-						tip = "Плохо"
+						tip = "РџР»РѕС…Рѕ"
 						<ICON><DEFAULT>src="/die.gif"</DEFAULT></ICON>
 					</OBJ40>
 					<OBJ41>
 						id = "<###20###img006>"
-						tip = "Внимание!"
+						tip = "Р’РЅРёРјР°РЅРёРµ!"
 						<ICON><DEFAULT>src="/think.gif"</DEFAULT></ICON>
 					</OBJ41>
 					<OBJ42>
 						id = "<###20###img007>"
-						tip = "Фига"
+						tip = "Р¤РёРіР°"
 						<ICON><DEFAULT>src="/kukes.gif"</DEFAULT></ICON>
 					</OBJ42>
 					<OBJ43>
 						id = "<###20###img008>"
-						tip = "Кулак"
+						tip = "РљСѓР»Р°Рє"
 						<ICON><DEFAULT>src="/fist.gif"</DEFAULT></ICON>
 					</OBJ43>
 					<OBJ44>
 						id = "<###20###img009>"
-						tip = "Отвали!"
+						tip = "РћС‚РІР°Р»Рё!"
 						<ICON><DEFAULT>src="/fuck.gif"</DEFAULT></ICON>
 					</OBJ44>
 				</ITEMS>
 			</SET01>
 			<ANIMATED_SET>
-				title = "Анимированные"
+				title = "РђРЅРёРјРёСЂРѕРІР°РЅРЅС‹Рµ"
 				path = "/animated"
 				logo = "/dance.gif"
 				<ITEMS>
 					<OBJ01>
 						id = "200" 
-						alt = ":Ангелочек:"
-						tip = "Ангелочек"
+						alt = ":РђРЅРіРµР»РѕС‡РµРє:"
+						tip = "РђРЅРіРµР»РѕС‡РµРє"
 						<ICON><DEFAULT>src="/angel.gif"</DEFAULT></ICON>
 					</OBJ01>
 					<OBJ02>
 						id = "201" 
-						alt = ":Аплодисменты:"
-						tip = "Аплодисменты"
+						alt = ":РђРїР»РѕРґРёСЃРјРµРЅС‚С‹:"
+						tip = "РђРїР»РѕРґРёСЃРјРµРЅС‚С‹"
 						<ICON><DEFAULT>src="/appl.gif"</DEFAULT></ICON>
 					</OBJ02>
 					<OBJ03>
 						id = "202" 
-						alt = ":Красотка:"
-						tip = "Красотка"
+						alt = ":РљСЂР°СЃРѕС‚РєР°:"
+						tip = "РљСЂР°СЃРѕС‚РєР°"
 						<ICON><DEFAULT>src="/beauty.gif"</DEFAULT></ICON>
 					</OBJ03>
 					<OBJ04>
 						id = "203" 
-						alt = ":Пиво:"
-						tip = "Пиво"
+						alt = ":РџРёРІРѕ:"
+						tip = "РџРёРІРѕ"
 						<ICON><DEFAULT>src="/beer.gif"</DEFAULT></ICON>
 					</OBJ04>
 					<OBJ05>
 						id = "204" 
-						alt = ":Читаю:"
-						tip = "Читаю"
+						alt = ":Р§РёС‚Р°СЋ:"
+						tip = "Р§РёС‚Р°СЋ"
 						<ICON><DEFAULT>src="/book.gif"</DEFAULT></ICON>
 					</OBJ05>
 					<OBJ06>
 						id = "205" 
-						alt = ":Мёрзну:"
-						tip = "Мёрзну"
+						alt = ":РњС‘СЂР·РЅСѓ:"
+						tip = "РњС‘СЂР·РЅСѓ"
 						<ICON><DEFAULT>src="/could.gif"</DEFAULT></ICON>
 					</OBJ06>
 					<OBJ07>
 						id = "206" 
-						alt = ":Рыдаю:"
-						tip = "Рыдаю"
+						alt = ":Р С‹РґР°СЋ:"
+						tip = "Р С‹РґР°СЋ"
 						<ICON><DEFAULT>src="/cry.gif"</DEFAULT></ICON>
 					</OBJ07>
 					<OBJ08>
 						id = "207" 
-						alt = ":Танцую:"
-						tip = "Танцую"
+						alt = ":РўР°РЅС†СѓСЋ:"
+						tip = "РўР°РЅС†СѓСЋ"
 						<ICON><DEFAULT>src="/dance.gif"</DEFAULT></ICON>
 					</OBJ08>
 					<OBJ09>
 						id = "208" 
-						alt = ":Чертовски злюсь:"
-						tip = "Чертовски злюсь"
+						alt = ":Р§РµСЂС‚РѕРІСЃРєРё Р·Р»СЋСЃСЊ:"
+						tip = "Р§РµСЂС‚РѕРІСЃРєРё Р·Р»СЋСЃСЊ"
 						<ICON><DEFAULT>src="/devil.gif"</DEFAULT></ICON>
 					</OBJ09>
 					<OBJ10>
 						id = "209" 
-						alt = ":Жую:"
-						tip = "Жую"
+						alt = ":Р–СѓСЋ:"
+						tip = "Р–СѓСЋ"
 						<ICON><DEFAULT>src="/eat.gif"</DEFAULT></ICON>
 					</OBJ10>
 					<OBJ11>
 						id = "210" 
-						alt = ":Побью:"
-						tip = "Побью"
+						alt = ":РџРѕР±СЊСЋ:"
+						tip = "РџРѕР±СЊСЋ"
 						<ICON><DEFAULT>src="/fight.gif"</DEFAULT></ICON>
 					</OBJ11>
 					<OBJ12>
 						id = "211" 
-						alt = ":Побили:"
-						tip = "Побили"
+						alt = ":РџРѕР±РёР»Рё:"
+						tip = "РџРѕР±РёР»Рё"
 						<ICON><DEFAULT>src="/fingal.gif"</DEFAULT></ICON>
 					</OBJ12>
 					<OBJ13>
 						id = "212" 
-						alt = ":Дарю цветочек:"
-						tip = "Дарю цветочек"
+						alt = ":Р”Р°СЂСЋ С†РІРµС‚РѕС‡РµРє:"
+						tip = "Р”Р°СЂСЋ С†РІРµС‚РѕС‡РµРє"
 						<ICON><DEFAULT>src="/flowr.gif"</DEFAULT></ICON>
 					</OBJ13>
 					<OBJ14>
 						id = "213" 
-						alt = ":Смеюсь:"
-						tip = "Смеюсь"
+						alt = ":РЎРјРµСЋСЃСЊ:"
+						tip = "РЎРјРµСЋСЃСЊ"
 						<ICON><DEFAULT>src="/gg.gif"</DEFAULT></ICON>
 					</OBJ14>
 					<OBJ15>
 						id = "214" 
-						alt = ":Смеюсь и плачу:"
-						tip = "Смеюсь и плачу"
+						alt = ":РЎРјРµСЋСЃСЊ Рё РїР»Р°С‡Сѓ:"
+						tip = "РЎРјРµСЋСЃСЊ Рё РїР»Р°С‡Сѓ"
 						<ICON><DEFAULT>src="/gg2.gif"</DEFAULT></ICON>
 					</OBJ15>
 					<OBJ16>
 						id = "215" 
-						alt = ":Подарок:"
-						tip = "Подарок"
+						alt = ":РџРѕРґР°СЂРѕРє:"
+						tip = "РџРѕРґР°СЂРѕРє"
 						<ICON><DEFAULT>src="/gift.gif"</DEFAULT></ICON>
 					</OBJ16>
 					<OBJ17>
 						id = "216" 
-						alt = ":Ворчу:"
-						tip = "Ворчу"
+						alt = ":Р’РѕСЂС‡Сѓ:"
+						tip = "Р’РѕСЂС‡Сѓ"
 						<ICON><DEFAULT>src="/hungry.gif"</DEFAULT></ICON>
 					</OBJ17>
 					<OBJ18>
 						id = "217" 
-						alt = ":Целую:"
-						tip = "Целую"
+						alt = ":Р¦РµР»СѓСЋ:"
+						tip = "Р¦РµР»СѓСЋ"
 						<ICON><DEFAULT>src="/kiss.gif"</DEFAULT></ICON>
 					</OBJ18>
 					<OBJ19>
 						id = "218" 
-						alt = ":Люблю:"
-						tip = "Люблю"
+						alt = ":Р›СЋР±Р»СЋ:"
+						tip = "Р›СЋР±Р»СЋ"
 						<ICON><DEFAULT>src="/love.gif"</DEFAULT></ICON>
 					</OBJ19>
 					<OBJ20>
 						id = "219" 
-						alt = ":Застрелю:"
-						tip = "Застрелю"
+						alt = ":Р—Р°СЃС‚СЂРµР»СЋ:"
+						tip = "Р—Р°СЃС‚СЂРµР»СЋ"
 						<ICON><DEFAULT>src="/pistolet.gif"</DEFAULT></ICON>
 					</OBJ20>
 					<OBJ21>
 						id = "220" 
-						alt = ":Выпей яду:"
-						tip = "Выпей яду"
+						alt = ":Р’С‹РїРµР№ СЏРґСѓ:"
+						tip = "Р’С‹РїРµР№ СЏРґСѓ"
 						<ICON><DEFAULT>src="/poison.gif"</DEFAULT></ICON>
 					</OBJ21>
 					<OBJ22>
 						id = "221" 
-						alt = ":Лучезарно:"
-						tip = "Лучезарно"
+						alt = ":Р›СѓС‡РµР·Р°СЂРЅРѕ:"
+						tip = "Р›СѓС‡РµР·Р°СЂРЅРѕ"
 						<ICON><DEFAULT>src="/rainbow.gif"</DEFAULT></ICON>
 					</OBJ22>
 					<OBJ23>
 						id = "222" 
-						alt = ":Смущаюсь:"
-						tip = "Смущаюсь"
+						alt = ":РЎРјСѓС‰Р°СЋСЃСЊ:"
+						tip = "РЎРјСѓС‰Р°СЋСЃСЊ"
 						<ICON><DEFAULT>src="/red.gif"</DEFAULT></ICON>
 					</OBJ23>
 					<OBJ24>
 						id = "223" 
-						alt = ":Расстраиваюсь:"
-						tip = "Расстраиваюсь"
+						alt = ":Р Р°СЃСЃС‚СЂР°РёРІР°СЋСЃСЊ:"
+						tip = "Р Р°СЃСЃС‚СЂР°РёРІР°СЋСЃСЊ"
 						<ICON><DEFAULT>src="/sad.gif"</DEFAULT></ICON>
 					</OBJ24>
 					<OBJ25>
 						id = "224" 
-						alt = ":Пою:"
-						tip = "Пою"
+						alt = ":РџРѕСЋ:"
+						tip = "РџРѕСЋ"
 						<ICON><DEFAULT>src="/sing.gif"</DEFAULT></ICON>
 					</OBJ25>
 					<OBJ26>
 						id = "225" 
-						alt = ":Скучаю:"
-						tip = "Скучаю"
+						alt = ":РЎРєСѓС‡Р°СЋ:"
+						tip = "РЎРєСѓС‡Р°СЋ"
 						<ICON><DEFAULT>src="/skuka.gif"</DEFAULT></ICON>
 					</OBJ26>
 					<OBJ27>
 						id = "226" 
-						alt = ":Засыпаю:"
-						tip = "Засыпаю"
+						alt = ":Р—Р°СЃС‹РїР°СЋ:"
+						tip = "Р—Р°СЃС‹РїР°СЋ"
 						<ICON><DEFAULT>src="/sleep.gif"</DEFAULT></ICON>
 					</OBJ27>
 					<OBJ28>
 						id = "227" 
-						alt = ":Улыбаюсь:"
-						tip = "Улыбаюсь"
+						alt = ":РЈР»С‹Р±Р°СЋСЃСЊ:"
+						tip = "РЈР»С‹Р±Р°СЋСЃСЊ"
 						<ICON><DEFAULT>src="/smile.gif"</DEFAULT></ICON>
 					</OBJ28>
 					<OBJ29>
 						id = "228" 
-						alt = ":Показываю язык:"
-						tip = "Показываю язык"
+						alt = ":РџРѕРєР°Р·С‹РІР°СЋ СЏР·С‹Рє:"
+						tip = "РџРѕРєР°Р·С‹РІР°СЋ СЏР·С‹Рє"
 						<ICON><DEFAULT>src="/tongue.gif"</DEFAULT></ICON>
 					</OBJ29>
 					<OBJ30>
@@ -612,376 +612,376 @@
 					</OBJ30>
 					<OBJ31>
 						id = "230" 
-						alt = ":Удивляюсь:"
-						tip = "Удивляюсь"
+						alt = ":РЈРґРёРІР»СЏСЋСЃСЊ:"
+						tip = "РЈРґРёРІР»СЏСЋСЃСЊ"
 						<ICON><DEFAULT>src="/wonder.gif"</DEFAULT></ICON>
 					</OBJ31>
 					<OBJ32>
 						id = "231" 
-						alt = ":Тошнит:"
-						tip = "Тошнит"
+						alt = ":РўРѕС€РЅРёС‚:"
+						tip = "РўРѕС€РЅРёС‚"
 						<ICON><DEFAULT>src="/blew.gif"</DEFAULT></ICON>
 					</OBJ32>
 				</ITEMS>
 			</ANIMATED_SET>
 			<STATIC_PNG>
-				title = "Продвинутые"
+				title = "РџСЂРѕРґРІРёРЅСѓС‚С‹Рµ"
 				path = "/static_png"
 				logo = "/smiles_murmansk_03.png"
 				<ITEMS>
 					<OBJ01>
 						id = "300" 
-						alt = ":Улыбаюсь:"
-						tip = "Улыбаюсь"
+						alt = ":РЈР»С‹Р±Р°СЋСЃСЊ:"
+						tip = "РЈР»С‹Р±Р°СЋСЃСЊ"
 						<ICON><DEFAULT>src="/smiles_murmansk_03.png"</DEFAULT></ICON>
 					</OBJ01>
 					<OBJ02>
 						id = "301" 
-						alt = ":Злорадствую:"
-						tip = "Злорадствую"
+						alt = ":Р—Р»РѕСЂР°РґСЃС‚РІСѓСЋ:"
+						tip = "Р—Р»РѕСЂР°РґСЃС‚РІСѓСЋ"
 						<ICON><DEFAULT>src="/smiles_murmansk_05.png"</DEFAULT></ICON>
 					</OBJ02>
 					<OBJ03>
 						id = "302" 
-						alt = ":Радуюсь:"
-						tip = "Радуюсь"
+						alt = ":Р Р°РґСѓСЋСЃСЊ:"
+						tip = "Р Р°РґСѓСЋСЃСЊ"
 						<ICON><DEFAULT>src="/smiles_murmansk_07.png"</DEFAULT></ICON>
 					</OBJ03>
 					<OBJ04>
 						id = "303" 
-						alt = ":Старичок:"
-						tip = "Старичок"
+						alt = ":РЎС‚Р°СЂРёС‡РѕРє:"
+						tip = "РЎС‚Р°СЂРёС‡РѕРє"
 						<ICON><DEFAULT>src="/smiles_murmansk_09.png"</DEFAULT></ICON>
 					</OBJ04>
 					<OBJ05>
 						id = "304" 
-						alt = ":Свирепствую:"
-						tip = "Свирепствую"
+						alt = ":РЎРІРёСЂРµРїСЃС‚РІСѓСЋ:"
+						tip = "РЎРІРёСЂРµРїСЃС‚РІСѓСЋ"
 						<ICON><DEFAULT>src="/smiles_murmansk_11.png"</DEFAULT></ICON>
 					</OBJ05>
 					<OBJ06>
 						id = "305" 
-						alt = ":Пугаюсь:"
-						tip = "Пугаюсь"
+						alt = ":РџСѓРіР°СЋСЃСЊ:"
+						tip = "РџСѓРіР°СЋСЃСЊ"
 						<ICON><DEFAULT>src="/smiles_murmansk_13.png"</DEFAULT></ICON>
 					</OBJ06>
 					<OBJ07>
 						id = "306" 
-						alt = ":Показываю язык:"
-						tip = "Показываю язык"
+						alt = ":РџРѕРєР°Р·С‹РІР°СЋ СЏР·С‹Рє:"
+						tip = "РџРѕРєР°Р·С‹РІР°СЋ СЏР·С‹Рє"
 						<ICON><DEFAULT>src="/smiles_murmansk_21.png"</DEFAULT></ICON>
 					</OBJ07>
 					<OBJ08>
 						id = "307" 
-						alt = ":Умник:"
-						tip = "Умник"
+						alt = ":РЈРјРЅРёРє:"
+						tip = "РЈРјРЅРёРє"
 						<ICON><DEFAULT>src="/smiles_murmansk_22.png"</DEFAULT></ICON>
 					</OBJ08>
 					<OBJ09>
 						id = "308" 
-						alt = ":Алкоголик:"
-						tip = "Алкоголик"
+						alt = ":РђР»РєРѕРіРѕР»РёРє:"
+						tip = "РђР»РєРѕРіРѕР»РёРє"
 						<ICON><DEFAULT>src="/smiles_murmansk_23.png"</DEFAULT></ICON>
 					</OBJ09>
 					<OBJ10>
 						id = "309" 
-						alt = ":Вояка:"
-						tip = "Вояка"
+						alt = ":Р’РѕСЏРєР°:"
+						tip = "Р’РѕСЏРєР°"
 						<ICON><DEFAULT>src="/smiles_murmansk_24.png"</DEFAULT></ICON>
 					</OBJ10>
 					<OBJ11>
 						id = "310" 
-						alt = ":Удивляюсь:"
-						tip = "Удивляюсь"
+						alt = ":РЈРґРёРІР»СЏСЋСЃСЊ:"
+						tip = "РЈРґРёРІР»СЏСЋСЃСЊ"
 						<ICON><DEFAULT>src="/smiles_murmansk_25.png"</DEFAULT></ICON>
 					</OBJ11>
 					<OBJ12>
 						id = "311" 
-						alt = ":Чертовски злюсь:"
-						tip = "Чертовски злюсь"
+						alt = ":Р§РµСЂС‚РѕРІСЃРєРё Р·Р»СЋСЃСЊ:"
+						tip = "Р§РµСЂС‚РѕРІСЃРєРё Р·Р»СЋСЃСЊ"
 						<ICON><DEFAULT>src="/smiles_murmansk_26.png"</DEFAULT></ICON>
 					</OBJ12>
 					<OBJ13>
 						id = "312" 
-						alt = ":Расстраиваюсь:"
-						tip = "Расстраиваюсь"
+						alt = ":Р Р°СЃСЃС‚СЂР°РёРІР°СЋСЃСЊ:"
+						tip = "Р Р°СЃСЃС‚СЂР°РёРІР°СЋСЃСЊ"
 						<ICON><DEFAULT>src="/smiles_murmansk_33.png"</DEFAULT></ICON>
 					</OBJ13>
 					<OBJ14>
 						id = "313" 
-						alt = ":Панк:"
-						tip = "Панк"
+						alt = ":РџР°РЅРє:"
+						tip = "РџР°РЅРє"
 						<ICON><DEFAULT>src="/smiles_murmansk_34.png"</DEFAULT></ICON>
 					</OBJ14>
 					<OBJ15>
 						id = "314" 
-						alt = ":Лопну от смеха:"
-						tip = "Лопну от смеха"
+						alt = ":Р›РѕРїРЅСѓ РѕС‚ СЃРјРµС…Р°:"
+						tip = "Р›РѕРїРЅСѓ РѕС‚ СЃРјРµС…Р°"
 						<ICON><DEFAULT>src="/smiles_murmansk_35.png"</DEFAULT></ICON>
 					</OBJ15>
 					<OBJ16>
 						id = "315" 
-						alt = ":Подмигиваю:"
-						tip = "Подмигиваю"
+						alt = ":РџРѕРґРјРёРіРёРІР°СЋ:"
+						tip = "РџРѕРґРјРёРіРёРІР°СЋ"
 						<ICON><DEFAULT>src="/smiles_murmansk_36.png"</DEFAULT></ICON>
 					</OBJ16>
 					<OBJ17>
 						id = "316" 
-						alt = ":Думаю:"
-						tip = "Думаю"
+						alt = ":Р”СѓРјР°СЋ:"
+						tip = "Р”СѓРјР°СЋ"
 						<ICON><DEFAULT>src="/smiles_murmansk_37.png"</DEFAULT></ICON>
 					</OBJ17>
 					<OBJ18>
 						id = "317" 
-						alt = ":Люблю:"
-						tip = "Люблю"
+						alt = ":Р›СЋР±Р»СЋ:"
+						tip = "Р›СЋР±Р»СЋ"
 						<ICON><DEFAULT>src="/smiles_murmansk_38.png"</DEFAULT></ICON>
 					</OBJ18>
 					<OBJ19>
 						id = "318" 
-						alt = ":Подавлен:"
-						tip = "Подавлен"
+						alt = ":РџРѕРґР°РІР»РµРЅ:"
+						tip = "РџРѕРґР°РІР»РµРЅ"
 						<ICON><DEFAULT>src="/smiles_murmansk_45.png"</DEFAULT></ICON>
 					</OBJ19>
 					<OBJ20>
 						id = "319" 
-						alt = ":Рыдаю:"
-						tip = "Рыдаю"
+						alt = ":Р С‹РґР°СЋ:"
+						tip = "Р С‹РґР°СЋ"
 						<ICON><DEFAULT>src="/smiles_murmansk_46.png"</DEFAULT></ICON>
 					</OBJ20>
 					<OBJ21>
 						id = "320" 
-						alt = ":Сейчас расплачусь:"
-						tip = "Сейчас расплачусь"
+						alt = ":РЎРµР№С‡Р°СЃ СЂР°СЃРїР»Р°С‡СѓСЃСЊ:"
+						tip = "РЎРµР№С‡Р°СЃ СЂР°СЃРїР»Р°С‡СѓСЃСЊ"
 						<ICON><DEFAULT>src="/smiles_murmansk_47.png"</DEFAULT></ICON>
 					</OBJ21>
 					<OBJ22>
 						id = "321" 
-						alt = ":Злюсь:"
-						tip = "Злюсь"
+						alt = ":Р—Р»СЋСЃСЊ:"
+						tip = "Р—Р»СЋСЃСЊ"
 						<ICON><DEFAULT>src="/smiles_murmansk_48.png"</DEFAULT></ICON>
 					</OBJ22>
 					<OBJ23>
 						id = "322" 
-						alt = ":Тошнит:"
-						tip = "Тошнит"
+						alt = ":РўРѕС€РЅРёС‚:"
+						tip = "РўРѕС€РЅРёС‚"
 						<ICON><DEFAULT>src="/smiles_murmansk_49.png"</DEFAULT></ICON>
 					</OBJ23>
 					<OBJ24>
 						id = "323" 
-						alt = ":Сумасшествие:"
-						tip = "Сумасшествие"
+						alt = ":РЎСѓРјР°СЃС€РµСЃС‚РІРёРµ:"
+						tip = "РЎСѓРјР°СЃС€РµСЃС‚РІРёРµ"
 						<ICON><DEFAULT>src="/smiles_murmansk_50.png"</DEFAULT></ICON>
 					</OBJ24>
 					<OBJ25>
 						id = "324" 
-						alt = ":Целую:"
-						tip = "Целую"
+						alt = ":Р¦РµР»СѓСЋ:"
+						tip = "Р¦РµР»СѓСЋ"
 						<ICON><DEFAULT>src="/smiles_murmansk_57.png"</DEFAULT></ICON>
 					</OBJ25>
 					<OBJ26>
 						id = "325" 
-						alt = ":Поцеловали:"
-						tip = "Поцеловали"
+						alt = ":РџРѕС†РµР»РѕРІР°Р»Рё:"
+						tip = "РџРѕС†РµР»РѕРІР°Р»Рё"
 						<ICON><DEFAULT>src="/smiles_murmansk_58.png"</DEFAULT></ICON>
 					</OBJ26>
 					<OBJ27>
 						id = "326" 
-						alt = ":Красотка:"
-						tip = "Красотка"
+						alt = ":РљСЂР°СЃРѕС‚РєР°:"
+						tip = "РљСЂР°СЃРѕС‚РєР°"
 						<ICON><DEFAULT>src="/smiles_murmansk_59.png"</DEFAULT></ICON>
 					</OBJ27>
 					<OBJ28>
 						id = "327" 
-						alt = ":Ангелочек:"
-						tip = "Ангелочек"
+						alt = ":РђРЅРіРµР»РѕС‡РµРє:"
+						tip = "РђРЅРіРµР»РѕС‡РµРє"
 						<ICON><DEFAULT>src="/smiles_murmansk_60.png"</DEFAULT></ICON>
 					</OBJ28>
 					<OBJ29>
 						id = "328" 
-						alt = ":Подозрительно:"
-						tip = "Подозрительно"
+						alt = ":РџРѕРґРѕР·СЂРёС‚РµР»СЊРЅРѕ:"
+						tip = "РџРѕРґРѕР·СЂРёС‚РµР»СЊРЅРѕ"
 						<ICON><DEFAULT>src="/smiles_murmansk_61.png"</DEFAULT></ICON>
 					</OBJ29>
 					<OBJ30>
 						id = "329" 
-						alt = ":Жую:"
-						tip = "Жую"
+						alt = ":Р–СѓСЋ:"
+						tip = "Р–СѓСЋ"
 						<ICON><DEFAULT>src="/smiles_murmansk_62.png"</DEFAULT></ICON>
 					</OBJ30>
 					<OBJ31>
 						id = "330" 
-						alt = ":Смущаюсь:"
-						tip = "Смущаюсь"
+						alt = ":РЎРјСѓС‰Р°СЋСЃСЊ:"
+						tip = "РЎРјСѓС‰Р°СЋСЃСЊ"
 						<ICON><DEFAULT>src="/smiles_murmansk_69.png"</DEFAULT></ICON>
 					</OBJ31>
 					<OBJ32>
 						id = "331" 
-						alt = ":Стыдно:"
-						tip = "Стыдно"
+						alt = ":РЎС‚С‹РґРЅРѕ:"
+						tip = "РЎС‚С‹РґРЅРѕ"
 						<ICON><DEFAULT>src="/smiles_murmansk_70.png"</DEFAULT></ICON>
 					</OBJ32>
 				</ITEMS>
 			</STATIC_PNG>
 			<SET05>
-				title = "Большие 1"
+				title = "Р‘РѕР»СЊС€РёРµ 1"
 				path = "/set05"
 				logo = "/logo.png"
 				<ITEMS>
 					<OBJ01>
 						id = "601"
-						alt = ":умираю от смеха:"
-						tip = "Умираю от смеха"
+						alt = ":РЈРјРёСЂР°СЋ РѕС‚ СЃРјРµС…Р°:"
+						tip = "РЈРјРёСЂР°СЋ РѕС‚ СЃРјРµС…Р°"
 						<ICON><DEFAULT>src="/s001.gif"</DEFAULT></ICON>
 					</OBJ01>
 					<OBJ02>
 						id = "602"
-						alt = "дьявол"
-						tip = "Дьявол"
+						alt = "Р”СЊСЏРІРѕР»"
+						tip = "Р”СЊСЏРІРѕР»"
 						width = "32"
 						height = "32"
 						<ICON><DEFAULT>src="/s002.gif"</DEFAULT></ICON>
 					</OBJ02>
 					<OBJ03>
 						id = "603"
-						alt = ":секрет:"
-						tip = "Секрет"
+						alt = ":РЎРµРєСЂРµС‚:"
+						tip = "РЎРµРєСЂРµС‚"
 						width = "32"
 						height = "32"
 						<ICON><DEFAULT>src="/s003.gif"</DEFAULT></ICON>
 					</OBJ03>
 					<OBJ04>
 						id = "604"
-						alt = ":голова кружится:"
-						tip = "Голова кружится"
+						alt = ":Р“РѕР»РѕРІР° РєСЂСѓР¶РёС‚СЃСЏ:"
+						tip = "Р“РѕР»РѕРІР° РєСЂСѓР¶РёС‚СЃСЏ"
 						width = "32"
 						height = "32"
 						<ICON><DEFAULT>src="/s004.gif"</DEFAULT></ICON>
 					</OBJ04>
 					<OBJ17>
 						id = "617"
-						alt = ":требую:"
-						tip = "Требую"
+						alt = ":РўСЂРµР±СѓСЋ:"
+						tip = "РўСЂРµР±СѓСЋ"
 						width = "48"
 						height = "32"
 						<ICON><DEFAULT>src="/s017.gif"</DEFAULT></ICON>
 					</OBJ17>
 					<OBJ05>
 						id = "605"
-						alt = ":влюблён:"
-						tip = "Влюблён"
+						alt = ":Р’Р»СЋР±Р»С‘РЅ:"
+						tip = "Р’Р»СЋР±Р»С‘РЅ"
 						width = "32"
 						height = "32"
 						<ICON><DEFAULT>src="/s005.gif"</DEFAULT></ICON>
 					</OBJ05>
 					<OBJ06>
 						id = "606"
-						alt = ":целую:"
-						tip = "Целую"
+						alt = ":Р¦РµР»СѓСЋ:"
+						tip = "Р¦РµР»СѓСЋ"
 						width = "32"
 						height = "32"
 						<ICON><DEFAULT>src="/s006.gif"</DEFAULT></ICON>
 					</OBJ06>
 					<OBJ07>
 						id = "607"
-						alt = ":обиделся:"
-						tip = "Обиделся"
+						alt = ":РћР±РёРґРµР»СЃСЏ:"
+						tip = "РћР±РёРґРµР»СЃСЏ"
 						width = "32"
 						height = "32"
 						<ICON><DEFAULT>src="/s007.gif"</DEFAULT></ICON>
 					</OBJ07>
 					<OBJ08>
 						id = "608"
-						alt = ":устал:"
-						tip = "Устал"
+						alt = ":РЈСЃС‚Р°Р»:"
+						tip = "РЈСЃС‚Р°Р»"
 						width = "32"
 						height = "32"
 						<ICON><DEFAULT>src="/s008.gif"</DEFAULT></ICON>
 					</OBJ08>
 					<OBJ18>
 						id = "618"
-						alt = ":тошнит:"
-						tip = "Тошнит"
+						alt = ":РўРѕС€РЅРёС‚:"
+						tip = "РўРѕС€РЅРёС‚"
 						width = "48"
 						height = "32"
 						<ICON><DEFAULT>src="/s018.gif"</DEFAULT></ICON>
 					</OBJ18>
 					<OBJ09>
 						id = "609"
-						alt = ":подмигиваю:"
-						tip = "Подмигиваю"
+						alt = ":РџРѕРґРјРёРіРёРІР°СЋ:"
+						tip = "РџРѕРґРјРёРіРёРІР°СЋ"
 						width = "32"
 						height = "32"
 						<ICON><DEFAULT>src="/s009.gif"</DEFAULT></ICON>
 					</OBJ09>
 					<OBJ10>
 						id = "610"
-						alt = ":гадость:"
-						tip = "Гадость"
+						alt = ":Р“Р°РґРѕСЃС‚СЊ:"
+						tip = "Р“Р°РґРѕСЃС‚СЊ"
 						width = "32"
 						height = "32"
 						<ICON><DEFAULT>src="/s010.gif"</DEFAULT></ICON>
 					</OBJ10>
 					<OBJ11>
 						id = "611"
-						alt = ":виноват:"
-						tip = "Виноват"
+						alt = ":Р’РёРЅРѕРІР°С‚:"
+						tip = "Р’РёРЅРѕРІР°С‚"
 						width = "32"
 						height = "32"
 						<ICON><DEFAULT>src="/s011.gif"</DEFAULT></ICON>
 					</OBJ11>
 					<OBJ12>
 						id = "612"
-						alt = ":любовь:"
-						tip = "Любовь"
+						alt = ":Р›СЋР±РѕРІСЊ:"
+						tip = "Р›СЋР±РѕРІСЊ"
 						width = "32"
 						height = "32"
 						<ICON><DEFAULT>src="/s012.gif"</DEFAULT></ICON>
 					</OBJ12>
 					<OBJ19>
 						id = "619"
-						alt = ":дарю цветочек:"
-						tip = "Дарю цветочек"
+						alt = ":Р”Р°СЂСЋ С†РІРµС‚РѕС‡РµРє:"
+						tip = "Р”Р°СЂСЋ С†РІРµС‚РѕС‡РµРє"
 						width = "48"
 						height = "32"
 						<ICON><DEFAULT>src="/s019.gif"</DEFAULT></ICON>
 					</OBJ19>
 					<OBJ13>
 						id = "613"
-						alt = ":разочарование:"
-						tip = "Разочарование"
+						alt = ":Р Р°Р·РѕС‡Р°СЂРѕРІР°РЅРёРµ:"
+						tip = "Р Р°Р·РѕС‡Р°СЂРѕРІР°РЅРёРµ"
 						width = "32"
 						height = "32"
 						<ICON><DEFAULT>src="/s013.gif"</DEFAULT></ICON>
 					</OBJ13>
 					<OBJ14>
 						id = "614"
-						alt = ":сплю:"
-						tip = "Сплю"
+						alt = ":РЎРїР»СЋ:"
+						tip = "РЎРїР»СЋ"
 						width = "32"
 						height = "32"
 						<ICON><DEFAULT>src="/s014.gif"</DEFAULT></ICON>
 					</OBJ14>
 					<OBJ15>
 						id = "615"
-						alt = ":ой, ё!:"
-						tip = "Ой, ё!"
+						alt = ":РћР№, С‘!:"
+						tip = "РћР№, С‘!"
 						width = "32"
 						height = "32"
 						<ICON><DEFAULT>src="/s015.gif"</DEFAULT></ICON>
 					</OBJ15>
 					<OBJ16>
 						id = "616"
-						alt = ":прыгаю:"
-						tip = "Прыгаю"
+						alt = ":РџСЂС‹РіР°СЋ:"
+						tip = "РџСЂС‹РіР°СЋ"
 						width = "32"
 						height = "32"
 						<ICON><DEFAULT>src="/s016.gif"</DEFAULT></ICON>
 					</OBJ16>
 					<OBJ20>
 						id = "620"
-						alt = ":подозреваю:"
-						tip = "Подозреваю"
+						alt = ":РџРѕРґРѕР·СЂРµРІР°СЋ:"
+						tip = "РџРѕРґРѕР·СЂРµРІР°СЋ"
 						width = "48"
 						height = "32"
 						<ICON><DEFAULT>src="/s020.gif"</DEFAULT></ICON>
@@ -989,134 +989,134 @@
 				</ITEMS>
 			</SET05>
 			<SET04>
-				title = "Большие 2"
+				title = "Р‘РѕР»СЊС€РёРµ 2"
 				path = "/set04"
 				logo = "/logo.png"
 				<ITEMS>
 					<OBJ01>
 						id = "501"
-						alt = ":Ура!:"
-						tip = "Ура!"
+						alt = ":РЈСЂР°!:"
+						tip = "РЈСЂР°!"
 						width = "64"
 						height = "32"
 						<ICON><DEFAULT>src="/s001.gif"</DEFAULT></ICON>
 					</OBJ01>
 					<OBJ02>
 						id = "502"
-						alt = ":Привет!:"
-						tip = "Привет!"
+						alt = ":РџСЂРёРІРµС‚!:"
+						tip = "РџСЂРёРІРµС‚!"
 						width = "48"
 						height = "32"
 						<ICON><DEFAULT>src="/s002.gif"</DEFAULT></ICON>
 					</OBJ02>
 					<OBJ03>
 						id = "503"
-						alt = ":кушаю:"
-						tip = "Кушаю"
+						alt = ":РљСѓС€Р°СЋ:"
+						tip = "РљСѓС€Р°СЋ"
 						width = "48"
 						height = "32"
 						<ICON><DEFAULT>src="/s003.gif"</DEFAULT></ICON>
 					</OBJ03>
 					<OBJ04>
 						id = "504"
-						alt = ":танцую:"
-						tip = "Танцую"
+						alt = ":РўР°РЅС†СѓСЋ:"
+						tip = "РўР°РЅС†СѓСЋ"
 						width = "64"
 						height = "32"
 						<ICON><DEFAULT>src="/s004.gif"</DEFAULT></ICON>
 					</OBJ04>
 					<OBJ05>
 						id = "505"
-						alt = ":целую:"
-						tip = "Целую"
+						alt = ":Р¦РµР»СѓСЋ:"
+						tip = "Р¦РµР»СѓСЋ"
 						width = "64"
 						height = "32"
 						<ICON><DEFAULT>src="/s005.gif"</DEFAULT></ICON>
 					</OBJ05>
 					<OBJ06>
 						id = "506"
-						alt = ":Пока!:"
-						tip = "Пока!"
+						alt = ":РџРѕРєР°!:"
+						tip = "РџРѕРєР°!"
 						width = "48"
 						height = "32"
 						<ICON><DEFAULT>src="/s006.gif"</DEFAULT></ICON>
 					</OBJ06>
 					<OBJ07>
 						id = "507"
-						alt = ":слушаю музыку:"
-						tip = "Слушаю музыку"
+						alt = ":РЎР»СѓС€Р°СЋ РјСѓР·С‹РєСѓ:"
+						tip = "РЎР»СѓС€Р°СЋ РјСѓР·С‹РєСѓ"
 						width = "48"
 						height = "32"
 						<ICON><DEFAULT>src="/s007.gif"</DEFAULT></ICON>
 					</OBJ07>
 					<OBJ08>
 						id = "508"
-						alt = ":помоги:"
-						tip = "Помоги"
+						alt = ":РџРѕРјРѕРіРё:"
+						tip = "РџРѕРјРѕРіРё"
 						width = "64"
 						height = "32"
 						<ICON><DEFAULT>src="/s008.gif"</DEFAULT></ICON>
 					</OBJ08>
 					<OBJ09>
 						id = "509"
-						alt = ":бабло!:"
-						tip = "Бабло!"
+						alt = ":Р‘Р°Р±Р»Рѕ!:"
+						tip = "Р‘Р°Р±Р»Рѕ!"
 						width = "64"
 						height = "32"
 						<ICON><DEFAULT>src="/s009.gif"</DEFAULT></ICON>
 					</OBJ09>
 					<OBJ10>
 						id = "510"
-						alt = ":да!:"
-						tip = "Да!"
+						alt = ":Р”Р°!:"
+						tip = "Р”Р°!"
 						width = "48"
 						height = "32"
 						<ICON><DEFAULT>src="/s010.gif"</DEFAULT></ICON>
 					</OBJ10>
 					<OBJ11>
 						id = "511"
-						alt = ":головой об стену:"
-						tip = "Головой об стену"
+						alt = ":Р“РѕР»РѕРІРѕР№ РѕР± СЃС‚РµРЅСѓ:"
+						tip = "Р“РѕР»РѕРІРѕР№ РѕР± СЃС‚РµРЅСѓ"
 						width = "48"
 						height = "32"
 						<ICON><DEFAULT>src="/s011.gif"</DEFAULT></ICON>
 					</OBJ11>
 					<OBJ12>
 						id = "512"
-						alt = ":в атаку!:"
-						tip = "В атаку!"
+						alt = ":Р’ Р°С‚Р°РєСѓ!:"
+						tip = "Р’ Р°С‚Р°РєСѓ!"
 						width = "64"
 						height = "32"
 						<ICON><DEFAULT>src="/s012.gif"</DEFAULT></ICON>
 					</OBJ12>
 					<OBJ13>
 						id = "513"
-						alt = ":пацанчик:"
-						tip = "Пацанчик"
+						alt = ":РџР°С†Р°РЅС‡РёРє:"
+						tip = "РџР°С†Р°РЅС‡РёРє"
 						width = "64"
 						height = "32"
 						<ICON><DEFAULT>src="/s013.gif"</DEFAULT></ICON>
 					</OBJ13>
 					<OBJ14>
 						id = "514"
-						alt = ":нет!:"
-						tip = "Нет!"
+						alt = ":РќРµС‚!:"
+						tip = "РќРµС‚!"
 						width = "48"
 						height = "32"
 						<ICON><DEFAULT>src="/s014.gif"</DEFAULT></ICON>
 					</OBJ14>
 					<OBJ15>
 						id = "515"
-						alt = ":мир!:"
-						tip = "Мир!"
+						alt = ":РњРёСЂ!:"
+						tip = "РњРёСЂ!"
 						width = "48"
 						height = "32"
 						<ICON><DEFAULT>src="/s015.gif"</DEFAULT></ICON>
 					</OBJ15>
 					<OBJ16>
 						id = "516"
-						alt = ":дракончик:"
-						tip = "Дракончик"
+						alt = ":Р”СЂР°РєРѕРЅС‡РёРє:"
+						tip = "Р”СЂР°РєРѕРЅС‡РёРє"
 						width = "64"
 						height = "32"
 						<ICON><DEFAULT>src="/s016.gif"</DEFAULT></ICON>

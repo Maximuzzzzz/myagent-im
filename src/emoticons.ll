@@ -66,7 +66,7 @@ void Emoticons::load(QString filename, QSettings* settings)
 	enum Attrs { Empty, Path, Id, Alt, Tip, Src, Title, Logo, Width, Height };
 	Attrs attr = Empty;
 
-	QTextCodec* codec = QTextCodec::codecForName("cp1251");
+	QTextCodec* codec = QTextCodec::codecForName("utf8");
 
 	yyin = fopen(codec->fromUnicode(filename).constData(), "r");
 

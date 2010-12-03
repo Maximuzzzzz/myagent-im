@@ -2,6 +2,85 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="ru_RU">
 <context>
+    <name>AboutDialog</name>
+    <message>
+        <location filename="../aboutdialog.ui" line="14"/>
+        <location filename="../aboutdialog.ui" line="34"/>
+        <source>About MyAgent-im</source>
+        <translation>О программе MyAgent-im</translation>
+    </message>
+    <message>
+        <location filename="../aboutdialog.ui" line="48"/>
+        <source>Alexander Volkov &lt;volkov0aa@gmail.com&gt;</source>
+        <translation>Александр Волков &lt;volkov0aa@gmail.com&gt;</translation>
+    </message>
+    <message>
+        <location filename="../aboutdialog.ui" line="53"/>
+        <source>Dmitry Malakhov &lt;abr_mail@mail.ru&gt;</source>
+        <translation>Дмитрий Малахов &lt;abr_mail@mail.ru&gt;</translation>
+    </message>
+    <message>
+        <location filename="../aboutdialog.ui" line="67"/>
+        <source>Translating:</source>
+        <translation>Перевод:</translation>
+    </message>
+    <message>
+        <location filename="../aboutdialog.ui" line="81"/>
+        <source>Alexander Volkov &lt;volkov0aa@gmail.com&gt; Russian</source>
+        <translation>Александр Волков &lt;volkov0aa@gmail.com&gt; Русский</translation>
+    </message>
+    <message>
+        <location filename="../aboutdialog.ui" line="86"/>
+        <source>Dmitry Malakhov &lt;abr_mail@mail.ru&gt; Russian</source>
+        <translation>Дмитрий Малахов &lt;abr_mail@mail.ru&gt; Русский</translation>
+    </message>
+    <message>
+        <location filename="../aboutdialog.ui" line="91"/>
+        <source>Romek Marszcziwski &lt;marszcziwski@gmail.com&gt; Ukrainian</source>
+        <translation>Romek Marszcziwski &lt;marszcziwski@gmail.com&gt; Украинский</translation>
+    </message>
+    <message>
+        <location filename="../aboutdialog.ui" line="105"/>
+        <source>Authors:</source>
+        <translation>Авторы:</translation>
+    </message>
+    <message>
+        <location filename="../aboutdialog.ui" line="118"/>
+        <source>Home Page: &lt;a href=x&gt;http://code.google.com/p/myagent-im&lt;/a&gt;</source>
+        <translation>Домашняя страница: &lt;a href=x&gt;http://code.google.com/p/myagent-im&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <source>Home Page:</source>
+        <translation type="obsolete">Домашняя страница:</translation>
+    </message>
+    <message>
+        <location filename="../aboutdialog.ui" line="131"/>
+        <source>Copyright:</source>
+        <translation>Копирайт:</translation>
+    </message>
+    <message>
+        <location filename="../aboutdialog.ui" line="145"/>
+        <source>Copyright (C) 2008-2010 Alexander Volkov</source>
+        <translatorcomment>Copyright (C) 2008-2010 Александр Волков</translatorcomment>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../aboutdialog.ui" line="150"/>
+        <source>Copyright (C) 2009-2010 Dmitry Malakhov</source>
+        <translation>Copyright (C) 2009-2010 Дмитрий Малахов</translation>
+    </message>
+    <message>
+        <location filename="../aboutdialog.ui" line="164"/>
+        <source>License:</source>
+        <translation>Лицензия:</translation>
+    </message>
+    <message>
+        <location filename="../aboutdialog.ui" line="177"/>
+        <source>Close</source>
+        <translation>Закрыть</translation>
+    </message>
+</context>
+<context>
     <name>AddContactDialog</name>
     <message>
         <location filename="../addcontact.ui" line="19"/>
@@ -106,123 +185,123 @@
 <context>
     <name>ChatWindow</name>
     <message>
-        <location filename="../chatwindow.cpp" line="175"/>
+        <location filename="../chatwindow.cpp" line="176"/>
         <source>Send</source>
         <translation>Отправить</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="337"/>
+        <location filename="../chatwindow.cpp" line="341"/>
         <source>Contact is typing</source>
         <translation>Собеседник пишет вам сообщение</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="356"/>
+        <location filename="../chatwindow.cpp" line="360"/>
         <source>Message not delivered</source>
         <translation>Сообщение не доставлено</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="361"/>
+        <location filename="../chatwindow.cpp" line="365"/>
         <source>Resend</source>
         <translation>Переотправить</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="519"/>
-        <location filename="../chatwindow.cpp" line="544"/>
-        <location filename="../chatwindow.cpp" line="626"/>
-        <location filename="../chatwindow.cpp" line="649"/>
-        <location filename="../chatwindow.cpp" line="665"/>
-        <location filename="../chatwindow.cpp" line="673"/>
+        <location filename="../chatwindow.cpp" line="523"/>
+        <location filename="../chatwindow.cpp" line="548"/>
+        <location filename="../chatwindow.cpp" line="630"/>
+        <location filename="../chatwindow.cpp" line="653"/>
+        <location filename="../chatwindow.cpp" line="669"/>
+        <location filename="../chatwindow.cpp" line="677"/>
         <source>Files transferring</source>
         <translation>Передача файлов</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="520"/>
+        <location filename="../chatwindow.cpp" line="524"/>
         <source>You offered to your interlocutor to get files.</source>
         <translation>Вы предложили собеседнику принять файлы.</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="522"/>
-        <location filename="../chatwindow.cpp" line="547"/>
+        <location filename="../chatwindow.cpp" line="526"/>
+        <location filename="../chatwindow.cpp" line="551"/>
         <source>Basic size: </source>
         <translation>Общий размер:</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="525"/>
+        <location filename="../chatwindow.cpp" line="529"/>
         <source>Cancel transferring</source>
         <translation>Отменить передачу</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="545"/>
+        <location filename="../chatwindow.cpp" line="549"/>
         <source>Your interlocutor offered to you to get files.</source>
         <translation>Ваш собеседник предложил Вам получить файлы.</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="550"/>
+        <location filename="../chatwindow.cpp" line="554"/>
         <source>Receive</source>
         <translation>Принять</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="551"/>
+        <location filename="../chatwindow.cpp" line="555"/>
         <source>Save as...</source>
         <translation>Сохранить как...</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="552"/>
+        <location filename="../chatwindow.cpp" line="556"/>
         <source>Decline</source>
         <translation>Отказаться</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="627"/>
+        <location filename="../chatwindow.cpp" line="631"/>
         <source>File transferring began</source>
         <translation>Началась передача файлов</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="630"/>
+        <location filename="../chatwindow.cpp" line="634"/>
         <source>Break</source>
         <translation>Прервать</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="650"/>
+        <location filename="../chatwindow.cpp" line="654"/>
         <source>File transferring successful complete</source>
         <translation>Передача файлов успешно завершена</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="656"/>
+        <location filename="../chatwindow.cpp" line="660"/>
         <source>Open folder</source>
         <translation>Открыть папку</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="666"/>
+        <location filename="../chatwindow.cpp" line="670"/>
         <source>Error occured while file transfering</source>
         <translation>При передаче файлов произошла ошибка</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="674"/>
+        <location filename="../chatwindow.cpp" line="678"/>
         <source>Transferring canceled</source>
         <translation>Передача файлов отменена</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="274"/>
+        <location filename="../chatwindow.cpp" line="267"/>
         <source>Sms from number</source>
         <translation>Смс от номера</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="279"/>
+        <location filename="../chatwindow.cpp" line="272"/>
         <source>Sms status for number</source>
         <translation>Статус отправки смс на номер</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="284"/>
+        <location filename="../chatwindow.cpp" line="277"/>
         <source>Alarm clock:</source>
         <translation>Будильник:</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="119"/>
+        <location filename="../chatwindow.cpp" line="120"/>
         <source>Text</source>
         <translation>Текст</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="125"/>
+        <location filename="../chatwindow.cpp" line="126"/>
         <source>SMS</source>
         <translation>SMS</translation>
     </message>
@@ -814,29 +893,29 @@
 <context>
     <name>FileMessage</name>
     <message>
-        <location filename="../filemessage.cpp" line="693"/>
+        <location filename="../filemessage.cpp" line="690"/>
         <source>%1 GB</source>
         <translation>%1 Гб</translation>
     </message>
     <message>
-        <location filename="../filemessage.cpp" line="695"/>
+        <location filename="../filemessage.cpp" line="692"/>
         <source>%1 MB</source>
         <translation>%1 Мб</translation>
     </message>
     <message>
-        <location filename="../filemessage.cpp" line="697"/>
+        <location filename="../filemessage.cpp" line="694"/>
         <source>%1 KB</source>
         <translation>%1 Кб</translation>
     </message>
     <message>
-        <location filename="../filemessage.cpp" line="699"/>
+        <location filename="../filemessage.cpp" line="696"/>
         <source>%1 B</source>
         <translation>%1 б</translation>
     </message>
     <message>
-        <location filename="../filemessage.cpp" line="736"/>
-        <location filename="../filemessage.cpp" line="737"/>
-        <location filename="../filemessage.cpp" line="738"/>
+        <location filename="../filemessage.cpp" line="733"/>
+        <location filename="../filemessage.cpp" line="734"/>
+        <location filename="../filemessage.cpp" line="735"/>
         <source>Myagent-im files</source>
         <translation>Файлы myagent-im</translation>
     </message>
@@ -955,8 +1034,8 @@
 <context>
     <name>MRIMClientPrivate</name>
     <message>
-        <location filename="../mrimclientprivate.cpp" line="771"/>
-        <location filename="../mrimclientprivate.cpp" line="926"/>
+        <location filename="../mrimclientprivate.cpp" line="772"/>
+        <location filename="../mrimclientprivate.cpp" line="927"/>
         <source>User %1 left the conference</source>
         <translation>Пользователь %1 покинул конференцию</translation>
     </message>
@@ -964,71 +1043,76 @@
 <context>
     <name>MainMenuButton</name>
     <message>
-        <location filename="../mainmenubutton.cpp" line="51"/>
+        <location filename="../mainmenubutton.cpp" line="52"/>
         <source>Menu</source>
         <translation>Меню</translation>
     </message>
     <message>
-        <location filename="../mainmenubutton.cpp" line="81"/>
+        <location filename="../mainmenubutton.cpp" line="85"/>
         <source>Quit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="../mainmenubutton.cpp" line="56"/>
-        <location filename="../mainmenubutton.cpp" line="162"/>
+        <location filename="../mainmenubutton.cpp" line="57"/>
+        <location filename="../mainmenubutton.cpp" line="166"/>
         <source>Add contact</source>
         <translation>Добавить контакт</translation>
     </message>
     <message>
-        <location filename="../mainmenubutton.cpp" line="67"/>
+        <location filename="../mainmenubutton.cpp" line="68"/>
         <source>New conference</source>
         <translation>Новая конференция</translation>
     </message>
     <message>
-        <location filename="../mainmenubutton.cpp" line="134"/>
-        <location filename="../mainmenubutton.cpp" line="139"/>
+        <location filename="../mainmenubutton.cpp" line="82"/>
+        <source>About</source>
+        <translation>О программе</translation>
+    </message>
+    <message>
+        <location filename="../mainmenubutton.cpp" line="138"/>
+        <location filename="../mainmenubutton.cpp" line="143"/>
         <source>Search results</source>
         <translation>Результаты поиска</translation>
     </message>
     <message>
-        <location filename="../mainmenubutton.cpp" line="134"/>
+        <location filename="../mainmenubutton.cpp" line="138"/>
         <source>Time is out</source>
         <translation>Время вышло</translation>
     </message>
     <message>
-        <location filename="../mainmenubutton.cpp" line="162"/>
+        <location filename="../mainmenubutton.cpp" line="166"/>
         <source>Contact is already in contact list</source>
         <translation>Контакт уже в списке</translation>
     </message>
     <message>
-        <location filename="../mainmenubutton.cpp" line="59"/>
-        <location filename="../mainmenubutton.cpp" line="209"/>
+        <location filename="../mainmenubutton.cpp" line="60"/>
+        <location filename="../mainmenubutton.cpp" line="213"/>
         <source>Add contact for SMS</source>
         <translation>Добавить контакт для смс</translation>
     </message>
     <message>
-        <location filename="../mainmenubutton.cpp" line="63"/>
-        <location filename="../mainmenubutton.cpp" line="218"/>
+        <location filename="../mainmenubutton.cpp" line="64"/>
+        <location filename="../mainmenubutton.cpp" line="222"/>
         <source>Add group</source>
         <translation>Добавить группу</translation>
     </message>
     <message>
-        <location filename="../mainmenubutton.cpp" line="218"/>
+        <location filename="../mainmenubutton.cpp" line="222"/>
         <source>Enter group name:</source>
         <translation>Введите название группы:</translation>
     </message>
     <message>
-        <location filename="../mainmenubutton.cpp" line="228"/>
+        <location filename="../mainmenubutton.cpp" line="232"/>
         <source>Add group error</source>
         <translation>Ошибка при добавлении группы</translation>
     </message>
     <message>
-        <location filename="../mainmenubutton.cpp" line="78"/>
+        <location filename="../mainmenubutton.cpp" line="79"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../mainmenubutton.cpp" line="233"/>
+        <location filename="../mainmenubutton.cpp" line="237"/>
         <source>Add sms contact error</source>
         <translation>Ошибка при добавлении смс-контакта</translation>
     </message>
@@ -1226,17 +1310,17 @@
         <translation>Все люди как люди, одна я - звезда</translation>
     </message>
     <message>
-        <location filename="../onlinestatus.cpp" line="32"/>
+        <location filename="../onlinestatus.cpp" line="171"/>
         <source>Free for chat</source>
         <translation>Готов пообщаться</translation>
     </message>
     <message>
-        <location filename="../onlinestatus.cpp" line="34"/>
+        <location filename="../onlinestatus.cpp" line="173"/>
         <source>Do not disturb</source>
         <translation>Не беспокоить</translation>
     </message>
     <message>
-        <location filename="../onlinestatus.cpp" line="36"/>
+        <location filename="../onlinestatus.cpp" line="175"/>
         <source>Get acquainted</source>
         <translation>Знакомлюсь</translation>
     </message>
@@ -1249,42 +1333,42 @@
         <translation type="obsolete">Не беспокоить</translation>
     </message>
     <message>
-        <location filename="../onlinestatus.cpp" line="51"/>
+        <location filename="../onlinestatus.cpp" line="37"/>
         <source>Offline</source>
         <translation>Не в сети</translation>
     </message>
     <message>
-        <location filename="../onlinestatus.cpp" line="53"/>
+        <location filename="../onlinestatus.cpp" line="39"/>
         <source>Invisible</source>
         <translation>Невидим</translation>
     </message>
     <message>
-        <location filename="../onlinestatus.cpp" line="55"/>
+        <location filename="../onlinestatus.cpp" line="41"/>
         <source>Away</source>
         <translation>Отошел</translation>
     </message>
     <message>
-        <location filename="../onlinestatus.cpp" line="57"/>
+        <location filename="../onlinestatus.cpp" line="43"/>
         <source>Online</source>
         <translation>Онлайн</translation>
     </message>
     <message>
-        <location filename="../onlinestatus.cpp" line="59"/>
+        <location filename="../onlinestatus.cpp" line="45"/>
         <source>Extended</source>
         <translation>Расширенный</translation>
     </message>
     <message>
-        <location filename="../onlinestatus.cpp" line="61"/>
+        <location filename="../onlinestatus.cpp" line="47"/>
         <source>Connecting</source>
         <translation>Соединение</translation>
     </message>
     <message>
-        <location filename="../onlinestatus.cpp" line="63"/>
+        <location filename="../onlinestatus.cpp" line="49"/>
         <source>Unknown</source>
         <translation>Неизвестный</translation>
     </message>
     <message>
-        <location filename="../onlinestatus.cpp" line="164"/>
+        <location filename="../onlinestatus.cpp" line="148"/>
         <source>Wrong status data</source>
         <translation>Ошибка данных</translation>
     </message>

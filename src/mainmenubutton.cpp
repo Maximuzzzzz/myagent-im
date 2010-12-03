@@ -42,6 +42,7 @@
 #include "inputlinedialog.h"
 #include "centerwindow.h"
 #include "centeredmessagebox.h"
+#include "aboutdialog.h"
 
 class MRIMClient;
 
@@ -76,6 +77,9 @@ MainMenuButton::MainMenuButton(Account* account, ContactListWindow* w)
 
 	menu->addSeparator();
 	menu->addAction(QIcon(":icons/settings.png"), tr("Settings"), this, SLOT(showSettingsWindow()));
+
+	menu->addSeparator();
+	menu->addAction(QIcon(":icons/about.png"), tr("About"), this, SLOT(showAboutDialog()));
 
 	menu->addSeparator();
 	menu->addAction(QIcon(":icons/exit.png"), tr("Quit"), qApp, SLOT(quit()));
@@ -247,6 +251,13 @@ void MainMenuButton::showSettingsWindow()
 	settingsWindow->setChatWindowsManager(chatWindowsManager);
 	centerWindow(settingsWindow);
 	settingsWindow->show();
+}
+
+void MainMenuButton::showAboutDialog()
+{
+	AboutDialog* aboutDialog = new AboutDialog();
+	centerWindow(aboutDialog);
+	aboutDialog->show();
 }
 
 void MainMenuButton::setChatWindowsManager(ChatWindowsManager* cwm)
