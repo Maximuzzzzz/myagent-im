@@ -43,9 +43,22 @@
 SettingsWindow::SettingsWindow(Account* account, ContactListWindow* clw)
 	: m_account(account), m_clw(clw)
 {
+	m_flags =  0xff;
+	init();
+}
+
+SettingsWindow::SettingsWindow(quint8 flags)
+	: m_flags(flags)
+{
+	init();
+}
+
+void SettingsWindow::init()
+{
 	setWindowTitle(tr("Settings"));
 	setWindowIcon(QIcon(":icons/settings.png"));
 	setAttribute(Qt::WA_DeleteOnClose);
+	setWindowModality(Qt::ApplicationModal);
 
 	QVBoxLayout* layout = new QVBoxLayout;
 
@@ -76,11 +89,18 @@ SettingsWindow::SettingsWindow(Account* account, ContactListWindow* clw)
 
 	setLayout(layout);
 
-	createCommonPage();
-	createMessagesPage();
-	createWindowsPage();
-	createAudioPage();
-	createViewPage();
+	if (m_flags & SHOW_COMMON_PAGE)
+		createCommonPage();
+	if (m_flags & SHOW_MESSAGES_PAGE)
+		createMessagesPage();
+	if (m_flags & SHOW_WINDOWS_PAGE)
+		createWindowsPage();
+	if (m_flags & SHOW_AUDIO_PAGE)
+		createAudioPage();
+	if (m_flags & SHOW_VIEW_PAGE)
+		createViewPage();
+	if (m_flags & SHOW_CONNECTION_PAGE)
+		createConnectionPage();
 
 	listWidget->setCurrentRow(0);
 	listWidget->setMaximumWidth(listWidget->sizeHintForColumn(0) + 10);
@@ -134,12 +154,20 @@ void SettingsWindow::createCommonPage()
 
 void SettingsWindow::saveSettings()
 {
-	saveMessagesSettings();
-	saveCommonSettings();
-	saveAudioSettings();
-	saveViewSettings();
-	if (saveWindowsSettings())
-		close();
+	if (m_flags & SHOW_COMMON_PAGE)
+		saveCommonSettings();
+	if (m_flags & SHOW_MESSAGES_PAGE)
+		saveMessagesSettings();
+	if (m_flags & SHOW_AUDIO_PAGE)
+		saveAudioSettings();
+	if (m_flags & SHOW_VIEW_PAGE)
+		saveViewSettings();
+	if (m_flags & SHOW_CONNECTION_PAGE)
+		saveConnectionSettings();
+	if (m_flags & SHOW_WINDOWS_PAGE)
+		if (!saveWindowsSettings())
+			return;
+	close();
 }
 
 void SettingsWindow::saveCommonSettings()
@@ -291,4 +319,161 @@ void SettingsWindow::saveViewSettings()
 {
 	m_account->settings()->setValue("MicroBlog/Enable", enableMicroBlog->isChecked());
 	m_clw->visibleWidget(ContactListWindow::MicroBlog, enableMicroBlog->isChecked());
+}
+
+void SettingsWindow::createConnectionPage()
+{
+	QWidget* page = new QWidget;
+	QHBoxLayout* layout = new QHBoxLayout;
+	QVBoxLayout* selectorLayout = new QVBoxLayout;
+
+	QGroupBox* proxyType = new QGroupBox(tr("Choose proxy type"));
+	typeSimple = new QRadioButton(tr("Without proxy"));
+	typeSocks5 = new QRadioButton(tr("Socks5"));
+	typeHttp = new QRadioButton(tr("HTTP-proxy"));
+	typeHttps = new QRadioButton(tr("HTTPS"));
+	connect(typeSimple, SIGNAL(toggled(bool)), this, SLOT(setProxyType()));
+	connect(typeSocks5, SIGNAL(toggled(bool)), this, SLOT(setProxyType()));
+	connect(typeHttp, SIGNAL(toggled(bool)), this, SLOT(setProxyType()));
+	connect(typeHttps, SIGNAL(toggled(bool)), this, SLOT(setProxyType()));
+
+	selectorLayout->addWidget(typeSimple);
+	selectorLayout->addWidget(typeSocks5);
+	selectorLayout->addWidget(typeHttp);
+	selectorLayout->addWidget(typeHttps);
+	selectorLayout->addStretch();
+
+	proxyType->setLayout(selectorLayout);
+	proxyType->setFixedHeight(proxyType->sizeHint().height());
+	proxyType->setMinimumWidth(proxyType->sizeHint().width());
+
+	layout->addWidget(proxyType);
+
+	QVBoxLayout* rightSide = new QVBoxLayout;
+	QVBoxLayout* serverSettings = new QVBoxLayout;
+	QVBoxLayout* authLayout = new QVBoxLayout;
+
+	QHBoxLayout* hostLayout = new QHBoxLayout;
+	QHBoxLayout* portLayout = new QHBoxLayout;
+
+	QLabel* hostLabel = new QLabel(tr("Server:"));
+	QLabel* portLabel = new QLabel(tr("Port:"));
+	host = new QLineEdit;
+	port = new QLineEdit;
+
+	hostLayout->addWidget(hostLabel);
+	hostLayout->addWidget(host);
+
+	portLayout->addWidget(portLabel);
+	portLayout->addWidget(port);
+
+	serverSettings->addLayout(hostLayout);
+	serverSettings->addLayout(portLayout);
+	serverSettings->addStretch();
+
+	authCheck = new QCheckBox("Authentification");
+	connect(authCheck, SIGNAL(toggled(bool)), this, SLOT(setProxyType()));
+
+	QHBoxLayout* userLayout = new QHBoxLayout;
+	QHBoxLayout* passwordLayout = new QHBoxLayout;
+
+	QLabel* userLabel = new QLabel(tr("User:"));
+	QLabel* passwordLabel = new QLabel(tr("Password:"));
+	user = new QLineEdit;
+	password = new QLineEdit;
+	password->setEchoMode(QLineEdit::Password);
+
+	userLayout->addWidget(userLabel);
+	userLayout->addWidget(user);
+
+	passwordLayout->addWidget(passwordLabel);
+	passwordLayout->addWidget(password);
+
+	authLayout->addWidget(authCheck);
+	authLayout->addLayout(userLayout);
+	authLayout->addLayout(passwordLayout);
+	authLayout->addStretch();
+
+	rightSide->addLayout(serverSettings);
+	rightSide->addLayout(authLayout);
+
+	layout->addLayout(rightSide);
+
+	QString connType = theRM.settings()->value("Connection/type", "Simple").toString();
+	if (connType == "Socks5")
+		typeSocks5->setChecked(true);
+	else if (connType == "HTTP")
+		typeHttp->setChecked(true);
+	else if (connType == "HTTPS")
+		typeHttps->setChecked(true);
+	else
+		typeSimple->setChecked(true);
+
+	host->setText(theRM.settings()->value("Connection/host", "").toString());
+	port->setText(theRM.settings()->value("Connection/port", "").toString());
+	user->setText(theRM.settings()->value("Connection/user", "").toString());
+	password->setText(theRM.settings()->value("Connection/password", "").toString());
+	authCheck->setChecked(theRM.settings()->value("Connection/authChecked", false).toBool());
+
+	page->setLayout(layout);
+	listWidget->addItem(tr("Connection"));
+	pagesWidget->addWidget(page);
+}
+
+
+void SettingsWindow::saveConnectionSettings()
+{
+	if (typeSimple->isChecked())
+		theRM.settings()->remove("Connection/type");
+	else if (typeSocks5->isChecked())
+		theRM.settings()->setValue("Connection/type", "Socks5");
+	else if (typeHttp->isChecked())
+		theRM.settings()->setValue("Connection/type", "HTTP");
+	else if (typeHttps->isChecked())
+		theRM.settings()->setValue("Connection/type", "HTTPS");
+
+	if (authCheck->isEnabled())
+		theRM.settings()->setValue("Connection/authChecked", authCheck->isChecked());
+	else
+		theRM.settings()->remove("Connection/authChecked");
+
+	if (user->isEnabled())
+		theRM.settings()->setValue("Connection/user", user->text());
+	else
+		theRM.settings()->remove("Connection/user");
+
+	if (host->isEnabled())
+		theRM.settings()->setValue("Connection/host", host->text());
+	else
+		theRM.settings()->remove("Connection/host");
+
+	if (port->isEnabled())
+		theRM.settings()->setValue("Connection/port", port->text());
+	else
+		theRM.settings()->remove("Connection/port");
+
+	if (password->isEnabled())
+		theRM.settings()->setValue("Connection/password", password->text());
+	else
+		theRM.settings()->remove("Connection/password");
+}
+
+void SettingsWindow::setProxyType()
+{
+	if (typeSimple->isChecked() || typeHttps->isChecked())
+	{
+		host->setEnabled(false);
+		port->setEnabled(false);
+		authCheck->setEnabled(false);
+		user->setEnabled(false);
+		password->setEnabled(false);
+	}
+	if (typeHttp->isChecked() || typeSocks5->isChecked())
+	{
+		host->setEnabled(true);
+		port->setEnabled(true);
+		authCheck->setEnabled(true);
+	}
+	user->setEnabled(authCheck->isChecked() && authCheck->isEnabled());
+	password->setEnabled(authCheck->isChecked() && authCheck->isEnabled());
 }

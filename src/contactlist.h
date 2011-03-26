@@ -30,6 +30,7 @@
 #include "mrimclient.h"
 #include "onlinestatus.h"
 #include "contactdata.h"
+#include "contactlistmodel.h"
 
 class Contact;
 class Account;
@@ -69,6 +70,8 @@ public:
 	Contact* getContact(const QByteArray& email);
 	Contact* findContactWithPhone(const QByteArray& phoneNumber);
 
+	ContactListModel* model() { return m_model; }
+
 	void clear();
 	void load();
 	void save() const;
@@ -77,6 +80,7 @@ public:
 
 	bool removeContactOnServer(Contact* contact);
 	bool removeGroupOnServer(ContactGroup* group);
+	bool ignoreContactOnServer(Contact* contact, bool ignore);
 	bool addContactOnServer(quint32 group, const QByteArray& email, const QString& nickname, const QString& authorizationMessage);
 	bool addSmsContactOnServer(const QString& nickname, const QStringList& phones);
 	bool addGroupOnServer(const QString& groupName);
@@ -88,6 +92,7 @@ signals:
 	void groupsCleared();
 	void contactAdded(Contact* contact);
 	void contactRemoved(Contact*);
+	void contactIgnored(bool ignored);
 	void updated();
 
 	void removeContactOnServerError(QString error);
@@ -104,7 +109,9 @@ public slots:
 	void slotContactAuthorized(const QByteArray& email);
 	bool newConferenceOnServer(QString confName, QByteArray owner, QList<QByteArray> members = QList<QByteArray>());
 	bool addConferenceOnServer(const QByteArray & chat, const QString & confName);
+	void ignoreContactOnServerEnd(quint32 status, bool timeout);
 	void setLastSmsFrom(QByteArray & number, Contact* c);
+	void useModel(ContactListModel* model) { m_model = model; }
 
 private slots:
 	void checkOnlineStatus(OnlineStatus status);
@@ -124,6 +131,8 @@ private:
 	QList<Contact*> tmpContacts;
 
 	QMap<QByteArray, Contact*> lastSmsFrom;
+
+	ContactListModel* m_model;
 
 	bool constructing;
 

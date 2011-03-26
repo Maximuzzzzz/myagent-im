@@ -84,6 +84,7 @@ private slots:
 	void sendMicrotext(const QString& microText);
 	void slotMicroblogChanged(QString microText);
 	void slotSetOnlineStatus(OnlineStatus status);
+	void slotConnectionError(QString mess);
 
 private:
 	void writeSettings();

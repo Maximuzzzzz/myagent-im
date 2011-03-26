@@ -24,7 +24,7 @@
 #define MRIMCLIENTPRIVATE_H
 
 #include <QObject>
-#include <QTcpSocket>
+#include <QSslSocket>
 #include <QTimer>
 
 #include "proto.h"
@@ -43,8 +43,10 @@ public:
 	
 private slots:
 	void readData();
+	void checkProxy();
 	void slotDisconnectedFromServer();
 	void slotConnectedToServer();
+	void slotSocketEncrypted();
 	void ping();
 
 	void slotSocketStateChanged(QAbstractSocket::SocketState);
@@ -104,7 +106,7 @@ private:
 
 	QTextCodec* codec;
 	quint32 sequence;
-	QTcpSocket socket;
+	QSslSocket* socket;
 	QByteArray messageHeader;
 	QTimer* pingTimer;
 	uint pingTime;
@@ -115,6 +117,7 @@ private:
 	OnlineStatus newStatus;
 	bool gettingAddress;
 	bool manualDisconnect;
+	bool m_secure;
 };
 
 #endif

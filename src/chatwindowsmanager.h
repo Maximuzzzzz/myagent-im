@@ -26,6 +26,8 @@
 #include <QObject>
 #include <QHash>
 
+#include "emoticonselector.h"
+
 class QIcon;
 class QTabWidget;
 
@@ -68,6 +70,8 @@ private:
 	bool useTabs;
 	QTabWidget* tabs;
 	QWidget* tabsWindow;
+
+	EmoticonSelector* emoticonSelector;
 };
 
 #endif

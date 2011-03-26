@@ -52,6 +52,7 @@ void Contact::update(const ContactData & contactData, ContactGroup * group)
 	qDebug() << "Nickname = " << contactData.nick;
 	data = contactData;
 	qDebug() << "New nickname = " << data.nick;
+	qDebug() << "New group" << m_group << group;
 	m_group = group;
 
 	if (isConference())
@@ -239,8 +240,14 @@ bool Contact::isPhone() const
 	return (data.flags & CONTACT_FLAG_PHONE);
 }
 
+bool Contact::isIgnored() const
+{
+	return (data.flags & CONTACT_FLAG_IGNORE);
+}
+
 bool Contact::isTemporary() const
 {
+	qDebug() << m_group;
 	return (m_group == 0) && !isPhone() && !(isConference() && m_activeConference);
 }
 
@@ -336,6 +343,8 @@ QIcon Contact::chatWindowIcon(QString type)
 	qDebug() << "Contact" << nickname() << isPhone() << isConference();
 	if (type == "")
 	{
+		if (isIgnored())
+			return QIcon(":icons/cl_ignore_contact.png");
 		if (isConference())
 			return QIcon(":icons/msg_conference.png");
 		else if (isPhone())
@@ -350,4 +359,9 @@ QIcon Contact::chatWindowIcon(QString type)
 		currentIcon.addFile(":icons/" + type + "_16x16.png");
 		return currentIcon;
 	}
+}
+
+void Contact::setFlags(quint32 f)
+{
+	data.flags = f;
 }

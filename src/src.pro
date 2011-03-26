@@ -5,7 +5,7 @@ QT += network \
     phonon
 INCLUDEPATH += /usr/include
 TRANSLATIONS = locale/myagent-im_ru_RU.ts \
-	locale/myagent-im_uk_UA.ts
+    locale/myagent-im_uk_UA.ts
 LIBS += -laspell
 win32 { 
     QTPLUGIN += qjpeg \
@@ -197,7 +197,8 @@ SOURCES += main.cpp \
     onlinestatuseseditor.cpp \
     onlinestatusselector.cpp \
     statusmenu.cpp \
-    aboutdialog.cpp
+    aboutdialog.cpp \
+    taskignorecontact.cpp
 HEADERS += mrimclient.h \
     soundplayer.h \
     audio.h \
@@ -318,7 +319,8 @@ HEADERS += mrimclient.h \
     onlinestatuseseditor.h \
     onlinestatusselector.h \
     statusmenu.h \
-    aboutdialog.h
+    aboutdialog.h \
+    taskignorecontact.h
 FORMS += logindialog.ui \
     searchcontacts.ui \
     addcontact.ui \

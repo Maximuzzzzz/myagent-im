@@ -38,8 +38,8 @@
 class QToolBar;
 class MessageEdit;
 class QAction;
-class EmoticonSelector;
 class QToolButton;
+class EmoticonSelector;
 class ToolButton;
 class QComboBox;
 class QLabel;
@@ -51,7 +51,7 @@ class MessageEditor : public QWidget
 {
 Q_OBJECT
 public:
-	MessageEditor(Account* account, Contact* contact, QWidget* parent = 0);
+	MessageEditor(Account* account, Contact* contact, EmoticonSelector* emSel, QWidget* parent = 0);
 	~MessageEditor();
 
 	bool isBlocked();
@@ -100,7 +100,7 @@ private slots:
 	void setFontItalic(bool b);
 	void setFontUnderline(bool b);
 
-	void insertEmoticon(const QString& id);
+	void insertEmoticon(MessageEditor* editor, const QString& id);
 
 	void updateFormatActions();
 

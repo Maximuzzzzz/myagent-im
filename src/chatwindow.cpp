@@ -54,7 +54,7 @@
 #include "avatarboxwithhandle.h"
 #include "audio.h"
 
-ChatWindow::ChatWindow(Account* account, ChatSession* s)
+ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoticonSelector)
 	: QWidget(),
 	m_account(account), session(s), messageEditor(0), smsEditor(0)
 {
@@ -104,7 +104,7 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s)
 		editorsWidget->setTabPosition(QTabWidget::South);
 		editorsWidget->setTabShape(QTabWidget::Triangular);
 
-		messageEditor = new MessageEditor(m_account, session->contact());
+		messageEditor = new MessageEditor(m_account, session->contact(), emoticonSelector);
 		connect(messageEditor, SIGNAL(sendPressed()), this, SLOT(sendMessage()));
 		connect(messageEditor, SIGNAL(textChanged()), session, SLOT(sendTyping()));
 		connect(messageEditor, SIGNAL(textChanged()), this, SLOT(sendButtonEnabledProcess()));

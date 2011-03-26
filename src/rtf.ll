@@ -217,7 +217,7 @@ void RtfLevel::setText(const char* str)
 	else
 	{
 		QString text = codec->toUnicode(str);
-		qDebug() << "insert text " << text;
+		//qDebug() << "insert text " << text;
 		if (parser->m_type == 0)
 			parser->cursor.insertText(text);
 		else if (parser->m_type == 1)

@@ -70,6 +70,7 @@ private:
 	QAction* addSmsContactAction;
 	QAction* addGroupAction;
 	QAction* deleteUserAction;
+	QAction* ignoreUserAction;
 	QAction* newConferenceAction;
 	Account* m_account;
 	ContactListWindow* mainWindow;

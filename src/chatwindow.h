@@ -43,12 +43,13 @@ class Account;
 #include "animatedtextdocument.h"
 #include "filemessage.h"
 #include "onlinestatus.h"
+#include "emoticonselector.h"
 
 class ChatWindow : public QWidget
 {
 Q_OBJECT
 public:
-        ChatWindow(Account* account, ChatSession* s);
+	ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoticonSelector);
 	~ChatWindow();
 
 public slots:

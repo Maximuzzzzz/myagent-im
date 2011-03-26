@@ -749,3 +749,8 @@ void FileMessage::setDefDir(QString d)
 {
 	fm_defaultDir = d;
 }
+
+FileExistsDialog::FileExistsDialog(QString file)
+{
+
+}

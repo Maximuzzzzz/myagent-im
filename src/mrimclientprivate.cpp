@@ -26,6 +26,7 @@
 
 #include <QUrl>
 #include <QTextCodec>
+#include <QNetworkProxy>
 
 #include "account.h"
 #include "message.h"
@@ -34,6 +35,7 @@
 #include "mrimclient.h"
 #include "datetime.h"
 #include "mrimmime.h"
+#include "resourcemanager.h"
 
 MRIMClientPrivate::MRIMClientPrivate(Account* a, MRIMClient* parent)
 	: QObject(parent), account(a)
@@ -45,7 +47,8 @@ MRIMClientPrivate::MRIMClientPrivate(Account* a, MRIMClient* parent)
 
 MRIMClientPrivate::~MRIMClientPrivate()
 {
-	socket.disconnectFromHost();
+	socket->disconnectFromHost();
+	socket->deleteLater();
 }
 
 void MRIMClientPrivate::init()
@@ -63,12 +66,46 @@ void MRIMClientPrivate::init()
 
 	gettingAddress = false;
 
-	connect(&socket, SIGNAL(connected()), this, SLOT(slotConnectedToServer()));
-	connect(&socket, SIGNAL(disconnected()), this, SLOT(slotDisconnectedFromServer()));
+	socket = new QSslSocket(this);
+
+	connect(socket, SIGNAL(encrypted()), this, SLOT(slotSocketEncrypted()));
+	connect(socket, SIGNAL(connected()), this, SLOT(slotConnectedToServer()));
+	connect(socket, SIGNAL(disconnected()), this, SLOT(slotDisconnectedFromServer()));
 	connect(pingTimer, SIGNAL(timeout()), this, SLOT(ping()));
-	connect(&socket, SIGNAL(readyRead()), this, SLOT(readData()));
-	connect(&socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(slotSocketStateChanged(QAbstractSocket::SocketState)));
-	connect(&socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(slotSocketError(QAbstractSocket::SocketError)));
+	connect(socket, SIGNAL(readyRead()), this, SLOT(readData()));
+	connect(socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(slotSocketStateChanged(QAbstractSocket::SocketState)));
+	connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(slotSocketError(QAbstractSocket::SocketError)));
+}
+
+void MRIMClientPrivate::checkProxy()
+{
+	qDebug() << Q_FUNC_INFO;
+	m_secure = false;
+	QNetworkProxy proxy;
+	QString proxyType = theRM.settings()->value("Connection/type", "Simple").toString();
+	qDebug() << "proxyType" << proxyType;
+	if (proxyType != "HTTPS")
+	{
+		qDebug() << "Proxy server type" << proxyType;
+		if (proxyType == "Socks5")
+			proxy.setType(QNetworkProxy::Socks5Proxy);
+		else if (proxyType == "HTTP")
+			proxy.setType(QNetworkProxy::HttpProxy);
+		else
+			proxy.setType(QNetworkProxy::NoProxy);
+
+		if (proxyType == "Socks5" || proxyType == "HTTP")
+		{
+			proxy.setHostName(theRM.settings()->value("Connection/host", "").toString());
+			proxy.setPort(theRM.settings()->value("Connection/port", "").toInt());
+			proxy.setUser(theRM.settings()->value("Connection/user", "").toString());
+			proxy.setPassword(theRM.settings()->value("Connection/password", "").toString());
+		}
+
+		socket->setProxy(proxy);
+	}
+	else if (proxyType == "HTTPS")
+		m_secure = true;
 }
 
 quint32 MRIMClientPrivate::sendPacket(quint32 msgtype, QByteArray data, quint32 protoVersionMinor)
@@ -100,8 +137,8 @@ Default version wrote in proto.h, protocol version at October 2010 = 0x16
 	header << quint32(0);
 	header << quint32(0);
 
-	socket.write(headerBA);
-	socket.write(data);
+	socket->write(headerBA);
+	socket->write(data);
 
 	return sequence++;
 }
@@ -117,7 +154,7 @@ void MRIMClientPrivate::slotConnectedToServer()
 
 void MRIMClientPrivate::slotDisconnectedFromServer()
 {
-	//qDebug() << "MRIMClientPrivate slotDisconnectedFromServer, currentStatus = " << currentStatus << ", manualDisconnect = " << manualDisconnect;
+	qDebug() << "MRIMClientPrivate slotDisconnectedFromServer, currentStatus = " << currentStatus.id() << ", manualDisconnect = " << manualDisconnect;
 	if (currentStatus.protocolStatus() != STATUS_OFFLINE || !gettingAddress || manualDisconnect)
 	{
 		pingTimer->stop();
@@ -128,6 +165,11 @@ void MRIMClientPrivate::slotDisconnectedFromServer()
 	}
 }
 
+void MRIMClientPrivate::slotSocketEncrypted()
+{
+	qDebug() << Q_FUNC_INFO;
+}
+
 void MRIMClientPrivate::slotSocketStateChanged(QAbstractSocket::SocketState state)
 {
 	qDebug() << "MRIMClientPrivate::slotSocketStateChanged" << state;
@@ -136,7 +178,15 @@ void MRIMClientPrivate::slotSocketStateChanged(QAbstractSocket::SocketState stat
 void MRIMClientPrivate::slotSocketError(QAbstractSocket::SocketError error)
 {
 	/*TODO: reconnect on error*/
-	qDebug() << "MRIMClientPrivate::slotSocketEror" << error;
+	qDebug() << "MRIMClientPrivate::slotSocketError" << error;
+
+	if (error == QAbstractSocket::ProxyConnectionRefusedError)
+		emit q->connectError(tr("Proxy connection refused error!"));
+	if (error == QAbstractSocket::ProxyNotFoundError)
+		emit q->connectError(tr("Proxy not found!"));
+
+	gettingAddress = false;
+	slotDisconnectedFromServer();
 }
 
 void MRIMClientPrivate::ping()
@@ -146,18 +196,22 @@ void MRIMClientPrivate::ping()
 
 void MRIMClientPrivate::readData()
 {
-	qDebug() << "Read data " << socket.bytesAvailable();
+	qDebug() << "Read data " << socket->bytesAvailable();
 
 	if (gettingAddress)
 	{
-		QString address = socket.readLine();
+		QString address = socket->readLine();
 		address = address.trimmed();
 		QString host = address.section(':', 0, 0);
 		uint port = address.section(':', 1, 1).toUInt();
-		socket.disconnectFromHost();
+		socket->disconnectFromHost();
 		gettingAddress = false;
 		qDebug() << "connecting to " << host << ':' << port;
-		socket.connectToHost(host, port);
+		checkProxy();
+//		if (!m_secure)
+			socket->connectToHost(host, port);
+/*		else
+			socket->connectToHostEncrypted(host, port);*/
 
 		return;
 	}
@@ -167,10 +221,10 @@ void MRIMClientPrivate::readData()
 		if (!headerReceived)
 		{
 			//qDebug() << "sizeof(mrim_packet_header_t) = " << sizeof(mrim_packet_header_t);
-			if (socket.bytesAvailable() < sizeof(mrim_packet_header_t))
+			if (socket->bytesAvailable() < sizeof(mrim_packet_header_t))
 				break;
 
-			messageHeader = socket.read(sizeof(mrim_packet_header_t));
+			messageHeader = socket->read(sizeof(mrim_packet_header_t));
 			mrim_packet_header_t* packetHeader =
 				reinterpret_cast<mrim_packet_header_t*>(messageHeader.data());
 
@@ -185,14 +239,14 @@ void MRIMClientPrivate::readData()
 			headerReceived = true;
 		}
 
-		if (socket.bytesAvailable() < dataSize)
+		if (socket->bytesAvailable() < dataSize)
 		{
-			qDebug() << "socket.bytesAvailable = " << socket.bytesAvailable();
+			qDebug() << "socket.bytesAvailable = " << socket->bytesAvailable();
 			qDebug() << "low bytes";
 			break;
 		}
 
-		QByteArray data = socket.read(dataSize);
+		QByteArray data = socket->read(dataSize);
 		processPacket(messageHeader, data);
 		headerReceived = false;
 	}
@@ -354,19 +408,19 @@ void MRIMClientPrivate::unpackAuthorizationMessage(const QByteArray& message, QS
 
 	quint32 sz;
 	QByteArray nick;
-	QByteArray msg;
+	QString msg;
 
 	in >> sz;
 	in >> nick;
-	in >> msg;
+	in >> unpackedMessage;
 
 	nickname = codec->toUnicode(nick);
-	unpackedMessage = codec->toUnicode(msg);
+//	unpackedMessage = codec->toUnicode(msg);
 }
 
 void MRIMClientPrivate::processHelloAck(QByteArray data)
 {
-	qDebug() << "MRIM_CS_HELLO_ACK, bytes = " << socket.bytesAvailable();
+	qDebug() << "MRIM_CS_HELLO_ACK, bytes = " << socket->bytesAvailable();
 	MRIMDataStream in(data);
 
 	quint32 pingPeriod;
@@ -412,7 +466,8 @@ void MRIMClientPrivate::processHelloAck(QByteArray data)
 		else if (i == 4 || i == 6 || i == 7 || i == 0x2d || i == 0x2f)
 			out << quint32(1);
 		else if (i == 9)
-			out << QByteArray::fromHex("465d43504049505840745e585c5e184b4c425d47594a");
+			out << QByteArray::fromHex("475b4358474b565840785c565f5c164147425d4d534a");
+//			out << QByteArray::fromHex("465d43504049505840745e585c5e184b4c425d47594a");
 		else if (i == 0x14)
 			out << quint32(0x00000501);
 		else if (i == 0x2c)
@@ -770,7 +825,7 @@ void MRIMClientPrivate::processMessageAck(QByteArray data)
 				break;
 			case 5:
 				plainText = tr("User %1 left the conference").arg(codec->toUnicode(confOwner));
-				flags = flags & 0xffffff7f;
+				flags = flags & ~MESSAGE_FLAG_RTF;
 				break;
 			case 7:
 				return;
@@ -788,6 +843,8 @@ void MRIMClientPrivate::processMessageAck(QByteArray data)
 	{
 		QString nickname, message;
 		unpackAuthorizationMessage(text, nickname, message);
+
+		qDebug() << "authMessage =" << message;
 
 		emit q->contactAsksAuthorization(from, nickname, message);
 
@@ -1096,7 +1153,7 @@ void MRIMClientPrivate::processProxyAck(QByteArray data, quint32 msgseq)
 
 void MRIMClientPrivate::processMicroblogChanged(QByteArray data)
 {
-	qDebug() << "MRIMClientPrivate::processMicroblogChanged";
+	qDebug() << "MRIMClientPrivate::processMicroblogChanged" << data.toHex() << data;
 
 	MRIMDataStream in(data);
 

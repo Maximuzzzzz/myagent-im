@@ -29,6 +29,13 @@
 #include "account.h"
 #include "contactlistwindow.h"
 
+#define SHOW_COMMON_PAGE	0x01
+#define SHOW_MESSAGES_PAGE	0x02
+#define	SHOW_WINDOWS_PAGE	0x04
+#define SHOW_AUDIO_PAGE		0x08
+#define SHOW_VIEW_PAGE		0x10
+#define SHOW_CONNECTION_PAGE	0x20
+
 class Account;
 
 class QListWidget;
@@ -43,6 +50,7 @@ class SettingsWindow : public QWidget
 Q_OBJECT
 public:
 	SettingsWindow(Account* account, ContactListWindow* clw);
+	SettingsWindow(quint8 flags);
 	~SettingsWindow();
 
 	void setChatWindowsManager(ChatWindowsManager* cwm);
@@ -52,6 +60,9 @@ signals:
 
 private slots:
 	void saveSettings();
+	void setProxyType();
+
+	void init();
 
 private:
 	void createCommonPage();
@@ -68,6 +79,9 @@ private:
 
 	void createViewPage();
 	void saveViewSettings();
+
+	void createConnectionPage();
+	void saveConnectionSettings();
 
 	QListWidget* listWidget;
 	QStackedWidget* pagesWidget;
@@ -92,9 +106,22 @@ private:
 	//view page widgets
 	QCheckBox* enableMicroBlog;
 
+	//connection page
+	QRadioButton* typeSimple;
+	QRadioButton* typeSocks5;
+	QRadioButton* typeHttp;
+	QRadioButton* typeHttps;
+	QCheckBox* authCheck;
+	QLineEdit* host;
+	QLineEdit* port;
+	QLineEdit* user;
+	QLineEdit* password;
+
 	ChatWindowsManager* chatWindowsManager;
 
 	Account* m_account;
+
+	quint8 m_flags;
 
 	ContactListWindow* m_clw;
 

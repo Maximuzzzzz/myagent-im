@@ -71,7 +71,7 @@ QWidget* EmoticonSelectorPage::createEmoticonsWidget(/*int emoticonsPerRow*/)
 		}
 
 		w->setToolTip(info->tip());
-		connect(w, SIGNAL(clicked(QString)), m_parentSelector, SIGNAL(selected(QString)));
+		connect(w, SIGNAL(clicked(QString)), m_parentSelector, SLOT(slotClicked(QString)));
 		gridLayout->addWidget(w, row, col);
 
 		col++;
@@ -130,9 +130,13 @@ void EmoticonSelectorPage::setCurrentLayout()
 	setLayout(layout);
 }
 
+//------------------------------------------
+
 EmoticonSelector::EmoticonSelector(QWidget* parent)
 	: QFrame(parent)
 {
+	qDebug() << Q_FUNC_INFO << "{";
+
 	setWindowFlags(Qt::Popup);
 	setAttribute(Qt::WA_AlwaysShowToolTips);
 
@@ -164,6 +168,8 @@ EmoticonSelector::EmoticonSelector(QWidget* parent)
 	setFixedSize(sizeHint());
 	for (QList<EmoticonSelectorPage*>::const_iterator it = pages.begin(); it != pages.end(); ++it)
 		(*it)->correctSize();
+
+	qDebug() << Q_FUNC_INFO << "}";
 }
 
 void EmoticonSelector::closeEvent(QCloseEvent* /*event*/)
@@ -178,6 +184,12 @@ EmoticonSelector::~EmoticonSelector()
 
 void EmoticonSelector::slotClicked(QString id)
 {
-	emit selected(id);
+	emit selected(m_selectorSender, id);
 	qDebug() << "DblClicked";
+}
+
+void EmoticonSelector::appear(MessageEditor* editor, bool visible)
+{
+	m_selectorSender = editor;
+	setVisible(visible);
 }

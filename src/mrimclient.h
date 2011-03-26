@@ -80,6 +80,7 @@ signals:
 	void proxyAck(quint32 status, QByteArray email, quint32 id_request, quint32 dataType, QByteArray filesAnsi, QByteArray ips, quint32 sessionId, quint32 unk1, quint32 unk2, quint32 unk3);
 	void microblogChanged(QString);
 	void conferenceAsked(const QByteArray& confChat, const QString& confName);
+	void connectError(QString errorMessage);
 	
 public slots:
 	void connectToServer(OnlineStatus status);
@@ -99,6 +100,7 @@ public slots:
 	quint32 askAuthorization(const QByteArray& email, const QString& message);
 	quint32 setVisibility(bool alwaysVisible, bool alwaysInvisible, Contact* contact);
 	quint32 renameContact(const QString& nickname, Contact* contact);
+	quint32 ignoreContact(const quint32 flags, Contact* contact);
 	quint32 renameGroup(ContactGroup* group, QString name);
 	void authorizeContact(const QByteArray& email);
 	quint32 getMPOPSession();

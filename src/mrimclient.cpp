@@ -58,9 +58,15 @@ void MRIMClient::connectToServer(OnlineStatus status)
 	p->newStatus = status;
 	qDebug() << "p->newStatus" << p->newStatus.id() << "(" << p->newStatus.statusDescr() << ")";
 	p->manualDisconnect = false;
-	
+
+	p->checkProxy();
 	if (!p->gettingAddress)
-		p->socket.connectToHost("mrim.mail.ru"/*"194.67.23.154"*/, 2042);
+	{
+		if (!p->m_secure)
+			p->socket->connectToHost("mrim.mail.ru"/*"194.67.23.154"*/, 2042);
+		else
+			p->socket->connectToHost("mrim.mail.ru"/*"194.67.23.154"*/, 443);
+	}
 
 	p->gettingAddress = true;
 }
@@ -69,7 +75,7 @@ void MRIMClient::disconnectFromServer()
 {
 	qDebug() << "void MRIMClient::disconnectFromServer()";
 	p->manualDisconnect = true;
-	p->socket.abort();
+	p->socket->abort();
 }
 
 quint32 MRIMClient::requestContactInfo(QByteArray email)
@@ -250,6 +256,20 @@ quint32 MRIMClient::renameContact(const QString& nickname, Contact * contact)
 	contactData.nick = nickname;
 	contactData.prepareForSending(out);
 	
+	return p->sendPacket(MRIM_CS_MODIFY_CONTACT, data);
+}
+
+quint32 MRIMClient::ignoreContact(const quint32 flags, Contact * contact)
+{
+	qDebug() << "ignoreContact" << flags;
+	qDebug() << contact->email() << "id = " << contact->id();
+
+	QByteArray data;
+	MRIMDataStream out(&data, QIODevice::WriteOnly);
+	ContactData contactData = contact->contactData();
+	contactData.flags = flags;
+	contactData.prepareForSending(out);
+
 	return p->sendPacket(MRIM_CS_MODIFY_CONTACT, data);
 }
 

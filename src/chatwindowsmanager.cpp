@@ -39,6 +39,10 @@ ChatWindowsManager::ChatWindowsManager(Account* account, QObject *parent)
 	connect(m_account->chatsManager(), SIGNAL(sessionInitialized(ChatSession*)), this, SLOT(createWindow(ChatSession*)));
 	useTabs = m_account->settings()->value("Windows/UseTabs", true).toBool();
 
+	emoticonSelector = new EmoticonSelector();
+/*	connect(emoticonSelector, SIGNAL(selected(QString)), SLOT(insertEmoticon(QString)));
+	connect(emoticonSelector, SIGNAL(closed()), smilesAction, SLOT(toggle()));*/
+
 	if (useTabs)
 		loadMainWindow();
 }
@@ -111,7 +115,7 @@ void ChatWindowsManager::removeWindow(QObject* session)
 ChatWindow* ChatWindowsManager::createWindow(ChatSession* session)
 {
 	qDebug() << Q_FUNC_INFO;
-	ChatWindow* wnd = new ChatWindow(m_account, session);
+	ChatWindow* wnd = new ChatWindow(m_account, session, emoticonSelector);
 	windows.insert(session, wnd);
 	connect(session, SIGNAL(destroyed(QObject*)), this, SLOT(removeWindow(QObject*)));
 	connect(wnd, SIGNAL(setIgnore(bool)), this, SIGNAL(ignoreSet(bool)));

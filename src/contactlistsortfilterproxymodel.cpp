@@ -26,6 +26,7 @@
 
 #include "contactlistmodel.h"
 #include "contact.h"
+#include "proto.h"
 
 ContactListSortFilterProxyModel::ContactListSortFilterProxyModel(QObject * parent)
 	: QSortFilterProxyModel(parent), contactListModel(0)
@@ -74,7 +75,8 @@ bool ContactListSortFilterProxyModel::lessThan(const QModelIndex& left, const QM
 	if (!contact2)
 		return false;
 
-	if ((contact1->status().connected() && contact2->status().connected()) || contact1->status() == contact2->status())
+	if ((contact1->status().connected() && contact2->status().connected()) || contact1->status() == contact2->status()
+	 || (contact1->isIgnored() && contact2->isIgnored()))
 	{
 		int cmp = contact1->nickname().compare(contact2->nickname(), Qt::CaseInsensitive);
 		if (cmp == 0)

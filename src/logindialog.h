@@ -27,6 +27,7 @@
 
 #include "ui_logindialog.h"
 #include "onlinestatus.h"
+#include "settingswindow.h"
 
 class LoginDialog : public QDialog, private Ui::LoginDialog
 {
@@ -42,12 +43,14 @@ private slots:
 	void checkEmail();
 	void checkPassword();
 	void checkOnlineStatus();
+	void showSettingsWindow();
 
 private:
 	bool extendedStatus;
 	QByteArray statusId;
 	QString statusDescr;
 
+	QPointer<SettingsWindow> settingsWindow;
 	QList<QByteArray> statusList;
 };
 

@@ -64,7 +64,7 @@ void ContactGroupContextMenu::removeGroupError(QString error)
 
 void ContactGroupContextMenu::renameGroup()
 {
-	InputLineDialog dialog(tr("Rename group"), QIcon(":icons/cl_rename_group.png"), tr("Enter new name for group %1:").arg(m_group->name()), ".+");
+	InputLineDialog dialog(tr("Rename group"), QIcon(":icons/cl_rename_group.png"), tr("Enter new name for group %1:").arg(m_group->name()), ".+", m_group->name());
 	
 	if (dialog.exec() == QDialog::Accepted)
 	{

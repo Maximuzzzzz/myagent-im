@@ -45,4 +45,4 @@ Using Qt version 4.4.0 in /usr/lib
 "Error: dependency is not satisfiable: phonon-backend"
 Для её устранения необходимо установить phonon-backend-gstreamer или phonon-backend-xine или любой другой, отображающийся в списке по команде:
 `aptitude search phonon-backend`
-Для версий больше 0.4.2 проблема не актуальна
+Для версий выше 0.4.2 проблема не актуальна

@@ -38,15 +38,15 @@
 #include <QTextCodec>
 
 #include "messageedit.h"
-#include "emoticonselector.h"
 #include "toolbutton.h"
 #include "account.h"
 #include "contact.h"
 #include "proto.h"
 #include "mrimdatastream.h"
+#include "emoticonselector.h"
 
-MessageEditor::MessageEditor(Account* account, Contact* contact, QWidget* parent)
-	: QWidget(parent), m_account(account), m_contact(contact)
+MessageEditor::MessageEditor(Account* account, Contact* contact, EmoticonSelector* emSel, QWidget* parent)
+	: QWidget(parent), m_account(account), m_contact(contact), emoticonSelector(emSel)
 {
 	connect(m_contact, SIGNAL(destroyed(Contact*)), this, SLOT(writeSettings()));
 
@@ -69,8 +69,8 @@ MessageEditor::MessageEditor(Account* account, Contact* contact, QWidget* parent
 	layout->addWidget(messageEdit);
 	setLayout(layout);
 
-	emoticonSelector = new EmoticonSelector(this);
-	connect(emoticonSelector, SIGNAL(selected(QString)), SLOT(insertEmoticon(QString)));
+//	emoticonSelector = new EmoticonSelector(this);
+	connect(emoticonSelector, SIGNAL(selected(MessageEditor*, QString)), SLOT(insertEmoticon(MessageEditor*, QString)));
 	connect(emoticonSelector, SIGNAL(closed()), smilesAction, SLOT(toggle()));
 
 	readSettings();
@@ -307,8 +307,11 @@ void MessageEditor::setFontUnderline(bool b)
 	mergeMyCharFormat(fmt);
 }
 
-void MessageEditor::insertEmoticon(const QString & id)
+void MessageEditor::insertEmoticon(MessageEditor* editor, const QString & id)
 {
+	if (editor != this)
+		return;
+
 	QTextCursor cursor = messageEdit->textCursor();
 	QTextCharFormat currentFormat = cursor.charFormat();
 	EmoticonFormat fmt(currentFormat, id);
@@ -397,7 +400,8 @@ void MessageEditor::triggerEmoticonSelector()
 	else
 		YPos = mapToGlobal(this->pos()).y() + 30;
 	emoticonSelector->setGeometry(XPos, YPos, NULL, NULL);
-	emoticonSelector->setVisible(!emoticonSelector->isVisible());
+	emoticonSelector->appear(this, !emoticonSelector->isVisible());
+//	emoticonSelector->setVisible(!emoticonSelector->isVisible());
 }
 
 void MessageEditor::hideEvent(QHideEvent* /*event*/)

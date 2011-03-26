@@ -34,7 +34,7 @@ class ContactListModel : public QStandardItemModel
 {
 Q_OBJECT
 public:
-	ContactListModel(ContactList* contactList = NULL);
+	ContactListModel(ContactList* contactList = NULL, bool showGroups = true);
 	~ContactListModel();
 	virtual Qt::DropActions supportedDropActions() const;
 	virtual QMimeData* mimeData(const QModelIndexList& indexes) const;
@@ -62,6 +62,7 @@ private:
 	QMap<Contact*, ContactListItem*> contactsMap;
 	ContactListItem* phones;
 	ContactListItem* conferences;
+	bool m_showGroups;
 };
 
 #endif

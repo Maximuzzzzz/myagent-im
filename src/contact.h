@@ -62,6 +62,7 @@ public:
 	bool isConference() const;
 	bool hasPhone(QByteArray phoneNumber) const;
 	bool changeGroup(quint32 group);
+	bool isIgnored() const;
 	QIcon chatWindowIcon(QString type = "");
 
 	ContactData contactData() const { return data; }
@@ -84,6 +85,7 @@ signals:
 public slots:
 	void changeStatus(OnlineStatus status);
 	void contactTyping();
+	void setFlags(quint32 f);
 
 private slots:
 	void slotChangeGroupResult(quint32 status, bool timeout);

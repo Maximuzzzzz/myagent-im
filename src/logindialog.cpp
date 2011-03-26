@@ -45,7 +45,7 @@ LoginDialog::LoginDialog(QWidget* parent)
 	emailBox->lineEdit()->clear();
 	emailBox->lineEdit()->completer()->setCompletionMode(QCompleter::PopupCompletion);
 
-	emailBox->lineEdit()->setValidator(new QRegExpValidator(QRegExp("([a-z]|[A-Z]|[0-9])+([a-z]|[A-Z]|[0-9]|[_\\-\\.])*@(mail.ru|list.ru|inbox.ru|bk.ru|corp.mail.ru)"), emailBox));
+	emailBox->lineEdit()->setValidator(new QRegExpValidator(QRegExp("([a-z]|[A-Z]|[0-9]|[_])+([a-z]|[A-Z]|[0-9]|[_\\-\\.])*@(mail.ru|list.ru|inbox.ru|bk.ru|corp.mail.ru)"), emailBox));
 	passwordEdit->setValidator(new QRegExpValidator(QRegExp(".+"), passwordEdit));
 
 	OnlineStatus onlineStatus;
@@ -73,6 +73,7 @@ LoginDialog::LoginDialog(QWidget* parent)
 	setFixedSize(sizeHint());
 	connect(okButton, SIGNAL(clicked()), this, SLOT(accept()));
 	connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
+	connect(settingsButton, SIGNAL(clicked()), this, SLOT(showSettingsWindow()));
 
 	centerWindow(this);
 }
@@ -138,4 +139,14 @@ void LoginDialog::checkOnlineStatus()
 	extendedStatus = true;
 	statusId = st.id();
 	statusDescr = st.statusDescr();
+}
+
+void LoginDialog::showSettingsWindow()
+{
+	if (settingsWindow)
+		return;
+
+	settingsWindow = new SettingsWindow(SHOW_CONNECTION_PAGE);
+	centerWindow(settingsWindow);
+	settingsWindow->show();
 }

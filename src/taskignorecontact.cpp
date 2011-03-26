@@ -20,72 +20,36 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "authorizedialog.h"
+#include "taskignorecontact.h"
 
 #include <QDebug>
 
-#include "contactinfodialog.h"
-#include "contactgroup.h"
-#include "account.h"
-#include "contactlist.h"
+#include "mrimclient.h"
+#include "contactdata.h"
+#include "proto.h"
 #include "contact.h"
-#include "centerwindow.h"
 
-AuthorizeDialog::AuthorizeDialog(Account* account, const QByteArray& email, const QString& nickname, const QString& message)
-	: m_account(account), m_email(email)
+Tasks::IgnoreContact::IgnoreContact(Contact* c, const quint32 flags, MRIMClient* client, QObject* parent)
+	: Tasks::SimpleBlockingTask<Tasks::IgnoreContact>(client, parent), m_contact(c), m_flags(flags)
 {
-	setAttribute(Qt::WA_DeleteOnClose);
-	setupUi(this);
-	
-	label->setText(QString(tr("User %1 (%2) asks authorization:")).arg(email.constData()).arg(nickname));
-	authTextView->setPlainText(message);
+}
 
-	ContactList* cl = account->contactList();
+bool Tasks::IgnoreContact::exec()
+{
+	if (!block())
+		return false;
 
-	ContactList::GroupsIterator it = cl->groupsBegin();
-	for (; it != cl->groupsEnd(); ++it)
+	connect(mc, SIGNAL(contactModified(quint32, quint32)), this, SLOT(checkResult(quint32, quint32)));
+
+	return checkCall(mc->ignoreContact(m_flags, m_contact));
+}
+
+void Tasks::IgnoreContact::checkResult(quint32 msgseq, quint32 status)
+{
+	if (isMyResponse(msgseq))
 	{
-		groupBox->addItem((*it)->name());
+		emit done(status, false);
+		deleteLater();
 	}
-
-	if (cl->getContact(email)->group())
-	{
-		qDebug() << cl->getContact(email)->group()->id() << groupBox->count();
-		groupBox->setCurrentIndex(cl->getContact(email)->group()->id());
-	}
-
-	connect(okButton, SIGNAL(clicked()), this, SLOT(slotOkClicked()));
-	connect(cancelButton, SIGNAL(clicked()), this, SLOT(close()));
-	connect(infoButton, SIGNAL(clicked(bool)), this, SLOT(showContactInfo()));
-
-	setFixedSize(sizeHint());
-
-	centerWindow(this);
 }
 
-AuthorizeDialog::~AuthorizeDialog()
-{
-	qDebug() << "AuthorizeDialog::~AuthorizeDialog() email " << m_email;
-}
-
-void AuthorizeDialog::showContactInfo()
-{
-	qDebug() << "AuthorizeDialog::showContactInfo()";
-	ContactInfoDialog::create(m_account, m_email);
-}
-
-bool AuthorizeDialog::addContact() const
-{
-	return addContactCheckBox->isChecked();
-}
-
-int AuthorizeDialog::group() const
-{
-	return groupBox->currentIndex();
-}
-
-void AuthorizeDialog::slotOkClicked()
-{
-	emit accepted();
-	close();
-}

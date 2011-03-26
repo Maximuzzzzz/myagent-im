@@ -36,6 +36,7 @@
 #include "taskaddgroup.h"
 #include "taskremovegroup.h"
 #include "taskrenamegroup.h"
+#include "taskignorecontact.h"
 #include "tasknewconference.h"
 
 ContactList::ContactList(Account* account)
@@ -137,7 +138,7 @@ void ContactList::changeContactStatus(OnlineStatus status, QByteArray email)
 
 Contact* ContactList::findContact(const QByteArray & email)
 {
-	return findContact(email, m_contacts);
+	return findContact(email, (constructing) ? (tmpContacts) : (m_contacts));
 }
 
 Contact* ContactList::findContact(const QByteArray& email, QList<Contact*> & list)
@@ -243,7 +244,7 @@ void ContactList::endUpdating()
 	m_contacts = tmpContacts;
 	
 	for (int i = 0; i < m_contacts.size(); i++)
-		qDebug() << m_contacts.at(i)->email() << (void*)m_contacts.at(i);
+		qDebug() << m_contacts.at(i)->email() << (void*)m_contacts.at(i) << m_contacts.at(i)->isTemporary();
 
 	constructing = false;
 	emit updated();
@@ -262,8 +263,6 @@ bool ContactList::removeContactOnServer(Contact* contact)
 	{
 		m_contacts.removeAll(contact);
 		emit contactRemoved(contact);
-		//delete contact;
-		//emit updated();
 
 		return true;
 	}
@@ -287,6 +286,48 @@ void ContactList::removeContactOnServerEnd(quint32 status, bool timeout)
 	Contact* contact = task->contact();
 	m_contacts.removeAll(contact);
 	emit contactRemoved(contact);
+}
+
+bool ContactList::ignoreContactOnServer(Contact* contact, bool ignore)
+{
+	qDebug() << "ContactList::removeContact " << contact->email();
+	if (!contact)
+	{
+		qDebug() << "removeContact: contact doesn't exist";
+		return false;
+	}
+
+	quint32 contFlags;
+	if (ignore)
+		contFlags = contact->flags() | CONTACT_FLAG_IGNORE;
+	else
+		contFlags = contact->flags() & ~CONTACT_FLAG_IGNORE;
+
+	Task* task = new Tasks::IgnoreContact(contact, contFlags, m_account->client());
+	connect(task, SIGNAL(done(quint32, bool)), this, SLOT(ignoreContactOnServerEnd(quint32, bool)));
+
+	return task->exec();
+}
+
+void ContactList::ignoreContactOnServerEnd(quint32 status, bool timeout)
+{
+	qDebug() << Q_FUNC_INFO;
+	if (timeout == true || status != CONTACT_OPER_SUCCESS)
+	{
+		qDebug() << "Contact: ignoring contact error";
+		return;
+	}
+
+	Tasks::IgnoreContact* task = qobject_cast<Tasks::IgnoreContact*>(sender());
+	if (!task)
+	{
+		qDebug() << "slotIgnoreResult strange sender";
+		return;
+	}
+
+	task->contact()->setFlags(task->getFlags());
+//	m_contacts.removeAll(contact);
+	emit contactIgnored(task->contact()->isIgnored());
 }
 
 void ContactList::slotContactAuthorized(const QByteArray& email)
@@ -433,7 +474,7 @@ bool ContactList::addTemporaryContactToGroup(Contact* contact, quint32 group)
 bool ContactList::addContactOnServer(quint32 group, const QByteArray & email, const QString & nickname, const QString & authorizationMessage)
 {
 	Contact* contact = findContact(email);
-	if (contact)
+	if (contact && !contact->isHidden())
 		return false;
 	
 	MRIMClient* mc = m_account->client();
@@ -465,12 +506,14 @@ void ContactList::addContactOnServerEnd(quint32 status, bool timeout)
 	Tasks::AddContact* task = qobject_cast<Tasks::AddContact*>(sender());
 
 	Contact* contact = findContact(task->email());
-	if (contact)
+	if (contact != NULL)
 	{
+		qDebug() << "Contact found in" << ((constructing) ? ("tmpContacts") : ("m_contacts"));
 		if (contact->isTemporary())
 		{
 			qDebug() << "addContactOnServerEnd remove temporary contact";
-			m_contacts.removeAll(contact);
+			qDebug() << constructing;
+			((constructing) ? (tmpContacts) : (m_contacts)).removeAll(contact);
 			//delete contact;
 			emit contactRemoved(contact);
 		}
@@ -595,8 +638,6 @@ void ContactList::addSmsContactOnServerEnd(quint32 status, bool timeout)
 
 	Tasks::AddSmsContact* task = qobject_cast<Tasks::AddSmsContact*>(sender());
 	addContact(task->contactData());
-
-	//emit updated();
 }
 
 bool ContactList::addGroupOnServer(const QString& groupName)
@@ -648,7 +689,6 @@ void ContactList::addGroupOnServerEnd(quint32 status, bool timeout)
 
 	Tasks::AddGroup* task = qobject_cast<Tasks::AddGroup*>(sender());
 	addGroup(task->groupId(), CONTACT_FLAG_GROUP, task->groupName());
-	//emit updated();
 }
 
 bool ContactList::removeGroupOnServer(ContactGroup* group)

@@ -190,6 +190,7 @@ void MainMenuButton::checkOnlineStatus(OnlineStatus status)
 	addSmsContactAction->setEnabled(connected);
 	addGroupAction->setEnabled(connected);
 	newConferenceAction->setEnabled(connected);
+//	ignoreUserAction->setEnabled(connected);
 }
 
 void MainMenuButton::searchMoreContacts()
@@ -219,7 +220,7 @@ void MainMenuButton::addSmsContact()
 
 void MainMenuButton::addGroup()
 {
-	InputLineDialog dlg(tr("Add group"), QIcon(":icons/cl_add_group.png"), tr("Enter group name:"), ".+");
+	InputLineDialog dlg(tr("Add group"), QIcon(":icons/cl_add_group.png"), tr("Enter group name:"), ".+", "");
 
 	if (dlg.exec() == QDialog::Accepted)
 	{
@@ -275,6 +276,7 @@ void MainMenuButton::createNewConference()
 	}
 	
 	newConferenceWindow = new NewConferenceDialog(m_account);
+	centerWindow(newConferenceWindow);
 	connect(newConferenceWindow, SIGNAL(accepted(QString, QByteArray, QList<QByteArray>)), m_account->contactList(), SLOT(newConferenceOnServer(QString, QByteArray, QList<QByteArray>)));
 	newConferenceWindow->show();
 }

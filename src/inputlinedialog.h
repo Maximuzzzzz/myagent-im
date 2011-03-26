@@ -32,7 +32,7 @@ class InputLineDialog : public QDialog
 {
 Q_OBJECT
 public:
-	InputLineDialog(const QString& title, const QIcon& icon, const QString& label, const QString& regExp, QWidget* parent = 0);
+	InputLineDialog(const QString& title, const QIcon& icon, const QString& label, const QString& regExp, const QString& text, QWidget* parent = 0);
 	QString text() const;
 private slots:
 	void checkText();

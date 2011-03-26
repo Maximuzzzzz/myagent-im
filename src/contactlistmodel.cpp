@@ -34,7 +34,8 @@
 #include "contactmimedata.h"
 #include "proto.h"
 
-ContactListModel::ContactListModel(ContactList* contactList)
+ContactListModel::ContactListModel(ContactList* contactList, bool showGroups)
+ : m_showGroups(showGroups)
 {
 	this->contactList = contactList;
 	
@@ -42,7 +43,8 @@ ContactListModel::ContactListModel(ContactList* contactList)
 
 	connect(contactList, SIGNAL(contactAdded(Contact*)), this, SLOT(addContact(Contact*)));
 	connect(contactList, SIGNAL(contactRemoved(Contact*)), this, SLOT(slotRemoveContactItem(Contact*)));
-	
+	connect(contactList, SIGNAL(contactIgnored(bool)), this, SIGNAL(modelRebuilded()));
+
 	rebuild();
 	
 	myFormats << "MyAgent-IM/Contact";
@@ -70,17 +72,19 @@ void ContactListModel::rebuild()
 	
 	QStandardItem* rootItem = invisibleRootItem();
 	
-	ContactList::GroupsIterator git = contactList->groupsBegin();
-	for (; git != contactList->groupsEnd(); ++git)
+	if (m_showGroups)
 	{
-		ContactListItem* groupItem = new ContactListItem(*git);
-		groupsMap[*git] = groupItem;
-		rootItem->appendRow(groupItem);
+		ContactList::GroupsIterator git = contactList->groupsBegin();
+		for (; git != contactList->groupsEnd(); ++git)
+		{
+			ContactListItem* groupItem = new ContactListItem(*git);
+			groupsMap[*git] = groupItem;
+			rootItem->appendRow(groupItem);
+		}
+		groupRows = rowCount(indexFromItem(rootItem));
+		qDebug() << "ContactListModel::rebuild groupRows = " << groupRows;
 	}
 	
-	groupRows = rowCount(indexFromItem(rootItem));
-	qDebug() << "ContactListModel::rebuild groupRows = " << groupRows;
-
 	ContactList::ContactsIterator cit = contactList->contactsBegin();
 	for (; cit != contactList->contactsEnd(); ++cit)
 	{
@@ -147,11 +151,16 @@ void ContactListModel::changeContactGroup(bool indeed)
 		return;
 	}
 	qDebug() << "--";
+	qDebug() << "Moving contact";
 	ContactListItem* contactItem = qobject_cast<ContactListItem*>(sender());
+	qDebug() << "contactItem" << contactItem;
 	QStandardItem* removedItem =
 		contactItem->QStandardItem::parent()->takeRow(contactItem->row()).first();
+	qDebug() << "removedItem";
 	QStandardItem* groupItem = groupsMap.value(contactItem->contact()->group());
+	qDebug() << "groupItem" << groupItem;
 	groupItem->appendRow(removedItem);
+	qDebug() << "Contact moved";
 }
 
 Contact* ContactListModel::contactFromIndex(const QModelIndex & index)
@@ -189,6 +198,7 @@ bool ContactListModel::isGroup(const QModelIndex & index)
 void ContactListModel::addContact(Contact* c)
 {
 	qDebug() << "ContactListModel::addContact" << c->email();
+
 	if (c->isHidden())
 	{
 		qDebug() << "hidden contact:";
@@ -199,7 +209,9 @@ void ContactListModel::addContact(Contact* c)
 	ContactListItem* contactItem = new ContactListItem(c);
 	QStandardItem* groupItem;
 
-	if (c->isPhone())
+	if (!m_showGroups)
+		groupItem = invisibleRootItem();
+	else if (c->isPhone())
 	{
 		qDebug() << "contact " << c->nickname() << " is phone";
 		if (!phones)
@@ -250,6 +262,10 @@ void ContactListModel::slotRemoveContactItem(Contact* c)
 	qDebug() << "Deleting contact" << c->email() << c->nickname();
 
 	ContactListItem* removingContactItem = contactsMap.take(c);
+
+	if (c->isHidden())
+		return;
+
 	removingContactItem->QStandardItem::parent()->takeRow(removingContactItem->row());
 	if (c->isConference())
 		if (conferences->rowCount() == 0)

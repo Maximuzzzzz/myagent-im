@@ -67,6 +67,7 @@ ContactListWindow::ContactListWindow(Account* account)
 
 	MRIMClient* mc = account->client();
 	connect (account, SIGNAL(statusChanged(QString)), this, SLOT(slotMicroblogChanged(QString)));
+	connect(account->client(), SIGNAL(connectError(QString)), this, SLOT(slotConnectionError(QString)));
 
 	createActions();
 
@@ -99,6 +100,7 @@ ContactListWindow::ContactListWindow(Account* account)
 
 	contactsTreeView = new ContactListTreeView(mc->account());
 	ContactListModel* model = new ContactListModel(mc->account()->contactList());
+	m_account->contactList()->useModel(model);
 	ContactListSortFilterProxyModel* proxyModel = new ContactListSortFilterProxyModel(model);
 	proxyModel->setSourceModel(model);
 	proxyModel->sort(0);
@@ -279,11 +281,15 @@ void ContactListWindow::authorizeContact()
 
 	if (dlg->addContact())
 	{
+		qDebug() << "adding contact to contact list";
 		ContactList* cl = m_account->contactList();
 		Contact* contact = cl->findContact(dlg->email());
 		if (!contact || !contact->isTemporary())
 		{
-			qDebug() << "ContactListWindow::authorizeContact: adding contact " << dlg->email() << " error";
+			ContactData cd = ContactData(dlg->email());
+			contact = new Contact(cd, cl->group(dlg->group()), m_account);
+			cl->addTemporaryContactToGroup(contact, dlg->group());
+//			qDebug() << "ContactListWindow::authorizeContact: adding contact " << dlg->email() << " error";
 			return;
 		}
 		cl->addTemporaryContactToGroup(contact, dlg->group());
@@ -419,4 +425,9 @@ void ContactListWindow::visibleWidget(Widgets w, bool st)
 			statusBar->setVisible(st);
 			return;
 	}
+}
+
+void ContactListWindow::slotConnectionError(QString mess)
+{
+	CenteredMessageBox::critical(tr("Connection error"), mess, QMessageBox::Ok);
 }

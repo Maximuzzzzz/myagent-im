@@ -68,6 +68,7 @@ public:
 private slots:
 	void showContactInfo();
 	void removeContact();
+	void ignoreContact();
 	void renameContact();
 	void alwaysVisibleTriggered(bool checked);
 	void alwaysInvisibleTriggered(bool checked);
@@ -84,6 +85,7 @@ private:
 	
 	QAction* showContactInfoAction;
 	QAction* removeContactAction;
+	QAction* ignoreContactAction;
 	QAction* renameContactAction;
 	QAction* alwaysVisibleAction;
 	QAction* alwaysInvisibleAction;

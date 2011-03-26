@@ -31,7 +31,7 @@
 
 #include "centerwindow.h"
 
-InputLineDialog::InputLineDialog(const QString & title, const QIcon & icon, const QString & labelText, const QString & regExp, QWidget * parent)
+InputLineDialog::InputLineDialog(const QString & title, const QIcon & icon, const QString & labelText, const QString & regExp, const QString & text, QWidget * parent)
 	: QDialog(parent)
 {
 	setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowSystemMenuHint);
@@ -42,6 +42,8 @@ InputLineDialog::InputLineDialog(const QString & title, const QIcon & icon, cons
 	QLabel* label = new QLabel(labelText);
 	lineEdit = new QLineEdit;
 	lineEdit->setValidator(new QRegExpValidator(QRegExp(regExp), lineEdit));
+	lineEdit->setText(text);
+	lineEdit->selectAll();
 	connect(lineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(checkText()));
 	
 	QDialogButtonBox* buttonBox = new QDialogButtonBox;

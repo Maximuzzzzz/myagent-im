@@ -20,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#define MAX_INT32	4294836225
-#define MAX_INT		32767
+#define MAX_INT32	4294836225 //TODO: maybe sizeof(qint32) ?
+#define MAX_INT		32767 //TODO: maybe sizeof(qint16) ?
 
 #ifndef FILEMESSAGE_H
 #define FILEMESSAGE_H
@@ -30,6 +30,9 @@
 #include <QFileInfo>
 #include <QTcpSocket>
 #include <QTcpServer>
+#include <QPushButton>
+#include <QLineEdit>
+#include <QDialog>
 
 #include "mrimclient.h"
 
@@ -183,6 +186,19 @@ private:
 
 	quint32 fm_proxySessId;
 	quint32 fm_unk[3]; /*TODO: this is the SessionId. Have to make array of 4 elements*/
+};
+
+class FileExistsDialog : public QDialog
+{
+Q_OBJECT
+public:
+	FileExistsDialog(QString file);
+	QString fileName() const;
+private:
+	QLineEdit* lineEdit;
+	QPushButton* rewriteButton;
+	QPushButton* renameButton;
+	QPushButton* cancelButton;
 };
 
 #endif

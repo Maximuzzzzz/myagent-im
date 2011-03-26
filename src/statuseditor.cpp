@@ -30,6 +30,7 @@
 #include <QTextCodec>
 
 StatusEditor::StatusEditor(QWidget *parent)
+	: QWidget(parent)
 {
 	setWindowFlags(Qt::Popup);
 	QVBoxLayout* layout = new QVBoxLayout;

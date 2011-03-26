@@ -20,67 +20,34 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef EMOTICONSELECTOR_H
-#define EMOTICONSELECTOR_H
+#ifndef TASKIGNORECONTACT_H
+#define TASKIGNORECONTACT_H
 
-#include <QFrame>
-#include <QTabWidget>
-#include <QGridLayout>
+#include "simpleblockingtask.h"
 
-#include "messageeditor.h"
+class Contact;
 
-class QToolBox;
-class EmoticonMovie;
-class EmoticonSelector;
+namespace Tasks
+{
 
-class EmoticonSelectorPage : public QWidget
+class IgnoreContact : public Tasks::SimpleBlockingTask<Tasks::IgnoreContact>
 {
 Q_OBJECT
 public:
-	EmoticonSelectorPage(EmoticonSelector* parent, QStringList set, bool isFav = false);
-        ~EmoticonSelectorPage();
+	IgnoreContact(Contact* c, const quint32 flags, MRIMClient* client, QObject* parent = 0);
 
-	void correctSize();
+	virtual bool exec();
+
+	quint32 getFlags() const { return m_flags; }
+	Contact* contact() { return m_contact; }
 
 private slots:
-	void setupFavouriteEmoticons();
-
+	void checkResult(quint32 msgseq, quint32 status);
 private:
-	QWidget* createEmoticonsWidget(/*int emoticonsPerRow*/);
-	void setCurrentLayout();
-	QStringList m_set;
-
-private:
-	typedef QList<EmoticonMovie*> MovieList;
-	MovieList movieList;
-	QWidget* emotions;
-	EmoticonSelector* m_parentSelector;
-	QGridLayout* gridLayout;
-	bool m_isFav;
+	Contact* m_contact;
+	quint32 m_flags;
 };
 
-class EmoticonSelector : public QFrame
-{
-Q_OBJECT
-public:
-	EmoticonSelector(QWidget* parent = 0);
-	~EmoticonSelector();
-
-public slots:
-	void  slotClicked(QString id);
-	void appear(MessageEditor* editor, bool visible);
-
-signals:
-	void selected(MessageEditor* editor, QString id);
-	void closed();
-
-protected:
-	virtual void closeEvent(QCloseEvent* event);
-
-private:
-	QList<EmoticonSelectorPage*> pages;
-	QTabWidget* tabs;
-	MessageEditor* m_selectorSender;
-};
+}
 
 #endif

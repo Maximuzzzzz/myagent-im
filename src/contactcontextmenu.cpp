@@ -62,6 +62,10 @@ ContactContextMenu::ContactContextMenu(Account* account, QWidget* parent)
 	askAuthorizationAction = new QAction(QIcon(":icons/authorize_request.png"), tr("Ask authorization"), this);
 	connect(askAuthorizationAction, SIGNAL(triggered()), this, SLOT(askAuthorization()));
 
+	ignoreContactAction = new QAction(QIcon(":icons/cl_ignore_contact.png"), tr("Ignore"), this);
+	ignoreContactAction->setCheckable(true);
+	connect(ignoreContactAction, SIGNAL(triggered()), this, SLOT(ignoreContact()));
+
 	historyAction = new QAction(QIcon(":icons/history.png"), tr("History"), this);
 	connect(historyAction, SIGNAL(triggered()), this, SLOT(showHistory()));
 
@@ -82,6 +86,7 @@ ContactContextMenu::ContactContextMenu(Account* account, QWidget* parent)
 	addAction(alwaysInvisibleAction);
 	addSeparator();
 	addAction(removeContactAction);
+	addAction(ignoreContactAction);
 }
 
 ContactContextMenu::~ContactContextMenu()
@@ -113,7 +118,7 @@ void ContactContextMenu::removeContact()
 	else
 		contactName = m_contact->email();
 
-	if (CenteredMessageBox::question(tr("Remove contact"), tr("Are you sure you want to remove contact %1?").arg(contactName), QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel) == QMessageBox::Ok)
+	if (CenteredMessageBox::question(tr("Remove contact"), tr("Are you sure you want to remove contact %1?").arg(contactName), QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::Yes)
 	{
 		qDebug() << "real removing";
 		m_account->contactList()->removeContactOnServer(m_contact);
@@ -156,11 +161,15 @@ void ContactContextMenu::setContact(Contact* c)
 	bool invisible = (m_contact->flags() & CONTACT_FLAG_INVISIBLE) != 0;
 	alwaysInvisibleAction->setChecked(invisible);
 
+	bool ignored = (m_contact->flags() & CONTACT_FLAG_IGNORE) != 0;
+	ignoreContactAction->setChecked(ignored);
+
 	bool notPhone = !m_contact->isPhone();
 	askAuthorizationAction->setVisible(notPhone);
 	alwaysVisibleAction->setVisible(notPhone);
 	alwaysInvisibleAction->setVisible(notPhone);
 	historyAction->setVisible(notPhone);
+	ignoreContactAction->setVisible(notPhone);
 }
 
 void ContactContextMenu::askAuthorization()
@@ -189,6 +198,7 @@ void ContactContextMenu::checkOnlineStatus(OnlineStatus status)
 	alwaysVisibleAction->setEnabled(connected);
 	alwaysInvisibleAction->setEnabled(connected);
 	removeContactAction->setEnabled(connected);
+	ignoreContactAction->setEnabled(connected);
 	renameContactAction->setEnabled(connected);
 	showContactInfoAction->setEnabled(connected);
 	moveToGroup->setEnabled(connected);
@@ -208,7 +218,7 @@ void ContactContextMenu::checkOnlineStatus(OnlineStatus status)
 
 void ContactContextMenu::renameContact()
 {
-	InputLineDialog dialog(tr("Rename contact"), QIcon(":icons/cl_rename_contact.png"), tr("Enter new name for user %1:").arg(m_contact->nickname() + "(" + m_contact->email() + ")"), ".+");
+	InputLineDialog dialog(tr("Rename contact"), QIcon(":icons/cl_rename_contact.png"), tr("Enter new name for user %1:").arg(m_contact->nickname() + "(" + m_contact->email() + ")"), ".+", m_contact->nickname());
 	
 	if (dialog.exec() == QDialog::Accepted)
 	{
@@ -264,6 +274,17 @@ void ContactContextMenu::slotGroupsCleared()
 	moveToGroup->clearAll();
 }
 
+void ContactContextMenu::ignoreContact()
+{
+	if (!m_contact->isIgnored())
+		if (QMessageBox::question(this, tr("Ignoring contact"), tr("Do you really want to ignore this contact?"),
+		 QMessageBox::Yes | QMessageBox::No, QMessageBox::No) != QMessageBox::Yes)
+			return;
+
+	ignoreContactAction->setChecked(!m_contact->isIgnored());
+	m_account->contactList()->ignoreContactOnServer(m_contact, !m_contact->isIgnored());
+}
+
 //-------------------------------------------------------------
 
 SubmenuMoveToGroup::SubmenuMoveToGroup(QWidget* parent)
@@ -316,4 +337,3 @@ void SubmenuMoveToGroup::moveContactTo()
 	quint32 groupId = m_groups.key(qobject_cast<QAction*>(sender()));
 	emit moveContact(groupId);
 }
-
