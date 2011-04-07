@@ -57,6 +57,7 @@ public:
 
 	static const int maxDefaultStatuses;
 	static const int minDefaultStatuses;
+	static const QString defDateFormat;
 
 private:
 	ResourceManager(QObject* parent = 0);

@@ -119,5 +119,10 @@
         <file>icons/online_only_ph.png</file>
         <file>icons/msg_conference.png</file>
         <file>icons/cl_ignore_contact.png</file>
+        <file>icons/editor/msg_bar_f_multi_d.png</file>
+        <file>icons/editor/msg_bar_f_multi_dis.png</file>
+        <file>icons/editor/msg_bar_f_multi_h.png</file>
+        <file>icons/editor/msg_bar_f_multi_p.png</file>
+        <file>icons/editor/msg_bar_f_multi_ph.png</file>
     </qresource>
 </RCC>

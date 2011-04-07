@@ -118,6 +118,10 @@ private:
 	bool gettingAddress;
 	bool manualDisconnect;
 	bool m_secure;
+
+	QString address;
+	QString host;
+	uint port;
 };
 
 #endif

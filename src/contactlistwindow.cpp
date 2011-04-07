@@ -288,11 +288,15 @@ void ContactListWindow::authorizeContact()
 		{
 			ContactData cd = ContactData(dlg->email());
 			contact = new Contact(cd, cl->group(dlg->group()), m_account);
-			cl->addTemporaryContactToGroup(contact, dlg->group());
+//			cl->addTemporaryContactToGroup(contact, dlg->group());
 //			qDebug() << "ContactListWindow::authorizeContact: adding contact " << dlg->email() << " error";
 			return;
 		}
 		cl->addTemporaryContactToGroup(contact, dlg->group());
+	}
+	else
+	{
+		/*TODO: ???*/
 	}
 }
 

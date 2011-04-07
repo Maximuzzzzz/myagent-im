@@ -44,6 +44,8 @@ class Account;
 #include "filemessage.h"
 #include "onlinestatus.h"
 #include "emoticonselector.h"
+#include "contactlistbroadcast.h"
+#include "contactlistconferencewithhandle.h"
 
 class ChatWindow : public QWidget
 {
@@ -90,6 +92,7 @@ private slots:
 
 	void saveTopAvatarBoxState(bool checked);
 	void saveBottomAvatarBoxState(bool checked);
+	void saveConferenceListState(bool checked);
 	
 	void slotEditorActivate(int tab);
 
@@ -109,6 +112,8 @@ private slots:
 	void contactUpdated();
 	void sendButtonEnabledProcess();
 
+	void showBroadcastPanel(bool visible);
+
 protected:
 	QTimer* timer;
 
@@ -120,7 +125,9 @@ private:
 	AnimatedTextBrowser* chatView;
 	MessageEditor* messageEditor;
 	SmsEditor* smsEditor;
-	
+	ContactListBroadcast* broadcastPanel;
+	ContactListConferenceWithHandle* conferenceListPanel;
+
 	QTextDocument doc;
 
 	int savedX;

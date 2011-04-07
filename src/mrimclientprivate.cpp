@@ -185,7 +185,19 @@ void MRIMClientPrivate::slotSocketError(QAbstractSocket::SocketError error)
 	if (error == QAbstractSocket::ProxyNotFoundError)
 		emit q->connectError(tr("Proxy not found!"));
 
+	if (error == QAbstractSocket::SocketTimeoutError)
+	{
+		if (!gettingAddress)
+			if (!m_secure)
+				socket->connectToHost("mrim.mail.ru"/*"194.67.23.154"*/, 2042);
+			else
+				socket->connectToHost("mrim.mail.ru"/*"194.67.23.154"*/, 443);
+		else
+			socket->connectToHost(host, port);
+		return;
+	}
 	gettingAddress = false;
+
 	slotDisconnectedFromServer();
 }
 
@@ -200,10 +212,10 @@ void MRIMClientPrivate::readData()
 
 	if (gettingAddress)
 	{
-		QString address = socket->readLine();
+		address = socket->readLine();
 		address = address.trimmed();
-		QString host = address.section(':', 0, 0);
-		uint port = address.section(':', 1, 1).toUInt();
+		host = address.section(':', 0, 0);
+		port = address.section(':', 1, 1).toUInt();
 		socket->disconnectFromHost();
 		gettingAddress = false;
 		qDebug() << "connecting to " << host << ':' << port;
@@ -1157,9 +1169,17 @@ void MRIMClientPrivate::processMicroblogChanged(QByteArray data)
 
 	MRIMDataStream in(data);
 
+	quint32 unk;
+	QByteArray email, plainText;
 	QString microText;
 
-	in >> microText;
+	in >> unk;
+	qDebug() << unk;
+	in >> email >> unk >> unk >> unk >> microText;
+	in >> unk;
+	qDebug() << unk;
+	in >> plainText;
+	qDebug() << plainText;
 
 	emit q->microblogChanged(microText);
 }

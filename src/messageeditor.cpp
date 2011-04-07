@@ -188,13 +188,13 @@ void MessageEditor::createToolBar()
 	wakeupIcon.addPixmap(QPixmap(":/icons/editor/wakeup_d.png"), QIcon::Normal, QIcon::Off);
 	wakeupIcon.addPixmap(QPixmap(":/icons/editor/wakeup_p.png"), QIcon::Normal, QIcon::On);
 	wakeupIcon.addPixmap(QPixmap(":/icons/editor/wakeup_h.png"), QIcon::Active, QIcon::Off);
-	
+
 	wakeupButton = new ToolButton(wakeupIcon, toolBar);
 	connect(wakeupButton, SIGNAL(clicked()), SIGNAL(wakeupPressed()));
 	toolBar->addWidget(wakeupButton);
-	
+
 	toolBar->addSeparator();
-	
+
 	fileTransferAction = new QAction(QIcon(":/icons/ft.png"), "", this);
 	fileTransferAction->setCheckable(true);
 	connect(fileTransferAction, SIGNAL(triggered(bool)), this, SLOT(fileTransfer(bool)));
@@ -204,6 +204,25 @@ void MessageEditor::createToolBar()
 	ignoreAction = addToolAction(toolIcon("ignore"), this, SIGNAL(setIgnore(bool)));
 
 	ignoreAction->setToolTip(tr("Ignore interlocutor style"));
+
+	toolBar->addSeparator();
+
+	QIcon broadcastIcon;
+	broadcastIcon.addPixmap(QPixmap(":/icons/editor/msg_bar_f_multi_dis.png"), QIcon::Disabled, QIcon::Off);
+	broadcastIcon.addPixmap(QPixmap(":/icons/editor/msg_bar_f_multip_d.png"), QIcon::Normal, QIcon::Off);
+	broadcastIcon.addPixmap(QPixmap(":/icons/editor/msg_bar_f_multi_p.png"), QIcon::Normal, QIcon::On);
+	broadcastIcon.addPixmap(QPixmap(":/icons/editor/msg_bar_f_multi_h.png"), QIcon::Active, QIcon::Off);
+	broadcastIcon.addPixmap(QPixmap(":/icons/editor/msg_bar_f_multi_ph.png"), QIcon::Active, QIcon::On);
+
+	broadcastAction = new QAction(broadcastIcon, "", toolBar);
+	broadcastAction->setCheckable(true);
+	connect(broadcastAction, SIGNAL(triggered(bool)), SIGNAL(showBroadcastPanel(bool)));
+	//toolBar->addAction(broadcastAction);
+	//toolBar->widgetForAction(broadcastAction)->setStyleSheet("QToolButton { border: 0px; padding: 0px }");
+	broadcastAction->setToolTip(tr("Broadcast"));
+
+	if (m_contact->isConference())
+		broadcastAction->setEnabled(false);
 }
 
 void MessageEditor::chooseFont()

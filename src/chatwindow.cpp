@@ -71,6 +71,7 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoti
 	timer->setSingleShot(true);
 	connect(timer, SIGNAL(timeout()), this, SLOT(slotTimeout()));
 
+	QHBoxLayout* mainLayout = new QHBoxLayout;
 	splitter = new QSplitter(Qt::Vertical, this);
 
 	QWidget* chatWidget = new QWidget;
@@ -80,17 +81,17 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoti
 	chatView = new AnimatedTextBrowser;
 	chatWidgetLayout->addWidget(chatView);
 	connect(chatView, SIGNAL(anchorClicked(QUrl)), this, SLOT(slotAnchorClicked(QUrl)));
-	if (!s->contact()->isPhone())
+	if (!s->contact()->isPhone() && !session->contact()->isConference())
 	{
 		AvatarBoxWithHandle* avatarBoxWithHandle = new AvatarBoxWithHandle(m_account->avatarsPath(), session->contact()->email());
-		
+
 		avatarBoxWithHandle->toggle(m_account->settings()->value("ChatWindow/TopAvatarBoxState", false).toBool());
-		
+
 		connect(avatarBoxWithHandle, SIGNAL(toggled(bool)), SLOT(saveTopAvatarBoxState(bool)));
 		chatWidgetLayout->addWidget(avatarBoxWithHandle);
 	}
 	chatWidget->setLayout(chatWidgetLayout);
-	splitter->addWidget(chatWidget);	
+	splitter->addWidget(chatWidget);
 
 	if (!s->contact()->isPhone())
 	{
@@ -126,27 +127,28 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoti
 			editorsWidget->addTab(smsEditor, tr("SMS"));
 
 			connect(editorsWidget, SIGNAL(currentChanged(int)), this, SLOT(slotEditorActivate(int)));
-
 		}
-		AvatarBoxWithHandle* avatarBoxWithHandle = new AvatarBoxWithHandle(m_account->avatarsPath(), m_account->email());
-		avatarBoxWithHandle->toggle(m_account->settings()->value("ChatWindow/BottomAvatarBoxState", false).toBool());
-		connect(avatarBoxWithHandle, SIGNAL(toggled(bool)), SLOT(saveBottomAvatarBoxState(bool)));
 
 		bottomWidgetLayout->addWidget(editorsWidget);
-		bottomWidgetLayout->addWidget(avatarBoxWithHandle);
+		if (!session->contact()->isConference())
+		{
+			AvatarBoxWithHandle* avatarBoxWithHandle = new AvatarBoxWithHandle(m_account->avatarsPath(), m_account->email());
+			avatarBoxWithHandle->toggle(m_account->settings()->value("ChatWindow/BottomAvatarBoxState", false).toBool());
+			connect(avatarBoxWithHandle, SIGNAL(toggled(bool)), SLOT(saveBottomAvatarBoxState(bool)));
+
+			bottomWidgetLayout->addWidget(avatarBoxWithHandle);
+		}
 
 		bottomWidget->setLayout(bottomWidgetLayout);
 
 		splitter->addWidget(bottomWidget);
 
 		if (!session->contact()->isConference())
+		{
 			connect(session->contact(), SIGNAL(statusChanged(OnlineStatus)), this, SLOT(checkContactStatus(OnlineStatus)));
-
-		if (!session->contact()->isConference())
 			connect(this, SIGNAL(smsEditorActivate()), smsEditor, SLOT(smsEditorActivate()));
-
-		if (!session->contact()->isConference())
 			connect(session->contact(), SIGNAL(typing()), this, SLOT(contactTyping()));
+		}
 
 		connect(messageEditor, SIGNAL(filesTransfer(FileMessage*)), session, SLOT(fileTransfer(FileMessage*)));
 		connect(messageEditor, SIGNAL(filesTransfer(FileMessage*)), this, SLOT(fileTransferring(FileMessage*)));
@@ -167,7 +169,24 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoti
 	splitter->setStretchFactor(0, 7);
 	splitter->setStretchFactor(1, 3);
 
-	layout->addWidget(splitter);
+	mainLayout->addWidget(splitter);
+
+	if (!s->contact()->isPhone() && !s->contact()->isConference())
+	{
+		broadcastPanel = new ContactListBroadcast(m_account->contactList());
+		connect(messageEditor, SIGNAL(showBroadcastPanel(bool)), this, SLOT(showBroadcastPanel(bool)));
+		//mainLayout->addWidget(broadcastPanel);
+		broadcastPanel->setVisible(false);
+	}
+	else if (s->contact()->isConference())
+	{
+		conferenceListPanel = new ContactListConferenceWithHandle(m_account->contactList());
+		conferenceListPanel->toggle(m_account->settings()->value("ChatWindow/ConferenceListVisible", false).toBool());
+		connect(conferenceListPanel, SIGNAL(toggled(bool)), SLOT(saveConferenceListState(bool)));
+		//mainLayout->addWidget(conferenceListPanel);
+	}
+
+	layout->addLayout(mainLayout);
 
 	statusBar = new QStatusBar();
 
@@ -181,7 +200,7 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoti
 	connect(session, SIGNAL(messageDelivered(bool, Message*)), this, SLOT(messageDelivered(bool, Message*)));
 	connect(session, SIGNAL(messageAppended(const Message*)), this, SLOT(appendMessageToView(const Message*)));
 
-	connect(session, SIGNAL(smsDelivered(QByteArray,QString)), this, SLOT(appendSmsToView(QByteArray, QString)));
+	connect(session, SIGNAL(smsDelivered(QByteArray, QString)), this, SLOT(appendSmsToView(QByteArray, QString)));
 	connect(session, SIGNAL(smsFailed()), this, SLOT(smsFailed()));
 
 	statusBar->addPermanentWidget(sendButton);
@@ -264,7 +283,7 @@ void ChatWindow::appendMessageToView(const Message* msg, bool newIncoming)
 	QString prompt;
 	if (msg->flags() & MESSAGE_FLAG_SMS)
 	{
-		prompt = "<font color=red>" + tr("Sms from number") + " " + msg->rtfText() + " (" + msg->dateTime().time().toString() + ") :</font><br>";
+		prompt = "<font color=red>" + tr("Sms from number") + " " + msg->rtfText() + " (" + msg->dateTime().time().toString(m_account->settings()->value("Messages/DateMask", theRM.defDateFormat).toString()) + ") :</font><br>";
 		lastMessageFrom = "";
 	}
 	else if (msg->flags() & MESSAGE_SMS_DELIVERY_REPORT)
@@ -274,7 +293,7 @@ void ChatWindow::appendMessageToView(const Message* msg, bool newIncoming)
 	}
 	else if (msg->flags() & MESSAGE_FLAG_ALARM)
 	{
-		prompt = "<font color=green>" + msg->dateTime().time().toString() + " <b>" + tr("Alarm clock:")  + " <b></font>";
+		prompt = "<font color=green>" + msg->dateTime().toString() + " <b>" + tr("Alarm clock:")  + " <b></font>";
 		lastMessageFrom = "";
 	}
 	else
@@ -311,7 +330,7 @@ void ChatWindow::appendMessageToView(const Message* msg, bool newIncoming)
 
 		prompt = "";
 		if (currMessageFrom != lastMessageFrom)
-			prompt = nick + " (" + msg->dateTime().time().toString() + ") :</font><br>";
+			prompt = nick + " (" + msg->dateTime().toString(m_account->settings()->value("Messages/DateMask", theRM.defDateFormat).toString()) + ") :</font><br>";
 		lastMessageFrom = currMessageFrom;
 	}
 
@@ -463,6 +482,11 @@ void ChatWindow::saveTopAvatarBoxState(bool checked)
 void ChatWindow::saveBottomAvatarBoxState(bool checked)
 {
 	m_account->settings()->setValue("ChatWindow/BottomAvatarBoxState", checked);
+}
+
+void ChatWindow::saveConferenceListState(bool checked)
+{
+	m_account->settings()->setValue("ChatWindow/ConferenceListVisible", checked);
 }
 
 void ChatWindow::editorActivate()
@@ -712,4 +736,9 @@ void ChatWindow::sendButtonEnabledProcess()
 		sendButton->setEnabled(false);
 	else
 		sendButton->setEnabled(true);
+}
+
+void ChatWindow::showBroadcastPanel(bool visible)
+{
+	broadcastPanel->setVisible(visible);
 }

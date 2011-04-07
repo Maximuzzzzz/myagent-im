@@ -81,6 +81,7 @@ signals:
 	void signalProxyAck(QByteArray mirrorIps);
 	void setIgnore(bool b);
 	void setSignalCheckSpelling(bool b);
+	void showBroadcastPanel(bool visible);
 
 protected:
 	virtual void hideEvent(QHideEvent* event);
@@ -138,6 +139,7 @@ private:
 
 	QToolBar* toolBar;
 	QAction* fileTransferAction;
+	QAction* broadcastAction;
 	MessageEdit* messageEdit;
 
 	QAction* spellAction;

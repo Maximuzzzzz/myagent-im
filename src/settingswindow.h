@@ -61,6 +61,7 @@ signals:
 private slots:
 	void saveSettings();
 	void setProxyType();
+	void showFormatHelp();
 
 	void init();
 
@@ -69,7 +70,7 @@ private:
 	void saveCommonSettings();
 
 	void createMessagesPage();
-	void saveMessagesSettings();
+	bool saveMessagesSettings();
 
 	void createWindowsPage();
 	bool saveWindowsSettings();
@@ -96,6 +97,8 @@ private:
 	QRadioButton* doubleEnterButton;
 	QRadioButton* ctrlEnterButton;
 	QCheckBox* altSButton;
+	QLineEdit* dateTimeFormat;
+	QPushButton* helpFormat;
 
 	//windows page widgets
 	QCheckBox* tabWindows;

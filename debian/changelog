@@ -1,3 +1,9 @@
+myagent-im (0.4.3) unstable; urgency=low
+
+  Dmitry Malakhov <abr_mail@mail.ru>:
+  * Fixed bug with emails, which starts with "_"
+  * Add proxies
+
 myagent-im (0.4.2) unstable; urgency=low
 
   Dmitry Malakhov <abr_mail@mail.ru>:

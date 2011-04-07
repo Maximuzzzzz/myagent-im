@@ -30,6 +30,7 @@
 
 const int ResourceManager::maxDefaultStatuses = 10;
 const int ResourceManager::minDefaultStatuses = 5;
+const QString ResourceManager::defDateFormat = "dd.MM.yyyy hh:mm:ss";
 
 ResourceManager::ResourceManager(QObject *parent)
 	: QObject(parent)

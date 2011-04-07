@@ -198,7 +198,10 @@ SOURCES += main.cpp \
     onlinestatusselector.cpp \
     statusmenu.cpp \
     aboutdialog.cpp \
-    taskignorecontact.cpp
+    taskignorecontact.cpp \
+    contactlistbroadcast.cpp \
+    contactlistconferencewithhandle.cpp \
+    contactlistconference.cpp
 HEADERS += mrimclient.h \
     soundplayer.h \
     audio.h \
@@ -320,7 +323,10 @@ HEADERS += mrimclient.h \
     onlinestatusselector.h \
     statusmenu.h \
     aboutdialog.h \
-    taskignorecontact.h
+    taskignorecontact.h \
+    contactlistbroadcast.h \
+    contactlistconferencewithhandle.h \
+    contactlistconference.h
 FORMS += logindialog.ui \
     searchcontacts.ui \
     addcontact.ui \
