@@ -47,6 +47,7 @@ public:
 
 signals:
 	void modelRebuilded();
+	void collapseGroups(QList<QModelIndex> groups);
 
 private slots:
 	void rebuild();
@@ -62,6 +63,9 @@ private:
 	QMap<Contact*, ContactListItem*> contactsMap;
 	ContactListItem* phones;
 	ContactListItem* conferences;
+	ContactListItem* temporary;
+	ContactListItem* notInGroup;
+
 	bool m_showGroups;
 };
 

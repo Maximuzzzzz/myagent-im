@@ -61,6 +61,7 @@ private slots:
 	void slotRemoveTab(int tab);
 	void changeIconAndTitle(const QIcon& icon, ChatWindow* sender);
 	void changeTab(int index);
+	void contactIgnored(bool b);
 
 private:
 	void loadMainWindow();

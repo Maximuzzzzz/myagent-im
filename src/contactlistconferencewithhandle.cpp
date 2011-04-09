@@ -26,7 +26,7 @@
 #include <QToolButton>
 #include <QDebug>
 
-ContactListConferenceWithHandle::ContactListConferenceWithHandle(ContactList* cl, QWidget* parent)
+ContactListConferenceWithHandle::ContactListConferenceWithHandle(Contact* conference, Account* acc, QWidget* parent)
  : QWidget(parent)
 {
 	QHBoxLayout* layout = new QHBoxLayout;
@@ -34,9 +34,23 @@ ContactListConferenceWithHandle::ContactListConferenceWithHandle(ContactList* cl
 	layout->setSpacing(1);
 
 	QVBoxLayout* listLayout = new QVBoxLayout;
-	contactListConference = new ContactListConference;
+	members = new QLabel(tr("Members: 0"));
+	contactListConference = new ContactListConference(conference, acc);
+	connect(contactListConference, SIGNAL(setMembersCount(quint32)), this, SLOT(setMembersCount(quint32)));
 
+	QHBoxLayout* addMembersLayout = new QHBoxLayout;
+	iconLabel = new QLabel;
+	iconLabel->setPixmap(QPixmap(":icons/msg_conference.png"));
+	iconLabel->setFixedSize(iconLabel->sizeHint());
+
+	addMembersLabel = new QLabel(tr("Add members"));
+
+	addMembersLayout->addWidget(iconLabel);
+	addMembersLayout->addWidget(addMembersLabel);
+
+	listLayout->addWidget(members);
 	listLayout->addWidget(contactListConference);
+	listLayout->addLayout(addMembersLayout);
 
 	QVBoxLayout* handleLayout = new QVBoxLayout;
 
@@ -65,12 +79,23 @@ ContactListConferenceWithHandle::ContactListConferenceWithHandle(ContactList* cl
 
 void ContactListConferenceWithHandle::toggleConferenceList(bool checked)
 {
+	members->setVisible(checked);
 	contactListConference->setVisible(checked);
+	iconLabel->setVisible(checked);
+	addMembersLabel->setVisible(checked);
 	emit toggled(checked);
 }
 
 void ContactListConferenceWithHandle::toggle(bool visible)
 {
+	members->setVisible(visible);
 	contactListConference->setVisible(visible);
+	iconLabel->setVisible(visible);
+	addMembersLabel->setVisible(visible);
 	handleButton->setChecked(visible);
+}
+
+void ContactListConferenceWithHandle::setMembersCount(quint32 cnt)
+{
+	members->setText(tr("Members: %1").arg(QString::number(cnt)));
 }

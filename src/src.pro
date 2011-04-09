@@ -4,8 +4,8 @@ CONFIG += qt # warn_on debug
 QT += network \
     phonon
 INCLUDEPATH += /usr/include
-TRANSLATIONS = locale/myagent-im_ru_RU.ts \
-    locale/myagent-im_uk_UA.ts
+TRANSLATIONS = locale/myagent-im_ru.ts \
+	locale/myagent-im_uk.ts
 LIBS += -laspell
 win32 { 
     QTPLUGIN += qjpeg \
@@ -35,6 +35,7 @@ unix {
     BINDIR = $$PREFIX/bin
     DATADIR = $$PREFIX/share/myagent-im
     DEFINES += DATADIR=\\\"$$DATADIR\\\"
+	DEFINES += VERSION=\\\"0.4.4\\\"
     INSTALLS += target \
         smiles_animated \
         smiles_set03 \
@@ -335,7 +336,7 @@ FORMS += logindialog.ui \
     editphones.ui \
     newconference.ui \
     aboutdialog.ui \
-    aboutdialog.ui
+	aboutdialog.ui
 LEXSOURCES += emoticons.ll \
     rtf.ll \
     plaintextparser.ll \

@@ -326,7 +326,6 @@ void ContactList::ignoreContactOnServerEnd(quint32 status, bool timeout)
 	}
 
 	task->contact()->setFlags(task->getFlags());
-//	m_contacts.removeAll(contact);
 	emit contactIgnored(task->contact()->isIgnored());
 }
 
@@ -361,6 +360,11 @@ void ContactList::load()
 	QDataStream in(&file);
 	
 	int nGroups;
+	quint32 vers;
+	in >> vers;
+	if (vers != 1)
+		return;
+
 	in >> nGroups;
 	if (in.status() != QDataStream::Ok)
 	{
@@ -368,10 +372,11 @@ void ContactList::load()
 		emit updated();
 		return;
 	}
-	
+
 	for (int i = 0; i < nGroups; i++)
 	{
 		ContactGroup* group = new ContactGroup(in);
+		qDebug() << "is collapsed" << !group->isExpanded();
 		m_groups.append(group);
 		emit groupAdded(group);
 	}
@@ -382,7 +387,7 @@ void ContactList::load()
 		clear();
 		return;
 	}
-	
+
 	while (!in.atEnd())
 	{
 		Contact* contact = new Contact(m_account);
@@ -419,23 +424,24 @@ void ContactList::save() const
 {
 	if (m_account->path().isEmpty())
 		return;
-	
+
 	QFile file(m_account->path() + "/contactlist");
 	if (!file.open(QIODevice::WriteOnly))
 	{
 		qDebug() << "can't open file to write contactlist";
 		return;
 	}
-	
+
 	QDataStream out(&file);
-	
+
+	out << quint32(1); //version cl
 	out << m_groups.size();
 	for (int i = 0; i < m_groups.size(); i++)
 		out << m_groups.at(i);
-	
+
 	for (int i = 0; i < m_contacts.size(); ++i)
 		m_contacts.at(i)->save(out);
-	
+
 	file.close();
 }
 

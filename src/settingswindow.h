@@ -99,6 +99,7 @@ private:
 	QCheckBox* altSButton;
 	QLineEdit* dateTimeFormat;
 	QPushButton* helpFormat;
+	QCheckBox* mergeMessagesCheckBox;
 
 	//windows page widgets
 	QCheckBox* tabWindows;

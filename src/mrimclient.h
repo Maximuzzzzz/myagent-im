@@ -81,6 +81,7 @@ signals:
 	void microblogChanged(QString);
 	void conferenceAsked(const QByteArray& confChat, const QString& confName);
 	void connectError(QString errorMessage);
+	void conferenceClAddContact(QByteArray& contact);
 	
 public slots:
 	void connectToServer(OnlineStatus status);
@@ -111,6 +112,7 @@ public slots:
 	void sendProxy(FileMessage* fmsg, quint32 dataType);
 	void sendProxyAck(FileMessage* fmsg, quint32 status, quint32 dataType, quint32 sessionId, quint32 unk1, quint32 unk2, quint32 unk3);
 	quint32 sendMicrotext(const QString& text);
+	quint32 conferenceClLoad(const QByteArray& conferenceAddress);
 	
 private:
 	MRIMClientPrivate* p;

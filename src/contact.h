@@ -77,6 +77,7 @@ signals:
 	void typing();
 	void groupChanged(bool result);
 	void visibilityChanged();
+	void ignoredChanged();
 	void renamed(QString newNickname);
 	void phonesChanged();
 

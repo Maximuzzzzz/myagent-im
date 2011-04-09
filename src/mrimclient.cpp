@@ -619,3 +619,16 @@ quint32 MRIMClient::sendMicrotext(const QString& text)
 	qDebug() << data.toHex();
 	return p->sendPacket(MRIM_CS_MICROBLOG_TEXT, data);
 }
+
+quint32 MRIMClient::conferenceClLoad(const QByteArray& conferenceAddress)
+{
+	qDebug() << "MRIMClient::conferenceClLoad" << conferenceAddress;
+	QByteArray data;
+	MRIMDataStream out(&data, QIODevice::WriteOnly);
+
+	quint32 flags = quint32(0) | MESSAGE_FLAG_RTF;
+	out << flags << conferenceAddress << quint32(0) << quint32(0) << quint32(4) << quint32(1);
+	qDebug() << data.toHex();
+
+	return p->sendPacket(MRIM_CS_MESSAGE, data);
+}

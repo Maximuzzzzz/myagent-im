@@ -27,21 +27,24 @@
 ContactGroup::ContactGroup(quint32 id, quint32 flags, QString name, bool isConf)
 	: m_id(id), m_flags(flags), m_name(name), m_isConf(isConf)
 {
+	m_expanded = true;
 }
 
 ContactGroup::ContactGroup(QDataStream& stream)
 {
-	stream >> m_id >> m_flags >> m_name >> m_isConf;
+	m_expanded = true;
+	stream >> m_id >> m_flags >> m_name >> m_isConf >> m_expanded;
 }
 
 QDataStream & operator <<(QDataStream & stream, ContactGroup* group)
 {
-	stream << group->id() << group->flags() << group->name() << group->isConferences();
+	qDebug() << "saving group" << group->name() << group->isExpanded();
+	stream << group->id() << group->flags() << group->name() << group->isConferences() << group->isExpanded();
 	return stream;
 }
 
 QDataStream & operator >>(QDataStream & stream, ContactGroup* group)
 {
-	stream >> group->m_id >> group->m_flags >> group->m_name >> group->m_isConf;
+	stream >> group->m_id >> group->m_flags >> group->m_name >> group->m_isConf >> group->m_expanded;
 	return stream;
 }

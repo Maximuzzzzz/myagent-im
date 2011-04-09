@@ -73,6 +73,7 @@ signals:
 	void ignoreSet(bool ignore);
 	void setSignalCheckSpelling(bool b);
 	void signalCheckSpellingSet(bool b);
+	void contactIgnored(bool b);
 
 private slots:
 	void send();
@@ -113,6 +114,8 @@ private slots:
 	void sendButtonEnabledProcess();
 
 	void showBroadcastPanel(bool visible);
+
+	void contactIgnored();
 
 protected:
 	QTimer* timer;

@@ -37,13 +37,16 @@ public:
 	QString name() const { return m_name; }
 
 	bool isConferences() const { return m_isConf; }
+	bool isExpanded() const { return m_expanded; }
 
 	void setName(const QString& name) { m_name = name; }
+	void setExpanded(bool b) { m_expanded = b; }
 
 private:
 	quint32 m_id;
 	quint32 m_flags;
 	QString m_name;
+	bool m_expanded;
 
 	bool m_isConf;
 

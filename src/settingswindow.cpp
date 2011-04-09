@@ -196,6 +196,9 @@ void SettingsWindow::createMessagesPage()
 	ctrlEnterButton = new QRadioButton(tr("Send message on Ctrl+Enter pressed"));
 	altSButton = new QCheckBox(tr("Send message on Alt+S pressed"));
 
+	mergeMessagesCheckBox = new QCheckBox(tr("Merge few messages from one contact"));
+	mergeMessagesCheckBox->setChecked(m_account->settings()->value("Messages/mergeMessages", true).toBool());
+
 	QString enterVariant = m_account->settings()->value("Messages/sendOnEnter", "Ctrl+Enter").toString();
 	if (enterVariant == "Enter")
 		enterButton->setChecked(true);
@@ -210,6 +213,8 @@ void SettingsWindow::createMessagesPage()
 	sendLayout->addWidget(doubleEnterButton);
 	sendLayout->addWidget(ctrlEnterButton);
 	sendLayout->addWidget(altSButton);
+
+	sendLayout->addWidget(mergeMessagesCheckBox);
 
 	sendBox->setLayout(sendLayout);
 	sendBox->setFixedHeight(sendBox->sizeHint().height());
@@ -257,6 +262,7 @@ bool SettingsWindow::saveMessagesSettings()
 
 	m_account->settings()->setValue("Messages/sendOnEnter", enterVariant);
 	m_account->settings()->setValue("Messages/sendOnAltS", altSButton->isChecked());
+	m_account->settings()->setValue("Messages/mergeMessages", mergeMessagesCheckBox->isChecked());
 
 	m_account->settings()->setValue("Messages/DateMask", dateTimeFormat->text());
 	return true;

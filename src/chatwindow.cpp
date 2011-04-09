@@ -66,6 +66,7 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoti
 	isNewMessage = false;
 
 	connect(s->contact(), SIGNAL(renamed(QString)), this, SLOT(contactUpdated()));
+	connect(s->contact(), SIGNAL(ignoredChanged()), this, SLOT(contactIgnored()));
 
 	timer = new QTimer(this);
 	timer->setSingleShot(true);
@@ -169,18 +170,21 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoti
 	splitter->setStretchFactor(0, 7);
 	splitter->setStretchFactor(1, 3);
 
+	QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	splitter->setSizePolicy(sizePolicy);
+
 	mainLayout->addWidget(splitter);
 
 	if (!s->contact()->isPhone() && !s->contact()->isConference())
 	{
 		broadcastPanel = new ContactListBroadcast(m_account->contactList());
 		connect(messageEditor, SIGNAL(showBroadcastPanel(bool)), this, SLOT(showBroadcastPanel(bool)));
-		//mainLayout->addWidget(broadcastPanel);
+		mainLayout->addWidget(broadcastPanel);
 		broadcastPanel->setVisible(false);
 	}
 	else if (s->contact()->isConference())
 	{
-		conferenceListPanel = new ContactListConferenceWithHandle(m_account->contactList());
+		conferenceListPanel = new ContactListConferenceWithHandle(session->contact(), session->account());
 		conferenceListPanel->toggle(m_account->settings()->value("ChatWindow/ConferenceListVisible", false).toBool());
 		connect(conferenceListPanel, SIGNAL(toggled(bool)), SLOT(saveConferenceListState(bool)));
 		//mainLayout->addWidget(conferenceListPanel);
@@ -329,7 +333,8 @@ void ChatWindow::appendMessageToView(const Message* msg, bool newIncoming)
 		}
 
 		prompt = "";
-		if (currMessageFrom != lastMessageFrom)
+		qDebug() << !session->account()->settings()->value("Messages/mergeMessages", true).toBool();
+		if (currMessageFrom != lastMessageFrom || !session->account()->settings()->value("Messages/mergeMessages", true).toBool())
 			prompt = nick + " (" + msg->dateTime().toString(m_account->settings()->value("Messages/DateMask", theRM.defDateFormat).toString()) + ") :</font><br>";
 		lastMessageFrom = currMessageFrom;
 	}
@@ -691,7 +696,7 @@ void ChatWindow::slotFileTransferred(FileMessage::Status action, QString filesIn
 			cleanupCommandUrls();
 			cursor.insertBlock();
 			cursor.insertHtml("<font color=green>" + tr("Files transferring") + " (" + QDateTime::currentDateTime().time().toString() + ")</font><br>");
-			cursor.insertHtml("<font color=green>" + tr("Error occured while file transfering") + "</font>");
+			cursor.insertHtml("<font color=green>" + tr("Error occured while file transfering") + "</font><br>");
 			break;
 
 		case FileMessage::TRANSFER_CANCEL:
@@ -699,7 +704,7 @@ void ChatWindow::slotFileTransferred(FileMessage::Status action, QString filesIn
 			cleanupCommandUrls();
 			cursor.insertBlock();
 			cursor.insertHtml("<font color=green>" + tr("Files transferring") + " (" + QDateTime::currentDateTime().time().toString() + ")</font><br>");
-			cursor.insertHtml("<font color=green>" + tr("Transferring canceled") + "</font>");
+			cursor.insertHtml("<font color=green>" + tr("Transferring canceled") + "</font><br>");
 			break;
 
 		default:
@@ -732,7 +737,7 @@ void ChatWindow::sendButtonEnabledProcess()
 	PlainTextExporter textExporter(messageEditor->document());
 	QString messageText = textExporter.toText();
 
-	if (!m_account->onlineStatus().connected() || (session->contact()->isConference() && session->contact()->isTemporary()) || messageText.isEmpty())
+	if (!m_account->onlineStatus().connected() || (session->contact()->isConference() && session->contact()->isTemporary())/* || messageText.isEmpty()*/)
 		sendButton->setEnabled(false);
 	else
 		sendButton->setEnabled(true);
@@ -741,4 +746,12 @@ void ChatWindow::sendButtonEnabledProcess()
 void ChatWindow::showBroadcastPanel(bool visible)
 {
 	broadcastPanel->setVisible(visible);
+}
+
+void ChatWindow::contactIgnored()
+{
+	if (session->contact()->isIgnored())
+		emit contactIgnored(true);
+	else
+		emit contactIgnored(false);
 }

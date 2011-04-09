@@ -822,26 +822,59 @@ void MRIMClientPrivate::processMessageAck(QByteArray data)
 		sendPacket(MRIM_CS_MESSAGE_RECV, replyData);
 	}
 
+	qDebug() << "here";
 	if (flags & MESSAGE_FLAG_CONFERENCE)
 	{
+		qDebug() << "here2";
 		if (flags & MESSAGE_FLAG_NOTIFY)
 		{
 			qDebug() << "Somebody's typing in conference";
 			return;
 		}
-		switch (conferenceType)
+		qDebug() << "here3" << conferenceType;
+		if (conferenceType == 0)
 		{
-			case 0:
-				if (!account->contactList()->findContact(from))
-					emit q->conferenceAsked(from, confName);
-				break;
-			case 5:
-				plainText = tr("User %1 left the conference").arg(codec->toUnicode(confOwner));
-				flags = flags & ~MESSAGE_FLAG_RTF;
-				break;
-			case 7:
-				return;
+			if (!account->contactList()->findContact(from))
+				emit q->conferenceAsked(from, confName);
 		}
+		else if (conferenceType == 2)
+		{
+			qDebug() << "Reading conference contact list";
+			quint32 membersCount, i;
+			QByteArray confClContact;
+			MRIMDataStream in3(confOwner);
+			in3 >> membersCount;
+			qDebug() << membersCount;
+			for (i = 0; i < membersCount; i++)
+			{
+				in3 >> confClContact;
+				emit q->conferenceClAddContact(confClContact);
+			}
+			return;
+		}
+		else if (conferenceType == 3)
+		{
+			qDebug() << "Adding members to contact list";
+			quint32 membersCount, i;
+			QByteArray confData, confClContact;
+			in2 >> confData;
+			MRIMDataStream in3(confData);
+			in3 >> membersCount;
+			qDebug() << membersCount;
+			for (i = 0; i < membersCount; i++)
+			{
+				in3 >> confClContact;
+				emit q->conferenceClAddContact(confClContact);
+			}
+			return;
+		}
+		else if (conferenceType == 5)
+		{
+			plainText = tr("User %1 left the conference").arg(codec->toUnicode(confOwner));
+			flags = flags & ~MESSAGE_FLAG_RTF;
+		}
+		else if (conferenceType == 7)
+			return;
 	}
 
 	if (flags & MESSAGE_FLAG_NOTIFY)
@@ -952,7 +985,7 @@ void MRIMClientPrivate::processOfflineMessageAck(QByteArray data)
 	qDebug() << mimeMsg.plainTextCharset();
 	qDebug() << mimeMsg.xMrimMultichatType();*/
 
-	qDebug() << mimeMsg.xMrimFlags() << mimeMsg.xMrimMultichatType();
+	//qDebug() << mimeMsg.xMrimFlags() << mimeMsg.xMrimMultichatType();
 
 	QString plainText;
 	if (mimeMsg.hasPlainText())
@@ -970,7 +1003,7 @@ void MRIMClientPrivate::processOfflineMessageAck(QByteArray data)
 	if (mimeMsg.hasRtfText() && mimeMsg.xMrimFlags() & MESSAGE_FLAG_RTF)
 		unpackRtf(mimeMsg.rtfBase64(), &rtfText, &bgColor);
 
-	qDebug() << rtfText;
+	//qDebug() << rtfText;
 
 	/*if (!(mimeMsg.xMrimFlags() & MESSAGE_FLAG_NORECV))
 	{*/

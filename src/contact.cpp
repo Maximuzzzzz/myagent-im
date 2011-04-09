@@ -363,5 +363,11 @@ QIcon Contact::chatWindowIcon(QString type)
 
 void Contact::setFlags(quint32 f)
 {
+	if (!(data.flags & CONTACT_FLAG_IGNORE & f))
+	{
+		data.flags = f;
+		emit ignoredChanged();
+		return;
+	}
 	data.flags = f;
 }

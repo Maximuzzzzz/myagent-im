@@ -51,6 +51,8 @@ ContactListModel::ContactListModel(ContactList* contactList, bool showGroups)
 	
 	phones = 0;
 	conferences = 0;
+	temporary = 0;
+	notInGroup = 0;
 }
 
 ContactListModel::~ContactListModel()
@@ -58,6 +60,8 @@ ContactListModel::~ContactListModel()
 	contactList = 0;
 	phones = 0;
 	conferences = 0;
+	temporary = 0;
+	notInGroup = 0;
 }
 
 void ContactListModel::rebuild()
@@ -67,19 +71,25 @@ void ContactListModel::rebuild()
 	contactsMap.clear();
 	phones = 0;
 	conferences = 0;
+	temporary = 0;
+	notInGroup = 0;
 	
 	if (contactList == NULL) return;
 	
 	QStandardItem* rootItem = invisibleRootItem();
-	
+	QList<QModelIndex> indexes;
+
 	if (m_showGroups)
 	{
+		indexes.clear();
 		ContactList::GroupsIterator git = contactList->groupsBegin();
 		for (; git != contactList->groupsEnd(); ++git)
 		{
 			ContactListItem* groupItem = new ContactListItem(*git);
 			groupsMap[*git] = groupItem;
 			rootItem->appendRow(groupItem);
+			if (!(*git)->isExpanded())
+				indexes.append(groupItem->index());
 		}
 		groupRows = rowCount(indexFromItem(rootItem));
 		qDebug() << "ContactListModel::rebuild groupRows = " << groupRows;
@@ -91,6 +101,8 @@ void ContactListModel::rebuild()
 		addContact(*cit);
 	}
 	
+	if (m_showGroups)
+		emit collapseGroups(indexes);
 	emit modelRebuilded();
 }
 
@@ -234,13 +246,29 @@ void ContactListModel::addContact(Contact* c)
 
 		groupItem = conferences;
 	}
+	else if (c->isTemporary())
+	{
+		qDebug() << "contact " << c->nickname() << " is temporary";
+		if (!temporary)
+		{
+			qDebug() << "temporary group doesn't exists"; //TODO: after deleting doesn't append again
+			temporary = new ContactListItem(tr("Temporary"));
+			invisibleRootItem()->insertRow(groupRows++, temporary);
+		}
+
+		groupItem = temporary;
+	}
 	else
 	{
 		connect(contactItem, SIGNAL(groupChanged(bool)), this, SLOT(changeContactGroup(bool)));
 		
 		ContactGroup* group = c->group();
 		if (!group)
-			groupItem = invisibleRootItem();
+		{
+			if (!notInGroup)
+				notInGroup = new ContactListItem(tr("Not in group"));
+			groupItem = notInGroup;
+		}
 		else
 		{
 			groupItem = groupsMap.value(group);
@@ -279,6 +307,12 @@ void ContactListModel::slotRemoveContactItem(Contact* c)
 		{
 //			invisibleRootItem()->takeRow(phones->row());
 //			phones = 0;
+		}
+	if (c->isTemporary())
+		if (temporary->rowCount() == 0)
+		{
+//			invisibleRootItem()->takeRow(temporary->row());
+//			temporary = 0;
 		}
 	delete c;
 }

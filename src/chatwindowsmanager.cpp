@@ -122,6 +122,7 @@ ChatWindow* ChatWindowsManager::createWindow(ChatSession* session)
 	connect(this, SIGNAL(ignoreSet(bool)), wnd, SIGNAL(ignoreSet(bool)));
 	connect(wnd, SIGNAL(setSignalCheckSpelling(bool)), this, SIGNAL(signalCheckSpellingSet(bool)));
 	connect(this, SIGNAL(signalCheckSpellingSet(bool)), wnd, SIGNAL(signalCheckSpellingSet(bool)));
+	connect(wnd, SIGNAL(contactIgnored(bool)), this, SLOT(contactIgnored(bool)));
 	if (useTabs)
 	{
 		int tabIndex = tabs->addTab(wnd, wnd->windowIcon(), session->contact()->nickname());
@@ -286,5 +287,20 @@ void ChatWindowsManager::raiseWindow(ChatWindow* wnd)
 		wnd->show();
 		wnd->raise();
 		wnd->activateWindow();
+	}
+}
+
+void ChatWindowsManager::contactIgnored(bool b)
+{
+	if (b)
+	{
+		ChatWindow* wnd = qobject_cast<ChatWindow*>(sender());
+		if (useTabs)
+		{
+			int tabIndex = tabs->indexOf(wnd);
+			if (tabIndex != -1)
+				slotRemoveTab(tabIndex);
+		}
+		wnd->close();
 	}
 }

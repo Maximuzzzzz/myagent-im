@@ -54,14 +54,15 @@ ContactListItem::ContactListItem(Contact* contact)
 	else
 	{
 		checkVisibility();
-		setStatusIcon(m_contact->status());
 
 		connect(m_contact, SIGNAL(statusChanged(OnlineStatus)), this, SLOT(setStatusIcon(OnlineStatus)));
 		connect(m_contact, SIGNAL(groupChanged(bool)), this, SLOT(changeGroup(bool)));
 		connect(m_contact, SIGNAL(visibilityChanged()), this, SLOT(checkVisibility()));
+		connect(m_contact, SIGNAL(ignoredChanged()), this, SLOT(checkVisibility()));
 	}
 	QFont f = font();
-	f.setPointSize(9);
+	if (!m_contact->isIgnored())
+		f.setPointSize(9);
 	setFont(f);
 
 	connect(m_contact, SIGNAL(renamed(QString)), this, SLOT(rename(const QString&)));
@@ -123,7 +124,8 @@ void ContactListItem::destroyItem()
 void ContactListItem::checkVisibility()
 {
 	quint32 flags = m_contact->flags();
-	
+	setStatusIcon(m_contact->status());
+
 	QFont f;
 	if (flags & CONTACT_FLAG_VISIBLE)
 	{
@@ -135,10 +137,17 @@ void ContactListItem::checkVisibility()
 		f.setStrikeOut(true);
 		setFont(f);
 	}
+	else if (flags & CONTACT_FLAG_IGNORE)
+	{
+		f.setPointSize(7);
+		setFont(f);
+		setIcon(QIcon(":icons/cl_ignore_contact.png"));
+	}
 	else
 	{
 		f.setItalic(false);
 		f.setStrikeOut(false);
+		f.setPointSize(9);
 		setFont(f);
 	}
 }

@@ -22,10 +22,40 @@
 
 #include "contactlistconference.h"
 
-ContactListConference::ContactListConference(QWidget* parent)
+#include <QDebug>
+
+ContactListConference::ContactListConference(Contact* conference, Account* acc, QWidget* parent)
+ : m_account(acc), m_conf(conference)
 {
+	qDebug() << "ContactListConference::ContactListConference";
+	connect(acc->client(), SIGNAL(conferenceClAddContact(QByteArray&)), this, SLOT(addContact(QByteArray&)));
+	connect(acc, SIGNAL(onlineStatusChanged(OnlineStatus)), this, SLOT(onlineStatusChanged(OnlineStatus)));
+	accountWasConnected = acc->onlineStatus().connected();
+	membersCount = 0;
+	if (acc->onlineStatus().connected())
+		acc->client()->conferenceClLoad(conference->email());
 }
 
 ContactListConference::~ContactListConference()
 {
+}
+
+void ContactListConference::addContact(QByteArray & contact)
+{
+	qDebug() << Q_FUNC_INFO << contact;
+	membersCount++;
+	emit setMembersCount(membersCount);
+}
+
+void ContactListConference::onlineStatusChanged(OnlineStatus st)
+{
+	qDebug() << Q_FUNC_INFO << st.connected();
+	if (!accountWasConnected && st.connected())
+		m_account->client()->conferenceClLoad(m_conf->email());
+
+	if (!st.connected())
+	{
+		membersCount = 0;
+		emit setMembersCount(0);
+	}
 }

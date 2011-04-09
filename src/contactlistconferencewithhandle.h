@@ -2,8 +2,9 @@
 #define CONTACTLISTCONFERENCEWITHHANDLE_H
 
 #include <QWidget>
+#include <QLabel>
 
-#include "contactlist.h"
+#include "contact.h"
 #include "contactlistconference.h"
 
 class QToolButton;
@@ -12,7 +13,7 @@ class ContactListConferenceWithHandle : public QWidget
 {
 	Q_OBJECT
 public:
-	ContactListConferenceWithHandle(ContactList* cl, QWidget* parent = 0);
+	ContactListConferenceWithHandle(Contact* conference, Account* acc, QWidget* parent = 0);
 
 	void toggle(bool visible);
 
@@ -21,10 +22,14 @@ signals:
 
 private slots:
 	void toggleConferenceList(bool checked);
+	void setMembersCount(quint32 cnt);
 
 private:
 	ContactListConference* contactListConference;
 	QToolButton* handleButton;
+	QLabel* members;
+	QLabel* iconLabel;
+	QLabel* addMembersLabel;
 };
 
 #endif // CONTACTLISTCONFERENCEWITHHANDLE_H

@@ -36,7 +36,8 @@ MrimMIME::MrimMIME(const QByteArray & data)
 
 void MrimMIME::initData(const QByteArray & data)
 {
-	qDebug() << "MrimMIME::initData"/* << data*/;
+	qDebug() << "MrimMIME::initData";
+	qDebug() << data;
 
 	QList<QByteArray> strings = data.split(0x0a);
 	int i;
@@ -55,97 +56,102 @@ void MrimMIME::initData(const QByteArray & data)
 		if (strings[i].trimmed().size() == 0 && isHeader)
 			continue;
 
-//		qDebug() << strings[i];
+		qDebug() << strings[i];
 		currStr = values(strings[i]);
 		if (currStr.find("From") != currStr.end())
 		{
 			m_from = currStr.value("From");
-//			qDebug() << "m_from = " << m_from;
+			qDebug() << "m_from = " << m_from;
 		}
 		else if (currStr.find("Sender") != currStr.end())
 		{
 			m_sender = currStr.value("Sender");
-//			qDebug() << "m_sender = " << m_sender;
+			qDebug() << "m_sender = " << m_sender;
 		}
 		else if (currStr.find("Date") != currStr.end())
 		{
 			m_dateTime = parseRFCDate(currStr.value("Date"));
-//			qDebug() << "m_dateTime = " << m_dateTime;
+			qDebug() << "m_dateTime = " << m_dateTime;
 		}
 		else if (currStr.find("MIME-Version") != currStr.end())
 		{
 			m_mimeVersion = currStr.value("MIME-Version");
-//			qDebug() << "m_mimeVersion = " << m_mimeVersion;
+			qDebug() << "m_mimeVersion = " << m_mimeVersion;
 		}
 		else if (currStr.find("Subject") != currStr.end())
 		{
 			m_subject = subjectDecode(currStr.value("Subject"));
-//			qDebug() << "m_subject = " << m_subject;
+			qDebug() << "m_subject = " << m_subject;
 		}
 		else if (currStr.find("Content-Type") != currStr.end())
 		{
 			currType = currStr.value("Content-Type");
-//			qDebug() << "currType = " << currType;
+			qDebug() << "currType = " << currType;
 			if (currType == "multipart/alternative")
 			{
 				m_isMultipart = true;
 				boundary = QByteArray("--") + currStr.value("boundary");
-//				qDebug() << "m_isMultipart = " << m_isMultipart;
-//				qDebug() << "boundary = " << boundary;
+				qDebug() << "m_isMultipart = " << m_isMultipart;
+				qDebug() << "boundary = " << boundary;
 			}
 			else if (currType == "text/plain")
 			{
 				m_hasPlainText = true;
 				m_plainTextCharset = currStr.value("charset");
-//				qDebug() << "m_hasPlainText = " << m_hasPlainText;
-//				qDebug() << "m_plainTextCharset = " << m_plainTextCharset;
+				qDebug() << "m_hasPlainText = " << m_hasPlainText;
+				qDebug() << "m_plainTextCharset = " << m_plainTextCharset;
 			}
 			else if (currType == "application/x-mrim-rtf")
 			{
 				m_hasRtfText = true;
-//				qDebug() << "m_hasRtfText = " << m_hasRtfText;
+				qDebug() << "m_hasRtfText = " << m_hasRtfText;
+			}
+			else if (currType == "application/x-mrim-auth-req")
+			{
+				m_hasRtfText = true;
+				qDebug() << "m_hasRtfText = " << m_hasRtfText;
 			}
 		}
 		else if (currStr.find("Content-Transfer-Encoding") != currStr.end())
 		{
 			transferEncoding = currStr.value("Content-Transfer-Encoding");
-//			qDebug() << "transferEncoding = " << transferEncoding;
+			qDebug() << "transferEncoding = " << transferEncoding;
 		}
 		else if (currStr.find("X-MRIM-Version") != currStr.end())
 		{
 			m_xMrimVersion = currStr.value("X-MRIM-Version");
-//			qDebug() << "m_xMrimVersion = " << m_xMrimVersion;
+			qDebug() << "m_xMrimVersion = " << m_xMrimVersion;
 		}
 		else if (currStr.find("X-MRIM-Flags") != currStr.end())
 		{
 			m_xMrimFlags = currStr.value("X-MRIM-Flags").toUInt(NULL, 16);
-//			qDebug() << "m_xMrimFlags = " << m_xMrimFlags;
+			qDebug() << "m_xMrimFlags = " << m_xMrimFlags;
 		}
 		else if (currStr.find("X-MRIM-Multichat-Type") != currStr.end())
 		{
 			m_xMrimMultichatType = currStr.value("X-MRIM-Multichat-Type").toUInt(NULL, 10);
-//			qDebug() << "m_xMrimMultichatType = " << m_xMrimMultichatType;
+			qDebug() << "m_xMrimMultichatType = " << m_xMrimMultichatType;
 		}
-		else if (strings[i].startsWith(boundary))
+		else if (strings[i].startsWith(boundary) && boundary.length() > 0)
 		{
-//			qDebug() << "starts with boundary";
+			qDebug() << "starts with boundary";
 			isHeader = true;
 		}
 		else
 		{
-//			qDebug() << "Seems isn't header";
+			qDebug() << "Seems isn't header";
 			if (currType == "text/plain")
 			{
 				if (transferEncoding == "base64")
 					m_plainText = QByteArray::fromBase64(strings[i]);
 				else
 					m_plainText = strings[i];
-//				qDebug() << "m_plainText = " << m_plainText;
+				qDebug() << "m_plainText = " << m_plainText;
 			}
-			else if (currType == "application/x-mrim-rtf")
+			else if (currType == "application/x-mrim-rtf" || currType == "application/x-mrim-auth-req")
 			{
 				m_rtfBase64 = strings[i];
-//				qDebug() << "m_rtfBase64 = " << m_rtfBase64;
+				qDebug() << "m_rtfBase64 = " << m_rtfBase64;
 			}
 			isHeader = false;
 		}

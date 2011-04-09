@@ -47,6 +47,7 @@ public slots:
 
 signals:
 	void modelRebuilded();
+	void collapseGroups(QList<QModelIndex> groups);
 
 protected:
 	virtual bool lessThan(const QModelIndex& left, const QModelIndex& right) const;

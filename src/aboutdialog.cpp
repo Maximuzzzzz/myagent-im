@@ -30,6 +30,8 @@ AboutDialog::AboutDialog()
 	setAttribute(Qt::WA_DeleteOnClose);
 	setupUi(this);
 
+	vers->setText(tr("Version: %1").arg(VERSION));
+
 	connect(buttonOK, SIGNAL(clicked(bool)), this, SLOT(close()));
 	connect(linkLabel, SIGNAL(linkActivated(QString)), this, SLOT(openHomeURL()));
 	connect(licenseLabel, SIGNAL(linkActivated(QString)), this, SLOT(openLicenseURL()));

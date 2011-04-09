@@ -66,6 +66,9 @@ void ContactListTreeView::setModel(QAbstractItemModel* model)
 {
 	contactListModel = qobject_cast<ContactListSortFilterProxyModel*>(model);
 	QTreeView::setModel(model);
+	connect(this, SIGNAL(collapsed(QModelIndex)), this, SLOT(groupCollapsed(QModelIndex)));
+	connect(this, SIGNAL(expanded(QModelIndex)), this, SLOT(groupExpanded(QModelIndex)));
+	connect(contactListModel, SIGNAL(collapseGroups(QList<QModelIndex>)), this, SLOT(collapseGroups(QList<QModelIndex>)));
 }
 
 void ContactListTreeView::dropEvent(QDropEvent * event)
@@ -161,6 +164,30 @@ void ContactListTreeView::contextMenuEvent(QContextMenuEvent* e)
 void ContactListTreeView::slotActivated(const QModelIndex & index)
 {
 	Contact* contact = contactListModel->contactFromIndex(index);
-	if (contact)
+	if (contact && !contact->isIgnored())
 		emit contactItemActivated(contact);
+}
+
+void ContactListTreeView::groupCollapsed(QModelIndex index)
+{
+	qDebug() << "Group collapsing";
+	ContactGroup* group = contactListModel->groupFromIndex(index);
+	if (group != NULL)
+		group->setExpanded(false);
+}
+
+void ContactListTreeView::groupExpanded(QModelIndex index)
+{
+	qDebug() << "Group expanding";
+	ContactGroup* group = contactListModel->groupFromIndex(index);
+	if (group != NULL)
+		group->setExpanded(true);
+}
+
+void ContactListTreeView::collapseGroups(QList<QModelIndex> groups)
+{
+	qDebug() << Q_FUNC_INFO << groups.count();
+	QList<QModelIndex>::iterator it;
+	for (it = groups.begin(); it != groups.end(); ++it)
+		collapse(*it); //Doesn't work. But why??
 }

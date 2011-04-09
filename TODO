@@ -1,6 +1,5 @@
+- Saving state of each group and collapsing/expanding it at start
 - Trying to connect to server periodically
-- Ignore list
-- Check contact adding and autorization (!!!)
 - Deleting history during deleting contact (by user choise)
 - Filter for conferences
 - Add links at services mail.ru in contact context menu
@@ -23,3 +22,4 @@
 - Add notification window in tray
 - Hide contact list during account is offline
 - Multiprotocoling
+
