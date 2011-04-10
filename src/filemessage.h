@@ -33,6 +33,7 @@
 #include <QPushButton>
 #include <QLineEdit>
 #include <QDialog>
+#include <QLabel>
 
 #include "mrimclient.h"
 
@@ -192,13 +193,21 @@ class FileExistsDialog : public QDialog
 {
 Q_OBJECT
 public:
-	FileExistsDialog(QString file);
-	QString fileName() const;
+	FileExistsDialog(QString fileName, FileMessage* fm, QWidget* parent = 0, Qt::WindowFlags f = 0);
+	QString fileName() const { return m_newFileName; }
+
+private slots:
+	void rewriteFile();
+
 private:
+	QLabel* label;
 	QLineEdit* lineEdit;
 	QPushButton* rewriteButton;
 	QPushButton* renameButton;
 	QPushButton* cancelButton;
+
+	QString m_newFileName;
+	QString m_oldFileName;
 };
 
 #endif

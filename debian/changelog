@@ -1,8 +1,26 @@
+myagent-im (0.4.4) unstable; urgency=low
+
+  Dmitry Malakhov <abr_mail@mail.ru>:
+  * Added widget for broadcasting but not used
+  * User can choose his own date time format for chat window
+  * Fixed problem with microblog
+  * Fixed problem with russian localization in Ukraine
+  * Fixed problem with authorization message from offline
+  * Some work with ignoring contact
+  * First features for conference members list
+  * Added version in about dialog
+  * Option for merging/splitting messages from one contact
+  * <br> tag in places, where text was stick together
+
+ -- Dmitry Malakhov <abr_mail@mail.ru>  Mon, 26 Mar 2010 19:12:02 +0400
+
 myagent-im (0.4.3) unstable; urgency=low
 
   Dmitry Malakhov <abr_mail@mail.ru>:
   * Fixed bug with emails, which starts with "_"
   * Add proxies
+
+ -- Dmitry Malakhov <abr_mail@mail.ru>  Sat, 26 Mar 2010 13:25:41 +0400
 
 myagent-im (0.4.2) unstable; urgency=low
 

@@ -197,7 +197,7 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoti
 	layout->addWidget(statusBar);
 
 	sendButton = new QPushButton(tr("Send"), this);
-	sendButton->setEnabled(false);
+	//sendButton->setEnabled(false);
 	connect(sendButton, SIGNAL(clicked(bool)), this, SLOT(send()));
 	connect(m_account, SIGNAL(onlineStatusChanged(OnlineStatus)), this, SLOT(sendButtonEnabledProcess()));
 
@@ -240,9 +240,12 @@ quint32 ChatWindow::sendMessage()
 
 	RtfExporter rtfExporter(messageEditor->document());
 	QByteArray messageRtf = rtfExporter.toRtf();
-	
+
 	qDebug() << "ChatWindow::sendMessage()" << messageRtf;
-	
+
+	if (messageText.isEmpty())
+		return 0;
+
 	messageEditor->clear();
 
 	theRM.getAudio()->play(STOtprav);
@@ -257,7 +260,10 @@ quint32 ChatWindow::sendSms()
 
 	QString text = smsEditor->text();
 	QByteArray number = smsEditor->phoneNumber();
-	
+
+	if (smsEditor->text().isEmpty())
+		return 0;
+
 	smsEditor->blockInput();
 	emit smsEditorActivate();
 
@@ -734,10 +740,8 @@ void ChatWindow::contactUpdated()
 void ChatWindow::sendButtonEnabledProcess()
 {
 	qDebug() << "sendButtonEnabledProcess()";
-	PlainTextExporter textExporter(messageEditor->document());
-	QString messageText = textExporter.toText();
 
-	if (!m_account->onlineStatus().connected() || (session->contact()->isConference() && session->contact()->isTemporary())/* || messageText.isEmpty()*/)
+	if (!m_account->onlineStatus().connected() || (session->contact()->isConference() && session->contact()->isTemporary()))
 		sendButton->setEnabled(false);
 	else
 		sendButton->setEnabled(true);

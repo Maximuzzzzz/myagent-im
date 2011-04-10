@@ -1,5 +1,5 @@
 Source: myagent-im
-Version: 0.4.3-1lucid-0
+Version: 0.4.4-1lucid-0
 Section: net
 Priority: extra
 Maintainer: Alexander Volkov <volkov0aa@gmail.com>
@@ -7,6 +7,6 @@ Build-Depends: debhelper (>= 7), libqt4-dev (>= 4.4), pkg-config, flex, zlib1g-d
 Homepage: http://code.google.com/p/myagent-im
 Package: myagent-im
 Architecture: amd64
-Depends: aspell-ru, phonon-backend-gstreamer | phonon-backend-xine | phonon-backend
+Depends: aspell-ru, phonon-backend-gstreamer | phonon-backend-xine | phonon-backend, libqt4-network
 Description: Instant messaging application for Mail.ru
  Instant messenger with basic Mail.ru protocol support

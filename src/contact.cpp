@@ -251,6 +251,11 @@ bool Contact::isTemporary() const
 	return (m_group == 0) && !isPhone() && !(isConference() && m_activeConference);
 }
 
+bool Contact::isNotAuthorized() const
+{
+	return (data.internalFlags & CONTACT_INTFLAG_NOT_AUTHORIZED);
+}
+
 void Contact::load(QDataStream& stream)
 {
 	data.load(stream);

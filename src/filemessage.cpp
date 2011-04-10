@@ -23,6 +23,7 @@
 #include <QDir>
 #include <QNetworkInterface>
 #include <QTextCodec>
+#include <QBoxLayout>
 
 #include "filemessage.h"
 #include "proto.h"
@@ -186,6 +187,28 @@ void FileMessage::receiveFiles(quint32 sessId)
 		return;
 
 	fm_error = 0;
+
+	qDebug() << fm_fileListUtf.size();
+	QList<QString>::iterator it = fm_fileListUtf.begin();
+	for (; it != fm_fileListUtf.end(); it++)
+	{
+		QString currFN = fm_defaultDir + "/" + (*it);
+		QFile file(currFN);
+		qDebug() << file.fileName();
+		if (file.exists())
+		{
+			FileExistsDialog* dialog = new FileExistsDialog(*it, this);
+			if (dialog->exec() == QDialog::Accepted)
+				(*it) = dialog->fileName();
+			else
+			{
+				cancelTransferring(fm_sessionId);
+				delete dialog;
+				return;
+			}
+			delete dialog;
+		}
+	}
 
 	createSocket();
 	getIpArraysFromString();
@@ -750,7 +773,42 @@ void FileMessage::setDefDir(QString d)
 	fm_defaultDir = d;
 }
 
-FileExistsDialog::FileExistsDialog(QString file)
+FileExistsDialog::FileExistsDialog(QString fileName, FileMessage* fm, QWidget* parent, Qt::WindowFlags f)
+ : QDialog(parent, f), m_oldFileName(fileName)
 {
+	label = new QLabel(tr("File %1 is already exists. What should we do?").arg(fileName));
+	quint32 i;
+	QFile file;
+	for (i = 1; i <= sizeof(quint32); i++)
+	{
+		file.setFileName(fileName + QString("-") + QString::number(i));
+		if (!file.exists())
+			break;
+	}
+	m_newFileName = file.fileName();
+	lineEdit = new QLineEdit(m_newFileName);
+	rewriteButton = new QPushButton(tr("Rewrite file"));
+	renameButton = new QPushButton(tr("Rename file"));
+	cancelButton = new QPushButton(tr("Cancel"));
 
+	connect(rewriteButton, SIGNAL(clicked()), this, SLOT(rewriteFile()));
+	connect(renameButton, SIGNAL(clicked()), this, SLOT(accept()));
+	connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
+
+	setWindowTitle("File exists");
+	QVBoxLayout* layout = new QVBoxLayout;
+	QHBoxLayout* buttonsLayout = new QHBoxLayout;
+	buttonsLayout->addWidget(rewriteButton);
+	buttonsLayout->addWidget(renameButton);
+	buttonsLayout->addWidget(cancelButton);
+	layout->addWidget(label);
+	layout->addWidget(lineEdit);
+	layout->addLayout(buttonsLayout);
+	setLayout(layout);
+}
+
+void FileExistsDialog::rewriteFile()
+{
+	m_newFileName = m_oldFileName;
+	accept();
 }

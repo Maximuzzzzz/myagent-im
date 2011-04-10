@@ -53,6 +53,7 @@ ContactListModel::ContactListModel(ContactList* contactList, bool showGroups)
 	conferences = 0;
 	temporary = 0;
 	notInGroup = 0;
+	notAuthorized = 0;
 }
 
 ContactListModel::~ContactListModel()
@@ -62,6 +63,7 @@ ContactListModel::~ContactListModel()
 	conferences = 0;
 	temporary = 0;
 	notInGroup = 0;
+	notAuthorized = 0;
 }
 
 void ContactListModel::rebuild()
@@ -73,6 +75,7 @@ void ContactListModel::rebuild()
 	conferences = 0;
 	temporary = 0;
 	notInGroup = 0;
+	notAuthorized = 0;
 	
 	if (contactList == NULL) return;
 	
@@ -258,6 +261,18 @@ void ContactListModel::addContact(Contact* c)
 
 		groupItem = temporary;
 	}
+/*	else if (c->isNotAuthorized())
+	{
+		qDebug() << "contact " << c->nickname() << " not authorized";
+		if (!notAuthorized)
+		{
+			qDebug() << "not authorized group doesn't exists"; //TODO: after deleting doesn't append again
+			notAuthorized = new ContactListItem(tr("Waiting for authorization"));
+			invisibleRootItem()->insertRow(groupRows++, notAuthorized);
+		}
+
+		groupItem = notAuthorized;
+	}*/
 	else
 	{
 		connect(contactItem, SIGNAL(groupChanged(bool)), this, SLOT(changeContactGroup(bool)));
@@ -275,7 +290,9 @@ void ContactListModel::addContact(Contact* c)
 			if (!groupItem)
 			{
 				qDebug() << "can't find group item";
-				groupItem = invisibleRootItem();
+				if (!notInGroup)
+					notInGroup = new ContactListItem(tr("Not in group"));
+				groupItem = notInGroup;
 			}
 		}
 	}
@@ -313,6 +330,12 @@ void ContactListModel::slotRemoveContactItem(Contact* c)
 		{
 //			invisibleRootItem()->takeRow(temporary->row());
 //			temporary = 0;
+		}
+	if (c->isNotAuthorized())
+		if (notAuthorized->rowCount() == 0)
+		{
+//			invisibleRootItem()->takeRow(notAuthorized->row());
+//			notAuthorized = 0;
 		}
 	delete c;
 }

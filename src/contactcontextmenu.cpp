@@ -170,6 +170,9 @@ void ContactContextMenu::setContact(Contact* c)
 	alwaysInvisibleAction->setVisible(notPhone);
 	historyAction->setVisible(notPhone);
 	ignoreContactAction->setVisible(notPhone);
+
+/*	bool notAuthorized = m_contact->isNotAuthorized();
+	moveToGroup->setVisible(!notAuthorized);*/
 }
 
 void ContactContextMenu::askAuthorization()

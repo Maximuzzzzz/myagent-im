@@ -822,16 +822,13 @@ void MRIMClientPrivate::processMessageAck(QByteArray data)
 		sendPacket(MRIM_CS_MESSAGE_RECV, replyData);
 	}
 
-	qDebug() << "here";
 	if (flags & MESSAGE_FLAG_CONFERENCE)
 	{
-		qDebug() << "here2";
 		if (flags & MESSAGE_FLAG_NOTIFY)
 		{
 			qDebug() << "Somebody's typing in conference";
 			return;
 		}
-		qDebug() << "here3" << conferenceType;
 		if (conferenceType == 0)
 		{
 			if (!account->contactList()->findContact(from))

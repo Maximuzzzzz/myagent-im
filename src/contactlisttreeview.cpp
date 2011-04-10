@@ -189,5 +189,5 @@ void ContactListTreeView::collapseGroups(QList<QModelIndex> groups)
 	qDebug() << Q_FUNC_INFO << groups.count();
 	QList<QModelIndex>::iterator it;
 	for (it = groups.begin(); it != groups.end(); ++it)
-		collapse(*it); //Doesn't work. But why??
+		collapse(*it); //TODO: Doesn't work. But why??
 }

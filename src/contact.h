@@ -63,6 +63,7 @@ public:
 	bool hasPhone(QByteArray phoneNumber) const;
 	bool changeGroup(quint32 group);
 	bool isIgnored() const;
+	bool isNotAuthorized() const;
 	QIcon chatWindowIcon(QString type = "");
 
 	ContactData contactData() const { return data; }

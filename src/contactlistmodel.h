@@ -65,6 +65,7 @@ private:
 	ContactListItem* conferences;
 	ContactListItem* temporary;
 	ContactListItem* notInGroup;
+	ContactListItem* notAuthorized;
 
 	bool m_showGroups;
 };
