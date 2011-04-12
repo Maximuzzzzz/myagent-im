@@ -20,7 +20,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QDir>
 #include <QDebug>
 #include <QCoreApplication>
 #include <QLocale>
@@ -146,4 +145,29 @@ OnlineStatus ResourceManager::loadOnlineStatus(QByteArray email)
 		stDescr = userSettings->value("Statuses/lastOnlineStatusDescr", "").toString();
 	}
 	return OnlineStatus(stId, stDescr);
+}
+
+int ResourceManager::removeFolder(QString path)
+{
+	QDir dir(path);
+
+	int res = 0;
+	QStringList lstDirs  = dir.entryList(QDir::Dirs | QDir::AllDirs | QDir::NoDotAndDotDot);
+	QStringList lstFiles = dir.entryList(QDir::Files);
+
+	foreach (QString entry, lstFiles)
+	{
+		QString entryAbsPath = dir.absolutePath() + "/" + entry;
+		QFile::remove(entryAbsPath);
+	}
+
+	foreach (QString entry, lstDirs)
+	{
+		QString entryAbsPath = dir.absolutePath() + "/" + entry;
+		removeFolder(entryAbsPath);
+	}
+
+	if (!QDir().rmdir(dir.absolutePath()))
+		res = 1;
+	return res;
 }

@@ -91,6 +91,7 @@ private:
 	QAction* alwaysInvisibleAction;
 	QAction* askAuthorizationAction;
 	QAction* historyAction;
+	QAction* moveToGroupAction;
 	SubmenuMoveToGroup* moveToGroup;
 	Account* m_account;
 	Contact* m_contact;

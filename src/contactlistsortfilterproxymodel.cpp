@@ -39,7 +39,7 @@ void ContactListSortFilterProxyModel::setSourceModel(QAbstractItemModel* sourceM
 {
 	contactListModel = qobject_cast<ContactListModel*>(sourceModel);
 	connect(contactListModel, SIGNAL(modelRebuilded()), this, SIGNAL(modelRebuilded()));
-	connect(contactListModel, SIGNAL(collapseGroups(QList<QModelIndex>)), this, SIGNAL(collapseGroups(QList<QModelIndex>)));
+	connect(contactListModel, SIGNAL(expandGroup(QModelIndex)), this, SIGNAL(expandGroup(QModelIndex)));
 	QSortFilterProxyModel::setSourceModel(sourceModel);
 }
 

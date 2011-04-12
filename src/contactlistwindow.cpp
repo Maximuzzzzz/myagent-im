@@ -113,7 +113,7 @@ ContactListWindow::ContactListWindow(Account* account)
 	connect(statusesMenu, SIGNAL(statusChanged(OnlineStatus, qint32)), account, SLOT(setOnlineStatus(OnlineStatus, qint32)));
 
 	connect(contactsTreeView, SIGNAL(contactItemActivated(Contact*)), this, SLOT(slotContactItemActivated(Contact*)));
-	connect(proxyModel, SIGNAL(modelRebuilded()), contactsTreeView, SLOT(expandAll()));
+	//connect(proxyModel, SIGNAL(modelRebuilded()), contactsTreeView, SLOT(expandAll()));
 
 	connect(filterLineEdit,SIGNAL(textChanged(const QString&)), proxyModel, SLOT(setFilterString(const QString&)));
 	connect(onlineOnlyContactsButton, SIGNAL(toggled(bool)), proxyModel, SLOT(allowOnlineOnlyContacts(bool)));

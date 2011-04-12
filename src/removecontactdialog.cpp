@@ -20,44 +20,34 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef CONTACTLISTSORTFILTERPROXYMODEL_H
-#define CONTACTLISTSORTFILTERPROXYMODEL_H
+#include "removecontactdialog.h"
 
-#include <QSortFilterProxyModel>
+#include <QLabel>
+#include <QBoxLayout>
+#include <QPushButton>
 
-class Contact;
-class ContactGroup;
-class ContactListModel;
-
-class ContactListSortFilterProxyModel : public QSortFilterProxyModel
+RemoveContactDialog::RemoveContactDialog(const QString &title, const QString &text,	QWidget *parent, Qt::WindowFlags flags)
+ : QDialog(parent, flags)
 {
-Q_OBJECT
-public:
-	ContactListSortFilterProxyModel(QObject * parent = 0);
+	QVBoxLayout* layout = new QVBoxLayout;
+	QLabel* textLabel = new QLabel(text);
+	QHBoxLayout* buttonsLayout = new QHBoxLayout;
+	QPushButton* buttonNo = new QPushButton(tr("No"));
+	QPushButton* buttonYes = new QPushButton(tr("Yes"));
+	buttonsLayout->addStretch();
+	buttonsLayout->addWidget(buttonNo);
+	buttonsLayout->addWidget(buttonYes);
+	connect(buttonNo, SIGNAL(clicked()), this, SLOT(reject()));
+	connect(buttonYes, SIGNAL(clicked()), this, SLOT(accept()));
+	removeHistoryCheckBox = new QCheckBox(tr("Remove all history"));
+	removeHistoryCheckBox->setChecked(true);
+	layout->addWidget(textLabel);
+	layout->addWidget(removeHistoryCheckBox);
+	layout->addLayout(buttonsLayout);
+	setWindowTitle(title);
+	setLayout(layout);
+}
 
-	bool isGroup(const QModelIndex& index);
-	Contact* contactFromIndex(const QModelIndex& index) const;
-	ContactGroup* groupFromIndex(const QModelIndex & index) const;
-
-	virtual void setSourceModel(QAbstractItemModel* sourceModel);
-
-public slots:
-	void setFilterString(const QString&);
-	void allowOnlineOnlyContacts(bool allow);
-
-signals:
-	void modelRebuilded();
-	void expandGroup(QModelIndex index);
-
-protected:
-	virtual bool lessThan(const QModelIndex& left, const QModelIndex& right) const;
-	virtual bool filterAcceptsColumn(int source_column, const QModelIndex & source_parent) const;
-	virtual bool filterAcceptsRow(int source_row, const QModelIndex & source_parent) const;
-
-private:
-	ContactListModel* contactListModel;
-	QString filter;
-	bool allowOnlineOnly;
-};
-
-#endif
+RemoveContactDialog::~RemoveContactDialog()
+{
+}

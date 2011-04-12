@@ -58,7 +58,7 @@ private slots:
 	void slotActivated(const QModelIndex& index);
 	void groupCollapsed(QModelIndex index);
 	void groupExpanded(QModelIndex index);
-	void collapseGroups(QList<QModelIndex> groups);
+	void expandGroup(QModelIndex index);
 
 private:
 	QRect dropRect;

@@ -68,7 +68,7 @@ void ContactListTreeView::setModel(QAbstractItemModel* model)
 	QTreeView::setModel(model);
 	connect(this, SIGNAL(collapsed(QModelIndex)), this, SLOT(groupCollapsed(QModelIndex)));
 	connect(this, SIGNAL(expanded(QModelIndex)), this, SLOT(groupExpanded(QModelIndex)));
-	connect(contactListModel, SIGNAL(collapseGroups(QList<QModelIndex>)), this, SLOT(collapseGroups(QList<QModelIndex>)));
+	connect(contactListModel, SIGNAL(expandGroup(QModelIndex)), this, SLOT(expandGroup(QModelIndex)));
 }
 
 void ContactListTreeView::dropEvent(QDropEvent * event)
@@ -173,7 +173,10 @@ void ContactListTreeView::groupCollapsed(QModelIndex index)
 	qDebug() << "Group collapsing";
 	ContactGroup* group = contactListModel->groupFromIndex(index);
 	if (group != NULL)
+	{
+		qDebug() << group->name();
 		group->setExpanded(false);
+	}
 }
 
 void ContactListTreeView::groupExpanded(QModelIndex index)
@@ -184,10 +187,7 @@ void ContactListTreeView::groupExpanded(QModelIndex index)
 		group->setExpanded(true);
 }
 
-void ContactListTreeView::collapseGroups(QList<QModelIndex> groups)
+void ContactListTreeView::expandGroup(QModelIndex index)
 {
-	qDebug() << Q_FUNC_INFO << groups.count();
-	QList<QModelIndex>::iterator it;
-	for (it = groups.begin(); it != groups.end(); ++it)
-		collapse(*it); //TODO: Doesn't work. But why??
+	expand(contactListModel->mapFromSource(index));
 }

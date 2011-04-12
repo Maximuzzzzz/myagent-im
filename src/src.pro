@@ -5,7 +5,7 @@ QT += network \
     phonon
 INCLUDEPATH += /usr/include
 TRANSLATIONS = locale/myagent-im_ru.ts \
-	locale/myagent-im_uk.ts
+    locale/myagent-im_uk.ts
 LIBS += -laspell
 win32 { 
     QTPLUGIN += qjpeg \
@@ -35,7 +35,7 @@ unix {
     BINDIR = $$PREFIX/bin
     DATADIR = $$PREFIX/share/myagent-im
     DEFINES += DATADIR=\\\"$$DATADIR\\\"
-	DEFINES += VERSION=\\\"0.4.4\\\"
+    DEFINES += VERSION=\\\"0.4.4\\\"
     INSTALLS += target \
         smiles_animated \
         smiles_set03 \
@@ -202,7 +202,8 @@ SOURCES += main.cpp \
     taskignorecontact.cpp \
     contactlistbroadcast.cpp \
     contactlistconferencewithhandle.cpp \
-    contactlistconference.cpp
+    contactlistconference.cpp \
+    removecontactdialog.cpp
 HEADERS += mrimclient.h \
     soundplayer.h \
     audio.h \
@@ -327,7 +328,8 @@ HEADERS += mrimclient.h \
     taskignorecontact.h \
     contactlistbroadcast.h \
     contactlistconferencewithhandle.h \
-    contactlistconference.h
+    contactlistconference.h \
+    removecontactdialog.h
 FORMS += logindialog.ui \
     searchcontacts.ui \
     addcontact.ui \
@@ -336,7 +338,7 @@ FORMS += logindialog.ui \
     editphones.ui \
     newconference.ui \
     aboutdialog.ui \
-	aboutdialog.ui
+    aboutdialog.ui
 LEXSOURCES += emoticons.ll \
     rtf.ll \
     plaintextparser.ll \

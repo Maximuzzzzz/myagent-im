@@ -1,6 +1,4 @@
-- Saving state of each group and collapsing/expanding it at start
 - Trying to connect to server periodically
-- Deleting history during deleting contact (by user choise)
 - Filter for conferences
 - Add links at services mail.ru in contact context menu
 - Add group "old archives", which contains deleted users, history of whom was not deleted. Deleting contact from this group will delete log

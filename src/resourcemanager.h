@@ -26,6 +26,7 @@
 #include <QObject>
 #include <QIcon>
 #include <QSettings>
+#include <QDir>
 
 #include "emoticons.h"
 #include "locations.h"
@@ -53,6 +54,7 @@ public:
 	Audio* getAudio() { return audio; }
 	QString locale() { return m_locale; }
 
+	int removeFolder(QString path);
 	OnlineStatus loadOnlineStatus(QByteArray email);
 
 	static const int maxDefaultStatuses;

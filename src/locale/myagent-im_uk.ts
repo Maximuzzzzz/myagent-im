@@ -332,17 +332,17 @@
 <context>
     <name>ContactContextMenu</name>
     <message>
-        <location filename="../contactcontextmenu.cpp" line="45"/>
+        <location filename="../contactcontextmenu.cpp" line="47"/>
         <source>Info</source>
         <translation>Анкета</translation>
     </message>
     <message>
-        <location filename="../contactcontextmenu.cpp" line="48"/>
+        <location filename="../contactcontextmenu.cpp" line="50"/>
         <source>Remove</source>
         <translation>Видалити</translation>
     </message>
     <message>
-        <location filename="../contactcontextmenu.cpp" line="121"/>
+        <location filename="../contactcontextmenu.cpp" line="123"/>
         <source>Remove contact</source>
         <translation>Видалення контакта</translation>
     </message>
@@ -351,57 +351,57 @@
         <translation type="obsolete">Ви впевнені, що хочете видалити контакт</translation>
     </message>
     <message>
-        <location filename="../contactcontextmenu.cpp" line="54"/>
+        <location filename="../contactcontextmenu.cpp" line="56"/>
         <source>I&apos;m always visible for...</source>
         <translation>Я завжди видимий для...</translation>
     </message>
     <message>
-        <location filename="../contactcontextmenu.cpp" line="58"/>
+        <location filename="../contactcontextmenu.cpp" line="60"/>
         <source>I&apos;m always invisible for...</source>
         <translation>Я завжди невидимий для...</translation>
     </message>
     <message>
-        <location filename="../contactcontextmenu.cpp" line="62"/>
+        <location filename="../contactcontextmenu.cpp" line="64"/>
         <source>Ask authorization</source>
         <translation>Запит авторизації</translation>
     </message>
     <message>
-        <location filename="../contactcontextmenu.cpp" line="51"/>
+        <location filename="../contactcontextmenu.cpp" line="53"/>
         <source>Rename</source>
         <translation>Переіменувати</translation>
     </message>
     <message>
-        <location filename="../contactcontextmenu.cpp" line="65"/>
+        <location filename="../contactcontextmenu.cpp" line="67"/>
         <source>Ignore</source>
         <translation>Ігнорувати</translation>
     </message>
     <message>
-        <location filename="../contactcontextmenu.cpp" line="69"/>
+        <location filename="../contactcontextmenu.cpp" line="71"/>
         <source>History</source>
         <translation>Історія повідомлень</translation>
     </message>
     <message>
-        <location filename="../contactcontextmenu.cpp" line="121"/>
+        <location filename="../contactcontextmenu.cpp" line="123"/>
         <source>Are you sure you want to remove contact %1?</source>
         <translation>Ви впевнені, що хочете видалити контакт %1?</translation>
     </message>
     <message>
-        <location filename="../contactcontextmenu.cpp" line="224"/>
+        <location filename="../contactcontextmenu.cpp" line="230"/>
         <source>Rename contact</source>
         <translation>Переіменувати контакт</translation>
     </message>
     <message>
-        <location filename="../contactcontextmenu.cpp" line="224"/>
+        <location filename="../contactcontextmenu.cpp" line="230"/>
         <source>Enter new name for user %1:</source>
         <translation>Введіть нове ім&apos;я для користувача %1:</translation>
     </message>
     <message>
-        <location filename="../contactcontextmenu.cpp" line="283"/>
+        <location filename="../contactcontextmenu.cpp" line="289"/>
         <source>Ignoring contact</source>
         <translation>Ігнорувати контакт</translation>
     </message>
     <message>
-        <location filename="../contactcontextmenu.cpp" line="283"/>
+        <location filename="../contactcontextmenu.cpp" line="289"/>
         <source>Do you really want to ignore this contact?</source>
         <translation>Ви дійсно хочете ігнорувати цей контакт?</translation>
     </message>
@@ -641,99 +641,124 @@
 <context>
     <name>ContactList</name>
     <message>
-        <location filename="../contactlist.cpp" line="503"/>
-        <location filename="../contactlist.cpp" line="578"/>
-        <location filename="../contactlist.cpp" line="636"/>
-        <location filename="../contactlist.cpp" line="678"/>
-        <location filename="../contactlist.cpp" line="740"/>
-        <location filename="../contactlist.cpp" line="794"/>
+        <location filename="../contactlist.cpp" line="618"/>
+        <location filename="../contactlist.cpp" line="693"/>
+        <location filename="../contactlist.cpp" line="751"/>
+        <location filename="../contactlist.cpp" line="793"/>
+        <location filename="../contactlist.cpp" line="855"/>
+        <location filename="../contactlist.cpp" line="909"/>
         <source>Time is out</source>
         <translation>Час вичерпано</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="508"/>
-        <location filename="../contactlist.cpp" line="583"/>
-        <location filename="../contactlist.cpp" line="641"/>
+        <location filename="../contactlist.cpp" line="623"/>
+        <location filename="../contactlist.cpp" line="698"/>
+        <location filename="../contactlist.cpp" line="756"/>
         <source>Error</source>
         <translation>Помилка</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="281"/>
+        <location filename="../contactlist.cpp" line="308"/>
         <source>Removing contact failed</source>
         <translation>Видалення контакта зазнало невдачі</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="655"/>
+        <location filename="../contactlist.cpp" line="48"/>
+        <source>Phone contacts</source>
+        <translation>Телефонні контакти</translation>
+    </message>
+    <message>
+        <location filename="../contactlist.cpp" line="49"/>
+        <source>Conferences</source>
+        <translation>Конференції</translation>
+    </message>
+    <message>
+        <location filename="../contactlist.cpp" line="50"/>
+        <source>Temporary</source>
+        <translation>Тимчасові</translation>
+    </message>
+    <message>
+        <location filename="../contactlist.cpp" line="51"/>
+        <source>Not in group</source>
+        <translation>Не в групі</translation>
+    </message>
+    <message>
+        <location filename="../contactlist.cpp" line="52"/>
+        <source>Waiting for authorization</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../contactlist.cpp" line="770"/>
         <source>Group %1 already exists.</source>
         <translation>Група %1 вже існує.</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="666"/>
+        <location filename="../contactlist.cpp" line="781"/>
         <source>Adding group is currently impossible</source>
         <translation>Додавання групи тимчасово неможливо</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="680"/>
-        <location filename="../contactlist.cpp" line="742"/>
-        <location filename="../contactlist.cpp" line="796"/>
+        <location filename="../contactlist.cpp" line="795"/>
+        <location filename="../contactlist.cpp" line="857"/>
+        <location filename="../contactlist.cpp" line="911"/>
         <source>Incorrect data</source>
         <translation>Невірні дані</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="682"/>
-        <location filename="../contactlist.cpp" line="744"/>
-        <location filename="../contactlist.cpp" line="798"/>
+        <location filename="../contactlist.cpp" line="797"/>
+        <location filename="../contactlist.cpp" line="859"/>
+        <location filename="../contactlist.cpp" line="913"/>
         <source>Internal error</source>
         <translation>Внутрішня помилка</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="684"/>
-        <location filename="../contactlist.cpp" line="746"/>
-        <location filename="../contactlist.cpp" line="800"/>
+        <location filename="../contactlist.cpp" line="799"/>
+        <location filename="../contactlist.cpp" line="861"/>
+        <location filename="../contactlist.cpp" line="915"/>
         <source>Invalid group name</source>
         <translation>Неправильне ім&apos;я групи</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="686"/>
+        <location filename="../contactlist.cpp" line="801"/>
         <source>Number of groups exceeded</source>
         <translation>Перевищено число груп</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="688"/>
-        <location filename="../contactlist.cpp" line="750"/>
-        <location filename="../contactlist.cpp" line="804"/>
+        <location filename="../contactlist.cpp" line="803"/>
+        <location filename="../contactlist.cpp" line="865"/>
+        <location filename="../contactlist.cpp" line="919"/>
         <source>Unknown error</source>
         <translation>Невідома помилка</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="704"/>
-        <location filename="../contactlist.cpp" line="773"/>
+        <location filename="../contactlist.cpp" line="819"/>
+        <location filename="../contactlist.cpp" line="888"/>
         <source>Unknown group</source>
         <translation>Невідома група</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="719"/>
+        <location filename="../contactlist.cpp" line="834"/>
         <source>Group is not empty</source>
         <translation>Група не порожня</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="728"/>
+        <location filename="../contactlist.cpp" line="843"/>
         <source>Removing group is currently impossible</source>
         <translation>Видалення групи тимчасово неможливо</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="748"/>
-        <location filename="../contactlist.cpp" line="802"/>
+        <location filename="../contactlist.cpp" line="863"/>
+        <location filename="../contactlist.cpp" line="917"/>
         <source>No such group</source>
         <translation>Група не існує</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="782"/>
+        <location filename="../contactlist.cpp" line="897"/>
         <source>Renaming group is currently impossible</source>
         <translation>Перейменування групи тимчасово неможливо</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="615"/>
+        <location filename="../contactlist.cpp" line="730"/>
         <source>Contact %1 already exists</source>
         <translation>Контакт %1 вже існує</translation>
     </message>
@@ -767,25 +792,20 @@
 <context>
     <name>ContactListModel</name>
     <message>
-        <location filename="../contactlistmodel.cpp" line="234"/>
         <source>Phone contacts</source>
-        <translation>Телефонні контакти</translation>
+        <translation type="obsolete">Телефонні контакти</translation>
     </message>
     <message>
-        <location filename="../contactlistmodel.cpp" line="246"/>
         <source>Conferences</source>
-        <translation>Конференції</translation>
+        <translation type="obsolete">Конференції</translation>
     </message>
     <message>
-        <location filename="../contactlistmodel.cpp" line="258"/>
         <source>Temporary</source>
-        <translation>Тимчасові</translation>
+        <translation type="obsolete">Тимчасові</translation>
     </message>
     <message>
-        <location filename="../contactlistmodel.cpp" line="284"/>
-        <location filename="../contactlistmodel.cpp" line="294"/>
         <source>Not in group</source>
-        <translation>Не в групі</translation>
+        <translation type="obsolete">Не в групі</translation>
     </message>
 </context>
 <context>
@@ -1483,6 +1503,24 @@
     </message>
 </context>
 <context>
+    <name>RemoveContactDialog</name>
+    <message>
+        <location filename="../removecontactdialog.cpp" line="35"/>
+        <source>No</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../removecontactdialog.cpp" line="36"/>
+        <source>Yes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../removecontactdialog.cpp" line="42"/>
+        <source>Remove all history</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SearchContactsForm</name>
     <message>
         <location filename="../searchcontacts.ui" line="13"/>
@@ -1863,7 +1901,7 @@
 <context>
     <name>SubmenuMoveToGroup</name>
     <message>
-        <location filename="../contactcontextmenu.cpp" line="297"/>
+        <location filename="../contactcontextmenu.cpp" line="303"/>
         <source>Move to group</source>
         <translation>Перемістити до групи</translation>
     </message>

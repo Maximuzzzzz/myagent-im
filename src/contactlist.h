@@ -86,6 +86,12 @@ public:
 	bool addGroupOnServer(const QString& groupName);
 	bool renameGroup(ContactGroup* group, const QString& newName);
 
+	ContactGroup* phones() { return m_phones; }
+	ContactGroup* conferences() { return m_conferences; }
+	ContactGroup* temporary() { return m_temporary; }
+	ContactGroup* notInGroup() { return m_notInGroup; }
+	ContactGroup* notAuthorized() { return m_notAuthorized; }
+
 signals:
 	void groupAdded(ContactGroup* group);
 	void groupRemoved(ContactGroup* group);
@@ -129,10 +135,17 @@ private:
 	QList<ContactGroup*> m_hiddenGroups;
 	QList<Contact*> m_contacts;
 	QList<Contact*> tmpContacts;
+	QList<ContactGroup*> tmpGroups;
 
 	QMap<QByteArray, Contact*> lastSmsFrom;
 
 	ContactListModel* m_model;
+
+	ContactGroup* m_phones;
+	ContactGroup* m_conferences;
+	ContactGroup* m_temporary;
+	ContactGroup* m_notInGroup;
+	ContactGroup* m_notAuthorized;
 
 	bool constructing;
 

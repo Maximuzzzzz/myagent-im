@@ -45,9 +45,15 @@ public:
 	Contact* contactFromIndex(const QModelIndex& index);
 	ContactGroup* groupFromIndex(const QModelIndex & index);
 
+	bool hasPhones() { return phones != 0; }
+	bool hasConferences() { return conferences != 0; }
+	bool hasTemporary() { return temporary != 0; }
+	bool hasNotInGroup() { return notInGroup != 0; }
+	bool hasNotAuthorized() { return notAuthorized != 0; }
+
 signals:
 	void modelRebuilded();
-	void collapseGroups(QList<QModelIndex> groups);
+	void expandGroup(QModelIndex index);
 
 private slots:
 	void rebuild();

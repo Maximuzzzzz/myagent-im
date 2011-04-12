@@ -29,26 +29,40 @@
 class ContactGroup
 {
 public:
-	ContactGroup(quint32 id, quint32 flags, QString name, bool isConf = false);
+	enum GroupType
+	{
+		Simple,
+		Conferences,
+		Phones,
+		Temporary,
+		NotInGroup,
+		NotAuthorized,
+		None
+	};
+
+	ContactGroup(quint32 id, quint32 flags, QString name, GroupType t = Simple);
 	ContactGroup(QDataStream& stream);
 	
 	quint32 id() const { return m_id; }
 	quint32 flags() const { return m_flags; }
 	QString name() const { return m_name; }
 
-	bool isConferences() const { return m_isConf; }
+	GroupType groupType() const { return m_type; }
 	bool isExpanded() const { return m_expanded; }
 
 	void setName(const QString& name) { m_name = name; }
 	void setExpanded(bool b) { m_expanded = b; }
 
 private:
+	quint32 typeToInt(GroupType t);
+	GroupType intToType(quint32 n);
+
 	quint32 m_id;
 	quint32 m_flags;
 	QString m_name;
 	bool m_expanded;
 
-	bool m_isConf;
+	GroupType m_type;
 
 	friend QDataStream& operator<<(QDataStream& stream, ContactGroup* group);	
 	friend QDataStream& operator>>(QDataStream& stream, ContactGroup* group);

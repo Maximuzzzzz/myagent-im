@@ -233,6 +233,18 @@ Contact::~Contact()
 void Contact::setGroup(quint32 id)
 {
 	m_group = m_account->contactList()->group(id);
+
+	if (isPhone())
+		m_group = m_account->contactList()->phones();
+	else if (isConference())
+		m_group = m_account->contactList()->conferences();
+	else if (isTemporary())
+		m_group = m_account->contactList()->temporary();
+	else if (isNotAuthorized())
+	{
+		qDebug() << Q_FUNC_INFO << nickname() << email();
+		m_group = m_account->contactList()->notAuthorized();
+	}
 }
 
 bool Contact::isPhone() const

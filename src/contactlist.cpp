@@ -44,6 +44,12 @@ ContactList::ContactList(Account* account)
 {
 	constructing = false;
 	connect(m_account, SIGNAL(onlineStatusChanged(OnlineStatus)), this, SLOT(checkOnlineStatus(OnlineStatus)));
+
+	m_phones = new ContactGroup(0, 0, tr("Phone contacts"), ContactGroup::Phones);
+	m_conferences = new ContactGroup(0, 0, tr("Conferences"), ContactGroup::Conferences);
+	m_temporary = new ContactGroup(0, 0, tr("Temporary"), ContactGroup::Temporary);
+	m_notInGroup = new ContactGroup(0, 0, tr("Not in group"), ContactGroup::NotInGroup);
+	m_notAuthorized = new ContactGroup(0, 0, tr("Waiting for authorization"), ContactGroup::NotAuthorized);
 }
 
 ContactList::~ContactList()
@@ -75,7 +81,27 @@ void ContactList::addGroup(quint32 id, quint32 flags, const QString& name)
 {
 	qDebug() << "ContactList::addGroup" << constructing;
 	ContactGroup* group = new ContactGroup(id, flags, name);
-	m_groups.append(group);
+
+	QList<ContactGroup*>::iterator it = m_groups.begin();
+	for (; it != m_groups.end(); ++it)
+		if ((*it)->id() == group->id())
+			if (constructing)
+			{
+				tmpGroups.append(*it);
+				m_groups.removeAll(*it);
+				delete group;
+				return;
+			}
+			else
+			{
+				m_groups.removeAll(*it);
+				m_groups.append(group);
+				return;
+			}
+	if (constructing)
+		tmpGroups.append(group);
+	else
+		m_groups.append(group);
 
 	/*if (!constructing) */emit groupAdded(group);
 }
@@ -85,9 +111,9 @@ Contact* ContactList::addContact(const ContactData& data)
 	ContactGroup* group;
 	uint id = data.group;
 
-	QList<ContactGroup*>::const_iterator it = m_groups.begin();
-	while (it != m_groups.end() && (*it)->id() != id) ++it;
-	if (it != m_groups.end())
+	QList<ContactGroup*>::const_iterator it = ((constructing) ? tmpGroups.begin() : m_groups.begin());
+	while (it != ((constructing) ? tmpGroups.end() : m_groups.end()) && (*it)->id() != id) ++it;
+	if (it != ((constructing) ? tmpGroups.end() : m_groups.end()))
 		group = *it;
 	else
 	{
@@ -223,8 +249,6 @@ void ContactList::contactTyping(QByteArray email)
 void ContactList::beginUpdating()
 {
 	qDebug() << "ContactList::beginUpdating()";
-	qDeleteAll(m_groups);
-	m_groups.clear();
 
 	emit groupsCleared();
 	
@@ -240,11 +264,14 @@ void ContactList::endUpdating()
 {
 	qDebug() << "ContactList::endUpdating()";
 
+	qDeleteAll(m_groups);
+	m_groups = tmpGroups;
+
 	qDeleteAll(m_contacts);
 	m_contacts = tmpContacts;
 	
-	for (int i = 0; i < m_contacts.size(); i++)
-		qDebug() << m_contacts.at(i)->email() << (void*)m_contacts.at(i) << m_contacts.at(i)->isTemporary();
+/*	for (int i = 0; i < m_contacts.size(); i++)
+		qDebug() << m_contacts.at(i)->email() << (void*)m_contacts.at(i) << m_contacts.at(i)->isTemporary();*/
 
 	constructing = false;
 	emit updated();
@@ -362,7 +389,7 @@ void ContactList::load()
 	int nGroups;
 	quint32 vers;
 	in >> vers;
-	if (vers != 1)
+	if (vers != 2)
 		return;
 
 	in >> nGroups;
@@ -376,11 +403,63 @@ void ContactList::load()
 	for (int i = 0; i < nGroups; i++)
 	{
 		ContactGroup* group = new ContactGroup(in);
-		qDebug() << "is collapsed" << !group->isExpanded();
-		m_groups.append(group);
-		emit groupAdded(group);
+		if (group->groupType() == ContactGroup::Simple)
+		{
+			m_groups.append(group);
+			emit groupAdded(group);
+		}
 	}
-	
+
+	int i;
+	for (i = 0; i < 5; i++)
+	{
+		bool isCurrGrp;
+		in >> isCurrGrp;
+		qDebug() << isCurrGrp;
+		if (isCurrGrp)
+		{
+			ContactGroup* group = new ContactGroup(in);
+			switch (i)
+			{
+				case 0:
+					if (in.status() == QDataStream::Ok)
+					{
+						delete m_phones;
+						m_phones = group;
+					}
+					break;
+				case 1:
+					if (in.status() == QDataStream::Ok)
+					{
+						delete m_conferences;
+						m_conferences = group;
+					}
+					break;
+				case 2:
+					if (in.status() == QDataStream::Ok)
+					{
+						delete m_temporary;
+						m_temporary = group;
+					}
+					break;
+				case 3:
+					if (in.status() == QDataStream::Ok)
+					{
+						delete m_notAuthorized;
+						m_notAuthorized = group;
+					}
+					break;
+				case 4:
+					if (in.status() == QDataStream::Ok)
+					{
+						delete m_notInGroup;
+						m_notInGroup = group;
+					}
+					break;
+			}
+		}
+	}
+
 	if (in.status() != QDataStream::Ok)
 	{
 		file.close();
@@ -411,7 +490,7 @@ void ContactList::load()
 			break;
 		}
 	}
-	
+
 	if (in.status() != QDataStream::Ok)
 		clear();
 
@@ -434,10 +513,46 @@ void ContactList::save() const
 
 	QDataStream out(&file);
 
-	out << quint32(1); //version cl
+	out << quint32(2); //version cl
 	out << m_groups.size();
 	for (int i = 0; i < m_groups.size(); i++)
 		out << m_groups.at(i);
+
+	if (m_model->hasPhones())
+	{
+		out << true;
+		out << m_phones;
+	}
+	else
+		out << false;
+	if (m_model->hasConferences())
+	{
+		out << true;
+		out << m_conferences;
+	}
+	else
+		out << false;
+	if (m_model->hasTemporary())
+	{
+		out << true;
+		out << m_temporary;
+	}
+	else
+		out << false;
+	if (m_model->hasNotAuthorized())
+	{
+		out << true;
+		out << m_notAuthorized;
+	}
+	else
+		out << false;
+	if (m_model->hasNotInGroup())
+	{
+		out << true;
+		out << m_notInGroup;
+	}
+	else
+		out << false;
 
 	for (int i = 0; i < m_contacts.size(); ++i)
 		m_contacts.at(i)->save(out);
@@ -455,9 +570,9 @@ void ContactList::checkOnlineStatus(OnlineStatus status)
 ContactGroup* ContactList::group(quint32 id) const
 {
 	for (int i = 0; i < m_groups.size(); i++)
-		if (m_groups.at(i)->id() == id)
+		if (m_groups.at(i)->id() == id && m_groups.at(i)->groupType() == ContactGroup::Simple)
 			return m_groups.at(i);
-	return NULL;
+	return m_notInGroup;
 }
 
 bool ContactList::addTemporaryContactToGroup(Contact* contact, quint32 group)

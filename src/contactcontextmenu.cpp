@@ -36,6 +36,8 @@
 #include "ui_askauthorization.h"
 #include "inputlinedialog.h"
 #include "centeredmessagebox.h"
+#include "removecontactdialog.h"
+#include "resourcemanager.h"
 
 ContactContextMenu::ContactContextMenu(Account* account, QWidget* parent)
 	: QMenu(parent), m_account(account), m_contact(0)
@@ -80,7 +82,7 @@ ContactContextMenu::ContactContextMenu(Account* account, QWidget* parent)
 	addAction(askAuthorizationAction);
 	addAction(renameContactAction);
 	addAction(historyAction);
-	addMenu(moveToGroup);
+	moveToGroupAction = addMenu(moveToGroup);
 	addSeparator();
 	addAction(alwaysVisibleAction);
 	addAction(alwaysInvisibleAction);
@@ -118,10 +120,14 @@ void ContactContextMenu::removeContact()
 	else
 		contactName = m_contact->email();
 
-	if (CenteredMessageBox::question(tr("Remove contact"), tr("Are you sure you want to remove contact %1?").arg(contactName), QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::Yes)
+	RemoveContactDialog* rd = new RemoveContactDialog(tr("Remove contact"), tr("Are you sure you want to remove contact %1?").arg(contactName));
+	if (rd->exec() == QDialog::Accepted)
+	//if (CenteredMessageBox::question(tr("Remove contact"), tr("Are you sure you want to remove contact %1?").arg(contactName), QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::Yes)
 	{
 		qDebug() << "real removing";
 		m_account->contactList()->removeContactOnServer(m_contact);
+		if (rd->removeHistory())
+			theRM.removeFolder(m_contact->path());
 	}
 }
 
@@ -171,8 +177,8 @@ void ContactContextMenu::setContact(Contact* c)
 	historyAction->setVisible(notPhone);
 	ignoreContactAction->setVisible(notPhone);
 
-/*	bool notAuthorized = m_contact->isNotAuthorized();
-	moveToGroup->setVisible(!notAuthorized);*/
+	bool notAuthorized = m_contact->isNotAuthorized();
+	moveToGroupAction->setVisible(!notAuthorized);
 }
 
 void ContactContextMenu::askAuthorization()
@@ -204,7 +210,7 @@ void ContactContextMenu::checkOnlineStatus(OnlineStatus status)
 	ignoreContactAction->setEnabled(connected);
 	renameContactAction->setEnabled(connected);
 	showContactInfoAction->setEnabled(connected);
-	moveToGroup->setEnabled(connected);
+	moveToGroupAction->setEnabled(connected);
 	
 	if (m_contact->status() == OnlineStatus::unauthorized)
 		askAuthorizationAction->setEnabled(connected);
