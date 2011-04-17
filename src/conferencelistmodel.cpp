@@ -1,3 +1,4 @@
+
 /***************************************************************************
  *   Copyright (C) 2008 by Alexander Volkov                                *
  *   volkov0aa@gmail.com                                                   *
@@ -20,46 +21,23 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "contactlistconference.h"
+#include "conferencelistmodel.h"
 
-#include <QDebug>
-
-ContactListConference::ContactListConference(Contact* conference, Account* acc, QWidget* parent)
- : m_account(acc), m_conf(conference)
-{
-	qDebug() << Q_FUNC_INFO;
-	connect(acc->client(), SIGNAL(conferenceClAddContact(QByteArray&)), this, SLOT(addContact(QByteArray&)));
-	connect(acc, SIGNAL(onlineStatusChanged(OnlineStatus)), this, SLOT(onlineStatusChanged(OnlineStatus)));
-	accountWasConnected = acc->onlineStatus().connected();
-	membersCount = 0;
-	if (acc->onlineStatus().connected())
-		acc->client()->conferenceClLoad(conference->email());
-
-	m_model = new ConferenceListModel();
-	setModel(m_model);
-}
-
-ContactListConference::~ContactListConference()
+ConferenceListModel::ConferenceListModel()
 {
 }
 
-void ContactListConference::addContact(QByteArray & contact)
+ConferenceListModel::~ConferenceListModel()
 {
-	qDebug() << Q_FUNC_INFO << contact;
-	membersCount++;
-	m_model->addContact(contact);
-	emit setMembersCount(membersCount);
 }
 
-void ContactListConference::onlineStatusChanged(OnlineStatus st)
+void ConferenceListModel::addContact(QByteArray & email)
 {
-	qDebug() << Q_FUNC_INFO << st.connected();
-	if (!accountWasConnected && st.connected())
-		m_account->client()->conferenceClLoad(m_conf->email());
+	QStandardItem* item = new QStandardItem(QString(email));
+	invisibleRootItem()->appendRow(item);
+}
 
-	if (!st.connected())
-	{
-		membersCount = 0;
-		emit setMembersCount(0);
-	}
+void ConferenceListModel::slotRemoveContactItem(Contact* c)
+{
+
 }

@@ -11,11 +11,14 @@ class ContactListBroadcast : public QListView
 {
 	Q_OBJECT
 public:
-	ContactListBroadcast(ContactList* cl, QWidget* parent = 0);
+	ContactListBroadcast(QByteArray contactEmail, ContactList* cl, QWidget* parent = 0);
 	~ContactListBroadcast();
+
+	QList<QByteArray> receivers() { return m_model->broadcastList(); }
 
 private:
 	ContactList* m_contactList;
+	ContactListBroadcastModel* m_model;
 };
 
 #endif // CONTACTLISTBROADCAST_H

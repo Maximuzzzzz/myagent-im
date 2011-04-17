@@ -85,6 +85,7 @@ void ContactList::addGroup(quint32 id, quint32 flags, const QString& name)
 	QList<ContactGroup*>::iterator it = m_groups.begin();
 	for (; it != m_groups.end(); ++it)
 		if ((*it)->id() == group->id())
+		{
 			if (constructing)
 			{
 				tmpGroups.append(*it);
@@ -98,12 +99,13 @@ void ContactList::addGroup(quint32 id, quint32 flags, const QString& name)
 				m_groups.append(group);
 				return;
 			}
+		}
 	if (constructing)
 		tmpGroups.append(group);
 	else
 		m_groups.append(group);
 
-	/*if (!constructing) */emit groupAdded(group);
+	emit groupAdded(group);
 }
 
 Contact* ContactList::addContact(const ContactData& data)
@@ -270,9 +272,6 @@ void ContactList::endUpdating()
 	qDeleteAll(m_contacts);
 	m_contacts = tmpContacts;
 	
-/*	for (int i = 0; i < m_contacts.size(); i++)
-		qDebug() << m_contacts.at(i)->email() << (void*)m_contacts.at(i) << m_contacts.at(i)->isTemporary();*/
-
 	constructing = false;
 	emit updated();
 }
@@ -415,7 +414,6 @@ void ContactList::load()
 	{
 		bool isCurrGrp;
 		in >> isCurrGrp;
-		qDebug() << isCurrGrp;
 		if (isCurrGrp)
 		{
 			ContactGroup* group = new ContactGroup(in);
@@ -635,7 +633,6 @@ void ContactList::addContactOnServerEnd(quint32 status, bool timeout)
 			qDebug() << "addContactOnServerEnd remove temporary contact";
 			qDebug() << constructing;
 			((constructing) ? (tmpContacts) : (m_contacts)).removeAll(contact);
-			//delete contact;
 			emit contactRemoved(contact);
 		}
 		else

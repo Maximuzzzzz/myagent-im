@@ -58,6 +58,17 @@ void ChatSession::appendMessage(Message* msg, bool addInHash)
 	emit messageAppended(msg);
 }
 
+void ChatSession::appendBroadcastMessage(Message* msg, ReceiversList rec, bool addInHash)
+{
+	if (addInHash)
+	{
+		while (messages.value(++numering, NULL) != NULL) {}
+		messages.insert(numering, msg);
+		broadcastMessages.insert(msg, rec);
+	}
+	emit messageAppended(msg);
+}
+
 bool ChatSession::sendMessage(QString plainText, QByteArray rtf)
 {
 	Message* msg = new Message(Message::Outgoing, MESSAGE_FLAG_RTF, plainText, rtf, 0x00FFFFFF);
@@ -75,6 +86,23 @@ bool ChatSession::sendMessage(Message* msg)
 	return task->exec();
 }
 
+bool ChatSession::broadcastMessage(ReceiversList receivers, QString plainText, QByteArray rtf)
+{
+	Message* msg = new Message(Message::Outgoing, MESSAGE_FLAG_RTF, plainText, rtf, 0x00FFFFFF);
+
+	return broadcastMessage(msg, receivers);
+}
+
+bool ChatSession::broadcastMessage(Message* msg, ReceiversList receivers)
+{
+	Task* task = new Tasks::BroadcastMessage(receivers, msg, m_account->client());
+	connect(task, SIGNAL(done(quint32, bool)), this, SLOT(slotBroadcasrMessageStatus(quint32, bool)));
+
+	appendBroadcastMessage(msg, receivers);
+
+	return task->exec();
+}
+
 void ChatSession::slotMessageStatus(quint32 status, bool timeout)
 {	
 	Tasks::SendMessage* task = qobject_cast<Tasks::SendMessage*>(sender());
@@ -82,6 +110,23 @@ void ChatSession::slotMessageStatus(quint32 status, bool timeout)
 	{
 		qDebug() << "Message delivered";
 		messages.remove(messages.key(task->getMessage()));
+		emit messageDelivered(true, task->getMessage());
+	}
+	else
+	{
+		qDebug() << "Message NOT delivered";
+		emit messageDelivered(false, task->getMessage());
+	}
+}
+
+void ChatSession::slotBroadcastMessageStatus(quint32 status, bool timeout)
+{
+	Tasks::BroadcastMessage* task = qobject_cast<Tasks::BroadcastMessage*>(sender());
+	if (!timeout && status == MESSAGE_DELIVERED)
+	{
+		qDebug() << "Message delivered";
+		messages.remove(messages.key(task->getMessage()));
+		broadcastMessages.remove(broadcastMessages.key(task->getReceivers()));
 		emit messageDelivered(true, task->getMessage());
 	}
 	else
@@ -189,7 +234,25 @@ void ChatSession::resendMessage(quint32 id)
 	if (found)
 	{
 		Message* msg = *it;
-		sendMessage(msg);
+
+		BroadcastMessageIterator bit = broadcastMessagesBegin();
+
+		found = false;
+		ReceiversList rec = ReceiversList();
+		for (; bit != broadcastMessagesEnd(); ++bit)
+		{
+			if (bit.key()->getId() == id)
+			{
+				rec = (*bit);
+				found = true;
+				break;
+			}
+		}
+
+		if (found)
+			broadcastMessage(msg, rec);
+		else
+			sendMessage(msg);
 		theRM.getAudio()->play(STOtprav);
 	}
 }
@@ -197,4 +260,9 @@ void ChatSession::resendMessage(quint32 id)
 void ChatSession::clearHash()
 {
 	messages.clear();
+}
+
+void ChatSession::slotMicroblogChanged(QString text)
+{
+	emit microblogChanged(text);
 }

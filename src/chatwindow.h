@@ -82,6 +82,7 @@ private slots:
 	void contactTyping();
 	void appendMessageToView(const Message* msg, bool newIncoming = true);
 	void checkContactStatus(OnlineStatus status);
+	void microblogChanged(QString text);
 
 	void appendSmsToView(QByteArray phoneNumber, QString text);
 	void smsFailed();

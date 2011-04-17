@@ -35,7 +35,7 @@ unix {
     BINDIR = $$PREFIX/bin
     DATADIR = $$PREFIX/share/myagent-im
     DEFINES += DATADIR=\\\"$$DATADIR\\\"
-    DEFINES += VERSION=\\\"0.4.4\\\"
+    DEFINES += VERSION=\\\"0.4.5\\\"
     INSTALLS += target \
         smiles_animated \
         smiles_set03 \
@@ -203,7 +203,10 @@ SOURCES += main.cpp \
     contactlistbroadcast.cpp \
     contactlistconferencewithhandle.cpp \
     contactlistconference.cpp \
-    removecontactdialog.cpp
+    removecontactdialog.cpp \
+    contactlistbroadcastmodel.cpp \
+    taskbroadcastmessage.cpp \
+    conferencelistmodel.cpp
 HEADERS += mrimclient.h \
     soundplayer.h \
     audio.h \
@@ -329,7 +332,10 @@ HEADERS += mrimclient.h \
     contactlistbroadcast.h \
     contactlistconferencewithhandle.h \
     contactlistconference.h \
-    removecontactdialog.h
+    removecontactdialog.h \
+    contactlistbroadcastmodel.h \
+    taskbroadcastmessage.h \
+    conferencelistmodel.h
 FORMS += logindialog.ui \
     searchcontacts.ui \
     addcontact.ui \

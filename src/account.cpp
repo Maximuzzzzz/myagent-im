@@ -273,7 +273,7 @@ void Account::setNickName(QString nickname)
 void Account::setStatusText(QString statusText)
 {
 	qDebug() << "Account::setStatusText" << statusText;
-	emit statusChanged(statusText);
+	emit statusChanged(email(), statusText);
 }
 
 void Account::saveOnlineStatus(OnlineStatus st)

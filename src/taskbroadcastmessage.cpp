@@ -20,46 +20,63 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "contactlistconference.h"
+#include "taskbroadcastmessage.h"
 
 #include <QDebug>
 
-ContactListConference::ContactListConference(Contact* conference, Account* acc, QWidget* parent)
- : m_account(acc), m_conf(conference)
+#include "mrimclient.h"
+#include "message.h"
+
+namespace Tasks
 {
-	qDebug() << Q_FUNC_INFO;
-	connect(acc->client(), SIGNAL(conferenceClAddContact(QByteArray&)), this, SLOT(addContact(QByteArray&)));
-	connect(acc, SIGNAL(onlineStatusChanged(OnlineStatus)), this, SLOT(onlineStatusChanged(OnlineStatus)));
-	accountWasConnected = acc->onlineStatus().connected();
-	membersCount = 0;
-	if (acc->onlineStatus().connected())
-		acc->client()->conferenceClLoad(conference->email());
 
-	m_model = new ConferenceListModel();
-	setModel(m_model);
-}
-
-ContactListConference::~ContactListConference()
+BroadcastMessage::BroadcastMessage(QList<QByteArray> receivers, Message* m, MRIMClient* client, QObject *parent)
+	: Task(client, parent), m_receivers(receivers), message(m)
 {
 }
 
-void ContactListConference::addContact(QByteArray & contact)
+BroadcastMessage::~BroadcastMessage()
 {
-	qDebug() << Q_FUNC_INFO << contact;
-	membersCount++;
-	m_model->addContact(contact);
-	emit setMembersCount(membersCount);
 }
 
-void ContactListConference::onlineStatusChanged(OnlineStatus st)
+bool BroadcastMessage::exec()
 {
-	qDebug() << Q_FUNC_INFO << st.connected();
-	if (!accountWasConnected && st.connected())
-		m_account->client()->conferenceClLoad(m_conf->email());
-
-	if (!st.connected())
+	if (mc == NULL || m_receivers.count() > 0)
 	{
-		membersCount = 0;
-		emit setMembersCount(0);
+		delete this;
+		return false;
+	}
+
+	connect(mc, SIGNAL(messageStatus(quint32, quint32)), this, SLOT(checkResult(quint32, quint32)));
+
+	setTimer();
+
+	seq = mc->broadcastMessage(message, m_receivers);
+	message->setId(seq);
+	if (seq == 0)
+	{
+		delete this;
+		return false;
+	}
+
+	return true;
+}
+
+void BroadcastMessage::checkResult(quint32 msgseq, quint32 status)
+{
+	if (seq == msgseq)
+	{
+		unsetTimer();
+		emit done(status, false);
+		delete this;
 	}
 }
+
+void BroadcastMessage::timeout()
+{
+	qDebug() << "BroadcastMessage::timeout()";
+	Task::timeout();
+}
+
+}
+

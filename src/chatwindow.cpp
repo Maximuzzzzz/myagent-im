@@ -109,7 +109,7 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoti
 		messageEditor = new MessageEditor(m_account, session->contact(), emoticonSelector);
 		connect(messageEditor, SIGNAL(sendPressed()), this, SLOT(sendMessage()));
 		connect(messageEditor, SIGNAL(textChanged()), session, SLOT(sendTyping()));
-		connect(messageEditor, SIGNAL(textChanged()), this, SLOT(sendButtonEnabledProcess()));
+//		connect(messageEditor, SIGNAL(textChanged()), this, SLOT(sendButtonEnabledProcess()));
 		connect(messageEditor, SIGNAL(wakeupPressed()), this, SLOT(wakeupContact()));
 		connect(this, SIGNAL(messageEditorActivate()), messageEditor, SLOT(messageEditorActivate()));
 
@@ -177,7 +177,7 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoti
 
 	if (!s->contact()->isPhone() && !s->contact()->isConference())
 	{
-		broadcastPanel = new ContactListBroadcast(m_account->contactList());
+		broadcastPanel = new ContactListBroadcast(s->contact()->email(), m_account->contactList());
 		connect(messageEditor, SIGNAL(showBroadcastPanel(bool)), this, SLOT(showBroadcastPanel(bool)));
 		mainLayout->addWidget(broadcastPanel);
 		broadcastPanel->setVisible(false);
@@ -187,7 +187,7 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoti
 		conferenceListPanel = new ContactListConferenceWithHandle(session->contact(), session->account());
 		conferenceListPanel->toggle(m_account->settings()->value("ChatWindow/ConferenceListVisible", false).toBool());
 		connect(conferenceListPanel, SIGNAL(toggled(bool)), SLOT(saveConferenceListState(bool)));
-		//mainLayout->addWidget(conferenceListPanel);
+		mainLayout->addWidget(conferenceListPanel);
 	}
 
 	layout->addLayout(mainLayout);
@@ -197,18 +197,25 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoti
 	layout->addWidget(statusBar);
 
 	sendButton = new QPushButton(tr("Send"), this);
-	//sendButton->setEnabled(false);
 	connect(sendButton, SIGNAL(clicked(bool)), this, SLOT(send()));
 	connect(m_account, SIGNAL(onlineStatusChanged(OnlineStatus)), this, SLOT(sendButtonEnabledProcess()));
 
 	connect(session, SIGNAL(messageDelivered(bool, Message*)), this, SLOT(messageDelivered(bool, Message*)));
 	connect(session, SIGNAL(messageAppended(const Message*)), this, SLOT(appendMessageToView(const Message*)));
 
+	connect(session, SIGNAL(microblogChanged(QString)), this, SLOT(microblogChanged(QString)));
+
 	connect(session, SIGNAL(smsDelivered(QByteArray, QString)), this, SLOT(appendSmsToView(QByteArray, QString)));
 	connect(session, SIGNAL(smsFailed()), this, SLOT(smsFailed()));
 
 	statusBar->addPermanentWidget(sendButton);
 	statusBar->setSizeGripEnabled(false);
+
+	if (session->contact()->showMicroblogText())
+	{
+		microblogChanged(session->contact()->microblogText());
+		session->contact()->setShowMicroblogText(false);
+	}
 
 	ChatSession::MessageIterator it = session->messagesBegin();
 	for (; it != session->messagesEnd(); ++it)
@@ -241,16 +248,23 @@ quint32 ChatWindow::sendMessage()
 	RtfExporter rtfExporter(messageEditor->document());
 	QByteArray messageRtf = rtfExporter.toRtf();
 
-	qDebug() << "ChatWindow::sendMessage()" << messageRtf;
-
 	if (messageText.isEmpty())
 		return 0;
+
+	qDebug() << "ChatWindow::sendMessage()" << messageRtf;
 
 	messageEditor->clear();
 
 	theRM.getAudio()->play(STOtprav);
 
-	return session->sendMessage(messageText, messageRtf);
+	QList<QByteArray> receiversList = broadcastPanel->receivers();
+	if (receiversList.count() == 0 || (receiversList.count() == 1 && receiversList.at(0) == session->contact()->email()))
+		return session->sendMessage(messageText, messageRtf);
+	else
+	{
+		qDebug() << "Broadcast";
+		session->broadcastMessage(broadcastPanel->receivers(), messageText, messageRtf);
+	}
 }
 
 quint32 ChatWindow::sendSms()
@@ -365,6 +379,22 @@ void ChatWindow::appendMessageToView(const Message* msg, bool newIncoming)
 	emit newMessage(this);
 }
 
+void ChatWindow::microblogChanged(QString text)
+{
+	QTextCursor cursor = chatView->textCursor();
+	cursor.movePosition(QTextCursor::End);
+
+	QString prompt = tr("%1%2 (%3) added to microblog%4").arg("<font color=#000099><b>").arg(session->contact()->nickname()).arg(QDateTime::currentDateTime().toString(m_account->settings()->value("Messages/DateMask", theRM.defDateFormat).toString())).arg("</font><br>");
+
+	cursor.insertHtml(prompt);
+	cursor.insertHtml("<font size=80%>" + text + "</font>");
+	cursor.insertHtml("<br>");
+	cursor.movePosition(QTextCursor::End);
+
+	QScrollBar* vScrollBar = chatView->verticalScrollBar();
+	vScrollBar->triggerAction(QAbstractSlider::SliderToMaximum);
+}
+
 void ChatWindow::contactTyping()
 {
 	qDebug() << "ChatWindow::contactTyping()";
@@ -399,7 +429,7 @@ void ChatWindow::messageDelivered(bool really, Message* msg)
 		QScrollBar* vScrollBar = chatView->verticalScrollBar();
 		vScrollBar->triggerAction(QAbstractSlider::SliderToMaximum);
 
-		if (session->contact()->email().contains("@chat.agent"))
+		if (session->contact()->isConference())
 			theRM.getAudio()->play(STConference);
 		else
 			theRM.getAudio()->play(STMessage);

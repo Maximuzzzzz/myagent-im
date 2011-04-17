@@ -30,6 +30,7 @@
 #include "account.h"
 #include "contactlist.h"
 #include "contactlistmodel.h"
+#include "contactlistbroadcastmodel.h"
 #include "contactlistsortfilterproxymodel.h"
 #include "contactlisttreeview.h"
 #include "contactlistitem.h"
@@ -66,7 +67,7 @@ ContactListWindow::ContactListWindow(Account* account)
 	setWindowTitle(account->email());
 
 	MRIMClient* mc = account->client();
-	connect (account, SIGNAL(statusChanged(QString)), this, SLOT(slotMicroblogChanged(QString)));
+	connect (account, SIGNAL(statusChanged(QByteArray, QString)), this, SLOT(slotMicroblogChanged(QByteArray, QString)));
 	connect(account->client(), SIGNAL(connectError(QString)), this, SLOT(slotConnectionError(QString)));
 
 	createActions();
@@ -74,7 +75,7 @@ ContactListWindow::ContactListWindow(Account* account)
 	connect(mc, SIGNAL(loginRejected(QString)), this, SLOT(slotLoginRejected(QString)));
 	connect(mc, SIGNAL(loggedOut(quint32)), this, SLOT(slotLoggedOut(quint32)));
 	connect(mc, SIGNAL(contactAsksAuthorization(const QByteArray&, const QString&, const QString&)), this, SLOT(slotContactAsksAuthorization(const QByteArray&, const QString&, const QString&)));
-	connect(mc, SIGNAL(microblogChanged(QString)), this, SLOT(slotMicroblogChanged(QString)));
+	connect(mc, SIGNAL(microblogChanged(QByteArray, QString)), this, SLOT(slotMicroblogChanged(QByteArray, QString)));
 	connect(mc, SIGNAL(conferenceAsked(const QByteArray&, const QString&)), m_account->contactList(), SLOT(addConferenceOnServer(const QByteArray&, const QString&)));
 
 	chatWindowsManager = new ChatWindowsManager(m_account, this);
@@ -113,7 +114,6 @@ ContactListWindow::ContactListWindow(Account* account)
 	connect(statusesMenu, SIGNAL(statusChanged(OnlineStatus, qint32)), account, SLOT(setOnlineStatus(OnlineStatus, qint32)));
 
 	connect(contactsTreeView, SIGNAL(contactItemActivated(Contact*)), this, SLOT(slotContactItemActivated(Contact*)));
-	//connect(proxyModel, SIGNAL(modelRebuilded()), contactsTreeView, SLOT(expandAll()));
 
 	connect(filterLineEdit,SIGNAL(textChanged(const QString&)), proxyModel, SLOT(setFilterString(const QString&)));
 	connect(onlineOnlyContactsButton, SIGNAL(toggled(bool)), proxyModel, SLOT(allowOnlineOnlyContacts(bool)));
@@ -402,11 +402,14 @@ void ContactListWindow::sendMicrotext(const QString& microText)
 	statusBar->setStatus(microText);
 }
 
-void ContactListWindow::slotMicroblogChanged(QString microText)
+void ContactListWindow::slotMicroblogChanged(QByteArray email, QString microText)
 {
-	qDebug() << "slotMicroblogChanged(" << microText << ")";
-	statusEditor->setStatus(microText);
-	statusBar->setStatus(microText);
+	qDebug() << "slotMicroblogChanged(" << email << microText << ")";
+	if (m_account->email() == email)
+	{
+		statusEditor->setStatus(microText);
+		statusBar->setStatus(microText);
+	}
 }
 
 void ContactListWindow::slotSetOnlineStatus(OnlineStatus status)

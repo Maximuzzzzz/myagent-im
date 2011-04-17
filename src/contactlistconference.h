@@ -6,6 +6,7 @@
 #include "contact.h"
 #include "account.h"
 #include "onlinestatus.h"
+#include "conferencelistmodel.h"
 
 class ContactListConference : public QListView
 {
@@ -25,6 +26,9 @@ private:
 	Account* m_account;
 	Contact* m_conf;
 	bool accountWasConnected;
+
+	ConferenceListModel* m_model;
+	QList<Contact*> m_contacts;
 
 	quint32 membersCount;
 };

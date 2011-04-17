@@ -29,6 +29,7 @@
 #include "message.h"
 #include "filemessage.h"
 #include "tasksendmessage.h"
+#include "taskbroadcastmessage.h"
 
 class Account;
 class Contact;
@@ -42,10 +43,14 @@ public:
 
 	Account* account() { return m_account; }
 	Contact* contact() { return m_contact; }
-	
+
+	typedef QList<QByteArray> ReceiversList;
 	typedef QHash<quint32, Message*>::const_iterator MessageIterator;
+	typedef QHash<Message*, ReceiversList>::const_iterator BroadcastMessageIterator;
 	MessageIterator messagesBegin() const { return messages.begin(); }
 	MessageIterator messagesEnd() const { return messages.end(); }
+	BroadcastMessageIterator broadcastMessagesBegin() const { return broadcastMessages.begin(); }
+	BroadcastMessageIterator broadcastMessagesEnd() const { return broadcastMessages.end(); }
 
 signals:
 	void messageAppended(const Message* msg) const;
@@ -53,11 +58,16 @@ signals:
 	void smsDelivered(QByteArray phoneNumber, QString text);
 	void smsFailed();
 	void signalFileReceived(FileMessage* fmsg);
+	void microblogChanged(QString text);
 
 public slots:	
 	void appendMessage(Message* msg, bool addInHash = true);
+	void appendBroadcastMessage(Message* msg, ReceiversList rec, bool addInHash = true);
+	void slotMicroblogChanged(QString text);
 	bool sendMessage(QString plainText, QByteArray rtf);
 	bool sendMessage(Message* msg);
+	bool broadcastMessage(ReceiversList receivers, QString plainText, QByteArray rtf);
+	bool broadcastMessage(Message* msg, ReceiversList receivers);
 	bool sendSms(QByteArray number, QString text);
 	void sendTyping();
 	bool wakeupContact();
@@ -68,12 +78,14 @@ public slots:
 
 private slots:
 	void slotMessageStatus(quint32 status, bool timeout);
+	void slotBroadcastMessageStatus(quint32 status, bool timeout);
 	void slotSmsStatus(quint32 status, bool timeout);
 	
 private:
 	Account* m_account;
 	Contact* m_contact;
 	QHash<quint32, Message*> messages;
+	QHash<Message*, ReceiversList> broadcastMessages;
 	quint32 numering;
 	
 	QTime typingTime;

@@ -347,7 +347,14 @@ enum {
 #define MRIM_CS_PROXY_HELLO_ACK		0x1047
 
 #define MRIM_SC_MICROBLOG_TEXT			0x1063
-// LPS status
+// ??
+// LPS email
+// ??
+// ??
+// ??
+// LPS text
+// LPS xml version
+
 
 #define MRIM_CS_MICROBLOG_TEXT			0x1064
 // LPS status

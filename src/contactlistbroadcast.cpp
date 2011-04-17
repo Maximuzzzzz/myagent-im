@@ -20,12 +20,15 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
- #include "contactlistbroadcast.h"
+#include "contactlistbroadcast.h"
 
-ContactListBroadcast::ContactListBroadcast(ContactList* cl, QWidget* parent)
+ContactListBroadcast::ContactListBroadcast(QByteArray contactEmail, ContactList* cl, QWidget* parent)
  : QListView(parent)
 {
 	m_contactList = cl;
+	ContactListBroadcastModel* broadcastModel = new ContactListBroadcastModel(contactEmail, cl);
+	connect(cl->model(), SIGNAL(modelRebuilded()), broadcastModel, SLOT(rebuild()));
+	setModel(broadcastModel);
 }
 
 ContactListBroadcast::~ContactListBroadcast()

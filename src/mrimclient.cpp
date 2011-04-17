@@ -164,6 +164,31 @@ quint32 MRIMClient::sendMessage(QByteArray email, const Message* message)
 	return p->sendPacket(MRIM_CS_MESSAGE, data, 20);
 }
 
+quint32 MRIMClient::broadcastMessage(const Message* message, QList<QByteArray> receivers)
+{
+	//QByteArray baText = p->codec->fromUnicode(message->plainText());
+	QByteArray packedRtf = p->packRtf(message->rtfText());
+
+	QByteArray data, data2;
+	MRIMDataStream out(&data, QIODevice::WriteOnly);
+	MRIMDataStream out2(&data2, QIODevice::WriteOnly);
+
+	quint32 flags = message->flags() | MESSAGE_FLAG_MULTICAST;
+
+	out << flags;
+	QList<QByteArray>::iterator it = receivers.begin();
+	for (; it != receivers.end(); ++it)
+		out2 << (*it);
+
+	out << data2;
+	out << message->plainText();
+	out << packedRtf;
+
+	qDebug() << "MRIMClient::sendMessage" << data.toHex();
+
+	return p->sendPacket(MRIM_CS_MESSAGE, data, 20);
+}
+
 quint32 MRIMClient::askAuthorization(const QByteArray& email, const QString& message)
 {
 	qDebug() << "MRIMClient askAuthorization for " << email;

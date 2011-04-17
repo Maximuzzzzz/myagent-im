@@ -48,6 +48,7 @@ signals:
 private slots:
 	void processMessage(QByteArray from, Message* msg);
 	void processFileMessage(FileMessage* fmsg);
+	void processMicroblogChanged(QByteArray from, QString text);
 	void removeSession(Contact* contact);
 	
 private:

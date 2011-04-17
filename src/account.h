@@ -74,7 +74,7 @@ signals:
 	void nicknameChanged();
 	void totalMessagesChanged(const QString& totalMessages);
 	void unreadLettersChanged(uint n);
-	void statusChanged(QString text);
+	void statusChanged(QByteArray email, QString text);
 	void extendedStatusesChanged();
 	
 private slots:

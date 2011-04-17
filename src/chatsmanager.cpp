@@ -40,6 +40,7 @@ ChatsManager::ChatsManager(Account* account)
 {
 	connect(m_account->client(), SIGNAL(messageReceived(QByteArray, Message*)), this, SLOT(processMessage(QByteArray, Message*)));
 	connect(m_account->client(), SIGNAL(fileReceived(FileMessage*)), this, SLOT(processFileMessage(FileMessage*)));
+	connect(m_account->client(), SIGNAL(microblogChanged(QByteArray, QString)), this, SLOT(processMicroblogChanged(QByteArray, QString)));
 }
 
 ChatsManager::~ChatsManager()
@@ -105,4 +106,24 @@ void ChatsManager::removeSession(Contact* contact)
 	ChatSession* session = sessions.take(contact);
 	//qDebug() << "session = " << (void*)session;
 	delete session;
+}
+
+void ChatsManager::processMicroblogChanged(QByteArray from, QString text)
+{
+	Contact* contact = m_account->contactList()->getContact(from);
+
+	if (!contact)
+	{
+		qDebug() << "Could not find contact" << from;
+		return;
+	}
+
+	ChatSession* session = sessions.value(contact, NULL);
+	if (session == NULL)
+	{
+		contact->setShowMicroblogText(true);
+		contact->setMicroblogText(text);
+	}
+	else
+		session->slotMicroblogChanged(text);
 }

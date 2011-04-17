@@ -65,6 +65,10 @@ public:
 	bool isIgnored() const;
 	bool isNotAuthorized() const;
 	QIcon chatWindowIcon(QString type = "");
+	void setShowMicroblogText(bool really) { m_showMicroblogText = really; }
+	bool showMicroblogText() { return m_showMicroblogText; }
+	void setMicroblogText(QString text) { m_microblogText = text; }
+	QString microblogText() { return m_microblogText; }
 
 	ContactData contactData() const { return data; }
 	
@@ -104,6 +108,8 @@ private:
 	ContactGroup* m_group;
 	Account* m_account;
 	bool m_activeConference;
+	bool m_showMicroblogText;
+	QString m_microblogText;
 };
 
 #endif

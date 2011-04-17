@@ -69,7 +69,6 @@ MessageEditor::MessageEditor(Account* account, Contact* contact, EmoticonSelecto
 	layout->addWidget(messageEdit);
 	setLayout(layout);
 
-//	emoticonSelector = new EmoticonSelector(this);
 	connect(emoticonSelector, SIGNAL(selected(MessageEditor*, QString)), SLOT(insertEmoticon(MessageEditor*, QString)));
 	connect(emoticonSelector, SIGNAL(closed()), smilesAction, SLOT(toggle()));
 
@@ -217,8 +216,8 @@ void MessageEditor::createToolBar()
 	broadcastAction = new QAction(broadcastIcon, "", toolBar);
 	broadcastAction->setCheckable(true);
 	connect(broadcastAction, SIGNAL(triggered(bool)), SIGNAL(showBroadcastPanel(bool)));
-	//toolBar->addAction(broadcastAction);
-	//toolBar->widgetForAction(broadcastAction)->setStyleSheet("QToolButton { border: 0px; padding: 0px }");
+	toolBar->addAction(broadcastAction);
+	toolBar->widgetForAction(broadcastAction)->setStyleSheet("QToolButton { border: 0px; padding: 0px }");
 	broadcastAction->setToolTip(tr("Broadcast"));
 
 	if (m_contact->isConference())

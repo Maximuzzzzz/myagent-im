@@ -27,12 +27,12 @@
 ContactGroup::ContactGroup(quint32 id, quint32 flags, QString name, GroupType t)
 	: m_id(id), m_flags(flags), m_name(name), m_type(t)
 {
-	m_expanded = true;
+	m_expanded = false;
 }
 
 ContactGroup::ContactGroup(QDataStream& stream)
 {
-	m_expanded = true;
+	m_expanded = false;
 	quint32 typeInt;
 	stream >> m_id >> m_flags >> m_name >> typeInt >> m_expanded;
 	m_type = intToType(typeInt);

@@ -31,6 +31,7 @@
 #include "onlinestatus.h"
 #include "contactdata.h"
 #include "contactlistmodel.h"
+#include "contactlistbroadcastmodel.h"
 
 class Contact;
 class Account;

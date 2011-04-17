@@ -20,46 +20,40 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "contactlistconference.h"
+#ifndef TASKBROADCASTMESSAGE_H
+#define TASKBROADCASTMESSAGE_H
 
-#include <QDebug>
+#include "task.h"
 
-ContactListConference::ContactListConference(Contact* conference, Account* acc, QWidget* parent)
- : m_account(acc), m_conf(conference)
+#include <QSet>
+#include <QTimer>
+
+class Contact;
+class Message;
+
+namespace Tasks
 {
-	qDebug() << Q_FUNC_INFO;
-	connect(acc->client(), SIGNAL(conferenceClAddContact(QByteArray&)), this, SLOT(addContact(QByteArray&)));
-	connect(acc, SIGNAL(onlineStatusChanged(OnlineStatus)), this, SLOT(onlineStatusChanged(OnlineStatus)));
-	accountWasConnected = acc->onlineStatus().connected();
-	membersCount = 0;
-	if (acc->onlineStatus().connected())
-		acc->client()->conferenceClLoad(conference->email());
 
-	m_model = new ConferenceListModel();
-	setModel(m_model);
+class BroadcastMessage : public Task
+{
+Q_OBJECT
+public:
+	BroadcastMessage(QList<QByteArray> receivers, Message* m, MRIMClient* client, QObject *parent = 0);
+	~BroadcastMessage();
+
+	bool exec();
+	Message* getMessage() { return message; }
+	QList<QByteArray> getReceivers() { return m_receivers; }
+protected slots:
+	virtual void timeout();
+private slots:
+	void checkResult(quint32 msgseq, quint32 status);
+private:
+	QList<QByteArray> m_receivers;
+	Message* message;
+	QTimer* tim;
+};
+
 }
 
-ContactListConference::~ContactListConference()
-{
-}
-
-void ContactListConference::addContact(QByteArray & contact)
-{
-	qDebug() << Q_FUNC_INFO << contact;
-	membersCount++;
-	m_model->addContact(contact);
-	emit setMembersCount(membersCount);
-}
-
-void ContactListConference::onlineStatusChanged(OnlineStatus st)
-{
-	qDebug() << Q_FUNC_INFO << st.connected();
-	if (!accountWasConnected && st.connected())
-		m_account->client()->conferenceClLoad(m_conf->email());
-
-	if (!st.connected())
-	{
-		membersCount = 0;
-		emit setMembersCount(0);
-	}
-}
+#endif // TASKBROADCASTMESSAGE_H

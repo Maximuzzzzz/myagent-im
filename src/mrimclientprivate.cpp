@@ -1205,11 +1205,17 @@ void MRIMClientPrivate::processMicroblogChanged(QByteArray data)
 
 	in >> unk;
 	qDebug() << unk;
-	in >> email >> unk >> unk >> unk >> microText;
+	in >> email >> unk;
+	qDebug() << unk;
+	in >> unk;
+	qDebug() << unk;
+	in >> unk;
+	qDebug() << unk;
+	in >> microText;
 	in >> unk;
 	qDebug() << unk;
 	in >> plainText;
 	qDebug() << plainText;
 
-	emit q->microblogChanged(microText);
+	emit q->microblogChanged(email, microText);
 }

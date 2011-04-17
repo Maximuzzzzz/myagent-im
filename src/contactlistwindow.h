@@ -82,7 +82,7 @@ private slots:
 	void checkAutoAwayTime(int seconds);
 	void openStatusEditor();
 	void sendMicrotext(const QString& microText);
-	void slotMicroblogChanged(QString microText);
+	void slotMicroblogChanged(QByteArray email, QString microText);
 	void slotSetOnlineStatus(OnlineStatus status);
 	void slotConnectionError(QString mess);
 

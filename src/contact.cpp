@@ -39,11 +39,13 @@
 Contact::Contact(const ContactData& contactData, ContactGroup* group, Account* account)
 	: data(contactData), m_group(group), m_account(account)
 {
+	m_showMicroblogText = false;
 }
 
 Contact::Contact(Account* account)
 	: m_account(account)
 {
+	m_showMicroblogText = false;
 }
 
 void Contact::update(const ContactData & contactData, ContactGroup * group)

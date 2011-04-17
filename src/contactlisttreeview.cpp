@@ -170,18 +170,13 @@ void ContactListTreeView::slotActivated(const QModelIndex & index)
 
 void ContactListTreeView::groupCollapsed(QModelIndex index)
 {
-	qDebug() << "Group collapsing";
 	ContactGroup* group = contactListModel->groupFromIndex(index);
 	if (group != NULL)
-	{
-		qDebug() << group->name();
 		group->setExpanded(false);
-	}
 }
 
 void ContactListTreeView::groupExpanded(QModelIndex index)
 {
-	qDebug() << "Group expanding";
 	ContactGroup* group = contactListModel->groupFromIndex(index);
 	if (group != NULL)
 		group->setExpanded(true);
