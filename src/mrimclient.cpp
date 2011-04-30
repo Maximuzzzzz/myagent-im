@@ -141,7 +141,7 @@ void MRIMClient::changeStatus(OnlineStatus newStatus)
 	out << quint32(newStatus.protocolStatus()) << newStatus.id() << stDescr << quint32(0) << quint32(0xffffff);
 
 	qDebug() << data.toHex();
-	p->sendPacket(MRIM_CS_CHANGE_STATUS, data, 23);
+	p->sendPacket(MRIM_CS_CHANGE_STATUS, data);
 
 	p->currentStatus = newStatus;
 }
@@ -161,12 +161,11 @@ quint32 MRIMClient::sendMessage(QByteArray email, const Message* message)
 
 	qDebug() << "MRIMClient::sendMessage" << data.toHex();
 
-	return p->sendPacket(MRIM_CS_MESSAGE, data, 20);
+	return p->sendPacket(MRIM_CS_MESSAGE, data);
 }
 
 quint32 MRIMClient::broadcastMessage(const Message* message, QList<QByteArray> receivers)
 {
-	//QByteArray baText = p->codec->fromUnicode(message->plainText());
 	QByteArray packedRtf = p->packRtf(message->rtfText());
 
 	QByteArray data, data2;
@@ -184,9 +183,9 @@ quint32 MRIMClient::broadcastMessage(const Message* message, QList<QByteArray> r
 	out << message->plainText();
 	out << packedRtf;
 
-	qDebug() << "MRIMClient::sendMessage" << data.toHex();
+	qDebug() << "MRIMClient::broadcastMessage" << data.toHex();
 
-	return p->sendPacket(MRIM_CS_MESSAGE, data, 20);
+	return p->sendPacket(MRIM_CS_MESSAGE, data);
 }
 
 quint32 MRIMClient::askAuthorization(const QByteArray& email, const QString& message)
@@ -226,7 +225,7 @@ quint32 MRIMClient::sendRtfMessage(QByteArray email, QString text, QByteArray rt
 
 	qDebug() << "MRIMClient::sendRtfMessage" << data.toHex();
 	
-	return p->sendPacket(MRIM_CS_MESSAGE, data, 20);
+	return p->sendPacket(MRIM_CS_MESSAGE, data/*, 20*/);
 }
 
 void MRIMClient::sendTyping(QByteArray email)
@@ -382,7 +381,7 @@ quint32 MRIMClient::addConference(QString confName, QByteArray owner, QList<QByt
 
 	qDebug() << data.toHex();
 
-	return p->sendPacket(MRIM_CS_ADD_CONTACT, data, 23);
+	return p->sendPacket(MRIM_CS_ADD_CONTACT, data);
 }
 
 quint32 MRIMClient::addSmsContact(const QString & nickname, const QStringList & phones)

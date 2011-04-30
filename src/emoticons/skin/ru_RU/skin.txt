@@ -1123,6 +1123,141 @@
 					</OBJ16>
 				</ITEMS>
 			</SET04>
+			<SET06>
+				title = "Большие 3"
+				path = "/set06"
+				logo = "/logo.png"
+				<ITEMS>
+					<OBJ01>
+						id = "719"
+						alt = ":Цветы:"
+						tip = "Цветы"
+						src_width = "48"
+						src_height = "32"
+						<ICON><DEFAULT>src="/s019.gif"</DEFAULT></ICON>
+					</OBJ01>
+					<OBJ02>
+						id = "702"
+						alt = ":Ангелок:"
+						tip = "Ангелок"
+						src_width = "48"
+						src_height = "32"
+						<ICON><DEFAULT>src="/s002.gif"</DEFAULT></ICON>
+					</OBJ02>
+					<OBJ03>
+						id = "703"
+						alt = ":С любовью:"
+						tip = "С любовью"
+						src_width = "60"
+						src_height = "32"
+						<ICON><DEFAULT>src="/s003.gif"</DEFAULT></ICON>
+					</OBJ03>
+					<OBJ04>
+						id = "704"
+						alt = ":Девочка с косичками:"
+						tip = "Девочка с косичками"
+						src_width = "64"
+						src_height = "32"
+						<ICON><DEFAULT>src="/s004.gif"</DEFAULT></ICON>
+					</OBJ04>
+					<OBJ05>
+						id = "720"
+						alt = ":Букет:"
+						tip = "Букет"
+						src_width = "48"
+						src_height = "32"
+						<ICON><DEFAULT>src="/s020.gif"</DEFAULT></ICON>
+					</OBJ05>
+					<OBJ06>
+						id = "708"
+						alt = ":Крылья любви:"
+						tip = "Крылья любви"
+						src_width = "64"
+						src_height = "32"
+						<ICON><DEFAULT>src="/s008.gif"</DEFAULT></ICON>
+					</OBJ06>
+					<OBJ07>
+						id = "709"
+						alt = ":Кондитер:"
+						tip = "Кондитер"
+						src_width = "64"
+						src_height = "32"
+						<ICON><DEFAULT>src="/s009.gif"</DEFAULT></ICON>
+					</OBJ07>
+					<OBJ08>
+						id = "710"
+						alt = ":Голубки:"
+						tip = "Голубки"
+						src_width = "64"
+						src_height = "32"
+						<ICON><DEFAULT>src="/s010.gif"</DEFAULT></ICON>
+					</OBJ08>
+					<OBJ09>
+						id = "711"
+						alt = ":Тюльпаны:"
+						tip = "Тюльпаны"
+						src_width = "32"
+						src_height = "32"
+						<ICON><DEFAULT>src="/s011.gif"</DEFAULT></ICON>
+					</OBJ09>
+					<OBJ10>
+						id = "712"
+						alt = ":Сердце:"
+						tip = "Сердце"
+						src_width = "32"
+						src_height = "32"
+						<ICON><DEFAULT>src="/s012.gif"</DEFAULT></ICON>
+					</OBJ10>
+					<OBJ11>
+						id = "713"
+						alt = ":Купидон:"
+						tip = "Купидон"
+						src_width = "32"
+						src_height = "32"
+						<ICON><DEFAULT>src="/s013.gif"</DEFAULT></ICON>
+					</OBJ11>
+					<OBJ12>
+						id = "714"
+						alt = ":Карусель:"
+						tip = "Карусель"
+						src_width = "32"
+						src_height = "32"
+						<ICON><DEFAULT>src="/s014.gif"</DEFAULT></ICON>
+					</OBJ12>
+					<OBJ13>
+						id = "715"
+						alt = ":Кот:"
+						tip = "Кот"
+						src_width = "32"
+						src_height = "32"
+						<ICON><DEFAULT>src="/s015.gif"</DEFAULT></ICON>
+					</OBJ13>
+					<OBJ14>
+						id = "716"
+						alt = ":Пёс:"
+						tip = "Пёс"
+						src_width = "32"
+						src_height = "32"
+						<ICON><DEFAULT>src="/s016.gif"</DEFAULT></ICON>
+					</OBJ14>
+					<OBJ15>
+						id = "717"
+						alt = ":Заяц с цветком:"
+						tip = "Заяц с цветком"
+						src_width = "32"
+						src_height = "32"
+						<ICON><DEFAULT>src="/s017.gif"</DEFAULT></ICON>
+					</OBJ16>
+					<OBJ17>
+						id = "718"
+						alt = ":Бабочка:"
+						tip = "Бабочка"
+						src_width = "48"
+						src_height = "32"
+						<ICON><DEFAULT>src="/s018.gif"</DEFAULT></ICON>
+					</OBJ17>
+				</ITEMS>
+			</SET06>
 		</ITEMS>
 	</SMILES>
 	<STATUSES>

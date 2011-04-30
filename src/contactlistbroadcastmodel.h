@@ -15,7 +15,7 @@ public:
 	~ContactListBroadcastModel();
 
 	Contact* contactFromIndex(const QModelIndex& index);
-	QList<QByteArray> broadcastList();
+	QList<QByteArray> & broadcastList();
 
 private slots:
 	void rebuild();
@@ -26,5 +26,6 @@ private:
 	ContactList* contactList;
 	QMap<Contact*, ContactListItem*> contactsMap;
 	QByteArray m_contactEmail;
+	QList<QByteArray> res;
 };
 #endif // CONTACTLISTBROADCASTMODEL_H

@@ -39,16 +39,32 @@
 SystemTrayIcon::SystemTrayIcon(Account* a, ContactListWindow* w, StatusMenu* sm)
  : QSystemTrayIcon(w), mainWindow(w), account(a)
 {
+	m_popupsExists = false;
+
 	updateTooltip();
 	setOnlineStatus(OnlineStatus::offline);
+
+	popsStack = new PopupWindowsStack(this);
+	connect(popsStack, SIGNAL(mouseEntered()), this, SLOT(popsStackMouseEntered()));
+	connect(popsStack, SIGNAL(mouseLeaved()), this, SLOT(popsStackMouseLeaved()));
+
 	connect(account, SIGNAL(nicknameChanged()), this, SLOT(updateTooltip()));	
 	connect(account->client(), SIGNAL(newLetter(QString, QString, QDateTime)), this, SLOT(newLetter(QString, QString, QDateTime)));
+	connect(account->client(), SIGNAL(newNumberOfUnreadLetters(quint32)), this, SLOT(newLetters(quint32)));
 
 	connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(processActivation(QSystemTrayIcon::ActivationReason)));
 	
 	contextMenu = new QMenu;
 
-	//contextMenu->addAction(QIcon(""), tr("Check e-mail"), NULL, SLOT()); //TODO
+	timer = new QTimer;
+	connect(timer, SIGNAL(timeout()), popsStack, SLOT(closeAllUnclosedWindows()));
+	timer->setSingleShot(true);
+
+	iconTimer = new QTimer;
+	connect(iconTimer, SIGNAL(timeout()), this, SLOT(iconTimerTimeOver()));
+	iconTimer->setSingleShot(true);
+	iconTimer->setInterval(500);
+	iconDisplayOff = false;
 
 	QWidgetAction* accountWidgetAction = new QWidgetAction(contextMenu);
 	QLabel* accountLabel = new QLabel("<b>" + account->email() + "</b>");
@@ -79,14 +95,23 @@ SystemTrayIcon::~SystemTrayIcon()
 
 void SystemTrayIcon::processActivation(QSystemTrayIcon::ActivationReason reason)
 {
-	if (mainWindow && reason == QSystemTrayIcon::Trigger)
+	if (account->settings()->value("Notification/Inner", true).toBool() && m_popupsExists)
 	{
-		toggleMainWindowVisibility();
+		timer->stop();
+		iconTimer->stop();
+		popsStack->deleteAllWindows();
+		m_popupsExists = false;
+		iconDisplayOff = false;
+		setIcon(statusIcon);
 	}
+	else
+		if (mainWindow && reason == QSystemTrayIcon::Trigger)
+			toggleMainWindowVisibility();
 }
 
 void SystemTrayIcon::updateTooltip()
 {
+//	setToolTip("");
 	QString nickname = account->nickname();
 	if (nickname.isEmpty())
 #ifdef Q_WS_X11
@@ -104,6 +129,14 @@ void SystemTrayIcon::updateTooltip()
 
 bool SystemTrayIcon::event(QEvent* e)
 {
+	if (e->type() == QEvent::ToolTip && account->settings()->value("Notification/Inner", true).toBool() && m_popupsExists)
+	{
+		timer->stop();
+		popsStack->showAllUnclosedWindows();
+		timer->setInterval(2000);
+		timer->start();
+		return false;
+	}
 	return QSystemTrayIcon::event(e);
 }
 
@@ -111,7 +144,62 @@ void SystemTrayIcon::newLetter(QString sender, QString subject, QDateTime dateTi
 {
 	theRM.getAudio()->play(STLetter);
 
-	showMessage(tr("New letter"), sender + "\n" + subject + "\n" + dateTime.toString(), QSystemTrayIcon::Information, 5000);
+	if (account->settings()->value("Notification/Inner", true).toBool())
+	{
+		messageIcon = QIcon(":/icons/letter.png");
+		setIcon(messageIcon);
+
+		if (!m_popupsExists)
+			iconTimer->start();
+
+		popsStack->showNewLetter(sender, subject, dateTime);
+		m_popupsExists = true;
+	}
+	else
+	{
+		//TODO!!!
+	}
+}
+
+void SystemTrayIcon::newLetters(quint32 unreadMessages)
+{
+	if (unreadMessages > 0)
+	{
+		theRM.getAudio()->play(STLetter);
+
+		if (account->settings()->value("Notification/Inner", true).toBool())
+		{
+			messageIcon = QIcon(":/icons/letter.png");
+			setIcon(messageIcon);
+
+			if (!m_popupsExists)
+				iconTimer->start();
+
+			popsStack->showLettersUnread(unreadMessages);
+			m_popupsExists = true;
+		}
+		else
+		{
+			//TODO:!!!
+		}
+	}
+}
+
+void SystemTrayIcon::newMessage(const QString & from, const QString & to, const QDateTime dateTime)
+{
+	qDebug() << Q_FUNC_INFO;
+
+	if (account->settings()->value("Notification/Inner", true).toBool())
+	{
+		messageIcon = QIcon(":/icons/message_16x16.png");
+		setIcon(messageIcon);
+
+		if (!m_popupsExists)
+			iconTimer->start();
+
+		popsStack->showNewMessage(from, to, dateTime);
+		m_popupsExists = true;
+	}
 }
 
 void SystemTrayIcon::toggleMainWindowVisibility()
@@ -164,7 +252,66 @@ void SystemTrayIcon::setupMainWindowVisibilityAction()
 
 void SystemTrayIcon::setOnlineStatus(OnlineStatus status)
 {
-	qDebug() << "SystemTrayIcon::setOnlineStatus";
-	setIcon(status.statusIcon());
+	statusIcon = status.statusIcon();
+	if ((account->settings()->value("Notification/Inner", true).toBool() && !m_popupsExists) || !account->settings()->value("Notification/Inner", true).toBool())
+		setIcon(statusIcon);
 }
 
+SystemTrayIcon::SysTrayPosition SystemTrayIcon::sysTrayPosition()
+{
+	QPoint desktopTLAtScreen = QApplication::desktop()->mapToGlobal(QApplication::desktop()->availableGeometry().topLeft());
+	QPoint desktopBRAtScreen = QApplication::desktop()->mapToGlobal(QApplication::desktop()->availableGeometry().bottomRight());
+	if (geometry().top() - desktopTLAtScreen.y() < 0)
+		return Top;
+	else if (geometry().bottom() > desktopBRAtScreen.y())
+		return Bottom;
+	else if (geometry().left() - desktopTLAtScreen.x() < 0)
+		return Left;
+	else if (geometry().right() > desktopBRAtScreen.x())
+		return Right;
+	else
+	{
+		qDebug() << "Strange geometry...";
+		return Top;
+	}
+}
+
+void SystemTrayIcon::popsStackMouseEntered()
+{
+	timer->stop();
+}
+
+void SystemTrayIcon::popsStackMouseLeaved()
+{
+	timer->stop();
+	timer->setInterval(500);
+	timer->start();
+}
+
+void SystemTrayIcon::iconTimerTimeOver()
+{
+	if (m_popupsExists)
+	{
+		if (iconDisplayOff)
+			setIcon(messageIcon);
+		else
+			setIcon(QIcon());
+		iconDisplayOff = !iconDisplayOff;
+		iconTimer->start();
+	}
+	else
+		setIcon(statusIcon);
+}
+
+void SystemTrayIcon::notificationTypeChange()
+{
+	if (!account->settings()->value("Notification/Inner", true).toBool())
+	{
+		timer->stop();
+		iconTimer->stop();
+		popsStack->deleteAllWindows();
+		m_popupsExists = false;
+		iconDisplayOff = false;
+		setIcon(statusIcon);
+	}
+}

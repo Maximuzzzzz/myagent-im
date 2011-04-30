@@ -249,6 +249,7 @@ void MainMenuButton::showSettingsWindow()
 
 	settingsWindow = new SettingsWindow(m_account, mainWindow);
 	connect(settingsWindow, SIGNAL(statusesCountChanged()), this, SIGNAL(statusesCountChanged()));
+	connect(settingsWindow, SIGNAL(newNotificationType()), this, SIGNAL(notificationTypeChanged()));
 	settingsWindow->setChatWindowsManager(chatWindowsManager);
 	centerWindow(settingsWindow);
 	settingsWindow->show();

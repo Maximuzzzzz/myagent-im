@@ -25,6 +25,7 @@
 
 #include <QObject>
 #include <QHash>
+#include <QDateTime>
 
 class Contact;
 class ChatSession;
@@ -44,6 +45,7 @@ public:
 signals:
 	void sessionCreated(ChatSession* session);
 	void sessionInitialized(ChatSession* session);
+	void messageReceived(ChatSession* session, Message* msg);
 	
 private slots:
 	void processMessage(QByteArray from, Message* msg);

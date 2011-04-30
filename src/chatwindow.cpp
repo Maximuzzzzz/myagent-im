@@ -257,14 +257,19 @@ quint32 ChatWindow::sendMessage()
 
 	theRM.getAudio()->play(STOtprav);
 
-	QList<QByteArray> receiversList = broadcastPanel->receivers();
-	if (receiversList.count() == 0 || (receiversList.count() == 1 && receiversList.at(0) == session->contact()->email()))
-		return session->sendMessage(messageText, messageRtf);
-	else
+	if (!session->contact()->isConference())
 	{
-		qDebug() << "Broadcast";
-		session->broadcastMessage(broadcastPanel->receivers(), messageText, messageRtf);
+		QList<QByteArray> receiversList = broadcastPanel->receivers();
+		if (receiversList.count() == 0 || (receiversList.count() == 1 && receiversList.at(0) == session->contact()->email()))
+			return session->sendMessage(messageText, messageRtf);
+		else
+		{
+			qDebug() << "Broadcast";
+			return session->broadcastMessage(broadcastPanel->receivers(), messageText, messageRtf);
+		}
 	}
+	else
+		return session->sendMessage(messageText, messageRtf);
 }
 
 quint32 ChatWindow::sendSms()

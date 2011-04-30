@@ -40,8 +40,6 @@ ChatWindowsManager::ChatWindowsManager(Account* account, QObject *parent)
 	useTabs = m_account->settings()->value("Windows/UseTabs", true).toBool();
 
 	emoticonSelector = new EmoticonSelector();
-/*	connect(emoticonSelector, SIGNAL(selected(QString)), SLOT(insertEmoticon(QString)));
-	connect(emoticonSelector, SIGNAL(closed()), smilesAction, SLOT(toggle()));*/
 
 	if (useTabs)
 		loadMainWindow();
@@ -65,13 +63,9 @@ ChatWindow* ChatWindowsManager::getWindow(ChatSession* session)
 
 	if (useTabs)
 	{
-		/*if (tabs->count() == 0)
-			tabsWindow->setGeometry(wnd->geometry());*/
-
 		int tabIndex = tabs->indexOf(wnd);
 		if (tabIndex != -1)
 		{
-			//if (!tabsWindow->isVisible())
 			tabs->setCurrentIndex(tabIndex);
 			tabs->setTabIcon(tabIndex, wnd->windowIcon());
 		}
@@ -218,8 +212,6 @@ void ChatWindowsManager::loadMainWindow()
 	connect(tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(slotRemoveTab(int)));
 	connect(tabs, SIGNAL(currentChanged(int)), this, SLOT(changeTab(int)));
 
-	//connect(tabsWindow, SIGNAL(showEvent()), this, SLOT(onShowWindow())); // looks strange
-
 	QVBoxLayout* layout = new QVBoxLayout;
 	layout->setContentsMargins(1, 1, 1, 1);
 	layout->addWidget(tabs);
@@ -272,12 +264,6 @@ void ChatWindowsManager::reloadStatus(bool doUseTabs)
 	useTabs = doUseTabs;
 }
 
-void ChatWindowsManager::onShowWindow()
-{
-	// seems to be unused
-	changeTab(tabs->currentIndex());
-}
-
 void ChatWindowsManager::raiseWindow(ChatWindow* wnd)
 {
 	if (!useTabs)
@@ -302,5 +288,16 @@ void ChatWindowsManager::contactIgnored(bool b)
 				slotRemoveTab(tabIndex);
 		}
 		wnd->close();
+	}
+}
+
+void ChatWindowsManager::messageProcess(ChatSession* session, Message* msg)
+{
+	qDebug() << Q_FUNC_INFO;
+	ChatWindow* wnd = windows.value(session);
+	if (wnd == NULL || !wnd->isActiveWindow())
+	{
+		qDebug() << "Window isn't active";
+		emit messageReceived(session->contact()->email(), session->account()->email(), msg->dateTime());
 	}
 }

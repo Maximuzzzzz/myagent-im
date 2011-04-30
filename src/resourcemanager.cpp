@@ -30,6 +30,8 @@
 const int ResourceManager::maxDefaultStatuses = 10;
 const int ResourceManager::minDefaultStatuses = 5;
 const QString ResourceManager::defDateFormat = "dd.MM.yyyy hh:mm:ss";
+const int ResourceManager::popupWindowWidth = 225;
+const int ResourceManager::popupWindowHeight = 63;
 
 ResourceManager::ResourceManager(QObject *parent)
 	: QObject(parent)
@@ -54,6 +56,13 @@ ResourceManager::ResourceManager(QObject *parent)
 		m_locale = "en_US";
 	m_onlineStatuses.load(onlineStatusesPath + "/skin/" + m_locale + "/skin.txt");
 	m_emoticons.load(emoticonsPath + "/skin/" + m_locale + "/skin.txt", m_settings);
+	QDir userSkin(emoticonsPath + "/skin/" + m_locale + "/user");
+	QStringList userSkinFiles = userSkin.entryList(QDir::Files);
+	QStringList::iterator it = userSkinFiles.begin();
+	for (; it != userSkinFiles.end(); ++it)
+		m_onlineStatuses.load(emoticonsPath + "/skin/" + m_locale + "/user/" + (*it));
+	for (it = userSkinFiles.begin(); it != userSkinFiles.end(); ++it)
+		m_emoticons.load(emoticonsPath + "/skin/" + m_locale + "/user/" + (*it), m_settings);
 	m_locations.load(":/region.txt");
 }
 

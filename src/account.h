@@ -83,6 +83,7 @@ private slots:
 	void slotDisconnectedFromServer();
 
 	void setUnreadLetters(quint32 n);
+	void slotNewLetter();
 
 private:
 	QByteArray m_email;

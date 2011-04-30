@@ -29,6 +29,7 @@
 
 #include "onlinestatus.h"
 #include "statusmenu.h"
+#include "popupwindowsstack.h"
 
 class ContactListWindow;
 class Account;
@@ -37,18 +38,33 @@ class SystemTrayIcon : public QSystemTrayIcon
 {
 Q_OBJECT
 public:
+	enum SysTrayPosition {
+		Left,
+		Right,
+		Top,
+		Bottom
+	};
 	SystemTrayIcon(Account* a, ContactListWindow* w, StatusMenu* sm);
 	~SystemTrayIcon();
 
-	virtual bool event(QEvent* e );
+	virtual bool event(QEvent* e);
+	SysTrayPosition sysTrayPosition();
+
+public slots:
+	void newMessage(const QString & from, const QString & to, const QDateTime dateTime);
+	void notificationTypeChange();
 
 private slots:
 	void processActivation(QSystemTrayIcon::ActivationReason reason);
 	void updateTooltip();
 	void newLetter(QString sender, QString subject, QDateTime dateTime);
+	void newLetters(quint32 unreadMessages);
 	void toggleMainWindowVisibility();
 	void slotContextMenuAboutToShow();
 	void setOnlineStatus(OnlineStatus status);
+	void popsStackMouseEntered();
+	void popsStackMouseLeaved();
+	void iconTimerTimeOver();
 
 private:
 	void setupMainWindowVisibilityAction();
@@ -58,8 +74,18 @@ private:
 	QMenu* contextMenu;
 	QPoint mainWindowPos;
 	QSize mainWindowSize;
+	QTimer* timer;
+	QTimer* iconTimer;
+
+	QIcon statusIcon;
+	QIcon messageIcon;
+
+	PopupWindowsStack* popsStack;
 
 	QAction* mainWindowVisibilityAction;
+
+	bool m_popupsExists;
+	bool iconDisplayOff;
 };
 
 #endif

@@ -113,7 +113,7 @@ quint32 MRIMClientPrivate::sendPacket(quint32 msgtype, QByteArray data, quint32 
 
 /*
 For developers! You can use protoVersionMinor for migrating packets version from old to newer.
-Default version wrote in proto.h, protocol version at October 2010 = 0x16
+Default version wrote in proto.h, protocol version at April 2011 = 0x17
 */
 
 	qDebug() << "Send packet";
@@ -149,7 +149,7 @@ void MRIMClientPrivate::slotConnectedToServer()
 
 	if (currentStatus.protocolStatus() == STATUS_OFFLINE && newStatus.protocolStatus() != STATUS_OFFLINE)
 		if (!gettingAddress)
-			sendPacket(MRIM_CS_HELLO, QByteArray(), 23);
+			sendPacket(MRIM_CS_HELLO, QByteArray());
 }
 
 void MRIMClientPrivate::slotDisconnectedFromServer()
@@ -203,7 +203,7 @@ void MRIMClientPrivate::slotSocketError(QAbstractSocket::SocketError error)
 
 void MRIMClientPrivate::ping()
 {
-	sendPacket(MRIM_CS_PING, QByteArray(), 23);
+	sendPacket(MRIM_CS_PING, QByteArray());
 }
 
 void MRIMClientPrivate::readData()
@@ -449,13 +449,14 @@ void MRIMClientPrivate::processHelloAck(QByteArray data)
 	qDebug() << "MRIMClientPrivate: processHelloAck, status = " << currentStatus.id() << "(" << currentStatus.statusDescr() << ")";
 
 	out << /*quint32(newStatus);*/quint32(0xffffffff);
-	out << QByteArray("client=\"magent\" version=\"5.6\" build=\"3278\"");
+	out << QByteArray("client=\"myagent-im\" version=\"").append(VERSION).append("\"");
 	out << QByteArray("ru"); //TODO: must depends upon system locale
 
 	out << quint32(16);
 	out << quint32(1);
 	out << QByteArray("geo-list");
-	out << QByteArray("MRA 5.6 (build 3278);");
+	//out << QByteArray("MRA 5.7 (build 3797);");
+	out << QByteArray("myagent-im ").append(VERSION);
 
 	quint8 i; //TODO: try to understand these arguments
 	for (i = 0; i <= 0x5c; )
@@ -479,7 +480,6 @@ void MRIMClientPrivate::processHelloAck(QByteArray data)
 			out << quint32(1);
 		else if (i == 9)
 			out << QByteArray::fromHex("475b4358474b565840785c565f5c164147425d4d534a");
-//			out << QByteArray::fromHex("465d43504049505840745e585c5e184b4c425d47594a");
 		else if (i == 0x14)
 			out << quint32(0x00000501);
 		else if (i == 0x2c)
@@ -521,6 +521,8 @@ void MRIMClientPrivate::processUserInfo(QByteArray data)
 		else if (param == "MESSAGES.UNREAD")
 		{
 			unreadMessages = descr;
+			quint32 unreadMessages = descr.toUInt();
+			emit q->newNumberOfUnreadLetters(unreadMessages);
 			account->setUnreadMessages(descr);
 		}
 		else if (param == "MRIM.NICKNAME")
@@ -743,7 +745,7 @@ void MRIMClientPrivate::processNewMail(QByteArray data)
 	quint32 unixTime;
 	in >> baSender >> baSubject >> unixTime;
 
-	emit q->newNumberOfUnreadLetters(unreadMessages);
+//	emit q->newNumberOfUnreadLetters(unreadMessages);
 	emit q->newLetter(codec->toUnicode(baSender), codec->toUnicode(baSubject), QDateTime::fromTime_t(unixTime));
 }
 

@@ -26,7 +26,7 @@ ContactListBroadcast::ContactListBroadcast(QByteArray contactEmail, ContactList*
  : QListView(parent)
 {
 	m_contactList = cl;
-	ContactListBroadcastModel* broadcastModel = new ContactListBroadcastModel(contactEmail, cl);
+	broadcastModel = new ContactListBroadcastModel(contactEmail, cl);
 	connect(cl->model(), SIGNAL(modelRebuilded()), broadcastModel, SLOT(rebuild()));
 	setModel(broadcastModel);
 }

@@ -227,3 +227,4 @@ void Emoticons::setFavouriteEmoticons(const QStringList& emoticonIds)
 	theRM.settings()->setValue("favouriteEmoticons", emoticonIds);
 	m_favouriteEmoticons = emoticonIds;
 }
+

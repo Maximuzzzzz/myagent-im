@@ -29,12 +29,13 @@
 #include "account.h"
 #include "contactlistwindow.h"
 
-#define SHOW_COMMON_PAGE	0x01
-#define SHOW_MESSAGES_PAGE	0x02
-#define	SHOW_WINDOWS_PAGE	0x04
-#define SHOW_AUDIO_PAGE		0x08
-#define SHOW_VIEW_PAGE		0x10
+#define SHOW_COMMON_PAGE		0x01
+#define SHOW_MESSAGES_PAGE		0x02
+#define	SHOW_WINDOWS_PAGE		0x04
+#define SHOW_AUDIO_PAGE			0x08
+#define SHOW_VIEW_PAGE			0x10
 #define SHOW_CONNECTION_PAGE	0x20
+#define SHOW_NOTIFICATION_PAGE	0x40
 
 class Account;
 
@@ -57,11 +58,13 @@ public:
 
 signals:
 	void statusesCountChanged();
+	void newNotificationType();
 
 private slots:
 	void saveSettings();
 	void setProxyType();
 	void showFormatHelp();
+	void notificationTypeChanged();
 
 	void init();
 
@@ -83,6 +86,9 @@ private:
 
 	void createConnectionPage();
 	void saveConnectionSettings();
+
+	void createNotificationPage();
+	void saveNotificationSettings();
 
 	QListWidget* listWidget;
 	QStackedWidget* pagesWidget;
@@ -121,6 +127,12 @@ private:
 	QLineEdit* user;
 	QLineEdit* password;
 
+	//notification page
+	QRadioButton* notificationTypeInner;
+	QRadioButton* notificationTypeExternal;
+	QLineEdit* messageReceivedCommand;
+	QLineEdit* letterReceivedCommand;
+
 	ChatWindowsManager* chatWindowsManager;
 
 	Account* m_account;
@@ -128,7 +140,6 @@ private:
 	quint8 m_flags;
 
 	ContactListWindow* m_clw;
-
 };
 
 #endif

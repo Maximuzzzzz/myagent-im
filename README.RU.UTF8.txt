@@ -6,15 +6,12 @@ MyAgent-IM - программа для обмена сообщениями по 
 3) pkg-config
 
 библиотеки:
-1) qt >= 4.4
-2) zlib
-3) libxapian
-4) libaspell
-5) libxss
-5) может быть еще что-то ;)
-
-Библиотеки нужны не сами по себе, а с заголовочнымы файлами.
-Так что при их установке ставьте также dev-пакеты (например, libqt4-dev)
+1) libqt4-dev (>= 4.4)
+2) zlib1g-dev
+3) libxapian-dev
+4) libaspell-dev
+5) libxss-dev
+6) libphonon-dev
 
 Компиляция:
 > qmake
@@ -25,6 +22,8 @@ MyAgent-IM - программа для обмена сообщениями по 
 
 Бинарник копируется в /usr/local/bin, файлы данных (переводы) в /usr/local/share/myagent-im
 Изменить пути можно подредактировав файл проекта src.pro (переменные BINDIR и DATADIR)
+
+При компиляции из сборок ВСЕГДА делайте `make uninstall' предыдущей версии.
 
 Запуск:
 > myagent-im
@@ -41,8 +40,3 @@ MyAgent-IM - программа для обмена сообщениями по 
 QMake version 2.01a
 Using Qt version 4.4.0 in /usr/lib
 
-При установке deb-пакета может возникнуть ошибка:
-"Error: dependency is not satisfiable: phonon-backend"
-Для её устранения необходимо установить phonon-backend-gstreamer или phonon-backend-xine или любой другой, отображающийся в списке по команде:
-`aptitude search phonon-backend`
-Для версий выше 0.4.2 проблема не актуальна

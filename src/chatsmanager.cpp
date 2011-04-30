@@ -75,6 +75,7 @@ void ChatsManager::processMessage(QByteArray from, Message* msg)
 				theRM.getAudio()->play(STMessage);
 	}
 	session->appendMessage(msg);
+	emit messageReceived(session, msg);
 }
 
 void ChatsManager::processFileMessage(FileMessage* fmsg)

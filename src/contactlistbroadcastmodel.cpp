@@ -106,9 +106,9 @@ void ContactListBroadcastModel::slotRemoveContactItem(Contact* c)
 	removingContactItem->QStandardItem::parent()->takeRow(removingContactItem->row());
 }
 
-QList<QByteArray> ContactListBroadcastModel::broadcastList()
+QList<QByteArray> & ContactListBroadcastModel::broadcastList()
 {
-	QList<QByteArray> res = QList<QByteArray>();
+	res.clear();
 	QMap<Contact*, ContactListItem*>::iterator it = contactsMap.begin();
 	for (; it != contactsMap.end(); ++it)
 	{

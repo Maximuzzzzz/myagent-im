@@ -41,6 +41,7 @@ unix {
         smiles_set03 \
         smiles_set04 \
         smiles_set05 \
+		smiles_set06 \
         smiles_smiles \
         smiles_static_png \
         smiles \
@@ -72,7 +73,9 @@ unix {
     smiles_set04.files = emoticons/smiles/set04/*
     smiles_set05.path = $$SMILESDIR/set05
     smiles_set05.files = emoticons/smiles/set05/*
-    smiles_smiles.path = $$SMILESDIR/smiles
+	smiles_set06.path = $$SMILESDIR/set06
+	smiles_set06.files = emoticons/smiles/set06/*
+	smiles_smiles.path = $$SMILESDIR/smiles
     smiles_smiles.files = emoticons/smiles/smiles/*
     smiles_static_png.path = $$SMILESDIR/static_png
     smiles_static_png.files = emoticons/smiles/static_png/*
@@ -206,7 +209,9 @@ SOURCES += main.cpp \
     removecontactdialog.cpp \
     contactlistbroadcastmodel.cpp \
     taskbroadcastmessage.cpp \
-    conferencelistmodel.cpp
+    conferencelistmodel.cpp \
+    popupwindow.cpp \
+    popupwindowsstack.cpp
 HEADERS += mrimclient.h \
     soundplayer.h \
     audio.h \
@@ -335,7 +340,9 @@ HEADERS += mrimclient.h \
     removecontactdialog.h \
     contactlistbroadcastmodel.h \
     taskbroadcastmessage.h \
-    conferencelistmodel.h
+    conferencelistmodel.h \
+    popupwindow.h \
+    popupwindowsstack.h
 FORMS += logindialog.ui \
     searchcontacts.ui \
     addcontact.ui \

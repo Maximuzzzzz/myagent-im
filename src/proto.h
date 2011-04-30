@@ -2,7 +2,7 @@
 #define MRIM_PROTO_H
 
 #define PROTO_VERSION_MAJOR     1
-#define PROTO_VERSION_MINOR     9
+#define PROTO_VERSION_MINOR     23
 #define PROTO_VERSION ((((quint32)(PROTO_VERSION_MAJOR))<<16)|(quint32)(PROTO_VERSION_MINOR))
 
 #define PROTO_MAJOR(p) (((p)&0xFFFF0000)>>16)

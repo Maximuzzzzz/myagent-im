@@ -236,9 +236,10 @@ void FileMessage::slotConnectedToPeer()
 
 void FileMessage::slotReadyRead()
 {
-	//qDebug() << "FileMessage::slotReadyRead()";
+	qDebug() << "FileMessage::slotReadyRead()";
 
 	QByteArray in(fm_socket->readAll());
+	qDebug() << in.length();
 
 	if (in[0] == char(239) && transferStatus == WAITING_FOR_HELLO) /*TODO: interpretate packet fully*/
 	{
@@ -446,11 +447,14 @@ void FileMessage::getFile()
 	bytesTransferred = 0;
 
 	fm_currentFile.setFileName(fm_defaultDir + "/" + fm_fileListUtf[currFile]);
-qDebug() << fm_defaultDir + "/" + fm_fileListUtf[currFile];
+	//qDebug() << fm_defaultDir + "/" + fm_fileListUtf[currFile];
 
 	fm_currentFile.open(QIODevice::WriteOnly);
 
 	sendData("MRA_FT_GET_FILE " + fm_fileListAnsi[currFile]);
+
+	if (fm_sizes[currFile] == 0)
+		slotReadyRead();
 }
 
 void FileMessage::sendData(const QString& str)

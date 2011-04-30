@@ -41,7 +41,7 @@ BroadcastMessage::~BroadcastMessage()
 
 bool BroadcastMessage::exec()
 {
-	if (mc == NULL || m_receivers.count() > 0)
+	if (mc == NULL || m_receivers.count() == 0)
 	{
 		delete this;
 		return false;

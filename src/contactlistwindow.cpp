@@ -162,6 +162,9 @@ ContactListWindow::ContactListWindow(Account* account)
 	sysTray = new SystemTrayIcon(m_account, this, statusesMenu);
 
 	connect(account, SIGNAL(onlineStatusChanged(OnlineStatus)), sysTray, SLOT(setOnlineStatus(OnlineStatus)));
+	connect(account->chatsManager(), SIGNAL(messageReceived(ChatSession*, Message*)), chatWindowsManager, SLOT(messageProcess(ChatSession*, Message*)));
+	connect(chatWindowsManager, SIGNAL(messageReceived(const QString&, const QString&, const QDateTime)), sysTray, SLOT(newMessage(const QString&, const QString&, const QDateTime)));
+	connect(mainMenuButton, SIGNAL(notificationTypeChanged()), sysTray, SLOT(notificationTypeChange()));
 
 	sysTray->show();
 

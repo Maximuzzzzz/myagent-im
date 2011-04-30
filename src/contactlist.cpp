@@ -258,6 +258,7 @@ void ContactList::beginUpdating()
 	m_hiddenGroups.clear();
 
 	tmpContacts.clear();
+	tmpGroups.clear();
 	
 	constructing = true;
 }
@@ -269,8 +270,40 @@ void ContactList::endUpdating()
 	qDeleteAll(m_groups);
 	m_groups = tmpGroups;
 
-	qDeleteAll(m_contacts);
-	m_contacts = tmpContacts;
+	QList<Contact*> contactsForDelete;
+	QList<Contact*>::iterator it = m_contacts.begin();
+	for (; it != m_contacts.end(); ++it)
+	{
+		QList<Contact*>::iterator tmp_it = tmpContacts.begin();
+		bool found = false;
+		for (; tmp_it != tmpContacts.end(); ++tmp_it)
+		{
+			if ((*it)->email() == (*tmp_it)->email())
+			{
+				found = true;
+				//Update m_contacts contact, found in tmpContacts
+				(*it)->update((*tmp_it)->contactData(), (*tmp_it)->group());
+				//Remove item from tmpContacts;
+				tmpContacts.removeAll(*tmp_it);
+				break;
+			}
+		}
+		if (!found)
+			contactsForDelete.append(*it);
+	}
+
+	//Remove from m_contacts contact, which not found in tmpContacts
+	for (it = contactsForDelete.begin(); it != contactsForDelete.end(); ++it)
+		m_contacts.removeAll(*it);
+	qDeleteAll(contactsForDelete);
+	contactsForDelete.clear();
+
+	//Add in m_contacts all contacts, residuary in tmpContacts
+	for (it = tmpContacts.begin(); it != tmpContacts.end(); ++it)
+		m_contacts.append(*it);
+
+//	qDeleteAll(m_contacts);
+//	m_contacts = tmpContacts;
 	
 	constructing = false;
 	emit updated();

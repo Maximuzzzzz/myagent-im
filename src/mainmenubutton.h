@@ -47,6 +47,7 @@ public:
 
 signals:
 	void statusesCountChanged();
+	void notificationTypeChanged();
 
 private slots:
 	void searchContacts();

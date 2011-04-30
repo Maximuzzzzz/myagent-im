@@ -124,5 +124,6 @@
         <file>icons/editor/msg_bar_f_multi_h.png</file>
         <file>icons/editor/msg_bar_f_multi_p.png</file>
         <file>icons/editor/msg_bar_f_multi_ph.png</file>
+        <file>icons/notify/unread.png</file>
     </qresource>
 </RCC>

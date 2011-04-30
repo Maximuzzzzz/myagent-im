@@ -95,8 +95,9 @@ bool ChatSession::broadcastMessage(ReceiversList receivers, QString plainText, Q
 
 bool ChatSession::broadcastMessage(Message* msg, ReceiversList receivers)
 {
+	qDebug() << Q_FUNC_INFO;
 	Task* task = new Tasks::BroadcastMessage(receivers, msg, m_account->client());
-	connect(task, SIGNAL(done(quint32, bool)), this, SLOT(slotBroadcasrMessageStatus(quint32, bool)));
+	connect(task, SIGNAL(done(quint32, bool)), this, SLOT(slotBroadcastMessageStatus(quint32, bool)));
 
 	appendBroadcastMessage(msg, receivers);
 
@@ -122,18 +123,18 @@ void ChatSession::slotMessageStatus(quint32 status, bool timeout)
 void ChatSession::slotBroadcastMessageStatus(quint32 status, bool timeout)
 {
 	Tasks::BroadcastMessage* task = qobject_cast<Tasks::BroadcastMessage*>(sender());
-	if (!timeout && status == MESSAGE_DELIVERED)
-	{
+/*	if (!timeout && status == MESSAGE_DELIVERED)
+	{*/
 		qDebug() << "Message delivered";
 		messages.remove(messages.key(task->getMessage()));
 		broadcastMessages.remove(broadcastMessages.key(task->getReceivers()));
 		emit messageDelivered(true, task->getMessage());
-	}
+/*	}
 	else
 	{
 		qDebug() << "Message NOT delivered";
 		emit messageDelivered(false, task->getMessage());
-	}
+	}*/
 }
 
 void ChatSession::sendTyping()

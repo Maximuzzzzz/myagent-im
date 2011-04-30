@@ -1,10 +1,14 @@
+- Add option for editing type of notification (inner, user)
+- Favorite emoticons are not in account setting, but are in myagent basic settings
+- Repository for deb-files
+- Check file transferring
 - Trying to connect to server periodically
 - Filter for conferences
 - Add links at services mail.ru in contact context menu
 - Add group "old archives", which contains deleted users, history of whom was not deleted. Deleting contact from this group will delete log
 - Automatically login (saving passwords)
 - Adding and deleting groups in contact list without fully contact list updating
-- Bug: when incomes message from conference, which is not in the contact list, chat window appears and closes immediately
+?- Bug: when incomes message from conference, which is not in the contact list, chat window appears and closes immediately
 - Delete "Conferences" and "Phones" groups, when child items are absent
 - Minimize chat window when interlocutor wrote the message, if chat window is closed
 - Make the "<" symbol printable in the messages chat
@@ -14,7 +18,6 @@
 - Support phone and video calling
 - Support games
 - Support flash-mult
-- Add notification window in tray
 - Hide contact list during account is offline
 - Multiprotocoling
 

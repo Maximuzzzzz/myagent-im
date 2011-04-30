@@ -60,6 +60,8 @@ public:
 	static const int maxDefaultStatuses;
 	static const int minDefaultStatuses;
 	static const QString defDateFormat;
+	static const int popupWindowWidth;
+	static const int popupWindowHeight;
 
 private:
 	ResourceManager(QObject* parent = 0);

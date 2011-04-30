@@ -70,6 +70,7 @@ Account::Account(QByteArray email, QByteArray password, QObject* parent)
 	connect(m_client, SIGNAL(contactTyping(QByteArray)), m_contactList, SLOT(contactTyping(QByteArray)));
 	connect(m_client, SIGNAL(contactAuthorizedMe(const QByteArray&)), m_contactList, SLOT(slotContactAuthorized(const QByteArray&)));
 	connect(m_client, SIGNAL(newNumberOfUnreadLetters(quint32)), this, SLOT(setUnreadLetters(quint32)));
+	connect(m_client, SIGNAL(newLetter(QString, QString, QDateTime)), this, SLOT(slotNewLetter()));
 }
 
 void Account::reset(QByteArray email, QByteArray password)
@@ -221,6 +222,12 @@ void Account::setUnreadLetters(quint32 n)
 	emit unreadLettersChanged(m_unreadMessages);
 }
 
+void Account::slotNewLetter()
+{
+	m_unreadMessages++;
+	emit unreadLettersChanged(m_unreadMessages);
+}
+
 void Account::setAutoAway(bool on)
 {
 	if (on)
@@ -254,9 +261,6 @@ void Account::setUnreadMessages(const QString& unreadMessages)
 {
 	qDebug() << "Account::setUnreadMessages" << unreadMessages;
 	m_unreadMessages = unreadMessages.toUInt();
-
-	if (unreadMessages.toUInt() > 0)
-		theRM.getAudio()->play(STLetter);
 
 	emit unreadLettersChanged(m_unreadMessages);
 }

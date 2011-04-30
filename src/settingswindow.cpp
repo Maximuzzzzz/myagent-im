@@ -101,6 +101,8 @@ void SettingsWindow::init()
 		createViewPage();
 	if (m_flags & SHOW_CONNECTION_PAGE)
 		createConnectionPage();
+	if (m_flags & SHOW_NOTIFICATION_PAGE)
+		createNotificationPage();
 
 	listWidget->setCurrentRow(0);
 	listWidget->setMaximumWidth(listWidget->sizeHintForColumn(0) + 10);
@@ -168,6 +170,8 @@ void SettingsWindow::saveSettings()
 	if (m_flags & SHOW_WINDOWS_PAGE)
 		if (!saveWindowsSettings())
 			return;
+	if (m_flags & SHOW_NOTIFICATION_PAGE)
+		saveNotificationSettings();
 	close();
 }
 
@@ -185,7 +189,6 @@ void SettingsWindow::saveCommonSettings()
 void SettingsWindow::createMessagesPage()
 {
 	QWidget* messagesSettingsPage = new QWidget;
-
 	QVBoxLayout* layout = new QVBoxLayout;
 
 	QGroupBox* sendBox = new QGroupBox(tr("Sending messages"));
@@ -489,6 +492,53 @@ void SettingsWindow::saveConnectionSettings()
 		theRM.settings()->remove("Connection/password");
 }
 
+void SettingsWindow::createNotificationPage()
+{
+	QWidget* notificationPage = new QWidget;
+	QVBoxLayout* layout = new QVBoxLayout;
+	QGroupBox* notificationType = new QGroupBox(tr("Notification type"));
+
+	QVBoxLayout* notificationLayout = new QVBoxLayout;
+
+	notificationTypeInner = new QRadioButton(tr("Inner"));
+	notificationTypeExternal = new QRadioButton(tr("External"));
+	messageReceivedCommand = new QLineEdit;
+	letterReceivedCommand = new QLineEdit;
+
+	notificationLayout->addWidget(notificationTypeInner);
+	notificationLayout->addWidget(notificationTypeExternal);
+	notificationLayout->addWidget(messageReceivedCommand);
+	notificationLayout->addWidget(letterReceivedCommand);
+
+	connect(notificationTypeInner, SIGNAL(toggled(bool)), this, SLOT(notificationTypeChanged()));
+
+	notificationType->setLayout(notificationLayout);
+
+	notificationTypeInner->setChecked(m_account->settings()->value("Notification/Inner", true).toBool());
+	notificationTypeExternal->setChecked(!notificationTypeInner->isChecked());
+	messageReceivedCommand->setText(m_account->settings()->value("Notification/MessageReceivedText", "").toString());
+	letterReceivedCommand->setText(m_account->settings()->value("Notification/LetterReceivedText", "").toString());
+
+	layout->addWidget(notificationType);
+
+	notificationPage->setLayout(layout);
+
+	listWidget->addItem(tr("Notification"));
+	pagesWidget->addWidget(notificationPage);
+}
+
+void SettingsWindow::saveNotificationSettings()
+{
+	m_account->settings()->setValue("Notification/Inner", notificationTypeInner->isChecked());
+	messageReceivedCommand->setEnabled(!notificationTypeInner->isChecked());
+	letterReceivedCommand->setEnabled(!notificationTypeInner->isChecked());
+	m_account->settings()->setValue("Notification/MessageReceivedText", messageReceivedCommand->text());
+	m_account->settings()->setValue("Notification/LetterReceivedText", letterReceivedCommand->text());
+
+	emit newNotificationType();
+}
+
+
 void SettingsWindow::setProxyType()
 {
 	if (typeSimple->isChecked() || typeHttps->isChecked())
@@ -512,4 +562,10 @@ void SettingsWindow::setProxyType()
 void SettingsWindow::showFormatHelp()
 {
 	QMessageBox::information(this, tr("Date time format help"), tr("%1\tthe day as number without a leading zero (1 to 31)\n%2\tthe day as number with a leading zero (01 to 31)\n%3\tthe abbreviated localized day name (e.g. 'Mon' to 'Sun').\n%4\tthe long localized day name (e.g. 'Monday' to 'Sunday').\n%5\tthe month as number without a leading zero (1-12)\n%6\tthe month as number with a leading zero (01-12)\n%7\tthe abbreviated localized month name (e.g. 'Jan' to 'Dec').\n%8\tthe long localized month name (e.g. 'January' to 'December').\n%9\tthe year as two digit number (00-99)\n%10\tthe year as four digit number\n\n%11\tthe hour without a leading zero (0 to 23 or 1 to 12 if AM/PM display)\n%12\tthe hour with a leading zero (00 to 23 or 01 to 12 if AM/PM display)\n%13\tthe minute without a leading zero (0 to 59)\n%14\tthe minute with a leading zero (00 to 59)\n%15\tthe second without a leading zero (0 to 59)\n%16\tthe second with a leading zero (00 to 59)\n%17\tthe milliseconds without leading zeroes (0 to 999)\n%18\tthe milliseconds with leading zeroes (000 to 999)\n%19\tuse AM/PM display. AP will be replaced by either \"AM\" or \"PM\".\n%20\tuse am/pm display. ap will be replaced by either \"am\" or \"pm\".").arg("d").arg("dd").arg("ddd").arg("dddd").arg("M").arg("MM").arg("MMM").arg("MMMM").arg("yy").arg("yyyy").arg("h").arg("hh").arg("m").arg("mm").arg("s").arg("ss").arg("z").arg("zzz").arg("AP").arg("ap"), QMessageBox::Ok);
+}
+
+void SettingsWindow::notificationTypeChanged()
+{
+	messageReceivedCommand->setEnabled(!notificationTypeInner->isChecked());
+	letterReceivedCommand->setEnabled(!notificationTypeInner->isChecked());
 }

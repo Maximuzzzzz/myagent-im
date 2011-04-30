@@ -75,7 +75,6 @@ void SendMessage::checkResult(quint32 msgseq, quint32 status)
 
 void SendMessage::timeout()
 {
-qDebug() << "SendMessage::timeout()";
 	Task::timeout();
 }
 

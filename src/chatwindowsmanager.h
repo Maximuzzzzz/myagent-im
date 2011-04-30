@@ -49,13 +49,16 @@ public:
 	void reloadStatus(bool doUseTabs);
 	Account* getAccount() { return m_account; }
 
+public slots:
+	void messageProcess(ChatSession* session, Message* msg);
+
 signals:
 	void ignoreSet(bool ignore);
 	void signalCheckSpellingSet(bool b);
+	void messageReceived(const QString & from, const QString & to, const QDateTime dateTime);
 
 private slots:
 	void mainWindowActivate(ChatWindow* wnd);
-	void onShowWindow();
 	ChatWindow* createWindow(ChatSession* session);
 	void removeWindow(QObject* session);
 	void slotRemoveTab(int tab);
