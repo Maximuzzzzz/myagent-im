@@ -1,3 +1,21 @@
+myagent-im (0.4.5) unstable; urgency=low
+  Dmitry Malakhov <abr_mail@mail.ru>:
+  * Message dialog fo file saving
+  * Blocking for sending empty messages
+  * Saving state of each group and collapsing/expanding it at start
+  * Deleting history during deleting contact (by user choise)
+  * Added microblog for contacts
+  * Added multicast
+  * Added interlocutors list in conferences
+  * Receiving null sized files
+  * Changed protocol version
+  * Added notification window in tray
+  * User smiles and statuses in separate skin.txt file
+  * Do not close windows, which was opened, where account was offline, after account on-line
+  * Added option for editing type of notification (inner, user)
+
+ -- Dmitry Malakhov <abr_mail@mail.ru>  Mon, 9 May 2011 15:18:25 +0400
+
 myagent-im (0.4.4) unstable; urgency=low
 
   Dmitry Malakhov <abr_mail@mail.ru>:
@@ -12,7 +30,7 @@ myagent-im (0.4.4) unstable; urgency=low
   * Option for merging/splitting messages from one contact
   * <br> tag in places, where text was stick together
 
- -- Dmitry Malakhov <abr_mail@mail.ru>  Mon, 26 Mar 2010 19:12:02 +0400
+ -- Dmitry Malakhov <abr_mail@mail.ru>  Mon, 26 Mar 2011 19:12:02 +0400
 
 myagent-im (0.4.3) unstable; urgency=low
 
@@ -20,7 +38,7 @@ myagent-im (0.4.3) unstable; urgency=low
   * Fixed bug with emails, which starts with "_"
   * Add proxies
 
- -- Dmitry Malakhov <abr_mail@mail.ru>  Sat, 26 Mar 2010 13:25:41 +0400
+ -- Dmitry Malakhov <abr_mail@mail.ru>  Sat, 26 Mar 2011 13:25:41 +0400
 
 myagent-im (0.4.2) unstable; urgency=low
 

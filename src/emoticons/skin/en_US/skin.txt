@@ -1123,6 +1123,141 @@
 					</OBJ16>
 				</ITEMS>
 			</SET04>
+			<SET06>
+				title = "Big smiles 3"
+				path = "/set06"
+				logo = "/logo.png"
+				<ITEMS>
+					<OBJ01>
+						id = "719"
+						alt = ":Flowers:"
+						tip = "Flowers"
+						src_width = "48"
+						src_height = "32"
+						<ICON><DEFAULT>src="/s019.gif"</DEFAULT></ICON>
+					</OBJ01>
+					<OBJ02>
+						id = "702"
+						alt = ":Little angel:"
+						tip = "Little angel"
+						src_width = "48"
+						src_height = "32"
+						<ICON><DEFAULT>src="/s002.gif"</DEFAULT></ICON>
+					</OBJ02>
+					<OBJ03>
+						id = "703"
+						alt = ":With love:"
+						tip = "With love"
+						src_width = "60"
+						src_height = "32"
+						<ICON><DEFAULT>src="/s003.gif"</DEFAULT></ICON>
+					</OBJ03>
+					<OBJ04>
+						id = "704"
+						alt = ":Girl with plait:"
+						tip = "Girl with plait"
+						src_width = "64"
+						src_height = "32"
+						<ICON><DEFAULT>src="/s004.gif"</DEFAULT></ICON>
+					</OBJ04>
+					<OBJ05>
+						id = "720"
+						alt = ":Bouquet:"
+						tip = "Bouquet"
+						src_width = "48"
+						src_height = "32"
+						<ICON><DEFAULT>src="/s020.gif"</DEFAULT></ICON>
+					</OBJ05>
+					<OBJ06>
+						id = "708"
+						alt = ":Wings of love:"
+						tip = "Wings of love"
+						src_width = "64"
+						src_height = "32"
+						<ICON><DEFAULT>src="/s008.gif"</DEFAULT></ICON>
+					</OBJ06>
+					<OBJ07>
+						id = "709"
+						alt = ":Confectioner:"
+						tip = "Confectioner"
+						src_width = "64"
+						src_height = "32"
+						<ICON><DEFAULT>src="/s009.gif"</DEFAULT></ICON>
+					</OBJ07>
+					<OBJ08>
+						id = "710"
+						alt = ":Doves:"
+						tip = "Doves"
+						src_width = "64"
+						src_height = "32"
+						<ICON><DEFAULT>src="/s010.gif"</DEFAULT></ICON>
+					</OBJ08>
+					<OBJ09>
+						id = "711"
+						alt = ":Tulips:"
+						tip = "Tulips"
+						src_width = "32"
+						src_height = "32"
+						<ICON><DEFAULT>src="/s011.gif"</DEFAULT></ICON>
+					</OBJ09>
+					<OBJ10>
+						id = "712"
+						alt = ":Heart:"
+						tip = "Heart"
+						src_width = "32"
+						src_height = "32"
+						<ICON><DEFAULT>src="/s012.gif"</DEFAULT></ICON>
+					</OBJ10>
+					<OBJ11>
+						id = "713"
+						alt = ":Cupid:"
+						tip = "Cupid"
+						src_width = "32"
+						src_height = "32"
+						<ICON><DEFAULT>src="/s013.gif"</DEFAULT></ICON>
+					</OBJ11>
+					<OBJ12>
+						id = "714"
+						alt = ":Merry-go-round:"
+						tip = "Merry-go-round"
+						src_width = "32"
+						src_height = "32"
+						<ICON><DEFAULT>src="/s014.gif"</DEFAULT></ICON>
+					</OBJ12>
+					<OBJ13>
+						id = "715"
+						alt = ":Cat:"
+						tip = "Cat"
+						src_width = "32"
+						src_height = "32"
+						<ICON><DEFAULT>src="/s015.gif"</DEFAULT></ICON>
+					</OBJ13>
+					<OBJ14>
+						id = "716"
+						alt = ":Dog:"
+						tip = "Dog"
+						src_width = "32"
+						src_height = "32"
+						<ICON><DEFAULT>src="/s016.gif"</DEFAULT></ICON>
+					</OBJ14>
+					<OBJ15>
+						id = "717"
+						alt = ":Bunny with flower:"
+						tip = "Bunny with flower"
+						src_width = "32"
+						src_height = "32"
+						<ICON><DEFAULT>src="/s017.gif"</DEFAULT></ICON>
+					</OBJ16>
+					<OBJ17>
+						id = "718"
+						alt = ":Butterfly:"
+						tip = "Butterfly"
+						src_width = "48"
+						src_height = "32"
+						<ICON><DEFAULT>src="/s018.gif"</DEFAULT></ICON>
+					</OBJ17>
+				</ITEMS>
+			</SET06>
 		</ITEMS>
 	</SMILES>
 	<STATUSES>
