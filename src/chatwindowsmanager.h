@@ -43,19 +43,20 @@ public:
 	~ChatWindowsManager();
 
 	ChatWindow* getWindow(ChatSession* session);
-	void raiseWindow(ChatWindow* wnd);
 
 	bool isAnyWindowVisible();
 	void reloadStatus(bool doUseTabs);
 	Account* getAccount() { return m_account; }
 
 public slots:
+	void raiseWindow(ChatWindow* wnd);
+	void raiseWindow(QByteArray & contact);
 	void messageProcess(ChatSession* session, Message* msg);
 
 signals:
 	void ignoreSet(bool ignore);
 	void signalCheckSpellingSet(bool b);
-	void messageReceived(const QString & from, const QString & to, const QDateTime dateTime);
+	void messageReceived(Contact * from, const QString & to, const QDateTime dateTime);
 
 private slots:
 	void mainWindowActivate(ChatWindow* wnd);

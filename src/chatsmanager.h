@@ -25,7 +25,6 @@
 
 #include <QObject>
 #include <QHash>
-#include <QDateTime>
 
 class Contact;
 class ChatSession;

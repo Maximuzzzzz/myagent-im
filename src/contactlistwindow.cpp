@@ -163,8 +163,9 @@ ContactListWindow::ContactListWindow(Account* account)
 
 	connect(account, SIGNAL(onlineStatusChanged(OnlineStatus)), sysTray, SLOT(setOnlineStatus(OnlineStatus)));
 	connect(account->chatsManager(), SIGNAL(messageReceived(ChatSession*, Message*)), chatWindowsManager, SLOT(messageProcess(ChatSession*, Message*)));
-	connect(chatWindowsManager, SIGNAL(messageReceived(const QString&, const QString&, const QDateTime)), sysTray, SLOT(newMessage(const QString&, const QString&, const QDateTime)));
+	connect(chatWindowsManager, SIGNAL(messageReceived(Contact*, const QString&, const QDateTime)), sysTray, SLOT(newMessage(Contact*, const QString&, const QDateTime)));
 	connect(mainMenuButton, SIGNAL(notificationTypeChanged()), sysTray, SLOT(notificationTypeChange()));
+	connect(sysTray, SIGNAL(messageActivated(QByteArray&)), chatWindowsManager, SLOT(raiseWindow(QByteArray&)));
 
 	sysTray->show();
 

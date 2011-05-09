@@ -23,6 +23,7 @@ signals:
 
 protected:
 	virtual bool event(QEvent * event);
+	virtual void mousePressEvent(QMouseEvent * event);
 
 };
 
@@ -32,19 +33,31 @@ Q_OBJECT
 	friend class NotifyTextBrowser;
 
 public:
+	enum Type
+	{
+		None,
+		LettersUnread,
+		NewLetter,
+		NewMessage
+	};
+
 	PopupWindow(QRect position, QWidget *parent = 0);
 	~PopupWindow();
 	void setUnreadLettersText(const quint32 letters);
 	void setLetterReceived(const QString & from, const QString & subject, const QDateTime dateTime);
-	void setMessageReceived(const QString & from, const QString & to, const QDateTime dateTime);
+	void setMessageReceived(const QByteArray & fromEmail, const QString & fromNick, const QString & to, const QDateTime dateTime);
 
 	bool isClosed() { return m_closed; }
 	void setNotToClose(bool really) { m_notToClose = really; }
+	Type type() { return m_type; }
+
+	QByteArray & from() { return m_from; }
 
 signals:
 	void closePopupWindow();
 	void mouseEntered();
 	void mouseLeaved();
+	void activated();
 
 protected:
 /*	bool eventFilter(QObject *obj, QEvent *event);*/
@@ -57,6 +70,8 @@ private:
 	bool m_closed;
 	bool m_notToClose;
 	QTimer timer;
+	Type m_type;
+	QByteArray m_from;
 };
 
 #endif // POPUPWINDOW_H

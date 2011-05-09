@@ -274,6 +274,22 @@ void ChatWindowsManager::raiseWindow(ChatWindow* wnd)
 		wnd->raise();
 		wnd->activateWindow();
 	}
+	else
+	{
+		if (tabsWindow->isMinimized())
+			tabsWindow->showNormal();
+		tabsWindow->show();
+		tabsWindow->raise();
+		tabsWindow->activateWindow();
+	}
+}
+
+void ChatWindowsManager::raiseWindow(QByteArray & contact)
+{
+	Contact * c = m_account->contactList()->findContact(contact);
+	ChatSession * s = m_account->chatsManager()->getSession(c);
+	ChatWindow * wnd = getWindow(s);
+	raiseWindow(wnd);
 }
 
 void ChatWindowsManager::contactIgnored(bool b)
@@ -298,6 +314,6 @@ void ChatWindowsManager::messageProcess(ChatSession* session, Message* msg)
 	if (wnd == NULL || !wnd->isActiveWindow())
 	{
 		qDebug() << "Window isn't active";
-		emit messageReceived(session->contact()->email(), session->account()->email(), msg->dateTime());
+		emit messageReceived(session->contact(), session->account()->email(), msg->dateTime());
 	}
 }

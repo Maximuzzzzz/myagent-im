@@ -33,6 +33,7 @@
 
 class ContactListWindow;
 class Account;
+class Contact;
 
 class SystemTrayIcon : public QSystemTrayIcon
 {
@@ -50,8 +51,11 @@ public:
 	virtual bool event(QEvent* e);
 	SysTrayPosition sysTrayPosition();
 
+signals:
+	void messageActivated(QByteArray & email);
+
 public slots:
-	void newMessage(const QString & from, const QString & to, const QDateTime dateTime);
+	void newMessage(Contact * from, const QString & to, const QDateTime dateTime);
 	void notificationTypeChange();
 
 private slots:
@@ -65,6 +69,8 @@ private slots:
 	void popsStackMouseEntered();
 	void popsStackMouseLeaved();
 	void iconTimerTimeOver();
+	void popusRemovedAll();
+	void doExProc(QString prog);
 
 private:
 	void setupMainWindowVisibilityAction();

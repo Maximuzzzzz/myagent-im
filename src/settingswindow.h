@@ -65,6 +65,11 @@ private slots:
 	void setProxyType();
 	void showFormatHelp();
 	void notificationTypeChanged();
+	void slotNotificationFormat();
+
+	void execNotifyMessageReceived();
+	void execNotifyLetterReceived();
+	void execNotifyLettersCount();
 
 	void init();
 
@@ -132,6 +137,10 @@ private:
 	QRadioButton* notificationTypeExternal;
 	QLineEdit* messageReceivedCommand;
 	QLineEdit* letterReceivedCommand;
+	QLineEdit* lettersCountCommand;
+	QPushButton* messageReceivedProbe;
+	QPushButton* letterReceivedProbe;
+	QPushButton* lettersCountProbe;
 
 	ChatWindowsManager* chatWindowsManager;
 

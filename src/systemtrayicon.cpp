@@ -28,6 +28,7 @@
 #include <QActionGroup>
 #include <QWidgetAction>
 #include <QLabel>
+#include <QProcess>
 
 #include "onlinestatus.h"
 #include "resourcemanager.h"
@@ -35,6 +36,7 @@
 #include "account.h"
 #include "mrimclient.h"
 #include "audio.h"
+#include "contact.h"
 
 SystemTrayIcon::SystemTrayIcon(Account* a, ContactListWindow* w, StatusMenu* sm)
  : QSystemTrayIcon(w), mainWindow(w), account(a)
@@ -47,8 +49,11 @@ SystemTrayIcon::SystemTrayIcon(Account* a, ContactListWindow* w, StatusMenu* sm)
 	popsStack = new PopupWindowsStack(this);
 	connect(popsStack, SIGNAL(mouseEntered()), this, SLOT(popsStackMouseEntered()));
 	connect(popsStack, SIGNAL(mouseLeaved()), this, SLOT(popsStackMouseLeaved()));
+	connect(popsStack, SIGNAL(messageActivated(QByteArray&)), this, SIGNAL(messageActivated(QByteArray&)));
+	connect(popsStack, SIGNAL(allPopupWindowsRemoved()), this, SLOT(popusRemovedAll()));
 
-	connect(account, SIGNAL(nicknameChanged()), this, SLOT(updateTooltip()));	
+	//contextMenu->addAction(QIcon(""), tr("Check e-mail"), NULL, SLOT()); //TODO
+	connect(account, SIGNAL(nicknameChanged()), this, SLOT(updateTooltip()));
 	connect(account->client(), SIGNAL(newLetter(QString, QString, QDateTime)), this, SLOT(newLetter(QString, QString, QDateTime)));
 	connect(account->client(), SIGNAL(newNumberOfUnreadLetters(quint32)), this, SLOT(newLetters(quint32)));
 
@@ -100,9 +105,6 @@ void SystemTrayIcon::processActivation(QSystemTrayIcon::ActivationReason reason)
 		timer->stop();
 		iconTimer->stop();
 		popsStack->deleteAllWindows();
-		m_popupsExists = false;
-		iconDisplayOff = false;
-		setIcon(statusIcon);
 	}
 	else
 		if (mainWindow && reason == QSystemTrayIcon::Trigger)
@@ -157,7 +159,7 @@ void SystemTrayIcon::newLetter(QString sender, QString subject, QDateTime dateTi
 	}
 	else
 	{
-		//TODO!!!
+		doExProc(account->settings()->value("Notification/LetterReceivedText", "").toString().replace("%me", account->email()).replace("%ME", account->nickname()).replace("%c", sender).replace("%S", subject).replace("%d", dateTime.toString()).replace("%n", "\n"));
 	}
 }
 
@@ -180,12 +182,12 @@ void SystemTrayIcon::newLetters(quint32 unreadMessages)
 		}
 		else
 		{
-			//TODO:!!!
+			doExProc(account->settings()->value("Notification/LettersCount", "").toString().replace("%me", account->email()).replace("%ME", account->nickname()).replace("%L", QString::number(unreadMessages)).replace("%n", "\n"));
 		}
 	}
 }
 
-void SystemTrayIcon::newMessage(const QString & from, const QString & to, const QDateTime dateTime)
+void SystemTrayIcon::newMessage(Contact * from, const QString & to, const QDateTime dateTime)
 {
 	qDebug() << Q_FUNC_INFO;
 
@@ -199,6 +201,10 @@ void SystemTrayIcon::newMessage(const QString & from, const QString & to, const 
 
 		popsStack->showNewMessage(from, to, dateTime);
 		m_popupsExists = true;
+	}
+	else
+	{
+		doExProc(account->settings()->value("Notification/MessageReceivedText", "").toString().replace("%me", account->email()).replace("%ME", account->nickname()).replace("%c", from->email()).replace("%C", from->nickname()).replace("%d", dateTime.toString()).replace("%n", "\n"));
 	}
 }
 
@@ -310,8 +316,26 @@ void SystemTrayIcon::notificationTypeChange()
 		timer->stop();
 		iconTimer->stop();
 		popsStack->deleteAllWindows();
-		m_popupsExists = false;
-		iconDisplayOff = false;
-		setIcon(statusIcon);
 	}
+}
+
+void SystemTrayIcon::popusRemovedAll()
+{
+	m_popupsExists = false;
+	iconDisplayOff = false;
+	setIcon(statusIcon);
+}
+
+void SystemTrayIcon::doExProc(QString prog)
+{
+	qDebug() << Q_FUNC_INFO << prog;
+	//%me = my email
+	//%ME = my nick
+	//%c = contact email
+	//%C = contact nick
+	//%L = letters count
+	//%S = letter subj
+	//%d = date
+	//%n = new string
+	QProcess::execute(prog);
 }

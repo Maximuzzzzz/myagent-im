@@ -5,6 +5,7 @@
 #include <QDateTime>
 
 #include "popupwindow.h"
+#include "contact.h"
 
 class SystemTrayIcon;
 
@@ -22,7 +23,7 @@ public:
 	~PopupWindowsStack();
 
 public slots:
-	void showNewMessage(const QString & from, const QString & to, const QDateTime dateTime);
+	void showNewMessage(Contact * from, const QString & to, const QDateTime dateTime);
 	void showNewLetter(const QString & from, const QString & subject, const QDateTime dateTime);
 	void showLettersUnread(const quint32 cnt);
 
@@ -33,10 +34,14 @@ public slots:
 signals:
 	void mouseEntered();
 	void mouseLeaved();
+	void popupWindowActivated(PopupWindow::Type type);
+	void messageActivated(QByteArray & email);
+	void allPopupWindowsRemoved();
 
 private slots:
 	void retranslateWindowsGeometry();
 	void windowClosed();
+	void slotPopupWindowActivated();
 
 	PopupWindow* newWindow();
 	QRect newCoords(quint32 n = 0);

@@ -24,6 +24,7 @@
 
 #include <QBoxLayout>
 #include <QDebug>
+#include <QMouseEvent>
 
 NotifyTextBrowser::NotifyTextBrowser(QWidget* parent)
  : QTextBrowser(parent)
@@ -38,7 +39,6 @@ NotifyTextBrowser::~NotifyTextBrowser()
 
 bool NotifyTextBrowser::event(QEvent * event)
 {
-	qDebug() << Q_FUNC_INFO;
 	if (event->type() == QEvent::Enter)
 	{
 		qobject_cast<PopupWindow*>(parent())->m_notToClose = true;
@@ -52,10 +52,17 @@ bool NotifyTextBrowser::event(QEvent * event)
 	return QWidget::event(event);
 }
 
+void NotifyTextBrowser::mousePressEvent(QMouseEvent * event)
+{
+	if (event->type() == QEvent::MouseButtonPress)
+		emit qobject_cast<PopupWindow*>(parent())->activated();
+}
+
 
 PopupWindow::PopupWindow(QRect position, QWidget *parent)
  : QWidget(parent)
 {
+	m_type = None;
 	qDebug() << Q_FUNC_INFO;
 	QVBoxLayout* verticalLayout = new QVBoxLayout(this);
 	verticalLayout->setSpacing(0);
@@ -63,7 +70,6 @@ PopupWindow::PopupWindow(QRect position, QWidget *parent)
 	textBrowser = new NotifyTextBrowser(this);
 	textBrowser->setContentsMargins(0, 0, 0, 0);
 	textBrowser->setMinimumSize(QSize(0, 50));
-	//textBrowser->setMouseTracking(true);
 	textBrowser->setFocusPolicy(Qt::ClickFocus);
 	textBrowser->setContextMenuPolicy(Qt::NoContextMenu);
 	textBrowser->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -104,6 +110,7 @@ void PopupWindow::closeWindow()
 void PopupWindow::setUnreadLettersText(const quint32 letters)
 {
 	qDebug() << Q_FUNC_INFO;
+	m_type = LettersUnread;
 	QString html = "<table cellpadding=\"2\" border = 0><tr><td><img src=\":icons/notify/unread.png\" width=\"50\" height=\"50\" align=\"left\"><td><font size=95%><font color=#000088><strong>";
 	if (letters == 1)
 		html += tr("You have <nobr>%1 unread</nobr> letter").arg(letters);
@@ -117,6 +124,7 @@ void PopupWindow::setUnreadLettersText(const quint32 letters)
 void PopupWindow::setLetterReceived(const QString & from, const QString & subject, const QDateTime dateTime)
 {
 	qDebug() << Q_FUNC_INFO;
+	m_type = NewLetter;
 	QString html = "<table cellpadding=\"2\" border = 0><tr><td><img src=\":icons/notify/unread.png\" width=\"50\" height=\"50\" align=\"left\"><td><font size=95%><font color=#000088><strong>";
 	html += from + "</strong><br>";
 	if (subject.isEmpty())
@@ -130,12 +138,14 @@ void PopupWindow::setLetterReceived(const QString & from, const QString & subjec
 	textBrowser->setHtml(html);
 }
 
-void PopupWindow::setMessageReceived(const QString & from, const QString & to, const QDateTime dateTime)
+void PopupWindow::setMessageReceived(const QByteArray & fromEmail, const QString & fromNick, const QString & to, const QDateTime dateTime)
 {
 	qDebug() << Q_FUNC_INFO;
-	QString html = "<table bgcolor=#f9f1c8 cellpadding=0 border=0><tr><td><img src=\":icons/notify/unread.png\" width=\"50\" height=\"50\" align=\"left\" valign=\"top\"><td><img src=\":icons/message_16x16.png\" width=16 height=16 align=\"left\"><font size=95%><font color=#888888>";
+	m_type = NewMessage;
+	m_from = fromEmail;
+	QString html = "<table bgcolor=#f9f1c8 cellpadding=0 border=0><tr><td><img src=\":icons/message_32x32.png\" width=\"32\" height=\"32\" align=\"left\" valign=\"top\"><td><img src=\":icons/message_16x16.png\" width=16 height=16 align=\"left\"><font size=95%><font color=#888888>";
 	html += tr("Message from");
-	html += "</font><br><font color=#ff0000><strong>" + from + "</strong></font><br>";
+	html += "</font><br><font color=#ff0000><strong>" + fromNick + "</strong></font><br>";
 	html += "<font color=#888888>" + tr("Received at %1").arg(dateTime.toString("dd MMM yy, hh:mm")) + "<br>";
 	html += tr("for %1").arg(to) + "</font></font></table>";
 

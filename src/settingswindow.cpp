@@ -37,8 +37,10 @@
 #include <QRadioButton>
 #include <QScrollBar>
 #include <QMessageBox>
+#include <QProcess>
 
 #include "resourcemanager.h"
+#include "contact.h"
 
 SettingsWindow::SettingsWindow(Account* account, ContactListWindow* clw)
 	: m_account(account), m_clw(clw)
@@ -502,28 +504,54 @@ void SettingsWindow::createNotificationPage()
 
 	notificationTypeInner = new QRadioButton(tr("Inner"));
 	notificationTypeExternal = new QRadioButton(tr("External"));
-	messageReceivedCommand = new QLineEdit;
-	letterReceivedCommand = new QLineEdit;
+	QLabel* labelMessageReceived = new QLabel(tr("New message notification:"));
+	QLabel* labelLetterReceived = new QLabel(tr("New letter notification:"));
+	QLabel* labelLettersCount = new QLabel(tr("Unread letters notification:"));
+	messageReceivedCommand = new QLineEdit(m_account->settings()->value("Notification/MessageReceivedText", "").toString());
+	letterReceivedCommand = new QLineEdit(m_account->settings()->value("Notification/LetterReceivedText", "").toString());
+	lettersCountCommand = new QLineEdit(m_account->settings()->value("Notification/LettersCount", "").toString());
+	messageReceivedProbe = new QPushButton(tr("Test"));
+	letterReceivedProbe = new QPushButton(tr("Test"));
+	lettersCountProbe = new QPushButton(tr("Test"));
+	QHBoxLayout* messageReceivedLayout = new QHBoxLayout;
+	QHBoxLayout* letterReceivedLayout = new QHBoxLayout;
+	QHBoxLayout* lettersCountLayout = new QHBoxLayout;
+	QPushButton* helpFormat = new QPushButton(tr("Format?"));
 
 	notificationLayout->addWidget(notificationTypeInner);
 	notificationLayout->addWidget(notificationTypeExternal);
-	notificationLayout->addWidget(messageReceivedCommand);
-	notificationLayout->addWidget(letterReceivedCommand);
+
+	messageReceivedLayout->addWidget(messageReceivedCommand);
+	messageReceivedLayout->addWidget(messageReceivedProbe);
+	letterReceivedLayout->addWidget(letterReceivedCommand);
+	letterReceivedLayout->addWidget(letterReceivedProbe);
+	lettersCountLayout->addWidget(lettersCountCommand);
+	lettersCountLayout->addWidget(lettersCountProbe);
+
+	notificationLayout->addWidget(labelMessageReceived);
+	notificationLayout->addLayout(messageReceivedLayout);
+	notificationLayout->addWidget(labelLetterReceived);
+	notificationLayout->addLayout(letterReceivedLayout);
+	notificationLayout->addWidget(labelLettersCount);
+	notificationLayout->addLayout(lettersCountLayout);
+	notificationLayout->addWidget(helpFormat);
 
 	connect(notificationTypeInner, SIGNAL(toggled(bool)), this, SLOT(notificationTypeChanged()));
+	connect(messageReceivedProbe, SIGNAL(clicked()), this, SLOT(execNotifyMessageReceived()));
+	connect(letterReceivedProbe, SIGNAL(clicked()), this, SLOT(execNotifyLetterReceived()));
+	connect(lettersCountProbe, SIGNAL(clicked()), this, SLOT(execNotifyLettersCount()));
+	connect(helpFormat, SIGNAL(clicked()), this, SLOT(slotNotificationFormat()));
 
 	notificationType->setLayout(notificationLayout);
 
 	notificationTypeInner->setChecked(m_account->settings()->value("Notification/Inner", true).toBool());
 	notificationTypeExternal->setChecked(!notificationTypeInner->isChecked());
-	messageReceivedCommand->setText(m_account->settings()->value("Notification/MessageReceivedText", "").toString());
-	letterReceivedCommand->setText(m_account->settings()->value("Notification/LetterReceivedText", "").toString());
 
 	layout->addWidget(notificationType);
 
 	notificationPage->setLayout(layout);
 
-	listWidget->addItem(tr("Notification"));
+	listWidget->addItem(tr("Notifications"));
 	pagesWidget->addWidget(notificationPage);
 }
 
@@ -534,6 +562,7 @@ void SettingsWindow::saveNotificationSettings()
 	letterReceivedCommand->setEnabled(!notificationTypeInner->isChecked());
 	m_account->settings()->setValue("Notification/MessageReceivedText", messageReceivedCommand->text());
 	m_account->settings()->setValue("Notification/LetterReceivedText", letterReceivedCommand->text());
+	m_account->settings()->setValue("Notification/LettersCount", lettersCountCommand->text());
 
 	emit newNotificationType();
 }
@@ -568,4 +597,30 @@ void SettingsWindow::notificationTypeChanged()
 {
 	messageReceivedCommand->setEnabled(!notificationTypeInner->isChecked());
 	letterReceivedCommand->setEnabled(!notificationTypeInner->isChecked());
+	lettersCountCommand->setEnabled(!notificationTypeInner->isChecked());
+}
+
+void SettingsWindow::execNotifyMessageReceived()
+{
+	ContactList::ConstContactsIterator it = m_account->contactList()->contactsBegin();
+	if (++it != m_account->contactList()->contactsEnd())
+		QProcess::execute(messageReceivedCommand->text().replace("%me", m_account->email()).replace("%ME", m_account->nickname()).replace("%c", (*it)->email()).replace("%C", (*it)->nickname()).replace("%d", QDateTime::currentDateTime().toString()).replace("%n", "\n"));
+	else
+		QProcess::execute(messageReceivedCommand->text().replace("%me", m_account->email()).replace("%ME", m_account->nickname()).replace("%c", tr("linustorvalds@mail.ru")).replace("%C", tr("Linus Torvalds")).replace("%d", QDateTime::currentDateTime().toString()).replace("%n", "\n"));
+}
+
+void SettingsWindow::execNotifyLetterReceived()
+{
+	QProcess::execute(letterReceivedCommand->text().replace("%me", m_account->email()).replace("%ME", m_account->nickname()).replace("%c", tr("torvalds@klaava.Helsinki.Fi")).replace("%S", "Hello everybody out there using minix").replace("%d", QDateTime::currentDateTime().toString()).replace("%n", "\n"));
+}
+
+void SettingsWindow::execNotifyLettersCount()
+{
+	quint32 unreadMessages = 50;
+	QProcess::execute(lettersCountCommand->text().replace("%me", m_account->email()).replace("%ME", m_account->nickname()).replace("%L", QString::number(unreadMessages)).replace("%n", "\n"));
+}
+
+void SettingsWindow::slotNotificationFormat()
+{
+	QMessageBox::information(this, tr("Notifications format help"), tr("%1\tYour email\n%2\tYour nickname\n%3\tContact's email\n%4\tContacts nickname\n%5\tLetters quantity\n%6\tLetter subject\n%7\tDate time\n%8\tNew string\n\nFor new messages you can use only %1, %2, %3, %4, %7 and %8.\nFor new letter only %1, %2, %3, %6, %7, and %8.\nFor unread letters count only %1, %2, %5 and %8.").arg("%me").arg("%ME").arg("%c").arg("%C").arg("%L").arg("%S").arg("%d").arg("%n"), QMessageBox::Ok);
 }

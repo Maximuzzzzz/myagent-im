@@ -34,11 +34,12 @@ PopupWindowsStack::~PopupWindowsStack()
 {
 }
 
-void PopupWindowsStack::showNewMessage(const QString & from, const QString & to, const QDateTime dateTime)
+void PopupWindowsStack::showNewMessage(Contact * from, const QString & to, const QDateTime dateTime)
 {
 	qDebug() << Q_FUNC_INFO;
 	PopupWindow* p = newWindow();
-	p->setMessageReceived(from, to, dateTime);
+	p->setMessageReceived(from->email(), from->nickname(), to, dateTime);
+	connect(p, SIGNAL(activated()), this, SLOT(slotPopupWindowActivated()));
 	p->show();
 }
 
@@ -47,6 +48,7 @@ void PopupWindowsStack::showNewLetter(const QString & from, const QString & subj
 	qDebug() << Q_FUNC_INFO;
 	PopupWindow* p = newWindow();
 	p->setLetterReceived(from, subject, dateTime);
+	connect(p, SIGNAL(activated()), this, SLOT(slotPopupWindowActivated()));
 	p->show();
 }
 
@@ -55,6 +57,7 @@ void PopupWindowsStack::showLettersUnread(const quint32 cnt)
 	qDebug() << Q_FUNC_INFO;
 	PopupWindow* p = newWindow();
 	p->setUnreadLettersText(cnt);
+	connect(p, SIGNAL(activated()), this, SLOT(slotPopupWindowActivated()));
 	p->show();
 }
 
@@ -165,6 +168,7 @@ void PopupWindowsStack::deleteAllWindows()
 	qDeleteAll(existingWindows);
 	existingWindows.clear();
 	shownWindows.clear();
+	emit allPopupWindowsRemoved();
 }
 
 void PopupWindowsStack::showAllUnclosedWindows()
@@ -199,4 +203,20 @@ void PopupWindowsStack::closeAllUnclosedWindows()
 		++i;
 	}
 	retranslateWindowsGeometry();
+}
+
+void PopupWindowsStack::slotPopupWindowActivated()
+{
+	qDebug() << Q_FUNC_INFO;
+	PopupWindow * p = qobject_cast<PopupWindow*>(sender());
+	if (p->type() == PopupWindow::NewMessage)
+	{
+/*		existingWindows.removeAll(p);
+		shownWindows.removeAll(p);*/
+		emit messageActivated(p->from());
+/*		p->deleteLater();
+		retranslateWindowsGeometry();*/
+	} //TODO: ChatWindow::activated NEEDS!
+
+	deleteAllWindows();
 }
