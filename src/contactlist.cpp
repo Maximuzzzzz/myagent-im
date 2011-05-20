@@ -88,6 +88,7 @@ void ContactList::addGroup(quint32 id, quint32 flags, const QString& name)
 		{
 			if (constructing)
 			{
+				(*it)->update((*it)->flags(), group->name());
 				tmpGroups.append(*it);
 				m_groups.removeAll(*it);
 				delete group;

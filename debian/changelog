@@ -1,3 +1,9 @@
+myagent-im (0.4.5-r2) unstable; urgency=low
+  Dmitry Malakhov <abr_mail@mail.ru>:
+  * fixed bug with encoding
+
+ -- Dmitry Malakhov <abr_mail@mail.ru>  Thu, 19 May 2011 23:41:25 +0400
+
 myagent-im (0.4.5) unstable; urgency=low
   Dmitry Malakhov <abr_mail@mail.ru>:
   * Message dialog fo file saving

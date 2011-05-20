@@ -35,7 +35,7 @@ unix {
     BINDIR = $$PREFIX/bin
     DATADIR = $$PREFIX/share/myagent-im
     DEFINES += DATADIR=\\\"$$DATADIR\\\"
-    DEFINES += VERSION=\\\"0.4.5\\\"
+    DEFINES += VERSION=\\\"0.4.6\\\"
     INSTALLS += target \
         smiles_animated \
         smiles_set03 \

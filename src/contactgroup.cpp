@@ -38,6 +38,12 @@ ContactGroup::ContactGroup(QDataStream& stream)
 	m_type = intToType(typeInt);
 }
 
+void ContactGroup::update(quint32 flags, QString name)
+{
+	m_flags = flags;
+	m_name = name;
+}
+
 quint32 ContactGroup::typeToInt(GroupType t)
 {
 	switch (t)

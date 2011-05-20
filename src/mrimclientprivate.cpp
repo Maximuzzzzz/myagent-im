@@ -42,7 +42,9 @@ MRIMClientPrivate::MRIMClientPrivate(Account* a, MRIMClient* parent)
 {
 	q = parent;
 	init();
-	codec = QTextCodec::codecForName("cp1251");
+	codec1251 = QTextCodec::codecForName("cp1251");
+	codecUTF8 = QTextCodec::codecForName("UTF-8");
+	codecUTF16 = QTextCodec::codecForName("UTF-16LE");
 }
 
 MRIMClientPrivate::~MRIMClientPrivate()
@@ -399,9 +401,9 @@ bool MRIMClientPrivate::unpackRtf(const QByteArray& packedRtf, QByteArray* rtf, 
 
 QByteArray MRIMClientPrivate::packAuthorizationMessage(const QString & message)
 {
-	QByteArray msg = codec->fromUnicode(message);
+	QByteArray msg = codec1251->fromUnicode(message);
 	QString nickname = account->nickname();
-	QByteArray nick = codec->fromUnicode(nickname);
+	QByteArray nick = codec1251->fromUnicode(nickname);
 
 	QByteArray packedMessage;
 	MRIMDataStream pack(&packedMessage, QIODevice::WriteOnly);
@@ -426,7 +428,7 @@ void MRIMClientPrivate::unpackAuthorizationMessage(const QByteArray& message, QS
 	in >> nick;
 	in >> unpackedMessage;
 
-	nickname = codec->toUnicode(nick);
+	nickname = codec1251->toUnicode(nick);
 //	unpackedMessage = codec->toUnicode(msg);
 }
 
@@ -653,20 +655,30 @@ void MRIMClientPrivate::processAnketaInfo(QByteArray data, quint32 msgseq)
 
 	QVector<QString> fields;
 
+	qDebug() << "fields";
 	QByteArray str;
 	for (uint i = 0; i < numFields; i++)
 	{
 		in >> str;
-		fields.append(codec->toUnicode(str));
-		qDebug() << codec->toUnicode(str);
+		fields.append(codecUTF8->toUnicode(str));
+		qDebug() << codecUTF8->toUnicode(str);
 	}
 
+	qDebug() << "values";
 	while (!in.atEnd())
 		for (uint i = 0; i < numFields; i++)
 		{
 			in >> str;
-			info[fields[i]] << codec->toUnicode(str);
-			qDebug() << codec->toUnicode(str);
+			if (fields[i] == "Nickname" || fields[i] == "FirstName" || fields[i] == "LastName" || fields[i] == "Location")
+			{
+				qDebug() << codecUTF16->toUnicode(str);
+				info[fields[i]] << codecUTF16->toUnicode(str);
+			}
+			else
+			{
+				qDebug() << codecUTF8->toUnicode(str);
+				info[fields[i]] << codecUTF8->toUnicode(str);
+			}
 		}
 
 	emit q->contactInfoReceived(msgseq, status, info, maxRows, serverTime);
@@ -686,7 +698,7 @@ void MRIMClientPrivate::processLoginRejected(QByteArray data)
 
 	QByteArray ba;
 	in >> ba;
-	QString reason = codec->toUnicode(ba);
+	QString reason = codec1251->toUnicode(ba);
 	emit q->loginRejected(reason);
 }
 
@@ -746,7 +758,7 @@ void MRIMClientPrivate::processNewMail(QByteArray data)
 	in >> baSender >> baSubject >> unixTime;
 
 //	emit q->newNumberOfUnreadLetters(unreadMessages);
-	emit q->newLetter(codec->toUnicode(baSender), codec->toUnicode(baSubject), QDateTime::fromTime_t(unixTime));
+	emit q->newLetter(codec1251->toUnicode(baSender), codec1251->toUnicode(baSubject), QDateTime::fromTime_t(unixTime));
 }
 
 void MRIMClientPrivate::processUserStatus(QByteArray data)
@@ -869,7 +881,7 @@ void MRIMClientPrivate::processMessageAck(QByteArray data)
 		}
 		else if (conferenceType == 5)
 		{
-			plainText = tr("User %1 left the conference").arg(codec->toUnicode(confOwner));
+			plainText = tr("User %1 left the conference").arg(codec1251->toUnicode(confOwner));
 			flags = flags & ~MESSAGE_FLAG_RTF;
 		}
 		else if (conferenceType == 7)
@@ -1025,7 +1037,7 @@ void MRIMClientPrivate::processOfflineMessageAck(QByteArray data)
 					emit q->conferenceAsked(mimeMsg.from(), mimeMsg.subject());
 				break;
 			case 5:
-				plainText = tr("User %1 left the conference").arg(codec->toUnicode(mimeMsg.sender()));
+				plainText = tr("User %1 left the conference").arg(codec1251->toUnicode(mimeMsg.sender()));
 				break;
 			case 7:
 				return;

@@ -39,17 +39,22 @@ ContactData::ContactData(quint32 id, quint32 flags, quint32 group, QByteArray em
 
 ContactData::ContactData(quint32 contactId, MRIMDataStream& stream, const QByteArray& mask)
 {
+	qDebug() << Q_FUNC_INFO;
 	if (!mask.startsWith(dataMask()))
 		return;
-	
+
 	id = contactId;
+
+	QByteArray stringQB;
 
 	stream >> flags;
 	stream >> group;
 	stream >> email;
-	
-	stream >> nick;
-	
+
+	stream >> stringQB;
+	QTextCodec* c = QTextCodec::codecForName("UTF-16");
+	nick = c->toUnicode(stringQB);
+
 	stream >> internalFlags;
 
 	quint32 statusProtocol;
@@ -57,9 +62,11 @@ ContactData::ContactData(quint32 contactId, MRIMDataStream& stream, const QByteA
 
 	status = OnlineStatus::fromProtocolStatus(statusProtocol);
 	QByteArray contactPhones;
-	stream >> contactPhones;	
+	stream >> contactPhones;
+	//phones = c->toUnicode(contactPhones)/*; QString(contactPhones)*/.split(',', QString::SkipEmptyParts);
+	qDebug() << contactPhones.toHex();
 	phones = QString(contactPhones).split(',', QString::SkipEmptyParts);
-	
+
 	for (int i = 0; i < phones.size(); i++)
 	{
 		if (!phones.at(i).startsWith('+'))
@@ -91,11 +98,13 @@ ContactData::ContactData(quint32 contactId, MRIMDataStream& stream, const QByteA
 		{
 			stream >> uData;
 			tailData.append(QVariant(uData));
+			qDebug() << "u" << uData;
 		}
 		else if (tailMask.at(i) == 's')
 		{
 			stream >> sData;
 			tailData.append(sData);
+			qDebug() << "s" << sData;
 		}
 		else
 			qDebug() << "!!! strange mask flag: " << mask.at(i);
@@ -142,11 +151,12 @@ void ContactData::load(QDataStream & stream)
 
 void ContactData::prepareForSending(MRIMDataStream & stream) const
 {
+	QTextCodec* c = QTextCodec::codecForName("UTF-16");
 	stream << id;
 	stream << flags;
 	stream << group;
 	stream << email;
-	stream << codec->fromUnicode(nick);
+	stream << c->fromUnicode(nick);
 
 	QStringList tmp = phones;
 	tmp.replaceInStrings("+", "");

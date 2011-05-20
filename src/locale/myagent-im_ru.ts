@@ -1531,10 +1531,7 @@
     <message>
         <location filename="../popupwindow.cpp" line="118"/>
         <source>You have &lt;nobr&gt;%1 unread&lt;/nobr&gt; letters</source>
-        <translation variants="yes">
-            <lengthvariant>У вас &lt;nobr&gt;%1 непрочитанных&lt;/nobr&gt; сообщения</lengthvariant>
-            <lengthvariant>У вас &lt;nobr&gt;%1 непрочитанных&lt;/nobr&gt; сообщений</lengthvariant>
-        </translation>
+        <translation type="unfinished">У вас &lt;nobr&gt;%1 непрочитанных&lt;/nobr&gt; сообщения</translation>
     </message>
     <message>
         <location filename="../popupwindow.cpp" line="131"/>
@@ -1907,7 +1904,7 @@ For unread letters count only %1, %2, %5 and %8.</source>
 
 Для новых сообщений можно использовать только %1, %2, %3, %4, %7 и %8.
 Для новых писем - только %1, %2, %3, %6, %7, и %8.
-Для непрочитанных писем - только %1, %2, %5 and %8.</translation>
+Для непрочитанных писем - только %1, %2, %5 и %8.</translation>
     </message>
     <message>
         <source>Probe</source>

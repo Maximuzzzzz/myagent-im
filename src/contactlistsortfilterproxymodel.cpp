@@ -66,6 +66,16 @@ void ContactListSortFilterProxyModel::setFilterString(const QString& filterStrin
 
 bool ContactListSortFilterProxyModel::lessThan(const QModelIndex& left, const QModelIndex& right) const
 {
+	ContactGroup* group1 = contactListModel->groupFromIndex(left);
+	if (group1)
+	{
+		ContactGroup* group2 = contactListModel->groupFromIndex(right);
+		if (group2)
+			return group1->name().compare(group2->name(), Qt::CaseInsensitive) < 0;
+		else
+			return false;
+	}
+
 	Contact* contact1 = contactListModel->contactFromIndex(left);
 
 	if (!contact1)

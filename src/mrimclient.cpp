@@ -279,6 +279,8 @@ quint32 MRIMClient::renameContact(const QString& nickname, Contact * contact)
 	ContactData contactData = contact->contactData();
 	contactData.nick = nickname;
 	contactData.prepareForSending(out);
+
+	qDebug() << data.toHex();
 	
 	return p->sendPacket(MRIM_CS_MODIFY_CONTACT, data);
 }
@@ -327,7 +329,7 @@ quint32 MRIMClient::addContact(quint32 group, const QString& nickname, const QBy
 {
 	qDebug() << "addContact" << group << ", " << nickname << ", " << email;
 	
-	QByteArray baNick = p->codec->fromUnicode(nickname);
+	QByteArray baNick = p->codec1251->fromUnicode(nickname);
 	
 	QByteArray baAuthorizationMessage("");
 	if (!authorizationMessage.isEmpty())
@@ -388,13 +390,13 @@ quint32 MRIMClient::addSmsContact(const QString & nickname, const QStringList & 
 {
 	qDebug() << "addSmsContact" << nickname << ", " << phones;
 	
-	QByteArray baNick = p->codec->fromUnicode(nickname);
+	QByteArray baNick = p->codec1251->fromUnicode(nickname);
 	
 	QByteArray baAuthorizationMessage("");
 	
 	QStringList tmpPhones = phones;
 	tmpPhones.replaceInStrings("+", "");
-	QByteArray baPhones = p->codec->fromUnicode(tmpPhones.join(","));
+	QByteArray baPhones = p->codec1251->fromUnicode(tmpPhones.join(","));
 
 	QByteArray data;
 	MRIMDataStream out(&data, QIODevice::WriteOnly);
@@ -419,7 +421,7 @@ quint32 MRIMClient::addGroup(QString& name)
 	
 	qDebug() << "nGroups = " << QString::number(nGroups, 16);
 
-	QByteArray baName = p->codec->fromUnicode(name);
+	QByteArray baName = p->codecUTF16->fromUnicode(name);
 
 	QByteArray data;
 	MRIMDataStream out(&data, QIODevice::WriteOnly);
@@ -428,7 +430,9 @@ quint32 MRIMClient::addGroup(QString& name)
 	out << quint32(0);
 	out << baName;
 	out << quint32(0);
-	out << quint32(0);
+	QByteArray accNickname = p->codecUTF16->fromUnicode(p->account->nickname());
+	qDebug() << "Account nick" << accNickname.toHex();
+	out << accNickname.toBase64();
 	out << quint32(0);
 	
 	qDebug() << "MRIMClient::addGroup data = " << data.toHex();
@@ -456,7 +460,7 @@ quint32 MRIMClient::removeGroup(ContactGroup * group)
 {
 	qDebug() << "removeGroup" << group->name();
 	
-	QByteArray baName = p->codec->fromUnicode(group->name());
+	QByteArray baName = p->codec1251->fromUnicode(group->name());
 
 	QByteArray data;
 	MRIMDataStream out(&data, QIODevice::WriteOnly);
@@ -464,7 +468,7 @@ quint32 MRIMClient::removeGroup(ContactGroup * group)
 	out << quint32(group->id());
 	out << quint32(group->flags() | CONTACT_FLAG_REMOVED);
 	out << quint32(0);
-	out << baName;
+	out << baName.right(baName.length() - 2);
 	out << quint32(0);
 	out << quint32(0);
 	
@@ -497,7 +501,7 @@ quint32 MRIMClient::sendSms(QByteArray number, const QString & text)
 	
 	if (!number.startsWith('+'))
 		number.prepend('+');
-	QByteArray smsText = p->codec->fromUnicode(text);
+	QByteArray smsText = p->codec1251->fromUnicode(text);
 	
 	qDebug() << "number =" << number;
 	qDebug() << "text =" << smsText;
@@ -512,17 +516,17 @@ quint32 MRIMClient::sendSms(QByteArray number, const QString & text)
 quint32 MRIMClient::renameGroup(ContactGroup* group, QString name)
 {
 	qDebug() << "renameGroup" << group->name() << "to" << name;
-	
-	QByteArray baName = p->codec->fromUnicode(name);
 
 	QByteArray data;
 	MRIMDataStream out(&data, QIODevice::WriteOnly);
-	
+
+	QByteArray baName = p->codecUTF16->fromUnicode(name);
+
 	out << quint32(group->id());
 	out << quint32(group->flags());
 	out << quint32(0);
-	out << baName;
 	out << quint32(0);
+	out << baName.right(baName.length() - 2);
 	out << quint32(0);
 	
 	qDebug() << data.toHex();

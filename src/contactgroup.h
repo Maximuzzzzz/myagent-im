@@ -37,11 +37,14 @@ public:
 		Temporary,
 		NotInGroup,
 		NotAuthorized,
+		OldArchives,
 		None
 	};
 
 	ContactGroup(quint32 id, quint32 flags, QString name, GroupType t = Simple);
 	ContactGroup(QDataStream& stream);
+
+	void update(quint32 flags, QString name);
 	
 	quint32 id() const { return m_id; }
 	quint32 flags() const { return m_flags; }

@@ -104,7 +104,9 @@ private:
 
 	MRIMClient* q;
 
-	QTextCodec* codec;
+	QTextCodec* codec1251;
+	QTextCodec* codecUTF8;
+	QTextCodec* codecUTF16;
 	quint32 sequence;
 	QSslSocket* socket;
 	QByteArray messageHeader;

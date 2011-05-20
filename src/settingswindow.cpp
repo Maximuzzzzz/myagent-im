@@ -558,8 +558,8 @@ void SettingsWindow::createNotificationPage()
 void SettingsWindow::saveNotificationSettings()
 {
 	m_account->settings()->setValue("Notification/Inner", notificationTypeInner->isChecked());
-	messageReceivedCommand->setEnabled(!notificationTypeInner->isChecked());
-	letterReceivedCommand->setEnabled(!notificationTypeInner->isChecked());
+/*	messageReceivedCommand->setEnabled(!notificationTypeInner->isChecked());
+	letterReceivedCommand->setEnabled(!notificationTypeInner->isChecked());*/
 	m_account->settings()->setValue("Notification/MessageReceivedText", messageReceivedCommand->text());
 	m_account->settings()->setValue("Notification/LetterReceivedText", letterReceivedCommand->text());
 	m_account->settings()->setValue("Notification/LettersCount", lettersCountCommand->text());
@@ -598,6 +598,9 @@ void SettingsWindow::notificationTypeChanged()
 	messageReceivedCommand->setEnabled(!notificationTypeInner->isChecked());
 	letterReceivedCommand->setEnabled(!notificationTypeInner->isChecked());
 	lettersCountCommand->setEnabled(!notificationTypeInner->isChecked());
+	messageReceivedProbe->setEnabled(!notificationTypeInner->isChecked());
+	letterReceivedProbe->setEnabled(!notificationTypeInner->isChecked());
+	lettersCountProbe->setEnabled(!notificationTypeInner->isChecked());
 }
 
 void SettingsWindow::execNotifyMessageReceived()
