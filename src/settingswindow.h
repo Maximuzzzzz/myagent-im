@@ -120,6 +120,7 @@ private:
 
 	//view page widgets
 	QCheckBox* enableMicroBlog;
+	QCheckBox* sortGroups;
 
 	//connection page
 	QRadioButton* typeSimple;

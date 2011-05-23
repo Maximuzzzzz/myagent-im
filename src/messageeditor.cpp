@@ -82,8 +82,11 @@ MessageEditor::MessageEditor(Account* account, Contact* contact, EmoticonSelecto
 		checkContactStatus(m_contact->status());
 	}
 
-	fileMessageIn = NULL;
-	fileMessageOut = NULL;
+	//fileMessageIn = NULL;
+	//fileMessageOut = new FileMessage(FileMessage::Outgoing);
+
+	//connect(fileMessageOut, SIGNAL(progress(FileMessage::Status, int)), this, SLOT(slotProgress(FileMessage::Status, int)));
+//	connect(q, SIGNAL(fileTransferAck(quint32, QByteArray, quint32, QByteArray)), fileMessageOut, SLOT(slotFileTransferStatus(quint32, QByteArray, quint32, QByteArray)));
 }
 
 MessageEditor::~MessageEditor()
@@ -450,18 +453,18 @@ void MessageEditor::createFileTransferBar()
 	fileTransferBar = new QToolBar;
 
 	QLabel* ftLabel = new QLabel(this);
-	
+
 	ftLabel->setPixmap(QPixmap(":/icons/editor/msg_p_f_title.png"));
 	filesBox = new QComboBox(this);
 	filesBox->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-	
+
 	QWidget* helperWidget = new QWidget(this);
 	QVBoxLayout* helperLayout = new QVBoxLayout;
 	helperLayout->setSpacing(0);
 	helperLayout->setContentsMargins(0,0,0,0);
-	
+
 	QHBoxLayout* labelsLayout = new QHBoxLayout;
-	
+
 	QLabel* label1 = new QLabel(tr("<small>Total size: </small>"));
 	label1->setStyleSheet("QLabel { margin : 0px; border : 0px; padding : 0px }");
 	bytesLabel = new QLabel;
@@ -601,21 +604,6 @@ void MessageEditor::deleteFile()
 	bytesLabel->setText("<small>" + FileMessage::getSizeInString(totalSize) + "</small>");
 }
 
-void MessageEditor::sendFiles()
-{
-	qDebug() << "MessageEditor::sendFiles()";
-	fileProgress->setValue(0);
-	fileProcessBar->setVisible(true);
-	fileTransferBar->setVisible(false);
-
-	fileMessageOut = new FileMessage(FileMessage::Outgoing, fileList);
-	sessId = fileMessageOut->getSessionId();
-
-	connect(fileMessageOut, SIGNAL(progress(FileMessage::Status, int)), this, SLOT(slotProgress(FileMessage::Status, int)));
-
-	emit filesTransfer(fileMessageOut);
-}
-
 void MessageEditor::fileTransfer(bool checked)
 {
 	if (!checked)
@@ -667,27 +655,44 @@ void MessageEditor::cancelTransferring(quint32 sessId)
 {
 	qDebug() << "MessageEditor::cancelTransferring()";
 
-	if (fileMessageIn != NULL)
+/*	if (fileMessageIn != NULL)
 	{
 		if (fileMessageIn->cancelTransferring(sessId))
 		{
 			fileMessageIn->deleteLater();
 			fileMessageIn = NULL;
 		}
-	}
-	if (fileMessageOut != NULL)
+	}*/
+/*	if (fileMessageOut != NULL)
 	{
 		if (fileMessageOut->cancelTransferring(sessId))
 		{
 			fileMessageOut->deleteLater();
 			fileMessageOut = NULL;
 		}
-	}
+	}*/
+	emit transferringCancel();
 }
 
-void MessageEditor::receiveFiles(quint32 sessId)
+void MessageEditor::sendFiles()
 {
-	qDebug() << "MessageEditor::receiveFiles()";
+	qDebug() << "MessageEditor::sendFiles()";
+	fileProgress->setValue(0);
+	fileProgress->setMaximum(MAX_INT);
+	fileProcessBar->setVisible(true);
+	fileTransferBar->setVisible(false);
+
+	//fileMessageOut = new FileMessage(FileMessage::Outgoing, fileList);
+	//fileMessageOut->setFileList(fileList);
+	//sessId = fileMessageOut->getSessionId();
+
+	//emit filesTransfer(fileMessageOut);
+	emit filesTransfer(fileList);
+}
+
+void MessageEditor::receiveFiles()
+{
+	qDebug() << Q_FUNC_INFO;
 
 	fileTransferAction->setChecked(true);
 	fileProcessBar->setVisible(true);
@@ -696,8 +701,8 @@ void MessageEditor::receiveFiles(quint32 sessId)
 	fileProgress->setMaximum(MAX_INT);
 	fileProgress->setValue(0);
 
-	connect(fileMessageIn, SIGNAL(progress(FileMessage::Status, int)), this, SLOT(slotProgress(FileMessage::Status, int)));
-	fileMessageIn->receiveFiles(sessId);
+//	connect(fileMessageIn, SIGNAL(progress(FileMessage::Status, int)), this, SLOT(slotProgress(FileMessage::Status, int)));
+//	fileMessageIn->receiveFiles(sessId);
 }
 
 void MessageEditor::fileReceived(FileMessage* fmsg)
@@ -706,13 +711,14 @@ void MessageEditor::fileReceived(FileMessage* fmsg)
 
 	if (fmsg->error() == 0)
 	{
-		fileMessageIn = fmsg;
-		sessId = fileMessageIn->getSessionId();
+/*		fileMessageIn = fmsg;
+		sessId = fileMessageIn->getSessionId();*/
 	}
 }
 
 void MessageEditor::slotProgress(FileMessage::Status action, int percentage)
 {
+	qDebug() << Q_FUNC_INFO;
 	switch (action)
 	{
 		case FileMessage::TRANSFERRING_READY:
@@ -723,48 +729,48 @@ void MessageEditor::slotProgress(FileMessage::Status action, int percentage)
 			break;
 
 		case FileMessage::TRANSFERRING_COMPLETE:
-			qDebug() << "MessageEditor::Deleting file message out";
-			fileMessageOut = NULL;
+			qDebug() << "MessageEditor::Transferring complete";
+			//fileMessageOut = NULL;
 			fileProcessBar->setVisible(false);
 			fileTransferBar->setVisible(false);
 			fileTransferAction->setChecked(false);
 			break;
 
 		case FileMessage::RECEIVING_COMPLETE:
-			qDebug() << "MessageEditor::Deleting file message in";
-			fileMessageIn = NULL;
+			qDebug() << "MessageEditor::Receiving complete";
+			//fileMessageIn = NULL;
 			fileProcessBar->setVisible(false);
 			fileTransferBar->setVisible(false);
 			fileTransferAction->setChecked(false);
 			break;
 
 		case FileMessage::TRANSFER_ERROR:
-			qDebug() << "MessageEditor::Deleting file message out because of error";
-			fileMessageOut = NULL;
+			qDebug() << "MessageEditor::Transfering error";
+			//fileMessageOut = NULL;
 			fileProcessBar->setVisible(false);
 			fileTransferBar->setVisible(false);
 			fileTransferAction->setChecked(false);
 			break;
 
 		case FileMessage::RECEIVE_ERROR:
-			qDebug() << "MessageEditor::Deleting file message in because of error";
-			fileMessageIn = NULL;
+			qDebug() << "MessageEditor::Receiving error";
+			//fileMessageIn = NULL;
 			fileProcessBar->setVisible(false);
 			fileTransferBar->setVisible(false);
 			fileTransferAction->setChecked(false);
 			break;
 
 		case FileMessage::TRANSFER_CANCEL:
-			qDebug() << "MessageEditor::Deleting file message out because of error";
-			fileMessageOut = NULL;
+			qDebug() << "MessageEditor::Transfering canceled";
+			//fileMessageOut = NULL;
 			fileProcessBar->setVisible(false);
 			fileTransferBar->setVisible(false);
 			fileTransferAction->setChecked(false);
 			break;
 
 		case FileMessage::RECEIVE_CANCEL:
-			qDebug() << "MessageEditor::Deleting file message in because of error";
-			fileMessageIn = NULL;
+			qDebug() << "MessageEditor::Receiving cancelled";
+			//fileMessageIn = NULL;
 			fileProcessBar->setVisible(false);
 			fileTransferBar->setVisible(false);
 			fileTransferAction->setChecked(false);

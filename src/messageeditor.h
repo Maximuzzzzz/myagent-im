@@ -65,7 +65,7 @@ public:
 public slots:
 	void clear();
 	void fileReceived(FileMessage* fmsg);
-	void receiveFiles(quint32 sessId);
+	void receiveFiles();
 	void cancelTransferring(quint32 sessId = 0);
 	bool isIgnoreFont();
 	void slotIgnoreSet(bool ignore);
@@ -75,13 +75,15 @@ signals:
 	void textChanged();
 	void sendPressed();
 	void wakeupPressed();
-	void filesTransfer(FileMessage* fmsg);
+	//void filesTransfer(FileMessage* fmsg);
+	void filesTransfer(QList<QFileInfo> files);
 	void filesReceiveAck(FileMessage* fmsg, quint32 status);
 	void signalProxy(quint32 idRequest, quint32 dataType, QByteArray userData, QByteArray lpsIpPort, quint32 sessionId);
 	void signalProxyAck(QByteArray mirrorIps);
 	void setIgnore(bool b);
 	void setSignalCheckSpelling(bool b);
 	void showBroadcastPanel(bool visible);
+	void transferringCancel();
 
 protected:
 	virtual void hideEvent(QHideEvent* event);
@@ -178,8 +180,7 @@ private:
 	quint32 totalSize;
 	double progressStep;
 
-	FileMessage* fileMessageIn;
-	FileMessage* fileMessageOut;
+	//FileMessage* fileMessageIn;
 	quint32 sessId;
 
 	QTcpSocket* tcpSocket;

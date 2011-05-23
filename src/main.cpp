@@ -77,7 +77,9 @@ int main(int argc, char *argv[])
 
 	AccountManager am;
 	Account* account = am.getAccount(ld->email(), ld->password());
+	theRM.setAccount(account);
 	account->saveOnlineStatus(ld->status());
+	account->savePassword(ld->savePassword());
 	audio->setAccount(account);
 	ContactListWindow clw(account);
 	clw.show();

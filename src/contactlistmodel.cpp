@@ -37,13 +37,13 @@
 ContactListModel::ContactListModel(ContactList* contactList, bool showGroups)
  : m_showGroups(showGroups)
 {
-	this->contactList = contactList;
+	m_contactList = contactList;
 	
-	connect(contactList, SIGNAL(updated()), this, SLOT(rebuild()));
+	connect(m_contactList, SIGNAL(updated()), this, SLOT(rebuild()));
 
-	connect(contactList, SIGNAL(contactAdded(Contact*)), this, SLOT(addContact(Contact*)));
-	connect(contactList, SIGNAL(contactRemoved(Contact*)), this, SLOT(slotRemoveContactItem(Contact*)));
-	connect(contactList, SIGNAL(contactIgnored(bool)), this, SIGNAL(modelRebuilded()));
+	connect(m_contactList, SIGNAL(contactAdded(Contact*)), this, SLOT(addContact(Contact*)));
+	connect(m_contactList, SIGNAL(contactRemoved(Contact*)), this, SLOT(slotRemoveContactItem(Contact*)));
+	connect(m_contactList, SIGNAL(contactIgnored(bool)), this, SIGNAL(modelRebuilded()));
 
 	rebuild();
 	
@@ -58,7 +58,7 @@ ContactListModel::ContactListModel(ContactList* contactList, bool showGroups)
 
 ContactListModel::~ContactListModel()
 {
-	contactList = 0;
+	m_contactList = 0;
 	phones = 0;
 	conferences = 0;
 	temporary = 0;
@@ -77,14 +77,14 @@ void ContactListModel::rebuild()
 	notInGroup = 0;
 	notAuthorized = 0;
 	
-	if (contactList == NULL) return;
+	if (m_contactList == NULL) return;
 	
 	QStandardItem* rootItem = invisibleRootItem();
 
 	if (m_showGroups)
 	{
-		ContactList::GroupsIterator git = contactList->groupsBegin();
-		for (; git != contactList->groupsEnd(); ++git)
+		ContactList::GroupsIterator git = m_contactList->groupsBegin();
+		for (; git != m_contactList->groupsEnd(); ++git)
 		{
 			ContactListItem* groupItem = new ContactListItem(*git);
 			groupsMap[*git] = groupItem;
@@ -98,8 +98,8 @@ void ContactListModel::rebuild()
 		qDebug() << "ContactListModel::rebuild groupRows = " << groupRows;
 	}
 	
-	ContactList::ContactsIterator cit = contactList->contactsBegin();
-	for (; cit != contactList->contactsEnd(); ++cit)
+	ContactList::ContactsIterator cit = m_contactList->contactsBegin();
+	for (; cit != m_contactList->contactsEnd(); ++cit)
 	{
 		addContact(*cit);
 	}
@@ -229,9 +229,9 @@ void ContactListModel::addContact(Contact* c)
 		qDebug() << "contact " << c->nickname() << " is phone";
 		if (!phones)
 		{
-			phones = new ContactListItem(contactList->phones());
+			phones = new ContactListItem(m_contactList->phones());
 			invisibleRootItem()->insertRow(groupRows++, phones);
-			if (contactList->phones()->isExpanded())
+			if (m_contactList->phones()->isExpanded())
 				emit expandGroup(phones->index());
 		}
 		
@@ -243,9 +243,9 @@ void ContactListModel::addContact(Contact* c)
 		if (!conferences)
 		{
 			qDebug() << "conference group doesn't exists"; //TODO: after deleting doesn't append again
-			conferences = new ContactListItem(contactList->conferences());
+			conferences = new ContactListItem(m_contactList->conferences());
 			invisibleRootItem()->insertRow(groupRows++, conferences);
-			if (contactList->conferences()->isExpanded())
+			if (m_contactList->conferences()->isExpanded())
 				emit expandGroup(conferences->index());
 		}
 
@@ -257,9 +257,9 @@ void ContactListModel::addContact(Contact* c)
 		if (!temporary)
 		{
 			qDebug() << "temporary group doesn't exists"; //TODO: after deleting doesn't append again
-			temporary = new ContactListItem(contactList->temporary());
+			temporary = new ContactListItem(m_contactList->temporary());
 			invisibleRootItem()->insertRow(groupRows++, temporary);
-			if (contactList->temporary()->isExpanded())
+			if (m_contactList->temporary()->isExpanded())
 				emit expandGroup(temporary->index());
 		}
 
@@ -271,9 +271,9 @@ void ContactListModel::addContact(Contact* c)
 		if (!notAuthorized)
 		{
 			qDebug() << "not authorized group doesn't exists"; //TODO: after deleting doesn't append again
-			notAuthorized = new ContactListItem(contactList->notAuthorized());
+			notAuthorized = new ContactListItem(m_contactList->notAuthorized());
 			invisibleRootItem()->insertRow(groupRows++, notAuthorized);
-			if (contactList->notAuthorized()->isExpanded())
+			if (m_contactList->notAuthorized()->isExpanded())
 				emit expandGroup(notAuthorized->index());
 		}
 
@@ -288,8 +288,8 @@ void ContactListModel::addContact(Contact* c)
 		{
 			if (!notInGroup)
 			{
-				notInGroup = new ContactListItem(contactList->notInGroup());
-				if (contactList->notInGroup()->isExpanded())
+				notInGroup = new ContactListItem(m_contactList->notInGroup());
+				if (m_contactList->notInGroup()->isExpanded())
 					emit expandGroup(notInGroup->index());
 			}
 			groupItem = notInGroup;
@@ -302,8 +302,8 @@ void ContactListModel::addContact(Contact* c)
 				qDebug() << "can't find group item";
 				if (!notInGroup)
 				{
-					notInGroup = new ContactListItem(contactList->notInGroup());
-					if (contactList->notInGroup()->isExpanded())
+					notInGroup = new ContactListItem(m_contactList->notInGroup());
+					if (m_contactList->notInGroup()->isExpanded())
 						emit expandGroup(notInGroup->index());
 				}
 				groupItem = notInGroup;

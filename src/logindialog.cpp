@@ -37,7 +37,10 @@ LoginDialog::LoginDialog(QWidget* parent)
 
 	setWindowFlags(Qt::Dialog & !Qt::WindowContextHelpButtonHint);
 	setupUi(this);
-	
+
+	currPass = "";
+	isSavePass = false;
+
 	QDir dir(theRM.basePath());
 	QStringList filters;
 	filters << "?*@mail.ru" << "?*@list.ru" << "?*inbox.ru" << "?*bk.ru" << "?*corp.mail.ru";
@@ -65,7 +68,7 @@ LoginDialog::LoginDialog(QWidget* parent)
 	}
 
 	connect(emailBox->lineEdit(), SIGNAL(textEdited(const QString&)), SLOT(checkEmail()));
-	connect(emailBox, SIGNAL(editTextChanged(const QString&)), SLOT(checkOnlineStatus()));
+	connect(emailBox, SIGNAL(editTextChanged(const QString&)), SLOT(slotEmailChanged()));
 	connect(passwordEdit, SIGNAL(textEdited(const QString&)), SLOT(checkPassword()));
 
 	okButton->setDisabled(true);
@@ -74,6 +77,7 @@ LoginDialog::LoginDialog(QWidget* parent)
 	connect(okButton, SIGNAL(clicked()), this, SLOT(accept()));
 	connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
 	connect(settingsButton, SIGNAL(clicked()), this, SLOT(showSettingsWindow()));
+	connect(savePass, SIGNAL(clicked()), this, SLOT(slotSavePassChecked()));
 
 	centerWindow(this);
 }
@@ -104,11 +108,25 @@ void LoginDialog::checkEmail()
 void LoginDialog::checkPassword()
 {
 	okButton->setEnabled(passwordEdit->hasAcceptableInput());
+	currPass = passwordEdit->text().toLatin1();
 }
 
-void LoginDialog::checkOnlineStatus()
+void LoginDialog::slotEmailChanged()
 {
 	OnlineStatus st = theRM.loadOnlineStatus(email());
+	QByteArray pass = theRM.loadPass(email());
+	if (!pass.isEmpty())
+	{
+		savePass->setChecked(true);
+		passwordEdit->setText(pass);
+		okButton->setEnabled(passwordEdit->hasAcceptableInput());
+	}
+	else
+	{
+		passwordEdit->setText(currPass);
+		okButton->setEnabled(passwordEdit->hasAcceptableInput());
+		savePass->setChecked(isSavePass);
+	}
 	if (st.id() == "" || st == OnlineStatus::wrongData || st == OnlineStatus::unknown || st == OnlineStatus::offline || st == OnlineStatus::connecting)
 	{
 		onlineStatusBox->setCurrentIndex(0);
@@ -149,4 +167,10 @@ void LoginDialog::showSettingsWindow()
 	settingsWindow = new SettingsWindow(SHOW_CONNECTION_PAGE);
 	centerWindow(settingsWindow);
 	settingsWindow->show();
+}
+
+void LoginDialog::slotSavePassChecked()
+{
+	//TODO: Attention message needs
+	isSavePass = savePass->isChecked();
 }

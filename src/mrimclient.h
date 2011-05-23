@@ -62,12 +62,14 @@ signals:
 	void contactStatusChanged(OnlineStatus status, QByteArray email);
 	void contactTyping(QByteArray email);
 	void messageReceived(QByteArray from, Message* msg);
-	void fileReceived(FileMessage* fmsg);
+	//void fileReceived(FileMessage* fmsg);
+	void fileReceived(QByteArray from, quint32 totalSize, quint32 sessionId, QByteArray filesAnsi, QString filesUtf, QByteArray ips);
 	void messageStatus(quint32 id, quint32 status);
 	void contactModified(quint32 id, quint32 status);
 	void contactAdded(quint32 id, quint32 status, quint32 contactId);
 	void conferenceBegan(quint32 seq, quint32 status, quint32 contactId, QByteArray & chatAgent);
 	void contactInfoReceived(quint32 id, quint32 status, MRIMClient::ContactsInfo info, quint32 maxRows, quint32 serverTime);
+	void accountInfoReceived(quint32 status, MRIMClient::ContactsInfo info, quint32 maxRows, quint32 serverTime);
 	void contactAuthorizedMe(const QByteArray& email);
 	void loggedOut(quint32 reason);
 	void newNumberOfUnreadLetters(quint32 nLetters);

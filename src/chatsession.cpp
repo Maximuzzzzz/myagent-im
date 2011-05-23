@@ -201,21 +201,21 @@ bool ChatSession::wakeupContact()
 	return false;
 }
 
-bool ChatSession::fileTransfer(FileMessage* fmsg)
+/*bool ChatSession::fileTransfer(FileMessage* fmsg)
 {
 	qDebug() << "ChatSession::fileTransfer()";
 
-	fmsg->setAccEmail(m_account->email());
-	fmsg->setContEmail(m_contact->email());
-	fmsg->sendFiles(m_account->client());
+	/*fmsg->setAccEmail(m_account->email());
+	fmsg->setContEmail(m_contact->email());*/
+	/*fmsg->sendFiles(m_account->client());
 
 	return true;
-}
+}*/
 
-void ChatSession::fileReceived(FileMessage* fmsg)
+void ChatSession::fileReceived(quint32 totalSize, quint32 sessionId, QByteArray filesAnsi, QString filesUtf, QByteArray ips)
 {
 	qDebug() << "ChatSession::fileReceived";
-	emit signalFileReceived(fmsg);
+	emit signalFileReceived(totalSize, sessionId, filesAnsi, filesUtf, ips);
 }
 
 void ChatSession::resendMessage(quint32 id)

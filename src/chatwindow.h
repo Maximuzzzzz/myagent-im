@@ -25,6 +25,16 @@
 
 #include <QTextCharFormat>
 #include <QPointer>
+#include <QFileInfo>
+
+#include "animatedtextedit.h"
+#include "animatedtextbrowser.h"
+#include "animatedtextdocument.h"
+#include "filemessage.h"
+#include "onlinestatus.h"
+#include "emoticonselector.h"
+#include "contactlistbroadcast.h"
+#include "contactlistconferencewithhandle.h"
 
 class QSplitter;
 class QTimeLine;
@@ -38,19 +48,16 @@ class SmsEditor;
 
 class Account;
 
-#include "animatedtextedit.h"
-#include "animatedtextbrowser.h"
-#include "animatedtextdocument.h"
-#include "filemessage.h"
-#include "onlinestatus.h"
-#include "emoticonselector.h"
-#include "contactlistbroadcast.h"
-#include "contactlistconferencewithhandle.h"
-
 class ChatWindow : public QWidget
 {
 Q_OBJECT
 public:
+	enum TransferStatus
+	{
+		FilesReceiving,
+		FilesTransferring,
+		None
+	};
 	ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoticonSelector);
 	~ChatWindow();
 
@@ -101,8 +108,10 @@ private slots:
 	void slotTimeout();
 	void clearStatus();
 
-	void fileTransferring(FileMessage* fmsg);
-	void fileReceiving(FileMessage* fmsg);
+	//void fileTransferring(FileMessage* fmsg);
+	void fileTransferring(QList<QFileInfo> files);
+	void fileReceiving(quint32 totalSize, quint32 sessionId, QByteArray filesAnsi, QString filesUtf, QByteArray ips);
+	void transferringCancelled();
 
 	void slotAnchorClicked(QUrl url);
 	void cleanupCommandUrls(QString str = "");
@@ -144,6 +153,11 @@ private:
 	QPushButton* sendButton;
 
 	QByteArray lastMessageFrom;
+
+	FileMessage* fileMessageOut;
+	FileMessage* fileMessageIn;
+
+	TransferStatus transferStatus;
 };
 
 #endif

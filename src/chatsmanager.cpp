@@ -39,7 +39,7 @@ ChatsManager::ChatsManager(Account* account)
  : QObject(account), m_account(account)
 {
 	connect(m_account->client(), SIGNAL(messageReceived(QByteArray, Message*)), this, SLOT(processMessage(QByteArray, Message*)));
-	connect(m_account->client(), SIGNAL(fileReceived(FileMessage*)), this, SLOT(processFileMessage(FileMessage*)));
+	connect(m_account->client(), SIGNAL(fileReceived(QByteArray, quint32, quint32, QByteArray, QString, QByteArray)), this, SLOT(processFileMessage(QByteArray, quint32, quint32, QByteArray, QString, QByteArray)));
 	connect(m_account->client(), SIGNAL(microblogChanged(QByteArray, QString)), this, SLOT(processMicroblogChanged(QByteArray, QString)));
 }
 
@@ -78,11 +78,11 @@ void ChatsManager::processMessage(QByteArray from, Message* msg)
 	emit messageReceived(session, msg);
 }
 
-void ChatsManager::processFileMessage(FileMessage* fmsg)
+void ChatsManager::processFileMessage(QByteArray from, quint32 totalSize, quint32 sessionId, QByteArray filesAnsi, QString filesUtf, QByteArray ips)
 {
-	ChatSession* session = getSession(m_account->contactList()->getContact(fmsg->getContEmail()));
+	ChatSession* session = getSession(m_account->contactList()->getContact(from));
 	theRM.getAudio()->play(STMessage);
-	session->fileReceived(fmsg);
+	session->fileReceived(totalSize, sessionId, filesAnsi, filesUtf, ips);
 }
 
 ChatSession* ChatsManager::getSession(Contact* contact)

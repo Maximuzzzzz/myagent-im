@@ -131,6 +131,8 @@ ContactListWindow::ContactListWindow(Account* account)
 	connect(account, SIGNAL(onlineStatusChanged(OnlineStatus)), this, SLOT(slotSetOnlineStatus(OnlineStatus)));
 	connect(account, SIGNAL(extendedStatusesChanged()), statusesMenu, SLOT(updateExtendedStatuses()));
 
+	connect(account, SIGNAL(nicknameChanged()), this, SLOT(slotAccountNicknameChanged()));
+
 	mainMenuButton = new MainMenuButton(account, this);
 	mainMenuButton->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Ignored);
 	mainMenuButton->setChatWindowsManager(chatWindowsManager);
@@ -441,4 +443,9 @@ void ContactListWindow::visibleWidget(Widgets w, bool st)
 void ContactListWindow::slotConnectionError(QString mess)
 {
 	CenteredMessageBox::critical(tr("Connection error"), mess, QMessageBox::Ok);
+}
+
+void ContactListWindow::slotAccountNicknameChanged()
+{
+	setWindowTitle(m_account->nickname());
 }

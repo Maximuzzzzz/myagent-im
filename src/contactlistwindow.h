@@ -85,6 +85,7 @@ private slots:
 	void slotMicroblogChanged(QByteArray email, QString microText);
 	void slotSetOnlineStatus(OnlineStatus status);
 	void slotConnectionError(QString mess);
+	void slotAccountNicknameChanged();
 
 private:
 	void writeSettings();

@@ -27,6 +27,7 @@
 #include "contactlistmodel.h"
 #include "contact.h"
 #include "proto.h"
+#include "resourcemanager.h"
 
 ContactListSortFilterProxyModel::ContactListSortFilterProxyModel(QObject * parent)
 	: QSortFilterProxyModel(parent), contactListModel(0)
@@ -71,7 +72,18 @@ bool ContactListSortFilterProxyModel::lessThan(const QModelIndex& left, const QM
 	{
 		ContactGroup* group2 = contactListModel->groupFromIndex(right);
 		if (group2)
-			return group1->name().compare(group2->name(), Qt::CaseInsensitive) < 0;
+		{
+			if (group1->isSimple() && group2->isSimple())
+				if (theRM.account()->settings()->value("ContactListWindow/SortGroups", true).toBool())
+					return group1->name().compare(group2->name(), Qt::CaseInsensitive) < 0;
+				else
+					return group1->isSimple();
+			else
+				if (!(group1->isSimple() || group2->isSimple()))
+					return group1->name().compare(group2->name(), Qt::CaseInsensitive) < 0;
+				else
+					return group1->isSimple();
+		}
 		else
 			return false;
 	}

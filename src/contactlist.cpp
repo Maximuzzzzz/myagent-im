@@ -104,7 +104,10 @@ void ContactList::addGroup(quint32 id, quint32 flags, const QString& name)
 	if (constructing)
 		tmpGroups.append(group);
 	else
+	{
 		m_groups.append(group);
+		emit updated();
+	}
 
 	emit groupAdded(group);
 }
@@ -968,4 +971,9 @@ void ContactList::setLastSmsFrom(QByteArray & number, Contact* c)
 {
 	qDebug() << "setLastSmsFrom" << number.right(11) << c->nickname();
 	lastSmsFrom[number.right(11)] = c;
+}
+
+void ContactList::update()
+{
+	emit updated();
 }

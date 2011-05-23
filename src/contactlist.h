@@ -76,6 +76,7 @@ public:
 	void clear();
 	void load();
 	void save() const;
+	void update();
 
 	bool addTemporaryContactToGroup(Contact* contact, quint32 group);
 

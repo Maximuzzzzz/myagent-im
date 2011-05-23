@@ -48,10 +48,11 @@ public:
 
 	void setTotalMessages(const QString& totalMessages);
 	void setUnreadMessages(const QString& unreadMessages);
-	void setNickName(QString nickname);
+	void setNickname(QString nickname);
 	void setStatusText(QString statusText);
 
 	QString nickname() const { return m_nickname; }
+	QString firstName() const { return m_info["FirstName"].first(); }
 	QString path() const;
 	QString avatarsPath() const;
 	MRIMClient* client() { return m_client; }
@@ -66,6 +67,7 @@ public:
 public slots:
 	void setOnlineStatus(OnlineStatus status, qint32 id = -1);
 	void saveOnlineStatus(OnlineStatus st);
+	void savePassword(bool really);
 	void showOnlineStatusesEditor();
 	void extendedStatusChanged(qint32 id, OnlineStatus status);
 
@@ -85,6 +87,8 @@ private slots:
 	void setUnreadLetters(quint32 n);
 	void slotNewLetter();
 
+	void checkAccountInfo(quint32 status, MRIMClient::ContactsInfo info, quint32 maxRows, quint32 serverTime);
+
 private:
 	QByteArray m_email;
 	QByteArray m_password;
@@ -92,6 +96,7 @@ private:
 	uint m_totalMessages;
 	uint m_unreadMessages;
 	QString m_nickname;
+	MRIMClient::ContactsInfo m_info;
 	
 	OnlineStatus m_onlineStatus;
 	qint32 m_pointerOnlineStatus;

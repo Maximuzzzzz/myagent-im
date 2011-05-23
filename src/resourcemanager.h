@@ -50,12 +50,16 @@ public:
 	QString emoticonsResourcePrefix();
 	QString statusesResourcePrefix();
 	QString soundsResourcePrefix();
-	void setAudio(Audio* a);
 	Audio* getAudio() { return audio; }
 	QString locale() { return m_locale; }
+	Account* account() { return m_account; }
+
+	void setAudio(Audio* a);
+	void setAccount(Account* acc);
 
 	int removeFolder(QString path);
 	OnlineStatus loadOnlineStatus(QByteArray email);
+	QByteArray loadPass(QByteArray email);
 
 	static const int maxDefaultStatuses;
 	static const int minDefaultStatuses;
@@ -73,6 +77,8 @@ private:
 	Locations m_locations;
 	Audio* audio;
 	QString m_locale;
+
+	Account* m_account;
 };
 
 #define theRM ResourceManager::self()

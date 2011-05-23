@@ -59,8 +59,8 @@ public:
 		TRANSFER_CANCEL
 	};
 
-	FileMessage(Type type, QList<QFileInfo> & files, QByteArray accEmail = "", QByteArray contEmail = "");
-	FileMessage(Type type, QByteArray accEmail, QByteArray contEmail, quint32 ts, quint32 sessionId, QByteArray filesAnsi, QString filesUtf, QByteArray ips, quint32 status = 0);
+	FileMessage(Type type/*, QList<QFileInfo> & files, QByteArray accEmail = "", QByteArray contEmail = ""*/);
+	//FileMessage(Type type, QByteArray accEmail, QByteArray contEmail, quint32 ts, quint32 sessionId, QByteArray filesAnsi, QString filesUtf, QByteArray ips, quint32 status = 0);
 	
 	~FileMessage();
 	
@@ -82,12 +82,8 @@ public:
 	QByteArray getAccEmail() { return fm_accEmail; }
 	QByteArray getContEmail() { return fm_contEmail; }
 
-	void setStatus(quint32 status);
-	void setAccEmail(QByteArray email);
-	void setContEmail(QByteArray email);
-	void setDefDir(QString d);
 	void receiveFiles(quint32 sessId);
-	void sendFiles(MRIMClient* cl);
+	void sendFiles(/*MRIMClient* cl*/);
 
 	quint32 error() { return fm_error; }
 
@@ -96,6 +92,12 @@ public slots:
 	void slotProxy(QByteArray email, quint32 idRequest, quint32 dataType, QByteArray filesAnsi, QByteArray proxyIps, quint32 sessionId, quint32 unk1, quint32 unk2, quint32 unk3);
 	void slotProxyAck(quint32 status, QByteArray email, quint32 idRequest, quint32 dataType, QByteArray filesAnsi, QByteArray proxyIps, quint32 sessionId, quint32 unk1, quint32 unk2, quint32 unk3);
 	bool cancelTransferring(quint32 sessId);
+	void setStatus(quint32 status);
+	void setAccEmail(QByteArray email);
+	void setContEmail(QByteArray email);
+	//void setDefDir(QString d);
+	void setFileList(QList<QFileInfo> & files);
+	void setParameters(quint32 totalSize, quint32 sessionId, QByteArray filesAnsi, QString filesUtf, QByteArray ips);
 
 signals:
 	void progress(FileMessage::Status action, int percentage);
@@ -137,6 +139,7 @@ private slots:
 	void initProxy(quint32 dataType, QByteArray proxyIps, quint32 sessionId, quint32 unk1, quint32 unk2, quint32 unk3);
 
 	QString getDefDir();
+	QString getReceivingDir();
 
 private:
 	Type fm_type;
@@ -147,7 +150,7 @@ private:
 	QString fm_filesUtf;
 	QString fm_filesHtml;
 
-	QString fm_defaultDir;
+	//QString fm_defaultDir;
 
 	QList<QByteArray> fm_fileListAnsi;
 	QList<QString> fm_fileListUtf;
@@ -193,7 +196,7 @@ class FileExistsDialog : public QDialog
 {
 Q_OBJECT
 public:
-	FileExistsDialog(QString fileName, FileMessage* fm, QWidget* parent = 0, Qt::WindowFlags f = 0);
+	FileExistsDialog(QString fileName, QWidget* parent = 0, Qt::WindowFlags f = 0);
 	QString fileName() const { return m_newFileName; }
 
 private slots:

@@ -119,6 +119,11 @@ void ResourceManager::setAudio(Audio* a)
 	audio = a;
 }
 
+void ResourceManager::setAccount(Account* acc)
+{
+	m_account = acc;
+}
+
 OnlineStatus ResourceManager::loadOnlineStatus(QByteArray email)
 {
 	QDir dir = basePath() + "/" + email;
@@ -154,6 +159,16 @@ OnlineStatus ResourceManager::loadOnlineStatus(QByteArray email)
 		stDescr = userSettings->value("Statuses/lastOnlineStatusDescr", "").toString();
 	}
 	return OnlineStatus(stId, stDescr);
+}
+
+QByteArray ResourceManager::loadPass(QByteArray email)
+{
+	QDir dir = basePath() + "/" + email;
+	if (!dir.exists())
+		return QByteArray("");
+
+	QSettings* userSettings = new QSettings(dir.absolutePath() + "/settings.txt", QSettings::IniFormat, this);
+	return QByteArray::fromBase64(userSettings->value("Account/Password", QByteArray("").toBase64()).toByteArray());
 }
 
 int ResourceManager::removeFolder(QString path)

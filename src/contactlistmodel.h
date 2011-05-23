@@ -45,6 +45,8 @@ public:
 	Contact* contactFromIndex(const QModelIndex& index);
 	ContactGroup* groupFromIndex(const QModelIndex & index);
 
+	//ContactList* contactList() { return m_contactList; }
+
 	bool hasPhones() { return phones != 0; }
 	bool hasConferences() { return conferences != 0; }
 	bool hasTemporary() { return temporary != 0; }
@@ -62,7 +64,7 @@ private slots:
 	void slotRemoveContactItem(Contact* c);
 
 private:
-	ContactList* contactList;
+	ContactList* m_contactList;
 	QStringList myFormats;
 	int groupRows;
 	QMap<ContactGroup*, ContactListItem*> groupsMap;

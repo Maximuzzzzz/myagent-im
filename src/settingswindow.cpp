@@ -342,7 +342,11 @@ void SettingsWindow::createViewPage()
 	enableMicroBlog = new QCheckBox(tr("Enable microblog"));
 	enableMicroBlog->setChecked(m_account->settings()->value("MicroBlog/Enable", true).toBool());
 
+	sortGroups = new QCheckBox(tr("Sort user groups by name"));
+	sortGroups->setChecked(m_account->settings()->value("ContactListWindow/SortGroups", true).toBool());
+
 	layout->addWidget(enableMicroBlog);
+	layout->addWidget(sortGroups);
 	layout->addStretch();
 
 	page->setLayout(layout);
@@ -354,7 +358,9 @@ void SettingsWindow::createViewPage()
 void SettingsWindow::saveViewSettings()
 {
 	m_account->settings()->setValue("MicroBlog/Enable", enableMicroBlog->isChecked());
+	m_account->settings()->setValue("ContactListWindow/SortGroups", sortGroups->isChecked());
 	m_clw->visibleWidget(ContactListWindow::MicroBlog, enableMicroBlog->isChecked());
+	m_account->contactList()->update();
 }
 
 void SettingsWindow::createConnectionPage()

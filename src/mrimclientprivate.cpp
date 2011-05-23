@@ -530,7 +530,7 @@ void MRIMClientPrivate::processUserInfo(QByteArray data)
 		else if (param == "MRIM.NICKNAME")
 		{
 			nick = descr;
-			account->setNickName(descr);
+			account->setNickname(descr);
 		}
 		else if (param == "micblog.status.text")
 		{
@@ -543,8 +543,7 @@ void MRIMClientPrivate::processUserInfo(QByteArray data)
 		qDebug() << param << " " << descr;
 	} while (in.device()->bytesAvailable());//while (param != "");
 
-	
-//		in >> param >> descr;
+	q->requestContactInfo(account->email());
 }
 
 void MRIMClientPrivate::processContactList2(QByteArray data)
@@ -682,6 +681,10 @@ void MRIMClientPrivate::processAnketaInfo(QByteArray data, quint32 msgseq)
 		}
 
 	emit q->contactInfoReceived(msgseq, status, info, maxRows, serverTime);
+
+	QByteArray email = codecUTF8->fromUnicode(info["Username"].first()).append("@").append(codecUTF8->fromUnicode(info["Domain"].first()));
+	if (email == account->email())
+		emit q->accountInfoReceived(status, info, maxRows, serverTime);
 }
 
 void MRIMClientPrivate::processLoginAcknowledged(QByteArray data)
@@ -1074,8 +1077,8 @@ void MRIMClientPrivate::processFileTransfer(QByteArray data)
 	qDebug() << "email = " << email << ", sessionId = " << sessionId << ", totalSize = " << totalSize;
 	in >> lps1;
 
-	qDebug() << "lps1 = " << lps1;
-	qDebug() << "lps1.toHex = " << lps1.toHex();
+	/*qDebug() << "lps1 = " << lps1;
+	qDebug() << "lps1.toHex = " << lps1.toHex();*/
 
 	MRIMDataStream in2(lps1);
 
@@ -1093,19 +1096,19 @@ void MRIMClientPrivate::processFileTransfer(QByteArray data)
 	in3 >> unk >> filesUtf;
 
 	qDebug() << "filesAnsi = " << filesAnsi;
-	qDebug() << "ips = " << ips;
+/*	qDebug() << "ips = " << ips;
 	qDebug() << "unk = " << unk;
-	qDebug() << "filesUtf = " << filesUtf;
+	qDebug() << "filesUtf = " << filesUtf;*/
 
-	FileMessage* fmsg = new FileMessage(FileMessage::Incoming, q->account()->email(), email, totalSize, sessionId, filesAnsi, filesUtf, ips);
-	connect(q, SIGNAL(proxy(QByteArray, quint32, quint32, QByteArray, QByteArray, quint32, quint32, quint32, quint32)), fmsg, SLOT(slotProxy(QByteArray, quint32, quint32, QByteArray, QByteArray, quint32, quint32, quint32, quint32)));
-	connect(q, SIGNAL(fileTransferAck(quint32, QByteArray, quint32, QByteArray)), fmsg, SLOT(slotFileTransferStatus(quint32, QByteArray, quint32, QByteArray)));
+	//FileMessage* fmsg = new FileMessage(FileMessage::Incoming, q->account()->email(), email, totalSize, sessionId, filesAnsi, filesUtf, ips);
+/*	connect(q, SIGNAL(proxy(QByteArray, quint32, quint32, QByteArray, QByteArray, quint32, quint32, quint32, quint32)), fmsg, SLOT(slotProxy(QByteArray, quint32, quint32, QByteArray, QByteArray, quint32, quint32, quint32, quint32)));
+	//connect(q, SIGNAL(fileTransferAck(quint32, QByteArray, quint32, QByteArray)), fmsg, SLOT(slotFileTransferStatus(quint32, QByteArray, quint32, QByteArray)));
 	connect(q, SIGNAL(proxyAck(quint32, QByteArray, quint32, quint32, QByteArray, QByteArray, quint32, quint32, quint32, quint32)), fmsg, SLOT(slotProxyAck(quint32, QByteArray, quint32, quint32, QByteArray, QByteArray, quint32, quint32, quint32, quint32)));
 
 	connect(fmsg, SIGNAL(fileAck(quint32, QByteArray, quint32, QByteArray)), q, SLOT(sendFileAck(quint32, QByteArray, quint32, QByteArray)));
-	connect(fmsg, SIGNAL(proxyAck(FileMessage*, quint32, quint32, quint32, quint32, quint32, quint32)), q, SLOT(sendProxyAck(FileMessage*, quint32, quint32, quint32, quint32, quint32, quint32)));
+	connect(fmsg, SIGNAL(proxyAck(FileMessage*, quint32, quint32, quint32, quint32, quint32, quint32)), q, SLOT(sendProxyAck(FileMessage*, quint32, quint32, quint32, quint32, quint32, quint32)));*/
 
-	emit q->fileReceived(fmsg);
+	emit q->fileReceived(email, totalSize, sessionId, filesAnsi, filesUtf, ips);
 }
 
 void MRIMClientPrivate::processFileTransferAck(QByteArray data)
@@ -1209,7 +1212,7 @@ void MRIMClientPrivate::processProxyAck(QByteArray data, quint32 msgseq)
 
 void MRIMClientPrivate::processMicroblogChanged(QByteArray data)
 {
-	qDebug() << "MRIMClientPrivate::processMicroblogChanged" << data.toHex() << data;
+	qDebug() << "MRIMClientPrivate::processMicroblogChanged" << data.toHex();
 
 	MRIMDataStream in(data);
 
@@ -1231,5 +1234,6 @@ void MRIMClientPrivate::processMicroblogChanged(QByteArray data)
 	in >> plainText;
 	qDebug() << plainText;
 
-	emit q->microblogChanged(email, microText);
+	if (!microText.isEmpty())
+		emit q->microblogChanged(email, microText);
 }

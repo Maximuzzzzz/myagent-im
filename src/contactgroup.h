@@ -51,6 +51,7 @@ public:
 	QString name() const { return m_name; }
 
 	GroupType groupType() const { return m_type; }
+	bool isSimple() const { return m_type == Simple; }
 	bool isExpanded() const { return m_expanded; }
 
 	void setName(const QString& name) { m_name = name; }

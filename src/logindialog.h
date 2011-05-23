@@ -39,15 +39,20 @@ public:
 	QByteArray password() const { return passwordEdit->text().toLatin1(); }
 	void setEmail(const QString& email);
 
+	bool savePassword() { return savePass->isChecked(); }
+
 private slots:
 	void checkEmail();
 	void checkPassword();
-	void checkOnlineStatus();
+	void slotEmailChanged();
 	void showSettingsWindow();
+	void slotSavePassChecked();
 
 private:
 	bool extendedStatus;
+	bool isSavePass;
 	QByteArray statusId;
+	QByteArray currPass;
 	QString statusDescr;
 
 	QPointer<SettingsWindow> settingsWindow;

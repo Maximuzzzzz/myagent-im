@@ -423,20 +423,24 @@ quint32 MRIMClient::addGroup(QString& name)
 
 	QByteArray baName = p->codecUTF16->fromUnicode(name);
 
-	QByteArray data;
+	QByteArray data, data2;
 	MRIMDataStream out(&data, QIODevice::WriteOnly);
-	
+	MRIMDataStream out2(&data2, QIODevice::WriteOnly);
+
 	out << quint32(CONTACT_FLAG_GROUP | nGroups);
 	out << quint32(0);
-	out << baName;
 	out << quint32(0);
-	QByteArray accNickname = p->codecUTF16->fromUnicode(p->account->nickname());
-	qDebug() << "Account nick" << accNickname.toHex();
-	out << accNickname.toBase64();
+	out << baName.right(baName.length() - 2);
+	out << quint32(0);
+
+	QByteArray accName = p->codecUTF16->fromUnicode(p->account->firstName());
+	out2 << quint32(2);
+	out2 << accName.right(accName.length() - 2);
+	out2 << quint32(0);
+
+	out << data2.toBase64();
 	out << quint32(0);
 	
-	qDebug() << "MRIMClient::addGroup data = " << data.toHex();
-
 	return p->sendPacket(MRIM_CS_ADD_CONTACT, data);
 }
 
@@ -460,7 +464,7 @@ quint32 MRIMClient::removeGroup(ContactGroup * group)
 {
 	qDebug() << "removeGroup" << group->name();
 	
-	QByteArray baName = p->codec1251->fromUnicode(group->name());
+	QByteArray baName = p->codecUTF16->fromUnicode(group->name());
 
 	QByteArray data;
 	MRIMDataStream out(&data, QIODevice::WriteOnly);
@@ -468,10 +472,10 @@ quint32 MRIMClient::removeGroup(ContactGroup * group)
 	out << quint32(group->id());
 	out << quint32(group->flags() | CONTACT_FLAG_REMOVED);
 	out << quint32(0);
+	out << quint32(0);
 	out << baName.right(baName.length() - 2);
 	out << quint32(0);
-	out << quint32(0);
-	
+
 	qDebug() << data.toHex();
 
 	return p->sendPacket(MRIM_CS_MODIFY_CONTACT, data);
@@ -566,10 +570,10 @@ quint32 MRIMClient::sendFile(FileMessage* fmsg)
 	qDebug() << "ips = " << fmsg->getIps();
 	qDebug() << "filesUtf = " << fmsg->getFilesUtf();
 
-	connect(fmsg, SIGNAL(proxy(FileMessage*, quint32)), this, SLOT(sendProxy(FileMessage*, quint32)));
-	connect(fmsg, SIGNAL(proxyAck(FileMessage*, quint32, quint32, quint32, quint32, quint32, quint32)), this, SLOT(sendProxyAck(FileMessage*, quint32, quint32, quint32, quint32, quint32, quint32)));
-	connect(this, SIGNAL(fileTransferAck(quint32, QByteArray, quint32, QByteArray)), fmsg, SLOT(slotFileTransferStatus(quint32, QByteArray, quint32, QByteArray)));
-	connect(this, SIGNAL(proxyAck(quint32, QByteArray, quint32, quint32, QByteArray, QByteArray, quint32, quint32, quint32, quint32)), fmsg, SLOT(slotProxyAck(quint32, QByteArray, quint32, quint32, QByteArray, QByteArray, quint32, quint32, quint32, quint32)));
+	//connect(fmsg, SIGNAL(proxy(FileMessage*, quint32)), this, SLOT(sendProxy(FileMessage*, quint32)));
+	//connect(fmsg, SIGNAL(proxyAck(FileMessage*, quint32, quint32, quint32, quint32, quint32, quint32)), this, SLOT(sendProxyAck(FileMessage*, quint32, quint32, quint32, quint32, quint32, quint32)));
+	//connect(this, SIGNAL(fileTransferAck(quint32, QByteArray, quint32, QByteArray)), fmsg, SLOT(slotFileTransferStatus(quint32, QByteArray, quint32, QByteArray)));
+	//connect(this, SIGNAL(proxyAck(quint32, QByteArray, quint32, quint32, QByteArray, QByteArray, quint32, quint32, quint32, quint32)), fmsg, SLOT(slotProxyAck(quint32, QByteArray, quint32, quint32, QByteArray, QByteArray, quint32, quint32, quint32, quint32)));
 
 	return p->sendPacket(MRIM_CS_FILE_TRANSFER, data);
 }

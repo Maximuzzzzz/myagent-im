@@ -1,17 +1,16 @@
 0.4.6
-- Bug: group doesn't create and doesn't delete
-?- Adding and deleting groups in contact list without fully contact list updating
-?- Bug: when incomes message from conference, which is not in the contact list, chat window appears and closes immediately
+- Attention label for saving password
+- Not all groups present in context menu "Move to" at start
 - Delete "Conferences" and "Phones" groups, when child items are absent
 - Detecting contact's client
 - Remembering smiles tab after closing emoticon widget
 - Intellectual splitting messages
-- Bug: empty microblogs appear
 - Add links at services mail.ru in contact context menu
 - Mult images instead of swf-widgets
-- Field Intall-Size in deb-package
+- Microblog date time
 
 later
+- Try to create status "Unvisible" for all
 - Sending by double clicking Enter
 - Add group "old archives", which contains deleted users, history of whom was not deleted. Deleting contact from this group will delete log
 - Changing symbolic smiles on graphical
@@ -20,7 +19,6 @@ later
 - Check file transferring
 - Trying to connect to server periodically
 - Filter for conferences
-- Automatically login (saving passwords)
 - Minimize chat window when interlocutor wrote the message, if chat window is closed
 - Make the "<" symbol printable in the messages chat
 - Interface like original mail agent has
@@ -30,4 +28,4 @@ later
 - Hide contact list during account is offline
 - Multiprotocoling
 - Repository for deb-files
-
+- Encode saving passwords

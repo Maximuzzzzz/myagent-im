@@ -57,7 +57,7 @@ signals:
 	void messageDelivered(bool really, Message* msg);
 	void smsDelivered(QByteArray phoneNumber, QString text);
 	void smsFailed();
-	void signalFileReceived(FileMessage* fmsg);
+	void signalFileReceived(quint32 totalSize, quint32 sessionId, QByteArray filesAnsi, QString filesUtf, QByteArray ips);
 	void microblogChanged(QString text);
 
 public slots:	
@@ -71,8 +71,8 @@ public slots:
 	bool sendSms(QByteArray number, QString text);
 	void sendTyping();
 	bool wakeupContact();
-	bool fileTransfer(FileMessage* fmsg);
-	void fileReceived(FileMessage* fmsg);
+	//bool fileTransfer(FileMessage* fmsg);
+	void fileReceived(quint32 totalSize, quint32 sessionId, QByteArray filesAnsi, QString filesUtf, QByteArray ips);
 	void resendMessage(quint32 id);
 	void clearHash();
 

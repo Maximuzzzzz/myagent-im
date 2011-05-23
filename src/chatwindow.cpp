@@ -60,6 +60,8 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoti
 {
 	qDebug() << Q_FUNC_INFO << "{";
 
+	transferStatus = None;
+
 	QVBoxLayout* layout = new QVBoxLayout;
 	layout->setContentsMargins(0, 0, 0, 0);
 
@@ -119,6 +121,26 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoti
 		connect(messageEditor, SIGNAL(setSignalCheckSpelling(bool)), this, SIGNAL(setSignalCheckSpelling(bool)));
 		connect(this, SIGNAL(signalCheckSpellingSet(bool)), messageEditor, SLOT(setCheckSpelling(bool)));
 
+		fileMessageOut = new FileMessage(FileMessage::Outgoing);
+		fileMessageIn = new FileMessage(FileMessage::Incoming);
+		fileMessageIn->setAccEmail(account->email());
+		fileMessageIn->setContEmail(session->contact()->email());
+		fileMessageOut->setAccEmail(account->email());
+		fileMessageOut->setContEmail(session->contact()->email());
+
+		//connect(fileMessageOut, SIGNAL(startTransferring(quint32)), this, SLOT(transferStarted(quint32)));
+		connect(fileMessageOut, SIGNAL(fileTransferred(FileMessage::Status, QString, QString)), this, SLOT(slotFileTransferred(FileMessage::Status, QString, QString)));
+		connect(fileMessageOut, SIGNAL(progress(FileMessage::Status, int)), messageEditor, SLOT(slotProgress(FileMessage::Status, int)));
+		connect(fileMessageIn, SIGNAL(startTransferring(quint32)), this, SLOT(transferStarted(quint32)));
+		connect(fileMessageIn, SIGNAL(fileTransferred(FileMessage::Status, QString, QString)), this, SLOT(slotFileTransferred(FileMessage::Status, QString, QString)));
+		connect(fileMessageIn, SIGNAL(progress(FileMessage::Status, int)), messageEditor, SLOT(slotProgress(FileMessage::Status, int)));
+		connect(m_account->client(), SIGNAL(fileTransferAck(quint32, QByteArray, quint32, QByteArray)), fileMessageOut, SLOT(slotFileTransferStatus(quint32, QByteArray, quint32, QByteArray)));
+		connect(m_account->client(), SIGNAL(proxyAck(quint32, QByteArray, quint32, quint32, QByteArray, QByteArray, quint32, quint32, quint32, quint32)), fileMessageOut, SLOT(slotProxyAck(quint32, QByteArray, quint32, quint32, QByteArray, QByteArray, quint32, quint32, quint32, quint32)));
+		connect(m_account->client(), SIGNAL(fileTransferAck(quint32, QByteArray, quint32, QByteArray)), fileMessageIn, SLOT(slotFileTransferStatus(quint32, QByteArray, quint32, QByteArray)));
+		connect(m_account->client(), SIGNAL(proxy(QByteArray, quint32, quint32, QByteArray, QByteArray, quint32, quint32, quint32, quint32)), fileMessageIn, SLOT(slotProxy(QByteArray, quint32, quint32, QByteArray, QByteArray, quint32, quint32, quint32, quint32)));
+
+		connect(messageEditor, SIGNAL(transferringCancel()), this, SLOT(transferringCancelled()));
+
 		editorsWidget->addTab(messageEditor, tr("Text"));
 		if (!session->contact()->isConference())
 		{
@@ -151,10 +173,11 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoti
 			connect(session->contact(), SIGNAL(typing()), this, SLOT(contactTyping()));
 		}
 
-		connect(messageEditor, SIGNAL(filesTransfer(FileMessage*)), session, SLOT(fileTransfer(FileMessage*)));
-		connect(messageEditor, SIGNAL(filesTransfer(FileMessage*)), this, SLOT(fileTransferring(FileMessage*)));
-		connect(session, SIGNAL(signalFileReceived(FileMessage*)), messageEditor, SLOT(fileReceived(FileMessage*)));
-		connect(session, SIGNAL(signalFileReceived(FileMessage*)), this, SLOT(fileReceiving(FileMessage*)));
+		//connect(messageEditor, SIGNAL(filesTransfer(FileMessage*)), session, SLOT(fileTransfer(FileMessage*)));
+		//connect(messageEditor, SIGNAL(filesTransfer(FileMessage*)), this, SLOT(fileTransferring(FileMessage*)));
+		connect(messageEditor, SIGNAL(filesTransfer(QList<QFileInfo>)), this, SLOT(fileTransferring(QList<QFileInfo>)));
+		//connect(session, SIGNAL(signalFileReceived(FileMessage*)), messageEditor, SLOT(fileReceived(FileMessage*)));
+		connect(session, SIGNAL(signalFileReceived(quint32, quint32, QByteArray, QString, QByteArray)), this, SLOT(fileReceiving(quint32, quint32, QByteArray, QString, QByteArray)));
 	}
 	else
 	{
@@ -579,7 +602,7 @@ void ChatWindow::slotMakeRead()
 	}
 }
 
-void ChatWindow::fileTransferring(FileMessage* fmsg)
+/*void ChatWindow::fileTransferring(FileMessage* fmsg)
 {
 	qDebug() << "ChatWindow::fileTransferring";
 
@@ -600,14 +623,43 @@ void ChatWindow::fileTransferring(FileMessage* fmsg)
 
 	QScrollBar* vScrollBar = chatView->verticalScrollBar();
 	vScrollBar->triggerAction(QAbstractSlider::SliderToMaximum);	
+}*/
+
+void ChatWindow::fileTransferring(QList<QFileInfo> files)
+{
+	qDebug() << "ChatWindow::fileTransferring";
+
+	transferStatus = FilesTransferring;
+	fileMessageOut->setFileList(files);
+
+	QTextCursor cursor = chatView->textCursor();
+	cursor.movePosition(QTextCursor::End);
+
+	cursor.insertBlock();
+	cursor.insertHtml("<font color=green>" + tr("Files transferring") + " (" + QDateTime::currentDateTime().time().toString() + ")</font><br>");
+	cursor.insertHtml("<font color=green>" + tr("You offered to your interlocutor to get files.") + "</font><br>");
+	cursor.insertHtml("<font color=green>" + fileMessageOut->getFilesInHtml() + "</font><br>");
+	cursor.insertHtml("<font color=green>" + tr("Basic size: ") + fileMessageOut->getSizeInString(fileMessageOut->getTotalSize()) + "</font>");
+
+	cursor.insertBlock();
+	cursor.insertHtml("<a href=\"ft_cancel_" + QString::number(fileMessageOut->getSessionId()) + "\">" + tr("Cancel transferring") + "</a><br><br>");
+
+	QScrollBar* vScrollBar = chatView->verticalScrollBar();
+	vScrollBar->triggerAction(QAbstractSlider::SliderToMaximum);
+
+	//session->fileTransfer(fileMessageOut);
+	fileMessageOut->sendFiles();
 }
 
-void ChatWindow::fileReceiving(FileMessage* fmsg)
+void ChatWindow::fileReceiving(quint32 totalSize, quint32 sessionId, QByteArray filesAnsi, QString filesUtf, QByteArray ips)
 {
 	qDebug() << "ChatWindow::fileReceiving";
 
-	connect(fmsg, SIGNAL(startTransferring(quint32)), this, SLOT(transferStarted(quint32)));
-	connect(fmsg, SIGNAL(fileTransferred(FileMessage::Status, QString, QString)), this, SLOT(slotFileTransferred(FileMessage::Status, QString, QString)));
+	transferStatus = FilesReceiving;
+/*	connect(fmsg, SIGNAL(startTransferring(quint32)), this, SLOT(transferStarted(quint32)));
+	connect(fmsg, SIGNAL(fileTransferred(FileMessage::Status, QString, QString)), this, SLOT(slotFileTransferred(FileMessage::Status, QString, QString)));*/
+
+	fileMessageIn->setParameters(totalSize, sessionId, filesAnsi, filesUtf, ips);
 
 	cleanupCommandUrls();
 
@@ -617,13 +669,13 @@ void ChatWindow::fileReceiving(FileMessage* fmsg)
 	cursor.insertBlock();
 	cursor.insertHtml("<font color=green>" + tr("Files transferring") + " (" + QDateTime::currentDateTime().time().toString() + ")</font><br>");
 	cursor.insertHtml("<font color=green>" + tr("Your interlocutor offered to you to get files.") + "</font><br>");
-	cursor.insertHtml("<font color=green>" + fmsg->getFilesInHtml() + "</font><br>");
-	cursor.insertHtml("<font color=green>" + tr("Basic size: ") + fmsg->getSizeInString(fmsg->getTotalSize()) + "</font>");
+	cursor.insertHtml("<font color=green>" + fileMessageIn->getFilesInHtml() + "</font><br>");
+	cursor.insertHtml("<font color=green>" + tr("Basic size: ") + fileMessageIn->getSizeInString(fileMessageIn->getTotalSize()) + "</font>");
 
 	cursor.insertBlock();
-	cursor.insertHtml("<a href=\"ft_ok_" + QString::number(fmsg->getSessionId()) + "\">" + tr("Receive") + "</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-	cursor.insertHtml("<a href=\"ft_save_as_" + QString::number(fmsg->getSessionId()) + "\">" + tr("Save as...") + "</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-	cursor.insertHtml("<a href=\"ft_cancel_" + QString::number(fmsg->getSessionId()) + "\">" + tr("Decline") + "</a><br><br>");
+	cursor.insertHtml("<a href=\"ft_ok_" + QString::number(sessionId) + "\">" + tr("Receive") + "</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+	cursor.insertHtml("<a href=\"ft_save_as_" + QString::number(sessionId) + "\">" + tr("Save as...") + "</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+	cursor.insertHtml("<a href=\"ft_cancel_" + QString::number(sessionId) + "\">" + tr("Decline") + "</a><br><br>");
 
 	QScrollBar* vScrollBar = chatView->verticalScrollBar();
 	vScrollBar->triggerAction(QAbstractSlider::SliderToMaximum);
@@ -638,7 +690,8 @@ void ChatWindow::slotAnchorClicked(QUrl url)
 	if (url.path().contains("ft_ok"))
 	{
 		cleanupCommandUrls();
-		messageEditor->receiveFiles(url.path().mid(6).toUInt());
+		messageEditor->receiveFiles();
+		fileMessageIn->receiveFiles(url.path().mid(6).toUInt());
 	}
 	else if (url.path().contains("ft_save_as"))
 	{
@@ -648,7 +701,8 @@ void ChatWindow::slotAnchorClicked(QUrl url)
 	else if (url.path().contains("ft_cancel"))
 	{
 		cleanupCommandUrls();
-		messageEditor->cancelTransferring(url.path().mid(10).toUInt());
+		transferringCancelled();
+		//messageEditor->cancelTransferring(url.path().mid(10).toUInt());
 		//session->cancelTransferring(url.path().mid(10).toUInt());
 	}
 	else if (url.path().contains("resend"))
@@ -683,7 +737,7 @@ void ChatWindow::cleanupCommandUrls(QString str)
 		tb = tb.previous();
 		cursor.setPosition(tb.position());
 
-		qDebug() << "In cycle";
+		//qDebug() << "In cycle";
 	}
 }
 
@@ -729,6 +783,7 @@ void ChatWindow::slotFileTransferred(FileMessage::Status action, QString filesIn
 				cursor.insertBlock();
 				cursor.insertHtml("<a href=\"file://" + destination + "\">" + tr("Open folder") + "</a>");
 				cursor.insertBlock();
+				transferStatus = None;
 			}
 			break;
 
@@ -738,6 +793,7 @@ void ChatWindow::slotFileTransferred(FileMessage::Status action, QString filesIn
 			cursor.insertBlock();
 			cursor.insertHtml("<font color=green>" + tr("Files transferring") + " (" + QDateTime::currentDateTime().time().toString() + ")</font><br>");
 			cursor.insertHtml("<font color=green>" + tr("Error occured while file transfering") + "</font><br>");
+			transferStatus = None;
 			break;
 
 		case FileMessage::TRANSFER_CANCEL:
@@ -746,6 +802,7 @@ void ChatWindow::slotFileTransferred(FileMessage::Status action, QString filesIn
 			cursor.insertBlock();
 			cursor.insertHtml("<font color=green>" + tr("Files transferring") + " (" + QDateTime::currentDateTime().time().toString() + ")</font><br>");
 			cursor.insertHtml("<font color=green>" + tr("Transferring canceled") + "</font><br>");
+			transferStatus = None;
 			break;
 
 		default:
@@ -793,4 +850,14 @@ void ChatWindow::contactIgnored()
 		emit contactIgnored(true);
 	else
 		emit contactIgnored(false);
+}
+
+void ChatWindow::transferringCancelled()
+{
+	qDebug() << Q_FUNC_INFO << transferStatus;
+	if (transferStatus == FilesTransferring)
+		fileMessageOut->cancelTransferring(fileMessageOut->getSessionId());
+	else if (transferStatus == FilesReceiving)
+		fileMessageIn->cancelTransferring(fileMessageIn->getSessionId());
+	//transferStatus = None;
 }

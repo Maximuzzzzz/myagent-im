@@ -28,6 +28,7 @@
 #include "filemessage.h"
 #include "proto.h"
 #include "mrimdatastream.h"
+#include "resourcemanager.h"
 
 /*Conception of transferring file:
 
@@ -54,10 +55,9 @@ Steps:
 10. When Receiver gets "MRA_FT_HELLO sender@mail.ru", it sends "MRA_FT_GET_FILE file[i]", where file[i] - each of files, which sends Sender.
 */
 
-
-FileMessage::FileMessage(Type type, QList<QFileInfo> & files, QByteArray accEmail, QByteArray contEmail)
+FileMessage::FileMessage(Type type/*, QList<QFileInfo> & files, QByteArray accEmail, QByteArray contEmail*/)
+ : fm_type(type)
 {
-	fm_type = type;
 	if (fm_type == Outgoing)
 	{
 		int i;
@@ -73,47 +73,56 @@ FileMessage::FileMessage(Type type, QList<QFileInfo> & files, QByteArray accEmai
 	}
 	fm_error = 0;
 
-	QByteArray asciiName;
-	int filesInUnicode = 0;
-	fm_filesAnsi = "";
-	fm_filesUtf = "";
-	fm_filesHtml = "";
-	fm_totalSize = 0;
-	QList<QFileInfo>::iterator it = files.begin();
-	for (; it != files.end(); it++)
-	{
-		QTextCodec* codec = QTextCodec::codecForName("cp1251");
-		if (codec->canEncode(it->fileName()))
-			asciiName = it->fileName().toAscii();
-		else
-			asciiName = "unicode_file_name_" + QByteArray::number(filesInUnicode++) + ".";
-
-		fm_fileListAnsi.append(asciiName);
-		fm_fileListUtf.append(it->fileName());
-
-		fm_filesAnsi += asciiName + ";" + QByteArray::number(it->size()) + ";";
-		fm_filesUtf += it->fileName() + ";" + QByteArray::number(it->size()) + ";";
-		fm_filesHtml += ((fm_filesHtml == "") ? "" : "<br>") + it->absoluteFilePath() + " (" + getSizeInString(it->size()) + ")";
-
-		fm_sizes.append(it->size());
-		fm_filePaths.append(it->absoluteFilePath());
-		fm_totalSize += it->size();
-	}
-
 	fm_sessionId = ((double)qrand() / (double)RAND_MAX) * MAX_INT32;
-	fm_accEmail = accEmail;
-	fm_contEmail = contEmail;
+/*	fm_accEmail = accEmail;
+	fm_contEmail = contEmail;*/
 
-	fm_defaultDir = getDefDir();
+	//fm_defaultDir = getDefDir();
 
 	currServer = NULL;
 	isMirror = false;
 	useProxy = false;
 }
 
-FileMessage::FileMessage(Type type, QByteArray accEmail, QByteArray contEmail, quint32 ts, quint32 sid, QByteArray filesAnsi, QString filesUtf, QByteArray ips, quint32 status)
+void FileMessage::setParameters(quint32 totalSize, quint32 sessionId, QByteArray filesAnsi, QString filesUtf, QByteArray ips)
 {
-	fm_type = type;
+	qDebug() << Q_FUNC_INFO << sessionId;
+	fm_filesAnsi = filesAnsi;
+	fm_filesUtf = filesUtf;
+
+	fm_totalSize = totalSize;
+
+	fm_ips = ips;
+	fm_sessionId = sessionId;
+//	fm_status = status;
+
+	fm_filesHtml = "";
+
+	fm_fileListAnsi = filesAnsi.split(';');
+	fm_fileListAnsi.takeLast();
+
+	fm_fileListUtf = filesUtf.split(';');
+	fm_fileListUtf.takeLast();
+
+	fm_sizes.clear();
+
+	int i;
+	quint32 fullSize = 0;
+	for (i = 1; i < fm_fileListAnsi.count(); i++)
+	{
+		int currSize = fm_fileListAnsi.takeAt(i).toLongLong();
+		fm_fileListUtf.removeAt(i);
+		fm_filesHtml += ((fm_filesHtml == "") ? "" : "<br>") + fm_fileListUtf.at(i - 1) + " (" + getSizeInString(currSize) + ")";
+		fm_sizes.append(currSize);
+		fullSize += currSize;
+	}
+	if (fullSize != totalSize)
+		fm_error = 1;
+}
+
+/*FileMessage::FileMessage(Type type, QByteArray accEmail, QByteArray contEmail, quint32 ts, quint32 sid, QByteArray filesAnsi, QString filesUtf, QByteArray ips, quint32 status)
+ : fm_type(type)
+{
 	fm_error = 0;
 
 	fm_filesAnsi = filesAnsi;
@@ -154,19 +163,19 @@ FileMessage::FileMessage(Type type, QByteArray accEmail, QByteArray contEmail, q
 	currServer = NULL;
 	isMirror = false;
 	useProxy = false;
-}
+}*/
 
 FileMessage::~FileMessage()
 {
-	qDebug() << "FileMessage::~FileMessage()";
+/*	qDebug() << "FileMessage::~FileMessage()";
 	fm_socket->deleteLater();
 	if (currServer != NULL)
-		currServer->deleteLater();
+		currServer->deleteLater();*/
 }
 
 void FileMessage::setStatus(quint32 status)
 {
-	fm_status = status;
+//	fm_status = status;
 }
 
 void FileMessage::setAccEmail(QByteArray email)
@@ -181,7 +190,7 @@ void FileMessage::setContEmail(QByteArray email)
 
 void FileMessage::receiveFiles(quint32 sessId)
 {
-	qDebug() << "FileMessage::receiveFiles()";
+	qDebug() << Q_FUNC_INFO << sessId << fm_sessionId;
 
 	if (sessId != fm_sessionId)
 		return;
@@ -192,12 +201,12 @@ void FileMessage::receiveFiles(quint32 sessId)
 	QList<QString>::iterator it = fm_fileListUtf.begin();
 	for (; it != fm_fileListUtf.end(); it++)
 	{
-		QString currFN = fm_defaultDir + "/" + (*it);
+		QString currFN = getReceivingDir() /*fm_defaultDir*/ + "/" + (*it);
 		QFile file(currFN);
 		qDebug() << file.fileName();
 		if (file.exists())
 		{
-			FileExistsDialog* dialog = new FileExistsDialog(*it, this);
+			FileExistsDialog* dialog = new FileExistsDialog(*it);
 			if (dialog->exec() == QDialog::Accepted)
 				(*it) = dialog->fileName();
 			else
@@ -218,6 +227,7 @@ void FileMessage::receiveFiles(quint32 sessId)
 	bool st = tryToConnect();
 	if (!st)
 	{
+		qDebug() << "Try to connect is failed";
 		isMirror = true;
 		listeningPorts << "2041" << "35261"; /*TODO: generate random port*/
 		quint32 res = waitForIncomingConnect();
@@ -227,19 +237,22 @@ void FileMessage::receiveFiles(quint32 sessId)
 
 void FileMessage::slotConnectedToPeer()
 {
-	qDebug() << "FileMessage::slotConnectedToPeer()";
+	qDebug() << Q_FUNC_INFO;
 
 	setTransferStatus(WAITING_FOR_HELLO, 0);
 	if (!useProxy)
+	{
+		qDebug() << "Saying hello";
 		sayHello();
+	}
 }
 
 void FileMessage::slotReadyRead()
 {
-	qDebug() << "FileMessage::slotReadyRead()";
+	qDebug() << Q_FUNC_INFO;
 
 	QByteArray in(fm_socket->readAll());
-	qDebug() << in.length();
+	qDebug() << in.length()/* << in*/;
 
 	if (in[0] == char(239) && transferStatus == WAITING_FOR_HELLO) /*TODO: interpretate packet fully*/
 	{
@@ -256,15 +269,18 @@ void FileMessage::slotReadyRead()
 
 		if (fm_type == Outgoing)
 		{
+			qDebug() << "Outgoing";
 			setTransferStatus(TRANSFERRING_READY, 0);
 			if (!isMirror)
 			{
+				qDebug() << "Not mirror";
 				sayHello();
-				emit startTransferring(fm_sessionId);
+//				emit startTransferring(fm_sessionId);
 			}
 		}
 		else if (fm_type == Incoming)
 		{
+			qDebug() << "Incoming";
 			if (isMirror && !useProxy)
 				sayHello();
 			emit startTransferring(fm_sessionId);
@@ -279,7 +295,7 @@ void FileMessage::slotReadyRead()
 	}
 	else if (transferStatus == RECEIVING_FILE)
 	{
-		qDebug() << "FileMessage::Receiving file";
+		qDebug() << "FileMessage::Receiving file" << currFile << fm_fileListAnsi[currFile] << fm_sizes[currFile];
 
 		fm_currentFile.write(in);
 		bytesTransferred += in.length();
@@ -296,20 +312,39 @@ void FileMessage::slotReadyRead()
 			if (++currFile > fm_fileListAnsi.count() - 1)
 			{
 				setTransferStatus(RECEIVING_COMPLETE, 0);
+				//emit fileTransferred(transferStatus, fm_filesHtml, getReceivingDir());
 				fm_socket->disconnectFromHost();
 			}
 			else
 				getFile();
 		}
 	}
-	else if (in.contains("MRA_FT_GET_FILE") && in.contains(fm_fileListAnsi[currFile]))
+	else if (in.contains("MRA_FT_GET_FILE")/* && in.contains(fm_fileListAnsi[currFile])*/)
 	{
 		qDebug() << "Host waits to get the file";
 
-		if (transferStatus == TRANSFERRING_READY)
+		//Search requested file
+		QByteArray requestedFile = in.right(in.length() - QByteArray("MRA_FT_GET_FILE ").length());
+		requestedFile = requestedFile.left(requestedFile.length() - 1);
+		qDebug() << "Requested file" << requestedFile;
+		qDebug() << "Cycle from 0 to" << fm_fileListAnsi.size();
+		for (currFile = 0; currFile < fm_fileListAnsi.size(); currFile++)
 		{
-			sendFile();
+			qDebug() << fm_fileListAnsi[currFile];
+			if (fm_fileListAnsi[currFile] == requestedFile)
+				break;
 		}
+		qDebug() << currFile;
+		if (fm_fileListAnsi[currFile] != requestedFile)
+		{
+			qDebug() << "Error: file " << requestedFile << "not found";
+			theRM.account()->client()->sendFileAck(FILE_TRANSFER_STATUS_ERROR, fm_contEmail, fm_sessionId, "");
+			setTransferStatus(TRANSFER_ERROR, 0);
+			return;
+		}
+		//
+		if (transferStatus == TRANSFERRING_READY)
+			sendFile();
 		else if (transferStatus == TRANSFERRING_COMPLETE)
 			fm_socket->disconnectFromHost();
 	}
@@ -317,16 +352,18 @@ void FileMessage::slotReadyRead()
 
 void FileMessage::slotDisconnected()
 {
-	qDebug() << "FileMessage::slotDisconnected()";
+	qDebug() << Q_FUNC_INFO;
 
 	if (transferStatus == RECEIVING_FILE)
 	{
+		qDebug() << "Reseiving file";
 		fm_currentFile.close();
 		fm_currentFile.remove();
 		setTransferStatus(RECEIVE_ERROR, 0);
 	}
 	else if (transferStatus == TRANSFERRING_FILE)
 	{
+		qDebug() << "Transferring file";
 		fm_currentFile.close();
 		setTransferStatus(TRANSFER_ERROR, 0);
 	}
@@ -334,32 +371,34 @@ void FileMessage::slotDisconnected()
 	{
 		if (fm_type == Incoming && transferStatus != RECEIVING_COMPLETE)
 		{
+			qDebug() << "Incoming && transferStatus != RECEIVING_COMPLETE";
 			fm_currentFile.close();
 			fm_currentFile.remove();
 			setTransferStatus(RECEIVE_ERROR, 0);
 		}
 		if (fm_type == Outgoing && transferStatus != TRANSFERRING_COMPLETE)
 		{
+			qDebug() << "Outgong && transferStatus != TRANSFERRING_COMPLETE";
 			fm_currentFile.close();
 			setTransferStatus(TRANSFER_ERROR, 0);
 		}
 	}
-	deleteLater();
+/*	deleteLater();*/
 }
 
 void FileMessage::socketError(QAbstractSocket::SocketError err)
 {
-	qDebug() << "FileMessage::socketError(" << err << ")";
+	qDebug() << Q_FUNC_INFO << err << ")";
 }
 
 void FileMessage::stateChanged(QAbstractSocket::SocketState state)
 {
-	qDebug() << "FileMessage::stateChanged(" << state << ")";
+	qDebug() << Q_FUNC_INFO << state << ")";
 }
 
 bool FileMessage::tryToConnect()
 {
-	qDebug() << "FileMessage::tryToConnect()";
+	qDebug() << Q_FUNC_INFO;
 
 	do
 	{
@@ -376,7 +415,7 @@ bool FileMessage::tryToConnect()
 
 quint32 FileMessage::waitForIncomingConnect()
 {
-	qDebug() << "FileMessage::waitForIncomingConnect()";
+	qDebug() << Q_FUNC_INFO;
 
 	if (fm_type == Incoming)
 		fm_socket->deleteLater();
@@ -399,7 +438,7 @@ quint32 FileMessage::waitForIncomingConnect()
 
 void FileMessage::slotClientConnected()
 {
-	qDebug() << "FileMessage::slotClientConnected()";
+	qDebug() << Q_FUNC_INFO;
 
 	currServer = qobject_cast<QTcpServer*>(sender());
 
@@ -415,7 +454,7 @@ void FileMessage::slotClientConnected()
 
 void FileMessage::sendFileAck(quint32 status)
 {
-	qDebug() << "FileMessage::sendFileAck()";
+	qDebug() << Q_FUNC_INFO << status;
 
 	QByteArray ips;
 	if (status == FILE_TRANSFER_STATUS_DECLINE || status == FILE_TRANSFER_STATUS_ERROR)
@@ -431,22 +470,23 @@ void FileMessage::sendFileAck(quint32 status)
 					ips += ip.toString() + ":" + listeningPorts[i] + ";";
 		}
 	}
-	emit fileAck(status, fm_contEmail, fm_sessionId, ips);
+	theRM.account()->client()->sendFileAck(status, fm_contEmail, fm_sessionId, ips);
+/*	emit fileAck(status, fm_contEmail, fm_sessionId, ips);*/
 }
 
 void FileMessage::sayHello()
 {
-	qDebug() << "FileMessage::sayHello()";
+	qDebug() << Q_FUNC_INFO;
 	sendData("MRA_FT_HELLO " + fm_accEmail);
 }
 
 void FileMessage::getFile()
 {
-	qDebug() << "FileMessage::gettingFile()";
+	qDebug() << Q_FUNC_INFO;
 	setTransferStatus(RECEIVING_FILE, percentage());
 	bytesTransferred = 0;
 
-	fm_currentFile.setFileName(fm_defaultDir + "/" + fm_fileListUtf[currFile]);
+	fm_currentFile.setFileName(getReceivingDir() + "/" + fm_fileListUtf[currFile]);
 	//qDebug() << fm_defaultDir + "/" + fm_fileListUtf[currFile];
 
 	fm_currentFile.open(QIODevice::WriteOnly);
@@ -454,12 +494,15 @@ void FileMessage::getFile()
 	sendData("MRA_FT_GET_FILE " + fm_fileListAnsi[currFile]);
 
 	if (fm_sizes[currFile] == 0)
+	{
+		qDebug() << "File is null sized";
 		slotReadyRead();
+	}
 }
 
 void FileMessage::sendData(const QString& str)
 {
-	qDebug() << "FileMessage::sendCmd" << str;
+	qDebug() << Q_FUNC_INFO << str;
 
 	QByteArray data;
 	fm_socket->write(str.toLatin1() + "\0", str.toLatin1().length() + 1);
@@ -472,22 +515,23 @@ void FileMessage::setTransferStatus(Status s, int p)
 
 	transferStatus = s;
 
-	if (s == TRANSFERRING_COMPLETE || s == RECEIVING_COMPLETE || s == TRANSFER_ERROR || s == RECEIVE_ERROR)
-		emit fileTransferred(s, fm_filesHtml, fm_defaultDir);
+	/*if (s == TRANSFERRING_COMPLETE || s == RECEIVING_COMPLETE || s == TRANSFER_ERROR || s == RECEIVE_ERROR)
+		emit fileTransferred(s, fm_filesHtml, fm_defaultDir);*/
 	emit progress(s, p);
+	emit fileTransferred(transferStatus, fm_filesHtml, getReceivingDir());
 }
 
-void FileMessage::sendFiles(MRIMClient* cl)
+void FileMessage::sendFiles(/*MRIMClient* cl*/)
 {
 	qDebug() << "FileMessage::sendFiles()";
 
-	cl->sendFile(this);
+	theRM.account()->client()->sendFile(this);
 	waitForIncomingConnect();
 }
 
 void FileMessage::sendFile()
 {
-	qDebug() << "FileMessage::sendFile()";
+	qDebug() << Q_FUNC_INFO;
 
 	bytesTransferred = 0;
 
@@ -502,7 +546,7 @@ void FileMessage::sendFile()
 
 void FileMessage::slotBytesWritten(qint64 bytes)
 {
-	qDebug() << "FileMessage::slotBytesWritten";
+	qDebug() << Q_FUNC_INFO;
 
 	if (transferStatus != TRANSFERRING_FILE)
 		return;
@@ -510,6 +554,7 @@ void FileMessage::slotBytesWritten(qint64 bytes)
 	bytesTransferred += bytes;
 	bytesTotalTransferred += bytes;
 	setTransferStatus(TRANSFERRING_FILE, percentage());
+	qDebug() << percentage();
 
 	if (bytesTransferred < fm_sizes[currFile])
 		sendFilePart();
@@ -525,7 +570,7 @@ void FileMessage::slotBytesWritten(qint64 bytes)
 
 void FileMessage::sendFilePart()
 {
-	qDebug() << "FileMessage::sendFilePart()";
+	qDebug() << Q_FUNC_INFO;
 
 	fm_socket->write(fm_currentFile.read(fm_currentFileChunkSize));
 }
@@ -543,6 +588,7 @@ void FileMessage::slotFileTransferStatus(quint32 status, QByteArray email, quint
 	if (email != fm_contEmail || sessionId != fm_sessionId)
 		return;
 
+	qDebug() << status;
 	if (status == FILE_TRANSFER_MIRROR)
 	{
 		if (transferStatus == WAITING_FOR_CONNECTION)
@@ -558,28 +604,30 @@ void FileMessage::slotFileTransferStatus(quint32 status, QByteArray email, quint
 			{
 				qDebug() << "I can't to connect to you. Let's try proxy?";
 				useProxy = true;
-				emit proxy(this, MRIM_PROXY_TYPE_FILES);
+				//emit proxy(this, MRIM_PROXY_TYPE_FILES);
+				theRM.account()->client()->sendProxy(this, MRIM_PROXY_TYPE_FILES);
 			}
 		}
 		else
+		{
+			qDebug() << "Other transfer status" << transferStatus;
 			return;
+		}
 	}
 	else if (status == FILE_TRANSFER_STATUS_DECLINE)
-	{
 		cancelTransferring(fm_sessionId);
-	}
-
 }
 
 void FileMessage::getIpArraysFromString()
 {
-	qDebug() << "FileMessage::getIpArraysFromString()";
+	qDebug() << Q_FUNC_INFO;
 
 	ipsCheck.clear();
 	portsCheck.clear();
 	ipForCheck = 0;
 
 	ipsCheck = fm_ips.split(';');
+	qDebug() << fm_ips;
 	if (ipsCheck.last() == "")
 		ipsCheck.takeLast();
 
@@ -601,7 +649,7 @@ void FileMessage::getIpArraysFromString()
 
 void FileMessage::deleteServers()
 {
-	qDebug() << "FileMessage::deleteServers()";
+/*	qDebug() << "FileMessage::deleteServers()";
 
 	int i;
 	for (i = 0; i < listeningPorts.count(); i++)
@@ -611,12 +659,12 @@ void FileMessage::deleteServers()
 			qDebug() << "deleting" << i << "server";
 			fm_servers[i]->deleteLater();
 		}
-	}
+	}*/
 }
 
 void FileMessage::createSocket()
 {
-	qDebug() << "FileMessage::createSocket()";
+	qDebug() << Q_FUNC_INFO;
 
 	fm_socket = new QTcpSocket;
     connect(fm_socket, SIGNAL(connected()), this, SLOT(slotConnectedToPeer()));
@@ -629,7 +677,10 @@ void FileMessage::createSocket()
 
 void FileMessage::slotProxy(QByteArray email, quint32 idRequest, quint32 dataType, QByteArray filesAnsi, QByteArray proxyIps, quint32 sessionId, quint32 unk1, quint32 unk2, quint32 unk3)
 {
-	qDebug() << "FileMessage::slotProxy";
+	qDebug() << Q_FUNC_INFO;
+	qDebug() << email << fm_contEmail;
+	qDebug() << idRequest << fm_sessionId;
+
 	if (email != fm_contEmail || idRequest != fm_sessionId)
 		return;
 
@@ -639,20 +690,36 @@ void FileMessage::slotProxy(QByteArray email, quint32 idRequest, quint32 dataTyp
 
 void FileMessage::slotProxyAck(quint32 status, QByteArray email, quint32 idRequest, quint32 dataType, QByteArray filesAnsi, QByteArray proxyIps, quint32 sessionId, quint32 unk1, quint32 unk2, quint32 unk3)
 {
-	qDebug() << "FileMessage::slotProxyAck";
+	qDebug() << Q_FUNC_INFO;
 
-	if (email != fm_contEmail || idRequest != fm_proxySessId)
+	qDebug() << "email = " << email;
+	qDebug() << "fm_contEmail" << fm_contEmail;
+	qDebug() << "idRequest" << idRequest;
+	qDebug() << "fm_proxySessId" << fm_proxySessId;
+
+	if (email != fm_contEmail)
 		return;
 
 	if (status == PROXY_STATUS_OK)
+	{
+		qDebug() << "Proxy status is OK";
 		initProxy(dataType, proxyIps, sessionId, unk1, unk2, unk3);
-	else if (status == PROXY_STATUS_DECLINE)
-		cancelTransferring(sessionId);
+		return;
+	}
+	qDebug() << "Proxy status is" << status;
+
+	if (idRequest != fm_proxySessId)
+		return;
+
+	qDebug() << "Go ahead";
+
+/*	if (status == PROXY_STATUS_DECLINE)
+		cancelTransferring(sessionId);*/
 }
 
 void FileMessage::proxyHello()
 {
-	qDebug() << "FileMessage::proxyHello";
+	qDebug() << Q_FUNC_INFO;
 
 	QByteArray headerBA;
 	MRIMDataStream header(&headerBA, QIODevice::WriteOnly);
@@ -683,7 +750,7 @@ void FileMessage::proxyHello()
 
 void FileMessage::initProxy(quint32 dataType, QByteArray proxyIps, quint32 sessionId, quint32 unk1, quint32 unk2, quint32 unk3)
 {
-	qDebug() << "FileMessage::initProxy()";
+	qDebug() << Q_FUNC_INFO;
 
 	fm_unk[0] = unk1;
 	fm_unk[1] = unk2;
@@ -697,14 +764,19 @@ void FileMessage::initProxy(quint32 dataType, QByteArray proxyIps, quint32 sessi
 
 	if (tryToConnect())
 	{
-		emit proxyAck(this, PROXY_STATUS_OK, dataType, sessionId, fm_unk[0], fm_unk[1], fm_unk[2]);
+		qDebug() << "Connected to proxy";
+		theRM.account()->client()->sendProxyAck(this, PROXY_STATUS_OK, dataType, sessionId, fm_unk[0], fm_unk[1], fm_unk[2]);
+/*		emit proxyAck(this, PROXY_STATUS_OK, dataType, sessionId, fm_unk[0], fm_unk[1], fm_unk[2]);*/
 		proxyHello();
 	}
 	else
+	{
+		qDebug() << "Error! Could not connect to proxy";
 		if (fm_type == Incoming)
 			setTransferStatus(RECEIVE_ERROR, 0);
 		else
 			setTransferStatus(TRANSFER_ERROR, 0);
+	}
 }
 
 QString FileMessage::getSizeInString(quint32 size)
@@ -733,23 +805,31 @@ bool FileMessage::cancelTransferring(quint32 sessId)
 	if (sessId == 0)
 		sessId = fm_sessionId;
 
-	fm_socket->disconnect();
-	if (!useProxy)
+	if (transferStatus == RECEIVING_FILE || transferStatus == TRANSFERRING_FILE)
+	{
+		fm_currentFile.close();
+		fm_currentFile.remove();
+	}
+/*	if (transferStatus != WAITING_FOR_CONNECTION)
+		fm_socket->disconnectFromHost();*/
+
+/*	if (!useProxy)
 		sendFileAck(FILE_TRANSFER_STATUS_DECLINE);
 	else
-		emit proxyAck(this, PROXY_STATUS_DECLINE, MRIM_PROXY_TYPE_FILES, fm_proxySessId, fm_unk[0], fm_unk[1], fm_unk[2]);
+		emit proxyAck(this, PROXY_STATUS_DECLINE, MRIM_PROXY_TYPE_FILES, fm_proxySessId, fm_unk[0], fm_unk[1], fm_unk[2]);*/
 
 	if (fm_type == Incoming)
 	{
-		emit fileTransferred(RECEIVE_CANCEL, fm_filesHtml, fm_defaultDir);
+		//emit fileTransferred(RECEIVE_CANCEL, fm_filesHtml, getReceivingDir());
 		setTransferStatus(RECEIVE_CANCEL, 0);
 	}
 	else if (fm_type == Outgoing)
 	{
-		emit fileTransferred(TRANSFER_CANCEL, fm_filesHtml, fm_defaultDir);
+		//emit fileTransferred(TRANSFER_CANCEL, fm_filesHtml, getReceivingDir());
 		setTransferStatus(TRANSFER_CANCEL, 0);
 	}
-	deleteLater(); /*TODO: warning "QCoreApplication::postEvent: Unexpected null receiver" occure*/
+	theRM.account()->client()->sendFileAck(FILE_TRANSFER_STATUS_DECLINE, fm_contEmail, fm_sessionId, "");
+//	deleteLater();
 
 	return true;
 }
@@ -772,12 +852,53 @@ QString FileMessage::getDefDir()
 	return dir.absolutePath();
 }
 
-void FileMessage::setDefDir(QString d)
+/*void FileMessage::setDefDir(QString d)
 {
-	fm_defaultDir = d;
+//	fm_defaultDir = d;
+}*/
+
+void FileMessage::setFileList(QList<QFileInfo> & files)
+{
+	qDebug() << Q_FUNC_INFO;
+	QByteArray asciiName;
+	int filesInUnicode = 0;
+
+	fm_filesAnsi = "";
+	fm_filesUtf = "";
+	fm_filesHtml = "";
+	fm_fileListAnsi.clear();
+	fm_fileListUtf.clear();
+	fm_sizes.clear();
+	fm_filePaths.clear();
+	fm_totalSize = 0;
+	QList<QFileInfo>::iterator it = files.begin();
+	for (; it != files.end(); it++)
+	{
+		QTextCodec* codec = QTextCodec::codecForName("cp1251");
+		if (codec->canEncode(it->fileName()))
+			asciiName = it->fileName().toAscii();
+		else
+			asciiName = "unicode_file_name_" + QByteArray::number(filesInUnicode++) + ".";
+
+		fm_fileListAnsi.append(asciiName);
+		fm_fileListUtf.append(it->fileName());
+
+		fm_filesAnsi += asciiName + ";" + QByteArray::number(it->size()) + ";";
+		fm_filesUtf += it->fileName() + ";" + QByteArray::number(it->size()) + ";";
+		fm_filesHtml += ((fm_filesHtml == "") ? "" : "<br>") + it->absoluteFilePath() + " (" + getSizeInString(it->size()) + ")";
+
+		fm_sizes.append(it->size());
+		fm_filePaths.append(it->absoluteFilePath());
+		fm_totalSize += it->size();
+	}
 }
 
-FileExistsDialog::FileExistsDialog(QString fileName, FileMessage* fm, QWidget* parent, Qt::WindowFlags f)
+QString FileMessage::getReceivingDir()
+{
+	return theRM.account()->settings()->value("FilesTransfer/defaultDir", getDefDir()).toString();
+}
+
+FileExistsDialog::FileExistsDialog(QString fileName, QWidget* parent, Qt::WindowFlags f)
  : QDialog(parent, f), m_oldFileName(fileName)
 {
 	label = new QLabel(tr("File %1 is already exists. What should we do?").arg(fileName));
@@ -799,7 +920,7 @@ FileExistsDialog::FileExistsDialog(QString fileName, FileMessage* fm, QWidget* p
 	connect(renameButton, SIGNAL(clicked()), this, SLOT(accept()));
 	connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
 
-	setWindowTitle("File exists");
+	setWindowTitle(tr("File exists"));
 	QVBoxLayout* layout = new QVBoxLayout;
 	QHBoxLayout* buttonsLayout = new QHBoxLayout;
 	buttonsLayout->addWidget(rewriteButton);

@@ -71,6 +71,8 @@ Account::Account(QByteArray email, QByteArray password, QObject* parent)
 	connect(m_client, SIGNAL(contactAuthorizedMe(const QByteArray&)), m_contactList, SLOT(slotContactAuthorized(const QByteArray&)));
 	connect(m_client, SIGNAL(newNumberOfUnreadLetters(quint32)), this, SLOT(setUnreadLetters(quint32)));
 	connect(m_client, SIGNAL(newLetter(QString, QString, QDateTime)), this, SLOT(slotNewLetter()));
+
+	connect(m_client, SIGNAL(accountInfoReceived(quint32, MRIMClient::ContactsInfo, quint32, quint32)), this, SLOT(checkAccountInfo(quint32, MRIMClient::ContactsInfo, quint32, quint32)));
 }
 
 void Account::reset(QByteArray email, QByteArray password)
@@ -265,7 +267,7 @@ void Account::setUnreadMessages(const QString& unreadMessages)
 	emit unreadLettersChanged(m_unreadMessages);
 }
 
-void Account::setNickName(QString nickname)
+void Account::setNickname(QString nickname)
 {
 	qDebug() << "Account::setNickName" << nickname;
 
@@ -343,4 +345,18 @@ void Account::extendedStatusChanged(qint32 id, OnlineStatus status)
 
 	if (id == m_pointerOnlineStatus)
 		setOnlineStatus(status, id);
+}
+
+void Account::checkAccountInfo(quint32 status, MRIMClient::ContactsInfo info, quint32 maxRows, quint32 serverTime)
+{
+	qDebug() << Q_FUNC_INFO;
+	m_info = info;
+}
+
+void Account::savePassword(bool really)
+{
+	if (really)
+		m_settings->setValue("Account/Password", m_password.toBase64());
+	else
+		m_settings->remove("Account/Password");
 }
