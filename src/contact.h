@@ -69,6 +69,7 @@ public:
 	bool showMicroblogText() { return m_showMicroblogText; }
 	void setMicroblogText(QString text) { m_microblogText = text; }
 	QString microblogText() { return m_microblogText; }
+	QByteArray client() { return data.getClient(); }
 
 	ContactData contactData() const { return data; }
 	

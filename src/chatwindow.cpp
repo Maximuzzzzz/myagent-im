@@ -181,7 +181,7 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoti
 	}
 	else
 	{
-		setWindowTitle(session->contact()->nickname());
+		//setWindowTitle(session->contact()->nickname().append(" - ").append(session->contact()->client()));
 
 		smsEditor = new SmsEditor(s->account(), s->contact());
 		connect(smsEditor, SIGNAL(sendPressed()), this, SLOT(sendSms()));
@@ -475,7 +475,10 @@ void ChatWindow::checkContactStatus(OnlineStatus status)
 	if (contact->isConference())
 		setWindowTitle(contact->nickname());
 	else
-		setWindowTitle(contact->nickname() + " - " + status.statusDescr());
+		if (session->contact()->client() != "")
+			setWindowTitle(contact->nickname().append(" - ").append(status.statusDescr()).append(" - ").append(session->contact()->client()));
+		else
+			setWindowTitle(contact->nickname().append(" - ").append(status.statusDescr()));
 	setContactStatusIcon();
 }
 

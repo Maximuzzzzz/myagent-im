@@ -44,11 +44,11 @@ LoginDialog::LoginDialog(QWidget* parent)
 	QDir dir(theRM.basePath());
 	QStringList filters;
 	filters << "?*@mail.ru" << "?*@list.ru" << "?*inbox.ru" << "?*bk.ru" << "?*corp.mail.ru";
-	emailBox->addItems(dir.entryList(filters, QDir::Dirs | QDir::CaseSensitive));
-	emailBox->lineEdit()->clear();
-	emailBox->lineEdit()->completer()->setCompletionMode(QCompleter::PopupCompletion);
+	loginBox->addItems(dir.entryList(filters, QDir::Dirs | QDir::CaseSensitive));
+	loginBox->lineEdit()->clear();
+	loginBox->lineEdit()->completer()->setCompletionMode(QCompleter::PopupCompletion);
 
-	emailBox->lineEdit()->setValidator(new QRegExpValidator(QRegExp("([a-z]|[A-Z]|[0-9]|[_])+([a-z]|[A-Z]|[0-9]|[_\\-\\.])*@(mail.ru|list.ru|inbox.ru|bk.ru|corp.mail.ru)"), emailBox));
+	loginBox->lineEdit()->setValidator(new QRegExpValidator(QRegExp("([a-z]|[A-Z]|[0-9]|[_])+([a-z]|[A-Z]|[0-9]|[_\\-\\.])*@(mail.ru|list.ru|inbox.ru|bk.ru|corp.mail.ru)"), loginBox));
 	passwordEdit->setValidator(new QRegExpValidator(QRegExp(".+"), passwordEdit));
 
 	OnlineStatus onlineStatus;
@@ -67,13 +67,20 @@ LoginDialog::LoginDialog(QWidget* parent)
 		}
 	}
 
-	connect(emailBox->lineEdit(), SIGNAL(textEdited(const QString&)), SLOT(checkEmail()));
-	connect(emailBox, SIGNAL(editTextChanged(const QString&)), SLOT(slotEmailChanged()));
+	connect(loginBox->lineEdit(), SIGNAL(textEdited(const QString&)), SLOT(checkEmail()));
+	connect(loginBox, SIGNAL(editTextChanged(const QString&)), SLOT(slotEmailChanged()));
+	connect(domainBox, SIGNAL(currentIndexChanged(QString)), SLOT(slotEmailChanged()));
 	connect(passwordEdit, SIGNAL(textEdited(const QString&)), SLOT(checkPassword()));
 
 	okButton->setDisabled(true);
 
 	setFixedSize(sizeHint());
+
+	if (emailLabel->geometry().width() > passwordLabel->geometry().width())
+		passwordLabel->setMinimumWidth(emailLabel->sizeHint().width());
+	else
+		emailLabel->setMinimumWidth(passwordLabel->sizeHint().width());
+
 	connect(okButton, SIGNAL(clicked()), this, SLOT(accept()));
 	connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
 	connect(settingsButton, SIGNAL(clicked()), this, SLOT(showSettingsWindow()));
@@ -96,13 +103,13 @@ OnlineStatus LoginDialog::status() const
 
 void LoginDialog::setEmail(const QString & email)
 {
-	emailBox->lineEdit()->setText(email);
+	loginBox->lineEdit()->setText(email);
 	passwordEdit->setFocus(Qt::OtherFocusReason);
 }
 
 void LoginDialog::checkEmail()
 {
-	okButton->setEnabled(emailBox->lineEdit()->hasAcceptableInput());
+	okButton->setEnabled(loginBox->lineEdit()->hasAcceptableInput());
 }
 
 void LoginDialog::checkPassword()
@@ -113,6 +120,10 @@ void LoginDialog::checkPassword()
 
 void LoginDialog::slotEmailChanged()
 {
+	if (loginBox->lineEdit()->text().contains("@"))
+		domainBox->setVisible(false);
+	else
+		domainBox->setVisible(true);
 	OnlineStatus st = theRM.loadOnlineStatus(email());
 	QByteArray pass = theRM.loadPass(email());
 	if (!pass.isEmpty())
@@ -171,6 +182,13 @@ void LoginDialog::showSettingsWindow()
 
 void LoginDialog::slotSavePassChecked()
 {
-	//TODO: Attention message needs
 	isSavePass = savePass->isChecked();
+}
+
+QByteArray LoginDialog::email() const
+{
+	if (!loginBox->lineEdit()->text().contains("@"))
+		return loginBox->currentText().append(domainBox->currentText()).toLatin1();
+	else
+		return loginBox->currentText().toLatin1();
 }

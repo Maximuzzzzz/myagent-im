@@ -327,29 +327,52 @@ void ContactListModel::slotRemoveContactItem(Contact* c)
 
 	removingContactItem->QStandardItem::parent()->takeRow(removingContactItem->row());
 	if (c->isConference())
+	{
 		if (conferences->rowCount() == 0)
 		{
-			/*invisibleRootItem()->takeRow(conferences->row());
+			invisibleRootItem()->takeRow(conferences->row());
+			groupRows--;
 			delete conferences;
-			conferences = 0;*/
+			conferences = 0;
 		}
-	if (c->isPhone())
+	}
+	else if (c->isPhone())
+	{
 		if (phones->rowCount() == 0)
 		{
-//			invisibleRootItem()->takeRow(phones->row());
-//			phones = 0;
+			invisibleRootItem()->takeRow(phones->row());
+			groupRows--;
+			delete phones;
+			phones = 0;
 		}
-	if (c->isTemporary())
+	}
+	else if (c->isTemporary())
+	{
 		if (temporary->rowCount() == 0)
 		{
-//			invisibleRootItem()->takeRow(temporary->row());
-//			temporary = 0;
+			invisibleRootItem()->takeRow(temporary->row());
+			groupRows--;
+			delete temporary;
+			temporary = 0;
 		}
-	if (c->isNotAuthorized())
+	}
+	else if (c->isNotAuthorized())
+	{
 		if (notAuthorized->rowCount() == 0)
 		{
-//			invisibleRootItem()->takeRow(notAuthorized->row());
-//			notAuthorized = 0;
+			invisibleRootItem()->takeRow(notAuthorized->row());
+			groupRows--;
+			delete notAuthorized;
+			notAuthorized = 0;
+		}
+	}
+	else
+		if (notInGroup->rowCount() == 0)
+		{
+			invisibleRootItem()->takeRow(notInGroup->row());
+			groupRows--;
+			delete notInGroup;
+			notInGroup = 0;
 		}
 	delete c;
 }

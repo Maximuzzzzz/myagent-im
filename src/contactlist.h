@@ -96,6 +96,7 @@ public:
 
 signals:
 	void groupAdded(ContactGroup* group);
+	void groupRenamed(ContactGroup* group);
 	void groupRemoved(ContactGroup* group);
 	void groupsCleared();
 	void contactAdded(Contact* contact);

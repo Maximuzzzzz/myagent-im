@@ -1,0 +1,6 @@
+?package(myagent-im):needs="X11" section="Applications/Network/Communication" \
+	title="MyAgent-IM" \
+	longtitle="Instant Messenger for Mail.ru protocol" \
+	command="/usr/bin/myagent-im" \
+	icon="/usr/share/pixmaps/myagent-im.xpm" \
+	description="Instant Messenger"

@@ -35,7 +35,7 @@ Q_OBJECT
 public:
 	LoginDialog(QWidget* parent = 0);
 	OnlineStatus status() const;
-	QByteArray email() const { return emailBox->currentText().toLatin1(); }
+	QByteArray email() const;
 	QByteArray password() const { return passwordEdit->text().toLatin1(); }
 	void setEmail(const QString& email);
 

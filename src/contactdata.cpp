@@ -64,7 +64,6 @@ ContactData::ContactData(quint32 contactId, MRIMDataStream& stream, const QByteA
 	QByteArray contactPhones;
 	stream >> contactPhones;
 	//phones = c->toUnicode(contactPhones)/*; QString(contactPhones)*/.split(',', QString::SkipEmptyParts);
-	qDebug() << contactPhones.toHex();
 	phones = QString(contactPhones).split(',', QString::SkipEmptyParts);
 
 	for (int i = 0; i < phones.size(); i++)
@@ -85,6 +84,10 @@ ContactData::ContactData(quint32 contactId, MRIMDataStream& stream, const QByteA
 		status.setIdStatus(statusId);
 		status.setDescr(statusDescr);
 	}
+
+	QByteArray unk1;
+	quint32 unk2;
+	stream >> unk1 >> unk2 >> client;
 
 	tailMask = mask.right(mask.size() - dataMask().size());
 
@@ -110,12 +113,12 @@ ContactData::ContactData(quint32 contactId, MRIMDataStream& stream, const QByteA
 			qDebug() << "!!! strange mask flag: " << mask.at(i);
 	}
 
-	qDebug() << "ContactData::ContactData " << id << flags << group << email << nick << internalFlags << phones << statusProtocol << statusId << statusDescr;
+	qDebug() << "ContactData::ContactData " << id << flags << group << email << nick << internalFlags << phones << statusProtocol << statusId << statusDescr << getClient();
 }
 
 const QByteArray ContactData::dataMask()
 {
-	return "uussuusss";
+	return "uussuussssus";
 }
 
 void ContactData::save(QDataStream & stream) const
@@ -174,4 +177,18 @@ void ContactData::prepareForSending(MRIMDataStream & stream) const
 bool ContactData::isConference() const
 {
 	return email.contains("@chat.agent");
+}
+
+QByteArray ContactData::getClient() const
+{
+	int clientNamePos = client.indexOf("\"", client.indexOf("client")) + 1;
+	QByteArray result = client.mid(clientNamePos, client.indexOf("\"", clientNamePos) - clientNamePos);
+	if (result == "magent")
+		return "Mail Agent";
+	else if (result == "webagent")
+		return "Web agent";
+	else if (result == "myagent-im")
+		return "MyAgent-IM";
+
+	return result;
 }

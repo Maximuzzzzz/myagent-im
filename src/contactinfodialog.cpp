@@ -191,6 +191,8 @@ void ContactInfoDialog::createContent(const ContactInfo & info)
 	
 	infoLayout->addRow(tr("Location"), new QLabel(info.location()));
 
+	infoLayout->addRow(tr("Client"), new QLabel(contact->client()));
+
 	topLayout->addLayout(avatarBoxLayout);
 	topLayout->addLayout(infoLayout);
 

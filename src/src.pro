@@ -41,50 +41,54 @@ unix {
         smiles_set03 \
         smiles_set04 \
         smiles_set05 \
-		smiles_set06 \
+        smiles_set06 \
         smiles_smiles \
         smiles_static_png \
-        smiles \
         statuses_set01 \
-        statuses \
-        skins \
-        data \
+		skins_en_US \
+		skins_ru_RU \
+		skins_uk_UA \
+		data \
         desktop \
         appicon \
         sounds
     target.path = $$BINDIR
     data.path = $$DATADIR
     data.files += locale/*.qm
-    skins.path = $$DATADIR/emoticons/skin
-    skins.files = emoticons/skin/*
-    STATUSESDIR = $$DATADIR/emoticons/status
-    statuses.path = $$STATUSESDIR
-    statuses.files = emoticons/status/*
+	skins_en_US.path = $$DATADIR/emoticons/skin/en_US
+	skins_en_US.files = emoticons/skin/en_US/skin.txt
+	skins_ru_RU.path = $$DATADIR/emoticons/skin/ru_RU
+	skins_ru_RU.files = emoticons/skin/ru_RU/skin.txt
+	skins_uk_UA.path = $$DATADIR/emoticons/skin/uk_UA
+	skins_uk_UA.files = emoticons/skin/uk_UA/skin.txt
+	STATUSESDIR = $$DATADIR/emoticons/status
     statuses_set01.path = $$STATUSESDIR/set01
-    statuses_set01.files = emoticons/status/set01/*
+	statuses_set01.files = emoticons/status/set01/*.png
     SMILESDIR = $$DATADIR/emoticons/smiles
-    smiles.path = $$SMILESDIR
-    smiles.files = emoticons/smiles/*
     smiles_animated.path = $$SMILESDIR/animated
-    smiles_animated.files = emoticons/smiles/animated/*
+	smiles_animated.files = emoticons/smiles/animated/*.gif
     smiles_set03.path = $$SMILESDIR/set03
-    smiles_set03.files = emoticons/smiles/set03/*
-    smiles_set04.path = $$SMILESDIR/set04
-    smiles_set04.files = emoticons/smiles/set04/*
-    smiles_set05.path = $$SMILESDIR/set05
-    smiles_set05.files = emoticons/smiles/set05/*
+	smiles_set03.files = emoticons/smiles/set03/*.gif
+	smiles_set03.files += emoticons/smiles/set03/*.png
+	smiles_set04.path = $$SMILESDIR/set04
+	smiles_set04.files = emoticons/smiles/set04/*.gif
+	smiles_set04.files = emoticons/smiles/set04/*.png
+	smiles_set05.path = $$SMILESDIR/set05
+	smiles_set05.files = emoticons/smiles/set05/*.gif
+	smiles_set05.files = emoticons/smiles/set05/*.png
 	smiles_set06.path = $$SMILESDIR/set06
-	smiles_set06.files = emoticons/smiles/set06/*
+	smiles_set06.files = emoticons/smiles/set06/*.gif
+	smiles_set06.files = emoticons/smiles/set06/*.png
 	smiles_smiles.path = $$SMILESDIR/smiles
-    smiles_smiles.files = emoticons/smiles/smiles/*
+	smiles_smiles.files = emoticons/smiles/smiles/*.gif
     smiles_static_png.path = $$SMILESDIR/static_png
-    smiles_static_png.files = emoticons/smiles/static_png/*
+	smiles_static_png.files = emoticons/smiles/static_png/*.png
     desktop.path = $$PREFIX/share/applications
     desktop.files += myagent-im.desktop
     sounds.path = $$DATADIR/sounds
     sounds.files = sounds/*
     appicon.path = $$PREFIX/share/pixmaps
-    appicon.files += myagent-im.png
+    appicon.files += myagent-im.xpm
 }
 RESOURCES += res.qrc
 SOURCES += main.cpp \
@@ -211,7 +215,7 @@ SOURCES += main.cpp \
     taskbroadcastmessage.cpp \
     conferencelistmodel.cpp \
     popupwindow.cpp \
-    popupwindowsstack.cpp
+	popupwindowsstack.cpp
 HEADERS += mrimclient.h \
     soundplayer.h \
     audio.h \
@@ -342,7 +346,7 @@ HEADERS += mrimclient.h \
     taskbroadcastmessage.h \
     conferencelistmodel.h \
     popupwindow.h \
-    popupwindowsstack.h
+	popupwindowsstack.h
 FORMS += logindialog.ui \
     searchcontacts.ui \
     addcontact.ui \

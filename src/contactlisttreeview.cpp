@@ -156,8 +156,11 @@ void ContactListTreeView::contextMenuEvent(QContextMenuEvent* e)
 	}
 	else if (ContactGroup* group = contactListModel->groupFromIndex(index))
 	{
-		groupMenu->setGroup(group);
-		groupMenu->exec(QCursor::pos());
+		if (group->isSimple())
+		{
+			groupMenu->setGroup(group);
+			groupMenu->exec(QCursor::pos());
+		}
 	}
 }
 

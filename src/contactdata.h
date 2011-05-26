@@ -51,6 +51,8 @@ public:
 	void load(QDataStream& stream);
 
 	bool isConference() const;
+	QByteArray getClient() const;
+	//QIcon getClientIcon() const;
 
 	void prepareForSending(MRIMDataStream& stream) const;
 private:
@@ -64,6 +66,7 @@ private:
 	quint32 internalFlags;
 	OnlineStatus status;
 	QStringList phones;
+	QByteArray client;
 	
 	QString tailMask;
 	QList<QVariant> tailData;

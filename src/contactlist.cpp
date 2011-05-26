@@ -79,7 +79,7 @@ void ContactList::clear()
 
 void ContactList::addGroup(quint32 id, quint32 flags, const QString& name)
 {
-	qDebug() << "ContactList::addGroup" << constructing;
+	qDebug() << Q_FUNC_INFO << constructing;
 	ContactGroup* group = new ContactGroup(id, flags, name);
 
 	QList<ContactGroup*>::iterator it = m_groups.begin();
@@ -92,14 +92,16 @@ void ContactList::addGroup(quint32 id, quint32 flags, const QString& name)
 				tmpGroups.append(*it);
 				m_groups.removeAll(*it);
 				delete group;
-				return;
+				emit groupAdded(*it);
 			}
 			else
 			{
 				m_groups.removeAll(*it);
 				m_groups.append(group);
-				return;
+				//delete (*it);
+				emit groupAdded(group);
 			}
+			return;
 		}
 	if (constructing)
 		tmpGroups.append(group);
@@ -964,6 +966,7 @@ void ContactList::renameGroupEnd(quint32 status, bool timeout)
 	QString name = task->name();
 	group->setName(name);
 
+	emit groupRenamed(group);
 	emit updated();
 }
 

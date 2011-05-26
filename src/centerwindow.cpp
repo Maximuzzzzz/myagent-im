@@ -35,14 +35,14 @@ void centerWindow(QWidget* window)
 
 	QRect screenRect = desktop->availableGeometry(window);
 
-	qDebug() << "availableGeometry = " << screenRect;
+	//qDebug() << "availableGeometry = " << screenRect;
 
 	int windowWidth = window->geometry().width();
 	int windowHeight = window->geometry().height();
 
-	qDebug() << "windowWidth = " << windowWidth << ", windowHeight = " << windowHeight;
+	/*qDebug() << "windowWidth = " << windowWidth << ", windowHeight = " << windowHeight;
 	qDebug() << "width = " << window->width() << ". height = " << window->height();
-	qDebug() << "sizeHint = " << window->sizeHint();
+	qDebug() << "sizeHint = " << window->sizeHint();*/
 
 	int x = (screenRect.width() - windowWidth) / 2;
 	int y = (screenRect.height() - windowHeight) / 2;

@@ -37,24 +37,28 @@ class SubmenuMoveToGroup : public QMenu
 {
 Q_OBJECT
 public:
-	SubmenuMoveToGroup(QWidget* parent = 0);
+	SubmenuMoveToGroup(Contact* c, QWidget* parent = 0);
 	~SubmenuMoveToGroup();
 
 	quint32 groupsCount() { return m_groups.count(); };
 
+	void setContact(Contact* c);
 signals:
 	void moveContact(quint32);
 
 public slots:
-	void addGroup(quint32 groupId, QString groupName);
-	void removeGroup(quint32 groupId);
+	void addGroup(ContactGroup* group);
+	void renameGroup(ContactGroup* group);
+	void removeGroup(ContactGroup* group);
 	void clearAll();
 
 private slots:
 	void moveContactTo();
 
 private:
-	QHash<quint32, QAction*> m_groups;
+	//QHash<quint32, QAction*> m_groups;
+	QMap<ContactGroup*, QAction*> m_groups;
+	Contact* m_contact;
 };
 
 class ContactContextMenu : public QMenu
@@ -77,6 +81,7 @@ private slots:
 	void showHistory();
 	void slotChangeGroup(quint32 groupId);
 	void slotGroupAdded(ContactGroup* group);
+	void slotGroupRenamed(ContactGroup* group);
 	void slotGroupRemoved(ContactGroup* group);
 	void slotGroupsCleared();
 
