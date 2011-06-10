@@ -80,7 +80,7 @@ signals:
 	void fileTransferAck(quint32 status, QByteArray email, quint32 sessionId, QByteArray mirrorIps);
 	void proxy(QByteArray email, quint32 idRequest, quint32 dataType, QByteArray filesAnsi, QByteArray proxyIps, quint32 sessionId, quint32 unk1, quint32 unk2, quint32 unk3);
 	void proxyAck(quint32 status, QByteArray email, quint32 id_request, quint32 dataType, QByteArray filesAnsi, QByteArray ips, quint32 sessionId, quint32 unk1, quint32 unk2, quint32 unk3);
-	void microblogChanged(QByteArray, QString);
+	void microblogChanged(QByteArray, QString, QDateTime);
 	void conferenceAsked(const QByteArray& confChat, const QString& confName);
 	void connectError(QString errorMessage);
 	void conferenceClAddContact(QByteArray& contact);

@@ -110,7 +110,10 @@ private:
 	QCheckBox* altSButton;
 	QLineEdit* dateTimeFormat;
 	QPushButton* helpFormat;
-	QCheckBox* mergeMessagesCheckBox;
+	QRadioButton* notToMergeMessagesRadio;
+	QRadioButton* mergeInterlocutorMessagesRadio;
+	QRadioButton* mergeMessagesEveryMinuteRadio;
+	QRadioButton* mergeMessagesEveryHourRadio;
 
 	//windows page widgets
 	QCheckBox* tabWindows;

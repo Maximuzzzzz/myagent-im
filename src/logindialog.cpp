@@ -74,6 +74,7 @@ LoginDialog::LoginDialog(QWidget* parent)
 
 	okButton->setDisabled(true);
 
+	passwordHint->setVisible(false);
 	setFixedSize(sizeHint());
 
 	if (emailLabel->geometry().width() > passwordLabel->geometry().width())
@@ -109,6 +110,10 @@ void LoginDialog::setEmail(const QString & email)
 
 void LoginDialog::checkEmail()
 {
+	if (loginBox->lineEdit()->text().contains("@"))
+		domainBox->setVisible(false);
+	else
+		domainBox->setVisible(true);
 	okButton->setEnabled(loginBox->lineEdit()->hasAcceptableInput());
 }
 
@@ -120,10 +125,23 @@ void LoginDialog::checkPassword()
 
 void LoginDialog::slotEmailChanged()
 {
-	if (loginBox->lineEdit()->text().contains("@"))
-		domainBox->setVisible(false);
-	else
-		domainBox->setVisible(true);
+	if (domainBox->isVisible() && loginBox->currentText().contains("@"))
+	{
+		int i;
+		QString domain = QString("@").append(loginBox->currentText().section("@", 1));
+		for (i = 0; i < loginBox->count(); i++)
+		{
+			if (domainBox->itemText(i) == domain)
+			{
+				domainBox->setCurrentIndex(i);
+				loginBox->setEditText(loginBox->currentText().left(loginBox->currentText().indexOf("@")));
+				break;
+			}
+		}
+		if (loginBox->currentText().contains("@"))
+			domainBox->setVisible(false);
+	}
+
 	OnlineStatus st = theRM.loadOnlineStatus(email());
 	QByteArray pass = theRM.loadPass(email());
 	if (!pass.isEmpty())
@@ -131,12 +149,14 @@ void LoginDialog::slotEmailChanged()
 		savePass->setChecked(true);
 		passwordEdit->setText(pass);
 		okButton->setEnabled(passwordEdit->hasAcceptableInput());
+		slotSavePassChecked();
 	}
 	else
 	{
 		passwordEdit->setText(currPass);
 		okButton->setEnabled(passwordEdit->hasAcceptableInput());
 		savePass->setChecked(isSavePass);
+		slotSavePassChecked();
 	}
 	if (st.id() == "" || st == OnlineStatus::wrongData || st == OnlineStatus::unknown || st == OnlineStatus::offline || st == OnlineStatus::connecting)
 	{
@@ -182,7 +202,10 @@ void LoginDialog::showSettingsWindow()
 
 void LoginDialog::slotSavePassChecked()
 {
+	passwordHint->setVisible(savePass->isChecked());
 	isSavePass = savePass->isChecked();
+
+	setFixedSize(sizeHint());
 }
 
 QByteArray LoginDialog::email() const

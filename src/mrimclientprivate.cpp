@@ -993,14 +993,6 @@ void MRIMClientPrivate::processOfflineMessageAck(QByteArray data)
 
 	MrimMIME mimeMsg(msg);
 
-	/*qDebug() << mimeMsg.from();
-	qDebug() << mimeMsg.sender();
-	qDebug() << mimeMsg.subject();
-	qDebug() << mimeMsg.plainTextCharset();
-	qDebug() << mimeMsg.xMrimMultichatType();*/
-
-	//qDebug() << mimeMsg.xMrimFlags() << mimeMsg.xMrimMultichatType();
-
 	QString plainText;
 	if (mimeMsg.hasPlainText())
 	{
@@ -1010,6 +1002,7 @@ void MRIMClientPrivate::processOfflineMessageAck(QByteArray data)
 		else
 			codec = QTextCodec::codecForName(mimeMsg.plainTextCharset());
 		plainText = codec->toUnicode(mimeMsg.plainText());
+		qDebug() << "Codec" << mimeMsg.plainTextCharset() << "PlainText" << plainText << "in bytearray" << mimeMsg.plainText() << mimeMsg.plainText().toHex();
 	}
 
 	QByteArray rtfText;
@@ -1216,7 +1209,7 @@ void MRIMClientPrivate::processMicroblogChanged(QByteArray data)
 
 	MRIMDataStream in(data);
 
-	quint32 unk;
+	quint32 unk, mbDateTimeT;
 	QByteArray email, plainText;
 	QString microText;
 
@@ -1226,7 +1219,7 @@ void MRIMClientPrivate::processMicroblogChanged(QByteArray data)
 	qDebug() << unk;
 	in >> unk;
 	qDebug() << unk;
-	in >> unk;
+	in >> mbDateTimeT;
 	qDebug() << unk;
 	in >> microText;
 	in >> unk;
@@ -1234,6 +1227,9 @@ void MRIMClientPrivate::processMicroblogChanged(QByteArray data)
 	in >> plainText;
 	qDebug() << plainText;
 
+	QDateTime mbDateTimeD;
+	mbDateTimeD.setTime_t(mbDateTimeT);
+
 	if (!microText.isEmpty())
-		emit q->microblogChanged(email, microText);
+		emit q->microblogChanged(email, microText, mbDateTimeD);
 }

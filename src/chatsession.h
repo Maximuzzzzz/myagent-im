@@ -58,12 +58,12 @@ signals:
 	void smsDelivered(QByteArray phoneNumber, QString text);
 	void smsFailed();
 	void signalFileReceived(quint32 totalSize, quint32 sessionId, QByteArray filesAnsi, QString filesUtf, QByteArray ips);
-	void microblogChanged(QString text);
+	void microblogChanged(QString text, QDateTime mbDateTime);
 
 public slots:	
 	void appendMessage(Message* msg, bool addInHash = true);
 	void appendBroadcastMessage(Message* msg, ReceiversList rec, bool addInHash = true);
-	void slotMicroblogChanged(QString text);
+	void slotMicroblogChanged(QString text, QDateTime mbDateTime);
 	bool sendMessage(QString plainText, QByteArray rtf);
 	bool sendMessage(Message* msg);
 	bool broadcastMessage(ReceiversList receivers, QString plainText, QByteArray rtf);

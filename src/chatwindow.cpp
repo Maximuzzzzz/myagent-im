@@ -226,7 +226,7 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoti
 	connect(session, SIGNAL(messageDelivered(bool, Message*)), this, SLOT(messageDelivered(bool, Message*)));
 	connect(session, SIGNAL(messageAppended(const Message*)), this, SLOT(appendMessageToView(const Message*)));
 
-	connect(session, SIGNAL(microblogChanged(QString)), this, SLOT(microblogChanged(QString)));
+	connect(session, SIGNAL(microblogChanged(QString, QDateTime)), this, SLOT(microblogChanged(QString, QDateTime)));
 
 	connect(session, SIGNAL(smsDelivered(QByteArray, QString)), this, SLOT(appendSmsToView(QByteArray, QString)));
 	connect(session, SIGNAL(smsFailed()), this, SLOT(smsFailed()));
@@ -236,7 +236,7 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoti
 
 	if (session->contact()->showMicroblogText())
 	{
-		microblogChanged(session->contact()->microblogText());
+		microblogChanged(session->contact()->microblogText(), session->contact()->microblogDateTime());
 		session->contact()->setShowMicroblogText(false);
 	}
 
@@ -336,26 +336,29 @@ void ChatWindow::appendMessageToView(const Message* msg, bool newIncoming)
 	if (msg->flags() & MESSAGE_FLAG_SMS)
 	{
 		prompt = "<font color=red>" + tr("Sms from number") + " " + msg->rtfText() + " (" + msg->dateTime().time().toString(m_account->settings()->value("Messages/DateMask", theRM.defDateFormat).toString()) + ") :</font><br>";
-		lastMessageFrom = "";
+		lastMessage.from = "";
+		lastMessage.dateTime = QDateTime();
 	}
 	else if (msg->flags() & MESSAGE_SMS_DELIVERY_REPORT)
 	{
 		prompt = msg->dateTime().time().toString() + " <b>" + tr("Sms status for number") + " " + msg->rtfText() + "</b> :<br>";
-		lastMessageFrom = "";
+		lastMessage.from = "";
+		lastMessage.dateTime = QDateTime();
 	}
 	else if (msg->flags() & MESSAGE_FLAG_ALARM)
 	{
 		prompt = "<font color=green>" + msg->dateTime().toString() + " <b>" + tr("Alarm clock:")  + " <b></font>";
-		lastMessageFrom = "";
+		lastMessage.from = "";
+		lastMessage.dateTime = QDateTime();
 	}
 	else
 	{
 		QString nick;
-		QByteArray currMessageFrom;
+		Msg currMessage;
 		if (msg->type() == Message::Outgoing)
 		{
 			nick = "<font color=blue>" + session->account()->nickname();
-			currMessageFrom = session->account()->email();
+			currMessage.from = session->account()->email();
 		}
 		else
 		{
@@ -365,26 +368,34 @@ void ChatWindow::appendMessageToView(const Message* msg, bool newIncoming)
 				if (c == 0)
 				{
 					nick = "<font color=red><b>" + msg->getConfUser();
-					currMessageFrom = msg->getConfUser();
+					currMessage.from = msg->getConfUser();
 				}
 				else
 				{
 					nick = "<font color=red><b>" + c->nickname();
-					currMessageFrom = c->email();
+					currMessage.from = c->email();
 				}
 			}
 			else
 			{
 				nick = "<font color=red><b>" + session->contact()->nickname() + "</b>";
-				currMessageFrom = session->contact()->email();
+				currMessage.from = session->contact()->email();
 			}
 		}
+		currMessage.dateTime = msg->dateTime();
 
 		prompt = "";
-		qDebug() << !session->account()->settings()->value("Messages/mergeMessages", true).toBool();
-		if (currMessageFrom != lastMessageFrom || !session->account()->settings()->value("Messages/mergeMessages", true).toBool())
+		QByteArray tmpBA = m_account->settings()->value("Messages/mergeMessages", "").toByteArray();
+		if (tmpBA != "" && tmpBA != "contact" && tmpBA != "minute" && tmpBA != "hour")
+		{
+			session->account()->settings()->remove("Messages/mergeMessages");
+			tmpBA = "";
+		}
+		if (currMessage.from != lastMessage.from || (tmpBA == "") || (tmpBA == "contact" && currMessage.from != lastMessage.from) ||
+		 (tmpBA == "minute" && currMessage.dateTime > lastMessage.dateTime.addSecs(60) || (currMessage.dateTime < lastMessage.dateTime.addSecs(60) && currMessage.dateTime.time().minute() != lastMessage.dateTime.time().minute())) ||
+		 (tmpBA == "hour" && currMessage.dateTime > lastMessage.dateTime.addSecs(3600) || (currMessage.dateTime < lastMessage.dateTime.addSecs(3600) && currMessage.dateTime.time().hour() != lastMessage.dateTime.time().hour())))
 			prompt = nick + " (" + msg->dateTime().toString(m_account->settings()->value("Messages/DateMask", theRM.defDateFormat).toString()) + ") :</font><br>";
-		lastMessageFrom = currMessageFrom;
+		lastMessage = currMessage;
 	}
 
 	cursor.insertHtml(prompt);
@@ -407,12 +418,12 @@ void ChatWindow::appendMessageToView(const Message* msg, bool newIncoming)
 	emit newMessage(this);
 }
 
-void ChatWindow::microblogChanged(QString text)
+void ChatWindow::microblogChanged(QString text, QDateTime mbDateTime)
 {
 	QTextCursor cursor = chatView->textCursor();
 	cursor.movePosition(QTextCursor::End);
 
-	QString prompt = tr("%1%2 (%3) added to microblog%4").arg("<font color=#000099><b>").arg(session->contact()->nickname()).arg(QDateTime::currentDateTime().toString(m_account->settings()->value("Messages/DateMask", theRM.defDateFormat).toString())).arg("</font><br>");
+	QString prompt = tr("%1%2 (%3) added to microblog%4").arg("<font color=#000099><b>").arg(session->contact()->nickname()).arg(mbDateTime.toString(m_account->settings()->value("Messages/DateMask", theRM.defDateFormat).toString())).arg("</font><br>");
 
 	cursor.insertHtml(prompt);
 	cursor.insertHtml("<font size=80%>" + text + "</font>");
@@ -604,29 +615,6 @@ void ChatWindow::slotMakeRead()
 		setContactStatusIcon();
 	}
 }
-
-/*void ChatWindow::fileTransferring(FileMessage* fmsg)
-{
-	qDebug() << "ChatWindow::fileTransferring";
-
-	connect(fmsg, SIGNAL(startTransferring(quint32)), this, SLOT(transferStarted(quint32)));
-	connect(fmsg, SIGNAL(fileTransferred(FileMessage::Status, QString, QString)), this, SLOT(slotFileTransferred(FileMessage::Status, QString, QString)));
-
-	QTextCursor cursor = chatView->textCursor();
-	cursor.movePosition(QTextCursor::End);
-
-	cursor.insertBlock();
-	cursor.insertHtml("<font color=green>" + tr("Files transferring") + " (" + QDateTime::currentDateTime().time().toString() + ")</font><br>");
-	cursor.insertHtml("<font color=green>" + tr("You offered to your interlocutor to get files.") + "</font><br>");
-	cursor.insertHtml("<font color=green>" + fmsg->getFilesInHtml() + "</font><br>");
-	cursor.insertHtml("<font color=green>" + tr("Basic size: ") + fmsg->getSizeInString(fmsg->getTotalSize()) + "</font>");
-
-	cursor.insertBlock();
-	cursor.insertHtml("<a href=\"ft_cancel_" + QString::number(fmsg->getSessionId()) + "\">" + tr("Cancel transferring") + "</a><br><br>");
-
-	QScrollBar* vScrollBar = chatView->verticalScrollBar();
-	vScrollBar->triggerAction(QAbstractSlider::SliderToMaximum);	
-}*/
 
 void ChatWindow::fileTransferring(QList<QFileInfo> files)
 {

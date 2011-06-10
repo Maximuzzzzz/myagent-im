@@ -40,7 +40,7 @@ ChatsManager::ChatsManager(Account* account)
 {
 	connect(m_account->client(), SIGNAL(messageReceived(QByteArray, Message*)), this, SLOT(processMessage(QByteArray, Message*)));
 	connect(m_account->client(), SIGNAL(fileReceived(QByteArray, quint32, quint32, QByteArray, QString, QByteArray)), this, SLOT(processFileMessage(QByteArray, quint32, quint32, QByteArray, QString, QByteArray)));
-	connect(m_account->client(), SIGNAL(microblogChanged(QByteArray, QString)), this, SLOT(processMicroblogChanged(QByteArray, QString)));
+	connect(m_account->client(), SIGNAL(microblogChanged(QByteArray, QString, QDateTime)), this, SLOT(processMicroblogChanged(QByteArray, QString, QDateTime)));
 }
 
 ChatsManager::~ChatsManager()
@@ -109,7 +109,7 @@ void ChatsManager::removeSession(Contact* contact)
 	delete session;
 }
 
-void ChatsManager::processMicroblogChanged(QByteArray from, QString text)
+void ChatsManager::processMicroblogChanged(QByteArray from, QString text, QDateTime mbDateTime)
 {
 	Contact* contact = m_account->contactList()->getContact(from);
 
@@ -123,8 +123,8 @@ void ChatsManager::processMicroblogChanged(QByteArray from, QString text)
 	if (session == NULL)
 	{
 		contact->setShowMicroblogText(true);
-		contact->setMicroblogText(text);
+		contact->setMicroblog(text, mbDateTime);
 	}
 	else
-		session->slotMicroblogChanged(text);
+		session->slotMicroblogChanged(text, mbDateTime);
 }

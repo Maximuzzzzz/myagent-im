@@ -91,11 +91,10 @@ public slots:
 	void slotFileTransferStatus(quint32 status, QByteArray email, quint32 sessionId, QByteArray mirrorIps);
 	void slotProxy(QByteArray email, quint32 idRequest, quint32 dataType, QByteArray filesAnsi, QByteArray proxyIps, quint32 sessionId, quint32 unk1, quint32 unk2, quint32 unk3);
 	void slotProxyAck(quint32 status, QByteArray email, quint32 idRequest, quint32 dataType, QByteArray filesAnsi, QByteArray proxyIps, quint32 sessionId, quint32 unk1, quint32 unk2, quint32 unk3);
-	bool cancelTransferring(quint32 sessId);
+	bool cancelTransferring(quint32 sessId, bool sendCancelPackage = true);
 	void setStatus(quint32 status);
 	void setAccEmail(QByteArray email);
 	void setContEmail(QByteArray email);
-	//void setDefDir(QString d);
 	void setFileList(QList<QFileInfo> & files);
 	void setParameters(quint32 totalSize, quint32 sessionId, QByteArray filesAnsi, QString filesUtf, QByteArray ips);
 
@@ -116,6 +115,9 @@ private slots:
 	void slotBytesWritten(qint64 bytes);
 	bool tryToConnect();
 	quint32 waitForIncomingConnect();
+	void processIncomingMessage(QByteArray in);
+
+	void clearParameters();
 
 	void slotClientConnected();
 	void sendFileAck(quint32 status);

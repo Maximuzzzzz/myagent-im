@@ -1,12 +1,5 @@
-0.4.6
-?- Doesn't load avatar in anketa
-- Attention label for saving password
-- Intellectual splitting messages
-- Add links at services mail.ru in contact context menu
 - Mult images instead of swf-widgets
-- Microblog date time
-
-later
+- Add links at services mail.ru in contact context menu
 - Conferences don't self-authorized sometimes
 - Try to create status "Unvisible" for all
 - Sending by double clicking Enter
@@ -14,7 +7,6 @@ later
 - Changing symbolic smiles on graphical
 - Hide empty groups (for example, when online filter is on)
 - Favorite emoticons are not in account setting, but are in myagent basic settings
-- Check file transferring
 - Trying to connect to server periodically
 - Filter for conferences
 - Minimize chat window when interlocutor wrote the message, if chat window is closed

@@ -25,6 +25,7 @@
 
 #include <QObject>
 #include <QString>
+#include <QDateTime>
 
 #include "onlinestatus.h"
 #include "contactdata.h"
@@ -67,8 +68,9 @@ public:
 	QIcon chatWindowIcon(QString type = "");
 	void setShowMicroblogText(bool really) { m_showMicroblogText = really; }
 	bool showMicroblogText() { return m_showMicroblogText; }
-	void setMicroblogText(QString text) { m_microblogText = text; }
+	void setMicroblog(QString text, QDateTime mbDateTime) { m_microblogText = text; m_microblogDateTime = mbDateTime; }
 	QString microblogText() { return m_microblogText; }
+	QDateTime microblogDateTime() { return m_microblogDateTime; }
 	QByteArray client() { return data.getClient(); }
 
 	ContactData contactData() const { return data; }
@@ -111,6 +113,7 @@ private:
 	bool m_activeConference;
 	bool m_showMicroblogText;
 	QString m_microblogText;
+	QDateTime m_microblogDateTime;
 };
 
 #endif

@@ -50,7 +50,7 @@ void MrimMIME::initData(const QByteArray & data)
 	QHash<QByteArray, QByteArray> currStr;
 
 	bool isHeader = true;
-	m_plainTextCharset = "";
+	m_plainTextCharset = m_plainText = "";
 	for (i = 0; i < strings.size(); i++)
 	{
 		if (strings[i].trimmed().size() == 0 && isHeader)
@@ -137,7 +137,7 @@ void MrimMIME::initData(const QByteArray & data)
 			qDebug() << "starts with boundary";
 			isHeader = true;
 		}
-		else
+		else if (strings[i] != "")
 		{
 			qDebug() << "Seems isn't header";
 			if (currType == "text/plain")
@@ -146,7 +146,7 @@ void MrimMIME::initData(const QByteArray & data)
 					m_plainText = QByteArray::fromBase64(strings[i]);
 				else
 					m_plainText = strings[i];
-				qDebug() << "m_plainText = " << m_plainText;
+				qDebug() << "m_plainText = " << m_plainText.toHex();
 			}
 			else if (currType == "application/x-mrim-rtf" || currType == "application/x-mrim-auth-req")
 			{

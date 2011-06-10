@@ -201,8 +201,20 @@ void SettingsWindow::createMessagesPage()
 	ctrlEnterButton = new QRadioButton(tr("Send message on Ctrl+Enter pressed"));
 	altSButton = new QCheckBox(tr("Send message on Alt+S pressed"));
 
-	mergeMessagesCheckBox = new QCheckBox(tr("Merge few messages from one contact"));
-	mergeMessagesCheckBox->setChecked(m_account->settings()->value("Messages/mergeMessages", true).toBool());
+	QGroupBox* mergingMessages = new QGroupBox(tr("Intellectual merging messages"));
+	QVBoxLayout* mergingMessagesLayout = new QVBoxLayout;
+
+	notToMergeMessagesRadio = new QRadioButton(tr("Split all messages"));
+	mergeInterlocutorMessagesRadio = new QRadioButton(tr("Merge few messages from one contact"));
+	mergeMessagesEveryMinuteRadio = new QRadioButton(tr("Split every minute from one contact"));
+	mergeMessagesEveryHourRadio = new QRadioButton(tr("Split every hour from one contact"));
+	QByteArray tmpBA = m_account->settings()->value("Messages/mergeMessages", "").toByteArray();
+	if (tmpBA != "" && tmpBA != "contact" && tmpBA != "minute" && tmpBA != "hour")
+		m_account->settings()->remove("Messages/mergeMessages");
+	notToMergeMessagesRadio->setChecked(m_account->settings()->value("Messages/mergeMessages", "").toByteArray() == "");
+	mergeInterlocutorMessagesRadio->setChecked(m_account->settings()->value("Messages/mergeMessages", "").toByteArray() == "contact");
+	mergeMessagesEveryMinuteRadio->setChecked(m_account->settings()->value("Messages/mergeMessages", "").toByteArray() == "minute");
+	mergeMessagesEveryHourRadio->setChecked(m_account->settings()->value("Messages/mergeMessages", "").toByteArray() == "hour");
 
 	QString enterVariant = m_account->settings()->value("Messages/sendOnEnter", "Ctrl+Enter").toString();
 	if (enterVariant == "Enter")
@@ -219,11 +231,18 @@ void SettingsWindow::createMessagesPage()
 	sendLayout->addWidget(ctrlEnterButton);
 	sendLayout->addWidget(altSButton);
 
-	sendLayout->addWidget(mergeMessagesCheckBox);
+	mergingMessagesLayout->addWidget(notToMergeMessagesRadio);
+	mergingMessagesLayout->addWidget(mergeInterlocutorMessagesRadio);
+	mergingMessagesLayout->addWidget(mergeMessagesEveryMinuteRadio);
+	mergingMessagesLayout->addWidget(mergeMessagesEveryHourRadio);
+
+	//sendLayout->addWidget(mergeMessagesCheckBox);
 
 	sendBox->setLayout(sendLayout);
 	sendBox->setFixedHeight(sendBox->sizeHint().height());
 	sendBox->setMinimumWidth(sendBox->sizeHint().width());
+
+	mergingMessages->setLayout(mergingMessagesLayout);
 
 	QGroupBox* dtSettings = new QGroupBox(tr("Date time settings"));
 	QVBoxLayout* dtSettingsLayout = new QVBoxLayout;
@@ -241,6 +260,7 @@ void SettingsWindow::createMessagesPage()
 
 	layout->addWidget(sendBox);
 	layout->addWidget(dtSettings);
+	layout->addWidget(mergingMessages);
 	layout->addStretch();
 
 	messagesSettingsPage->setLayout(layout);
@@ -267,7 +287,15 @@ bool SettingsWindow::saveMessagesSettings()
 
 	m_account->settings()->setValue("Messages/sendOnEnter", enterVariant);
 	m_account->settings()->setValue("Messages/sendOnAltS", altSButton->isChecked());
-	m_account->settings()->setValue("Messages/mergeMessages", mergeMessagesCheckBox->isChecked());
+
+	if (notToMergeMessagesRadio->isChecked())
+		m_account->settings()->remove("Messages/mergeMessages");
+	if (mergeInterlocutorMessagesRadio->isChecked())
+		m_account->settings()->setValue("Messages/mergeMessages", "contact");
+	else if (mergeMessagesEveryMinuteRadio->isChecked())
+		m_account->settings()->setValue("Messages/mergeMessages", "minute");
+	else if (mergeMessagesEveryHourRadio->isChecked())
+		m_account->settings()->setValue("Messages/mergeMessages", "hour");
 
 	m_account->settings()->setValue("Messages/DateMask", dateTimeFormat->text());
 	return true;

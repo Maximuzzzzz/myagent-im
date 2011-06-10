@@ -58,6 +58,8 @@ Steps:
 FileMessage::FileMessage(Type type/*, QList<QFileInfo> & files, QByteArray accEmail, QByteArray contEmail*/)
  : fm_type(type)
 {
+	clearParameters();
+
 	if (fm_type == Outgoing)
 	{
 		int i;
@@ -74,14 +76,7 @@ FileMessage::FileMessage(Type type/*, QList<QFileInfo> & files, QByteArray accEm
 	fm_error = 0;
 
 	fm_sessionId = ((double)qrand() / (double)RAND_MAX) * MAX_INT32;
-/*	fm_accEmail = accEmail;
-	fm_contEmail = contEmail;*/
 
-	//fm_defaultDir = getDefDir();
-
-	currServer = NULL;
-	isMirror = false;
-	useProxy = false;
 }
 
 void FileMessage::setParameters(quint32 totalSize, quint32 sessionId, QByteArray filesAnsi, QString filesUtf, QByteArray ips)
@@ -120,57 +115,8 @@ void FileMessage::setParameters(quint32 totalSize, quint32 sessionId, QByteArray
 		fm_error = 1;
 }
 
-/*FileMessage::FileMessage(Type type, QByteArray accEmail, QByteArray contEmail, quint32 ts, quint32 sid, QByteArray filesAnsi, QString filesUtf, QByteArray ips, quint32 status)
- : fm_type(type)
-{
-	fm_error = 0;
-
-	fm_filesAnsi = filesAnsi;
-	fm_filesUtf = filesUtf;
-
-	fm_totalSize = ts;
-
-	fm_ips = ips;
-	fm_sessionId = sid;
-	fm_status = status;
-
-	fm_filesHtml = "";
-
-	fm_fileListAnsi = filesAnsi.split(';');
-	fm_fileListAnsi.takeLast();
-
-	fm_fileListUtf = filesUtf.split(';');
-	fm_fileListUtf.takeLast();
-
-	int i;
-	quint32 fullSize = 0;
-	for (i = 1; i < fm_fileListAnsi.count(); i++)
-	{
-		int currSize = fm_fileListAnsi.takeAt(i).toLongLong();
-		fm_fileListUtf.removeAt(i);
-		fm_filesHtml += ((fm_filesHtml == "") ? "" : "<br>") + fm_fileListUtf.at(i - 1) + " (" + getSizeInString(currSize) + ")";
-		fm_sizes.append(currSize);
-		fullSize += currSize;
-	}
-	if (fullSize != ts)
-		fm_error = 1;
-
-	fm_accEmail = accEmail;
-	fm_contEmail = contEmail;
-
-	fm_defaultDir = getDefDir();
-
-	currServer = NULL;
-	isMirror = false;
-	useProxy = false;
-}*/
-
 FileMessage::~FileMessage()
 {
-/*	qDebug() << "FileMessage::~FileMessage()";
-	fm_socket->deleteLater();
-	if (currServer != NULL)
-		currServer->deleteLater();*/
 }
 
 void FileMessage::setStatus(quint32 status)
@@ -252,8 +198,13 @@ void FileMessage::slotReadyRead()
 	qDebug() << Q_FUNC_INFO;
 
 	QByteArray in(fm_socket->readAll());
-	qDebug() << in.length()/* << in*/;
 
+	processIncomingMessage(in);
+}
+
+void FileMessage::processIncomingMessage(QByteArray in)
+{
+	qDebug() << Q_FUNC_INFO << in.length();// << in;
 	if (in[0] == char(239) && transferStatus == WAITING_FOR_HELLO) /*TODO: interpretate packet fully*/
 	{
 		qDebug() << "Proxy said hello";
@@ -282,10 +233,17 @@ void FileMessage::slotReadyRead()
 		{
 			qDebug() << "Incoming";
 			if (isMirror && !useProxy)
+			{
+				qDebug() << "Mirror, not proxy";
 				sayHello();
+			}
 			emit startTransferring(fm_sessionId);
 			getFile();
 		}
+		in = in.right(in.length() - in.indexOf(fm_contEmail) - fm_contEmail.length() - 1);
+		//qDebug() << "in =" << in.length() << in.toHex() << in;
+		if (in.length() > 0)
+			processIncomingMessage(in);
 	}
 	else if (transferStatus == READY_TO_RECEIVE_FILE)
 	{
@@ -383,7 +341,8 @@ void FileMessage::slotDisconnected()
 			setTransferStatus(TRANSFER_ERROR, 0);
 		}
 	}
-/*	deleteLater();*/
+
+	clearParameters();
 }
 
 void FileMessage::socketError(QAbstractSocket::SocketError err)
@@ -615,7 +574,7 @@ void FileMessage::slotFileTransferStatus(quint32 status, QByteArray email, quint
 		}
 	}
 	else if (status == FILE_TRANSFER_STATUS_DECLINE)
-		cancelTransferring(fm_sessionId);
+		cancelTransferring(fm_sessionId, false);
 }
 
 void FileMessage::getIpArraysFromString()
@@ -711,8 +670,6 @@ void FileMessage::slotProxyAck(quint32 status, QByteArray email, quint32 idReque
 	if (idRequest != fm_proxySessId)
 		return;
 
-	qDebug() << "Go ahead";
-
 /*	if (status == PROXY_STATUS_DECLINE)
 		cancelTransferring(sessionId);*/
 }
@@ -795,28 +752,25 @@ QString FileMessage::getSizeInString(quint32 size)
 		return tr("%1 B").arg(size);
 }
 
-bool FileMessage::cancelTransferring(quint32 sessId)
+bool FileMessage::cancelTransferring(quint32 sessId, bool sendCancelPackage)
 {
 	qDebug() << "FileMessage::cancelTransferring";
 
 	if (sessId != fm_sessionId && sessId != 0)
 		return false;
 
-	if (sessId == 0)
-		sessId = fm_sessionId;
+	/*if (sessId == 0)
+		sessId = fm_sessionId;*/
 
 	if (transferStatus == RECEIVING_FILE || transferStatus == TRANSFERRING_FILE)
 	{
 		fm_currentFile.close();
-		fm_currentFile.remove();
+		if (transferStatus == RECEIVING_FILE)
+			fm_currentFile.remove();
 	}
+
 /*	if (transferStatus != WAITING_FOR_CONNECTION)
 		fm_socket->disconnectFromHost();*/
-
-/*	if (!useProxy)
-		sendFileAck(FILE_TRANSFER_STATUS_DECLINE);
-	else
-		emit proxyAck(this, PROXY_STATUS_DECLINE, MRIM_PROXY_TYPE_FILES, fm_proxySessId, fm_unk[0], fm_unk[1], fm_unk[2]);*/
 
 	if (fm_type == Incoming)
 	{
@@ -828,8 +782,15 @@ bool FileMessage::cancelTransferring(quint32 sessId)
 		//emit fileTransferred(TRANSFER_CANCEL, fm_filesHtml, getReceivingDir());
 		setTransferStatus(TRANSFER_CANCEL, 0);
 	}
-	theRM.account()->client()->sendFileAck(FILE_TRANSFER_STATUS_DECLINE, fm_contEmail, fm_sessionId, "");
-//	deleteLater();
+
+	if (sendCancelPackage)
+		if (!useProxy)
+			theRM.account()->client()->sendFileAck(FILE_TRANSFER_STATUS_DECLINE, fm_contEmail, fm_sessionId, "");
+		else
+			theRM.account()->client()->sendProxyAck(this, PROXY_STATUS_DECLINE, MRIM_PROXY_TYPE_FILES, fm_proxySessId, fm_unk[0], fm_unk[1], fm_unk[2]);
+			//emit proxyAck(this, PROXY_STATUS_DECLINE, MRIM_PROXY_TYPE_FILES, fm_proxySessId, fm_unk[0], fm_unk[1], fm_unk[2]);
+
+	clearParameters();
 
 	return true;
 }
@@ -851,11 +812,6 @@ QString FileMessage::getDefDir()
 
 	return dir.absolutePath();
 }
-
-/*void FileMessage::setDefDir(QString d)
-{
-//	fm_defaultDir = d;
-}*/
 
 void FileMessage::setFileList(QList<QFileInfo> & files)
 {
@@ -896,6 +852,19 @@ void FileMessage::setFileList(QList<QFileInfo> & files)
 QString FileMessage::getReceivingDir()
 {
 	return theRM.account()->settings()->value("FilesTransfer/defaultDir", getDefDir()).toString();
+}
+
+
+void FileMessage::clearParameters()
+{
+	currServer = NULL;
+	isMirror = false;
+	useProxy = false;
+
+	fm_sessionId = 0;
+
+	if (fm_type == Incoming)
+		fm_ips = "";
 }
 
 FileExistsDialog::FileExistsDialog(QString fileName, QWidget* parent, Qt::WindowFlags f)

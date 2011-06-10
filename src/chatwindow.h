@@ -58,6 +58,12 @@ public:
 		FilesTransferring,
 		None
 	};
+	struct Msg
+	{
+		QByteArray from;
+		QDateTime dateTime;
+	};
+
 	ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoticonSelector);
 	~ChatWindow();
 
@@ -89,7 +95,7 @@ private slots:
 	void contactTyping();
 	void appendMessageToView(const Message* msg, bool newIncoming = true);
 	void checkContactStatus(OnlineStatus status);
-	void microblogChanged(QString text);
+	void microblogChanged(QString text, QDateTime mbDateTime);
 
 	void appendSmsToView(QByteArray phoneNumber, QString text);
 	void smsFailed();
@@ -108,7 +114,6 @@ private slots:
 	void slotTimeout();
 	void clearStatus();
 
-	//void fileTransferring(FileMessage* fmsg);
 	void fileTransferring(QList<QFileInfo> files);
 	void fileReceiving(quint32 totalSize, quint32 sessionId, QByteArray filesAnsi, QString filesUtf, QByteArray ips);
 	void transferringCancelled();
@@ -152,7 +157,7 @@ private:
 	QStatusBar* statusBar;
 	QPushButton* sendButton;
 
-	QByteArray lastMessageFrom;
+	Msg lastMessage;
 
 	FileMessage* fileMessageOut;
 	FileMessage* fileMessageIn;

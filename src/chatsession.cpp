@@ -263,7 +263,7 @@ void ChatSession::clearHash()
 	messages.clear();
 }
 
-void ChatSession::slotMicroblogChanged(QString text)
+void ChatSession::slotMicroblogChanged(QString text, QDateTime mbDateTime)
 {
-	emit microblogChanged(text);
+	emit microblogChanged(text, mbDateTime);
 }

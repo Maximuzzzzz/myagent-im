@@ -52,10 +52,14 @@ ContactData::ContactData(quint32 contactId, MRIMDataStream& stream, const QByteA
 	stream >> email;
 
 	stream >> stringQB;
-	QTextCodec* c = QTextCodec::codecForName("UTF-16");
-	nick = c->toUnicode(stringQB);
+	QTextCodec* c;
 
 	stream >> internalFlags;
+	if (internalFlags & CONTACT_INTFLAG_NOT_AUTHORIZED)
+		c = QTextCodec::codecForName("cp1251");
+	else
+		c = QTextCodec::codecForName("UTF-16");
+	nick = c->toUnicode(stringQB);
 
 	quint32 statusProtocol;
 	stream >> statusProtocol;

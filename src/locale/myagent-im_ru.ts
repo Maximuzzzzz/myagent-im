@@ -45,6 +45,16 @@
         <translation>Romek Marszcziwski &lt;marszcziwski@gmail.com&gt; Украинский</translation>
     </message>
     <message>
+        <location filename="../aboutdialog.ui" line="152"/>
+        <source>Copyright (C) 2008-2011 Alexander Volkov</source>
+        <translation>Copyright (C) 2008-2011 Александр Волков</translation>
+    </message>
+    <message>
+        <location filename="../aboutdialog.ui" line="157"/>
+        <source>Copyright (C) 2009-2011 Dmitry Malakhov</source>
+        <translation>Copyright (C) 2009-2011 Дмитрий Малахов</translation>
+    </message>
+    <message>
         <location filename="../aboutdialog.ui" line="97"/>
         <source>Authors:</source>
         <translation>Авторы:</translation>
@@ -63,15 +73,8 @@
         <translation>Копирайт:</translation>
     </message>
     <message>
-        <location filename="../aboutdialog.ui" line="152"/>
-        <source>Copyright (C) 2008-2010 Alexander Volkov</source>
-        <translatorcomment>Copyright (C) 2008-2010 Александр Волков</translatorcomment>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../aboutdialog.ui" line="157"/>
         <source>Copyright (C) 2009-2010 Dmitry Malakhov</source>
-        <translation>Copyright (C) 2009-2010 Дмитрий Малахов</translation>
+        <translation type="obsolete">Copyright (C) 2009-2010 Дмитрий Малахов</translation>
     </message>
     <message>
         <location filename="../aboutdialog.ui" line="165"/>
@@ -194,128 +197,128 @@
 <context>
     <name>ChatWindow</name>
     <message>
-        <location filename="../chatwindow.cpp" line="199"/>
+        <location filename="../chatwindow.cpp" line="222"/>
         <source>Send</source>
         <translation>Отправить</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="392"/>
+        <location filename="../chatwindow.cpp" line="426"/>
         <source>%1%2 (%3) added to microblog%4</source>
         <translation>%1%2 (%3) добавил в микроблог%4</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="406"/>
+        <location filename="../chatwindow.cpp" line="440"/>
         <source>Contact is typing</source>
         <translation>Собеседник пишет вам сообщение</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="425"/>
+        <location filename="../chatwindow.cpp" line="459"/>
         <source>Message not delivered</source>
         <translation>Сообщение не доставлено</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="430"/>
+        <location filename="../chatwindow.cpp" line="464"/>
         <source>Resend</source>
         <translation>Переотправить</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="593"/>
-        <location filename="../chatwindow.cpp" line="618"/>
-        <location filename="../chatwindow.cpp" line="700"/>
-        <location filename="../chatwindow.cpp" line="723"/>
-        <location filename="../chatwindow.cpp" line="739"/>
-        <location filename="../chatwindow.cpp" line="747"/>
+        <location filename="../chatwindow.cpp" line="630"/>
+        <location filename="../chatwindow.cpp" line="661"/>
+        <location filename="../chatwindow.cpp" line="745"/>
+        <location filename="../chatwindow.cpp" line="768"/>
+        <location filename="../chatwindow.cpp" line="785"/>
+        <location filename="../chatwindow.cpp" line="794"/>
         <source>Files transferring</source>
         <translation>Передача файлов</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="594"/>
+        <location filename="../chatwindow.cpp" line="631"/>
         <source>You offered to your interlocutor to get files.</source>
         <translation>Вы предложили собеседнику принять файлы.</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="596"/>
-        <location filename="../chatwindow.cpp" line="621"/>
+        <location filename="../chatwindow.cpp" line="633"/>
+        <location filename="../chatwindow.cpp" line="664"/>
         <source>Basic size: </source>
         <translation>Общий размер:</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="599"/>
+        <location filename="../chatwindow.cpp" line="636"/>
         <source>Cancel transferring</source>
         <translation>Отменить передачу</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="619"/>
+        <location filename="../chatwindow.cpp" line="662"/>
         <source>Your interlocutor offered to you to get files.</source>
         <translation>Ваш собеседник предложил Вам получить файлы.</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="624"/>
+        <location filename="../chatwindow.cpp" line="667"/>
         <source>Receive</source>
         <translation>Принять</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="625"/>
+        <location filename="../chatwindow.cpp" line="668"/>
         <source>Save as...</source>
         <translation>Сохранить как...</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="626"/>
+        <location filename="../chatwindow.cpp" line="669"/>
         <source>Decline</source>
         <translation>Отказаться</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="701"/>
+        <location filename="../chatwindow.cpp" line="746"/>
         <source>File transferring began</source>
         <translation>Началась передача файлов</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="704"/>
+        <location filename="../chatwindow.cpp" line="749"/>
         <source>Break</source>
         <translation>Прервать</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="724"/>
+        <location filename="../chatwindow.cpp" line="769"/>
         <source>File transferring successful complete</source>
         <translation>Передача файлов успешно завершена</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="730"/>
+        <location filename="../chatwindow.cpp" line="775"/>
         <source>Open folder</source>
         <translation>Открыть папку</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="740"/>
+        <location filename="../chatwindow.cpp" line="786"/>
         <source>Error occured while file transfering</source>
         <translation>При передаче файлов произошла ошибка</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="748"/>
+        <location filename="../chatwindow.cpp" line="795"/>
         <source>Transferring canceled</source>
         <translation>Передача файлов отменена</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="315"/>
+        <location filename="../chatwindow.cpp" line="338"/>
         <source>Sms from number</source>
         <translation>Смс от номера</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="320"/>
+        <location filename="../chatwindow.cpp" line="344"/>
         <source>Sms status for number</source>
         <translation>Статус отправки смс на номер</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="325"/>
+        <location filename="../chatwindow.cpp" line="350"/>
         <source>Alarm clock:</source>
         <translation>Будильник:</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="122"/>
+        <location filename="../chatwindow.cpp" line="144"/>
         <source>Text</source>
         <translation>Текст</translation>
     </message>
     <message>
-        <location filename="../chatwindow.cpp" line="128"/>
+        <location filename="../chatwindow.cpp" line="150"/>
         <source>SMS</source>
         <translation>SMS</translation>
     </message>
@@ -356,7 +359,7 @@
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../contactcontextmenu.cpp" line="123"/>
+        <location filename="../contactcontextmenu.cpp" line="124"/>
         <source>Remove contact</source>
         <translation>Удаление контакта</translation>
     </message>
@@ -395,27 +398,27 @@
         <translation>История сообщений</translation>
     </message>
     <message>
-        <location filename="../contactcontextmenu.cpp" line="123"/>
+        <location filename="../contactcontextmenu.cpp" line="124"/>
         <source>Are you sure you want to remove contact %1?</source>
         <translation>Вы уверены, что хотите удалить контакт %1?</translation>
     </message>
     <message>
-        <location filename="../contactcontextmenu.cpp" line="230"/>
+        <location filename="../contactcontextmenu.cpp" line="234"/>
         <source>Rename contact</source>
         <translation>Переименовать контакт</translation>
     </message>
     <message>
-        <location filename="../contactcontextmenu.cpp" line="230"/>
+        <location filename="../contactcontextmenu.cpp" line="234"/>
         <source>Enter new name for user %1:</source>
         <translation>Введите новое имя для пользователя %1:</translation>
     </message>
     <message>
-        <location filename="../contactcontextmenu.cpp" line="289"/>
+        <location filename="../contactcontextmenu.cpp" line="300"/>
         <source>Ignoring contact</source>
         <translation>Игнорирование собеседика</translation>
     </message>
     <message>
-        <location filename="../contactcontextmenu.cpp" line="289"/>
+        <location filename="../contactcontextmenu.cpp" line="300"/>
         <source>Do you really want to ignore this contact?</source>
         <translation>Вы действительно хотите игнорировать данный контакт?</translation>
     </message>
@@ -488,7 +491,7 @@
     <message>
         <location filename="../contactinfodialog.cpp" line="154"/>
         <source>E-mail</source>
-        <translation></translation>
+        <translation>E-mail</translation>
     </message>
     <message>
         <location filename="../contactinfodialog.cpp" line="175"/>
@@ -531,7 +534,12 @@
         <translation>Место жительства</translation>
     </message>
     <message>
-        <location filename="../contactinfodialog.cpp" line="199"/>
+        <location filename="../contactinfodialog.cpp" line="194"/>
+        <source>Client</source>
+        <translation>Клиент</translation>
+    </message>
+    <message>
+        <location filename="../contactinfodialog.cpp" line="201"/>
         <source>Editable phones</source>
         <translation>Редактируемые телефоны</translation>
     </message>
@@ -540,25 +548,25 @@
         <translation type="obsolete">Дополнительные телефоны</translation>
     </message>
     <message>
-        <location filename="../contactinfodialog.cpp" line="232"/>
-        <location filename="../contactinfodialog.cpp" line="247"/>
+        <location filename="../contactinfodialog.cpp" line="234"/>
+        <location filename="../contactinfodialog.cpp" line="249"/>
         <source>Primary phone</source>
         <translation>Основной телефон</translation>
     </message>
     <message>
-        <location filename="../contactinfodialog.cpp" line="233"/>
-        <location filename="../contactinfodialog.cpp" line="248"/>
+        <location filename="../contactinfodialog.cpp" line="235"/>
+        <location filename="../contactinfodialog.cpp" line="250"/>
         <source>Additional phone 1</source>
         <translation>Доп. телефон 1</translation>
     </message>
     <message>
-        <location filename="../contactinfodialog.cpp" line="234"/>
-        <location filename="../contactinfodialog.cpp" line="249"/>
+        <location filename="../contactinfodialog.cpp" line="236"/>
+        <location filename="../contactinfodialog.cpp" line="251"/>
         <source>Additional phone 2</source>
         <translation>Доп. телефон 2</translation>
     </message>
     <message>
-        <location filename="../contactinfodialog.cpp" line="239"/>
+        <location filename="../contactinfodialog.cpp" line="241"/>
         <source>Form phones</source>
         <translation>Анкетные телефоны</translation>
     </message>
@@ -655,24 +663,24 @@
 <context>
     <name>ContactList</name>
     <message>
-        <location filename="../contactlist.cpp" line="649"/>
-        <location filename="../contactlist.cpp" line="723"/>
-        <location filename="../contactlist.cpp" line="781"/>
-        <location filename="../contactlist.cpp" line="823"/>
-        <location filename="../contactlist.cpp" line="885"/>
-        <location filename="../contactlist.cpp" line="939"/>
+        <location filename="../contactlist.cpp" line="655"/>
+        <location filename="../contactlist.cpp" line="729"/>
+        <location filename="../contactlist.cpp" line="787"/>
+        <location filename="../contactlist.cpp" line="829"/>
+        <location filename="../contactlist.cpp" line="891"/>
+        <location filename="../contactlist.cpp" line="945"/>
         <source>Time is out</source>
         <translation>Время вышло</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="654"/>
-        <location filename="../contactlist.cpp" line="728"/>
-        <location filename="../contactlist.cpp" line="786"/>
+        <location filename="../contactlist.cpp" line="660"/>
+        <location filename="../contactlist.cpp" line="734"/>
+        <location filename="../contactlist.cpp" line="792"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="340"/>
+        <location filename="../contactlist.cpp" line="346"/>
         <source>Removing contact failed</source>
         <translation>Не удалось удалить контакт</translation>
     </message>
@@ -702,77 +710,77 @@
         <translation>Жду авторизации</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="800"/>
+        <location filename="../contactlist.cpp" line="806"/>
         <source>Group %1 already exists.</source>
         <translation>Группа %1 уже существует.</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="811"/>
+        <location filename="../contactlist.cpp" line="817"/>
         <source>Adding group is currently impossible</source>
         <translation>Добавление группы временно невозможно</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="825"/>
-        <location filename="../contactlist.cpp" line="887"/>
-        <location filename="../contactlist.cpp" line="941"/>
+        <location filename="../contactlist.cpp" line="831"/>
+        <location filename="../contactlist.cpp" line="893"/>
+        <location filename="../contactlist.cpp" line="947"/>
         <source>Incorrect data</source>
         <translation>Неверные данные</translation>
-    </message>
-    <message>
-        <location filename="../contactlist.cpp" line="827"/>
-        <location filename="../contactlist.cpp" line="889"/>
-        <location filename="../contactlist.cpp" line="943"/>
-        <source>Internal error</source>
-        <translation>Внутренняя ошибка</translation>
-    </message>
-    <message>
-        <location filename="../contactlist.cpp" line="829"/>
-        <location filename="../contactlist.cpp" line="891"/>
-        <location filename="../contactlist.cpp" line="945"/>
-        <source>Invalid group name</source>
-        <translation>Неправильное имя группы</translation>
-    </message>
-    <message>
-        <location filename="../contactlist.cpp" line="831"/>
-        <source>Number of groups exceeded</source>
-        <translation>Превышено число групп</translation>
     </message>
     <message>
         <location filename="../contactlist.cpp" line="833"/>
         <location filename="../contactlist.cpp" line="895"/>
         <location filename="../contactlist.cpp" line="949"/>
+        <source>Internal error</source>
+        <translation>Внутренняя ошибка</translation>
+    </message>
+    <message>
+        <location filename="../contactlist.cpp" line="835"/>
+        <location filename="../contactlist.cpp" line="897"/>
+        <location filename="../contactlist.cpp" line="951"/>
+        <source>Invalid group name</source>
+        <translation>Неправильное имя группы</translation>
+    </message>
+    <message>
+        <location filename="../contactlist.cpp" line="837"/>
+        <source>Number of groups exceeded</source>
+        <translation>Превышено число групп</translation>
+    </message>
+    <message>
+        <location filename="../contactlist.cpp" line="839"/>
+        <location filename="../contactlist.cpp" line="901"/>
+        <location filename="../contactlist.cpp" line="955"/>
         <source>Unknown error</source>
         <translation>Неизвестная ошибка</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="849"/>
-        <location filename="../contactlist.cpp" line="918"/>
+        <location filename="../contactlist.cpp" line="855"/>
+        <location filename="../contactlist.cpp" line="924"/>
         <source>Unknown group</source>
         <translation>Неизвестная группа</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="864"/>
+        <location filename="../contactlist.cpp" line="870"/>
         <source>Group is not empty</source>
         <translation>Группа не пуста</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="873"/>
+        <location filename="../contactlist.cpp" line="879"/>
         <source>Removing group is currently impossible</source>
         <translation>Удаление группы временно невозможно</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="893"/>
-        <location filename="../contactlist.cpp" line="947"/>
+        <location filename="../contactlist.cpp" line="899"/>
+        <location filename="../contactlist.cpp" line="953"/>
         <source>No such group</source>
         <translation>Группа не существует</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="927"/>
+        <location filename="../contactlist.cpp" line="933"/>
         <source>Renaming group is currently impossible</source>
         <translation>Переименование группы временно невозможно</translation>
     </message>
     <message>
-        <location filename="../contactlist.cpp" line="760"/>
+        <location filename="../contactlist.cpp" line="766"/>
         <source>Contact %1 already exists</source>
         <translation>Контакт %1 уже существует</translation>
     </message>
@@ -829,17 +837,17 @@
 <context>
     <name>ContactListWindow</name>
     <message>
-        <location filename="../contactlistwindow.cpp" line="232"/>
+        <location filename="../contactlistwindow.cpp" line="234"/>
         <source>Login rejected</source>
         <translation>Вход отклонен</translation>
     </message>
     <message>
-        <location filename="../contactlistwindow.cpp" line="250"/>
+        <location filename="../contactlistwindow.cpp" line="252"/>
         <source>Logout</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="../contactlistwindow.cpp" line="248"/>
+        <location filename="../contactlistwindow.cpp" line="250"/>
         <source>Someone else entered with your login</source>
         <translation>Кто-то еще вошел под Вашим логином</translation>
     </message>
@@ -849,27 +857,27 @@
         <translation>Мой статус</translation>
     </message>
     <message>
-        <location filename="../contactlistwindow.cpp" line="328"/>
+        <location filename="../contactlistwindow.cpp" line="330"/>
         <source>My world</source>
         <translation>Мой мир</translation>
     </message>
     <message>
-        <location filename="../contactlistwindow.cpp" line="332"/>
+        <location filename="../contactlistwindow.cpp" line="334"/>
         <source>My blog</source>
         <translation>Мой блог</translation>
     </message>
     <message>
-        <location filename="../contactlistwindow.cpp" line="336"/>
+        <location filename="../contactlistwindow.cpp" line="338"/>
         <source>My photos</source>
         <translation>Мои фото</translation>
     </message>
     <message>
-        <location filename="../contactlistwindow.cpp" line="340"/>
+        <location filename="../contactlistwindow.cpp" line="342"/>
         <source>My videos</source>
         <translation>Моё видео</translation>
     </message>
     <message>
-        <location filename="../contactlistwindow.cpp" line="443"/>
+        <location filename="../contactlistwindow.cpp" line="445"/>
         <source>Connection error</source>
         <translation>Ошибка соединения</translation>
     </message>
@@ -980,52 +988,57 @@
 <context>
     <name>FileExistsDialog</name>
     <message>
-        <location filename="../filemessage.cpp" line="783"/>
+        <location filename="../filemessage.cpp" line="873"/>
         <source>File %1 is already exists. What should we do?</source>
         <translation>Файл %1 уже существует. Что будем делать?</translation>
     </message>
     <message>
-        <location filename="../filemessage.cpp" line="794"/>
+        <location filename="../filemessage.cpp" line="884"/>
         <source>Rewrite file</source>
         <translation>Перезаписать</translation>
     </message>
     <message>
-        <location filename="../filemessage.cpp" line="795"/>
+        <location filename="../filemessage.cpp" line="885"/>
         <source>Rename file</source>
         <translation>Переименовать</translation>
     </message>
     <message>
-        <location filename="../filemessage.cpp" line="796"/>
+        <location filename="../filemessage.cpp" line="886"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
+    </message>
+    <message>
+        <location filename="../filemessage.cpp" line="892"/>
+        <source>File exists</source>
+        <translation>Файл существует</translation>
     </message>
 </context>
 <context>
     <name>FileMessage</name>
     <message>
-        <location filename="../filemessage.cpp" line="717"/>
+        <location filename="../filemessage.cpp" line="746"/>
         <source>%1 GB</source>
         <translation>%1 Гб</translation>
     </message>
     <message>
-        <location filename="../filemessage.cpp" line="719"/>
+        <location filename="../filemessage.cpp" line="748"/>
         <source>%1 MB</source>
         <translation>%1 Мб</translation>
     </message>
     <message>
-        <location filename="../filemessage.cpp" line="721"/>
+        <location filename="../filemessage.cpp" line="750"/>
         <source>%1 KB</source>
         <translation>%1 Кб</translation>
     </message>
     <message>
-        <location filename="../filemessage.cpp" line="723"/>
+        <location filename="../filemessage.cpp" line="752"/>
         <source>%1 B</source>
         <translation>%1 б</translation>
     </message>
     <message>
-        <location filename="../filemessage.cpp" line="760"/>
-        <location filename="../filemessage.cpp" line="761"/>
-        <location filename="../filemessage.cpp" line="762"/>
+        <location filename="../filemessage.cpp" line="801"/>
+        <location filename="../filemessage.cpp" line="802"/>
+        <location filename="../filemessage.cpp" line="803"/>
         <source>Myagent-im files</source>
         <translation>Файлы myagent-im</translation>
     </message>
@@ -1111,56 +1124,74 @@
 <context>
     <name>LoginDialog</name>
     <message>
-        <location filename="../logindialog.ui" line="14"/>
+        <location filename="../logindialog.ui" line="29"/>
         <source>Login</source>
         <translation>Вход</translation>
     </message>
     <message>
-        <location filename="../logindialog.ui" line="26"/>
+        <location filename="../logindialog.ui" line="47"/>
         <source>E-mail:</source>
         <translation>E-mail:</translation>
     </message>
     <message>
-        <location filename="../logindialog.ui" line="40"/>
+        <location filename="../logindialog.ui" line="109"/>
         <source>Password:</source>
         <translation>Пароль:</translation>
     </message>
     <message>
-        <location filename="../logindialog.ui" line="58"/>
+        <location filename="../logindialog.ui" line="128"/>
+        <source>Remember password</source>
+        <translation>Запомнить пароль</translation>
+    </message>
+    <message>
+        <location filename="../logindialog.ui" line="139"/>
         <source>Online status:</source>
         <translation>Онлайн-статус:</translation>
     </message>
     <message>
-        <location filename="../logindialog.ui" line="72"/>
+        <location filename="../logindialog.ui" line="153"/>
         <source>Ok</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../logindialog.ui" line="82"/>
+        <location filename="../logindialog.ui" line="163"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../logindialog.ui" line="106"/>
+        <location filename="../logindialog.ui" line="187"/>
         <source>Connection...</source>
         <translation>Настройки соединения...</translation>
+    </message>
+    <message>
+        <location filename="../logindialog.ui" line="196"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#ff0000;&quot;&gt;WARNING! Your password will be saved by weak encoding algorithm. Save it on your own risk.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#ff0000;&quot;&gt;ВНИМАНИЕ! Ваш пароль будет зашифрован слабым алгоритмом шифрования. Сохраняйте его на свой страх и риск.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
     <name>MRIMClientPrivate</name>
     <message>
-        <location filename="../mrimclientprivate.cpp" line="184"/>
+        <location filename="../mrimclientprivate.cpp" line="186"/>
         <source>Proxy connection refused error!</source>
         <translation>Ошибка соединения прокси-сервера!</translation>
     </message>
     <message>
-        <location filename="../mrimclientprivate.cpp" line="186"/>
+        <location filename="../mrimclientprivate.cpp" line="188"/>
         <source>Proxy not found!</source>
         <translation>Прокси-сервер не найден!</translation>
     </message>
     <message>
-        <location filename="../mrimclientprivate.cpp" line="872"/>
-        <location filename="../mrimclientprivate.cpp" line="1028"/>
+        <location filename="../mrimclientprivate.cpp" line="887"/>
+        <location filename="../mrimclientprivate.cpp" line="1036"/>
         <source>User %1 left the conference</source>
         <translation>Пользователь %1 покинул конференцию</translation>
     </message>
@@ -1266,32 +1297,32 @@
 <context>
     <name>MessageEditor</name>
     <message>
-        <location filename="../messageeditor.cpp" line="205"/>
+        <location filename="../messageeditor.cpp" line="208"/>
         <source>Ignore interlocutor style</source>
         <translation>Игнорировать настройки собеседника</translation>
     </message>
     <message>
-        <location filename="../messageeditor.cpp" line="221"/>
+        <location filename="../messageeditor.cpp" line="224"/>
         <source>Broadcast</source>
         <translation>Рассылка</translation>
     </message>
     <message>
-        <location filename="../messageeditor.cpp" line="465"/>
+        <location filename="../messageeditor.cpp" line="468"/>
         <source>&lt;small&gt;Total size: &lt;/small&gt;</source>
         <translation>&lt;small&gt;Общий размер: &lt;/small&gt;</translation>
     </message>
     <message>
-        <location filename="../messageeditor.cpp" line="522"/>
+        <location filename="../messageeditor.cpp" line="525"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../messageeditor.cpp" line="525"/>
+        <location filename="../messageeditor.cpp" line="528"/>
         <source>&lt;small&gt;Status...&lt;/small&gt;</source>
         <translation>&lt;small&gt;Статус...&lt;/small&gt;</translation>
     </message>
     <message>
-        <location filename="../messageeditor.cpp" line="564"/>
+        <location filename="../messageeditor.cpp" line="567"/>
         <source>Select files to transfer</source>
         <translation>Выберите файлы для передачи</translation>
     </message>
@@ -1531,7 +1562,7 @@
     <message>
         <location filename="../popupwindow.cpp" line="118"/>
         <source>You have &lt;nobr&gt;%1 unread&lt;/nobr&gt; letters</source>
-        <translation type="unfinished">У вас &lt;nobr&gt;%1 непрочитанных&lt;/nobr&gt; сообщения</translation>
+        <translation>У вас &lt;nobr&gt;%1 непрочитанных&lt;/nobr&gt; сообщения</translation>
     </message>
     <message>
         <location filename="../popupwindow.cpp" line="131"/>
@@ -1698,7 +1729,7 @@
         <translation type="obsolete">Настройки окон</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="286"/>
+        <location filename="../settingswindow.cpp" line="314"/>
         <source>Tabs in dialog window</source>
         <translation>Вкладки в окне сообщений</translation>
     </message>
@@ -1729,158 +1760,183 @@
     </message>
     <message>
         <location filename="../settingswindow.cpp" line="204"/>
+        <source>Intellectual merging messages</source>
+        <translation>Интеллектуальная склейка сообщений</translation>
+    </message>
+    <message>
+        <location filename="../settingswindow.cpp" line="207"/>
+        <source>Split all messages</source>
+        <translation>Разделять все сообщения</translation>
+    </message>
+    <message>
+        <location filename="../settingswindow.cpp" line="208"/>
         <source>Merge few messages from one contact</source>
         <translation>Не разделять сообщения, написанные одно за другим одним человеком</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="228"/>
+        <location filename="../settingswindow.cpp" line="209"/>
+        <source>Split every minute from one contact</source>
+        <translation>Разделять сообщения от одного контакта каждую минуту</translation>
+    </message>
+    <message>
+        <location filename="../settingswindow.cpp" line="210"/>
+        <source>Split every hour from one contact</source>
+        <translation>Разделять сообщения от одного контакта каждый час</translation>
+    </message>
+    <message>
+        <location filename="../settingswindow.cpp" line="247"/>
         <source>Date time settings</source>
         <translation>Настройки даты и времени</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="248"/>
+        <location filename="../settingswindow.cpp" line="268"/>
         <source>Messages</source>
         <translation>Сообщения</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="264"/>
+        <location filename="../settingswindow.cpp" line="284"/>
         <source>Error saving settings</source>
         <translation>Ошибка сохранения настроек</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="264"/>
+        <location filename="../settingswindow.cpp" line="284"/>
         <source>Error date time format! Check format string or use default &quot;%1&quot;!</source>
         <translation>Неверный формат даты! Проверьте формат или используйте по умолчанию &quot;%1&quot;!</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="294"/>
+        <location filename="../settingswindow.cpp" line="322"/>
         <source>Windows</source>
         <translation>Окна</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="304"/>
+        <location filename="../settingswindow.cpp" line="332"/>
         <source>Closing chats</source>
         <translation>Закрытие диалогов</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="305"/>
+        <location filename="../settingswindow.cpp" line="333"/>
         <source>All chats will be closed. Continue?</source>
         <translation>Все диалоги будут закрыты. Продолжить?</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="320"/>
+        <location filename="../settingswindow.cpp" line="348"/>
         <source>Enable sounds</source>
         <translation>Включить звуки</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="328"/>
+        <location filename="../settingswindow.cpp" line="356"/>
         <source>Sounds</source>
         <translation>Звуки</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="342"/>
+        <location filename="../settingswindow.cpp" line="370"/>
         <source>Enable microblog</source>
         <translation>Показать микроблог</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="350"/>
+        <location filename="../settingswindow.cpp" line="373"/>
+        <source>Sort user groups by name</source>
+        <translation>Сортировать группы по алфавиту</translation>
+    </message>
+    <message>
+        <location filename="../settingswindow.cpp" line="382"/>
         <source>View</source>
         <translation>Вид</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="366"/>
+        <location filename="../settingswindow.cpp" line="400"/>
         <source>Choose proxy type</source>
         <translation>Выберите тип прокси-сервера</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="367"/>
+        <location filename="../settingswindow.cpp" line="401"/>
         <source>Without proxy</source>
         <translation>Без прокси</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="368"/>
+        <location filename="../settingswindow.cpp" line="402"/>
         <source>Socks5</source>
         <translation>Socks5</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="369"/>
+        <location filename="../settingswindow.cpp" line="403"/>
         <source>HTTP-proxy</source>
         <translation>HTTP-proxy</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="370"/>
+        <location filename="../settingswindow.cpp" line="404"/>
         <source>HTTPS</source>
         <translation>HTTPS</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="395"/>
+        <location filename="../settingswindow.cpp" line="429"/>
         <source>Server:</source>
         <translation>Адрес сервера:</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="396"/>
+        <location filename="../settingswindow.cpp" line="430"/>
         <source>Port:</source>
         <translation>Порт:</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="416"/>
+        <location filename="../settingswindow.cpp" line="450"/>
         <source>User:</source>
         <translation>Логин:</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="417"/>
+        <location filename="../settingswindow.cpp" line="451"/>
         <source>Password:</source>
         <translation>Пароль:</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="455"/>
+        <location filename="../settingswindow.cpp" line="489"/>
         <source>Connection</source>
         <translation>Соединение</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="501"/>
+        <location filename="../settingswindow.cpp" line="535"/>
         <source>Notification type</source>
         <translation>Тип уведомления</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="505"/>
+        <location filename="../settingswindow.cpp" line="539"/>
         <source>Inner</source>
         <translation>Встроенный</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="506"/>
+        <location filename="../settingswindow.cpp" line="540"/>
         <source>External</source>
         <translation>Внешний</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="507"/>
+        <location filename="../settingswindow.cpp" line="541"/>
         <source>New message notification:</source>
         <translation>Уведомление о новом сообщении:</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="508"/>
+        <location filename="../settingswindow.cpp" line="542"/>
         <source>New letter notification:</source>
         <translation>Уведомление о новом письме:</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="509"/>
+        <location filename="../settingswindow.cpp" line="543"/>
         <source>Unread letters notification:</source>
         <translation>Уведомлении о количестве непрочитанных сообщений:</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="513"/>
-        <location filename="../settingswindow.cpp" line="514"/>
-        <location filename="../settingswindow.cpp" line="515"/>
+        <location filename="../settingswindow.cpp" line="547"/>
+        <location filename="../settingswindow.cpp" line="548"/>
+        <location filename="../settingswindow.cpp" line="549"/>
         <source>Test</source>
         <translation>Тест</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="554"/>
+        <location filename="../settingswindow.cpp" line="588"/>
         <source>Notifications</source>
         <translation>Уведомления</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="625"/>
+        <location filename="../settingswindow.cpp" line="662"/>
         <source>%1	Your email
 %2	Your nickname
 %3	Contact&apos;s email
@@ -1911,7 +1967,7 @@ For unread letters count only %1, %2, %5 and %8.</source>
         <translation type="obsolete">Тест</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="519"/>
+        <location filename="../settingswindow.cpp" line="553"/>
         <source>Format?</source>
         <translation>Формат?</translation>
     </message>
@@ -1920,12 +1976,12 @@ For unread letters count only %1, %2, %5 and %8.</source>
         <translation type="obsolete">Уведомление</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="593"/>
+        <location filename="../settingswindow.cpp" line="627"/>
         <source>Date time format help</source>
         <translation>Помощь по формату даты и времени</translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="593"/>
+        <location filename="../settingswindow.cpp" line="627"/>
         <source>%1	the day as number without a leading zero (1 to 31)
 %2	the day as number with a leading zero (01 to 31)
 %3	the abbreviated localized day name (e.g. &apos;Mon&apos; to &apos;Sun&apos;).
@@ -1971,22 +2027,22 @@ For unread letters count only %1, %2, %5 and %8.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="609"/>
+        <location filename="../settingswindow.cpp" line="646"/>
         <source>linustorvalds@mail.ru</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="609"/>
+        <location filename="../settingswindow.cpp" line="646"/>
         <source>Linus Torvalds</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="614"/>
+        <location filename="../settingswindow.cpp" line="651"/>
         <source>torvalds@klaava.Helsinki.Fi</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settingswindow.cpp" line="625"/>
+        <location filename="../settingswindow.cpp" line="662"/>
         <source>Notifications format help</source>
         <translation>Помощь по формату уведомлений</translation>
     </message>
@@ -2082,7 +2138,7 @@ For unread letters count only %1, %2, %5 and %8</source>
 <context>
     <name>SubmenuMoveToGroup</name>
     <message>
-        <location filename="../contactcontextmenu.cpp" line="303"/>
+        <location filename="../contactcontextmenu.cpp" line="314"/>
         <source>Move to group</source>
         <translation>Переместить в группу</translation>
     </message>
