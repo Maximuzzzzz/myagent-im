@@ -55,6 +55,9 @@ private:
 	QByteArray currPass;
 	QString statusDescr;
 
+	QSize sizeWithoutHint;
+	QSize sizeWithHint;
+
 	QPointer<SettingsWindow> settingsWindow;
 	QList<QByteArray> statusList;
 };

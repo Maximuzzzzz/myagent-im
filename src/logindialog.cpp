@@ -74,8 +74,11 @@ LoginDialog::LoginDialog(QWidget* parent)
 
 	okButton->setDisabled(true);
 
+	sizeWithHint = sizeHint();
 	passwordHint->setVisible(false);
-	setFixedSize(sizeHint());
+
+	sizeWithoutHint = sizeHint();
+	setFixedSize(sizeWithoutHint);
 
 	if (emailLabel->geometry().width() > passwordLabel->geometry().width())
 		passwordLabel->setMinimumWidth(emailLabel->sizeHint().width());
@@ -205,7 +208,10 @@ void LoginDialog::slotSavePassChecked()
 	passwordHint->setVisible(savePass->isChecked());
 	isSavePass = savePass->isChecked();
 
-	setFixedSize(sizeHint());
+	if (savePass->isChecked())
+		setFixedSize(sizeWithHint);
+	else
+		setFixedSize(sizeWithoutHint);
 }
 
 QByteArray LoginDialog::email() const
