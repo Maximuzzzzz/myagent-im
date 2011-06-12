@@ -58,7 +58,7 @@ rm -f lex.yy.c
 "\\'"[0-9A-Fa-f][0-9A-Fa-f]		{ return HEX; }
 "<##"[^>]+">"					{ return IMG; }
 "http://"[^ \r\n\t\\]+			{ return URL; }
-[^ \\{}<\r\n\t]+				{ return TXT; }
+[^ \\{}\r\n\t]+					{ return TXT; }
 [ \t]+							{ return TXT; }
 .								{ return S_TXT; }
 %%

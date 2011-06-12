@@ -99,8 +99,8 @@ bool MessageEditor::eventFilter(QObject * obj, QEvent * ev)
 	if (obj == messageEdit && ev->type() == QEvent::KeyPress)
 	{
 		QKeyEvent* keyEvent = static_cast<QKeyEvent*>(ev);
-		qDebug() << "MessageEdit::eventFilter, key =" << QString::number(keyEvent->key(), 16) << ", mods =" << QString::number(keyEvent->modifiers(), 16);
-		if (keyEvent->key() == Qt::Key_Return)
+		//qDebug() << "MessageEdit::eventFilter, key =" << QString::number(keyEvent->key(), 16) << ", mods =" << QString::number(keyEvent->modifiers(), 16);
+		if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter)
 		{
 			QString enterVariant = m_account->settings()->value("Messages/sendOnEnter", "Ctrl+Enter").toString();
 			if (enterVariant == "Enter")

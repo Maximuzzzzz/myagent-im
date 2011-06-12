@@ -461,40 +461,73 @@ void MRIMClientPrivate::processHelloAck(QByteArray data)
 	out << QByteArray("myagent-im ").append(VERSION);
 
 	quint8 i; //TODO: try to understand these arguments
-	for (i = 0; i <= 0x5c; )
+	for (i = 0; i <= 0x7a; )
 	{
 		out << quint8(i);
 
-		if (i == 9 || i == 0x1e || i == 0x2c)
+		if (i == 9 || i == 0x1e || i == 0x2c || i == 0x42 || i == 0x43 || i == 0x44 || i == 0x45 ||
+		 i == 0x4b || i == 0x4c || i == 0x68)
 			out << quint32(0x01000000);
 		else
 			out << quint32(0x02000000);
 
 		if (i == 0)
-			out << quint32(0x00000cce);
+			out << quint32(0x00000e66); //revision of MAgent
 		else if (i == 1)
-			out << quint32(4);
+			out << quint32(7); //seems to be minor version of MAgent
 		else if (i == 2)
-			out << quint32(8);
+			out << quint32(19);
 		else if (i == 3)
-			out << quint32(0x7fffffff);
-		else if (i == 4 || i == 6 || i == 7 || i == 0x2d || i == 0x2f)
+			out << quint32(0x51ec0ee9);
+		else if (i == 4 || i == 6 || i == 7 || i == 0x2d || i == 0x2f || i == 0x3f || i == 0x40 || i == 0x47 ||
+		 i == 0x4e)
 			out << quint32(1);
+		else if (i == 8)
+			out << quint32(2);
 		else if (i == 9)
-			out << QByteArray::fromHex("475b4358474b565840785c565f5c164147425d4d534a");
+			out << QByteArray::fromHex("160000005950436a5c59585578545f4046184640545a44665957");
 		else if (i == 0x14)
 			out << quint32(0x00000501);
 		else if (i == 0x2c)
-			out << QByteArray("7af505217f0fe1a344cddd5094cddd0b");
+			out << QByteArray("3039646563316163653361303634626434313034366435613937613934623736");
+		else if (i == 0x41)
+			out << quint32(0x00000c6e);
+		else if (i == 0x42)
+			//Hardware characteristics
+			out << QByteArray::fromHex("41004d00440020005000680065006e006f006d00280074006d00290020004900490020005800320020003500350035002000500072006f0063006500730073006f007200");
+		else if (i == 0x43)
+			//System characteristics
+			out << QByteArray::fromHex("4d006900630072006f0073006f00660074002000570069006e0064006f00770073002000580050002000500072006f00660065007300730069006f006e0061006c00");
+		else if (i == 0x45)
+			out << QByteArray::fromHex("080000003000340031003900");
+		else if (i == 0x46)
+			out << quint32(0x00000027);
+		else if (i == 0x48)
+			out << quint32(0x00000500);
+		else if (i == 0x49)
+			out << quint32(0x00000400);
+		else if (i == 0x4a)
+			out << quint32(0x00000020);
+		else if (i == 0x4b)
+			//Graphic card characteristics
+			out << QByteArray::fromHex("5600690072007400750061006c0042006f00780020004700720061007000680069006300730020004100640061007000740065007200");
+		else if (i == 0x4c)
+			out << QByteArray::fromHex("69006e006e006f00740065006b00200047006d0062004800");
+		else if (i == 0x4d)
+			out << quint32(0x000001ff);
 		else
 			out << quint32(0);
 
-		if (i == 3 || i == 4 || i == 0x1a || i == 0x54)
+		if (i == 3 || i == 4 || i == 0x1a || i == 0x13 || i == 0x14 || i == 0x54 || i == 0x66)
 			i += 2;
 		else if (i == 5)
 			i--;
+		else if (i == 0x15)
+			i = 0x67;
+		else if (i == 0x67)
+			i = 0x14;
 		else if (i == 0x2f)
-			i = 0x51;
+			i = 0x3f;
 		else
 			i++;
 	}

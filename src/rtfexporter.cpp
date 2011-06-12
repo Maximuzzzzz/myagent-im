@@ -113,9 +113,7 @@ void RtfExporter::processFragment(const QTextFragment& fragment)
 			rtf += "<SMILE>id=" + baID + "</SMILE>";
 	}
 	else
-	{
 		processCharFormat(fmt, fragment.text());
-	}
 }
 
 void RtfExporter::processCharFormat(const QTextCharFormat& format, const QString& text)
@@ -228,7 +226,10 @@ void RtfExporter::checkChar(QChar ch)
 	}
 
 	if (ch.toLatin1() != 0)
-		rtf += ((controlCodeApplied) ? QByteArray(" ") : QByteArray("")) + ch.toLatin1();
+		if (ch == '\\')
+			rtf += ((controlCodeApplied) ? QByteArray(" ") : QByteArray("")) + "\\\\";
+		else
+			rtf += ((controlCodeApplied) ? QByteArray(" ") : QByteArray("")) + ch.toLatin1();
 	else
 	{
 		uchar c = codec->fromUnicode(ch).at(0);

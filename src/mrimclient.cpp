@@ -505,7 +505,8 @@ quint32 MRIMClient::sendSms(QByteArray number, const QString & text)
 	
 	if (!number.startsWith('+'))
 		number.prepend('+');
-	QByteArray smsText = p->codec1251->fromUnicode(text);
+	QByteArray smsText = p->codecUTF16->fromUnicode(text);
+	smsText = smsText.right(smsText.length() - 2);
 	
 	qDebug() << "number =" << number;
 	qDebug() << "text =" << smsText;
@@ -513,7 +514,7 @@ quint32 MRIMClient::sendSms(QByteArray number, const QString & text)
 	out << quint32(0);
 	out << number;
 	out << smsText;
-	
+
 	return p->sendPacket(MRIM_CS_SMS, data);
 }
 

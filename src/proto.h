@@ -346,6 +346,33 @@ enum {
 
 #define MRIM_CS_PROXY_HELLO_ACK		0x1047
 
+#define MRIM_CS_VOIP_CALL				0x1059
+// LPS			contact email
+// DWORD		?? //looks like some id
+// DWORD		??
+// DWORD		??
+// DWORD		??
+// LPS			?? ip with port
+// DWORD		??
+// DWORD		??
+// ?? DWORD[4]	session id
+// DWORD		??
+// DWORD		??
+
+#define MRIM_CS_VOIP_CANCEL				0x1060
+// LPS			contact email
+// DWORD		??
+// DWORD		?? //looks like some id (copied from 1059)
+// DWORD		??
+// DWORD		??
+// DWORD		??
+// DWORD		??
+// DWORD		??
+// DWORD		??
+// ?? DWORD[4]	session id
+// DWORD		??
+// DWORD		??
+
 #define MRIM_SC_MICROBLOG_TEXT			0x1063
 // ??
 // LPS email
@@ -354,7 +381,6 @@ enum {
 // ??
 // LPS text
 // LPS xml version
-
 
 #define MRIM_CS_MICROBLOG_TEXT			0x1064
 // LPS status

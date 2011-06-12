@@ -286,10 +286,7 @@ quint32 ChatWindow::sendMessage()
 		if (receiversList.count() == 0 || (receiversList.count() == 1 && receiversList.at(0) == session->contact()->email()))
 			return session->sendMessage(messageText, messageRtf);
 		else
-		{
-			qDebug() << "Broadcast";
 			return session->broadcastMessage(broadcastPanel->receivers(), messageText, messageRtf);
-		}
 	}
 	else
 		return session->sendMessage(messageText, messageRtf);
@@ -335,7 +332,7 @@ void ChatWindow::appendMessageToView(const Message* msg, bool newIncoming)
 	QString prompt;
 	if (msg->flags() & MESSAGE_FLAG_SMS)
 	{
-		prompt = "<font color=red>" + tr("Sms from number") + " " + msg->rtfText() + " (" + msg->dateTime().time().toString(m_account->settings()->value("Messages/DateMask", theRM.defDateFormat).toString()) + ") :</font><br>";
+		prompt = "<font color=red>" + tr("Sms from number") + " " + msg->rtfText() + " (" + msg->dateTime().toString(m_account->settings()->value("Messages/DateMask", theRM.defDateFormat).toString()) + ") :</font><br>";
 		lastMessage.from = "";
 		lastMessage.dateTime = QDateTime();
 	}
@@ -347,7 +344,7 @@ void ChatWindow::appendMessageToView(const Message* msg, bool newIncoming)
 	}
 	else if (msg->flags() & MESSAGE_FLAG_ALARM)
 	{
-		prompt = "<font color=green>" + msg->dateTime().toString() + " <b>" + tr("Alarm clock:")  + " <b></font>";
+		prompt = "<font color=green>" + msg->dateTime().toString(m_account->settings()->value("Messages/DateMask", theRM.defDateFormat).toString()) + " <b>" + tr("Alarm clock:")  + " <b></font>";
 		lastMessage.from = "";
 		lastMessage.dateTime = QDateTime();
 	}

@@ -1,4 +1,9 @@
+0.4.7:
+- When interlocutor sends file, chatwindow doesn't appear (if it was opened once)
 - Mult images instead of swf-widgets
+
+later:
+- Double clicking Enter doesn't works
 - Add links at services mail.ru in contact context menu
 - Conferences don't self-authorized sometimes
 - Try to create status "Unvisible" for all
@@ -10,7 +15,6 @@
 - Trying to connect to server periodically
 - Filter for conferences
 - Minimize chat window when interlocutor wrote the message, if chat window is closed
-- Make the "<" symbol printable in the messages chat
 - Interface like original mail agent has
 - Support phone and video calling
 - Support games

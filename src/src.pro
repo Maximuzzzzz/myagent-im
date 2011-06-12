@@ -34,7 +34,8 @@ unix {
     isEmpty(PREFIX):PREFIX = /usr/local
     BINDIR = $$PREFIX/bin
     DATADIR = $$PREFIX/share/myagent-im
-    DEFINES += DATADIR=\\\"$$DATADIR\\\"
+	HICOLOR = $$PREFIX/share/icons/hicolor
+	DEFINES += DATADIR=\\\"$$DATADIR\\\"
     DEFINES += VERSION=\\\"0.4.6\\\"
     INSTALLS += target \
         smiles_animated \
@@ -51,7 +52,12 @@ unix {
 		data \
         desktop \
         appicon \
-        sounds
+		sounds \
+		hicolor16 \
+		hicolor22 \
+		hicolor24 \
+		hicolor32 \
+		hicolor48
     target.path = $$BINDIR
     data.path = $$DATADIR
     data.files += locale/*.qm
@@ -83,12 +89,23 @@ unix {
 	smiles_smiles.files = emoticons/smiles/smiles/*.gif
     smiles_static_png.path = $$SMILESDIR/static_png
 	smiles_static_png.files = emoticons/smiles/static_png/*.png
-    desktop.path = $$PREFIX/share/applications
+	hicolor16.path = $$HICOLOR/16x16/apps
+	hicolor16.files =icons/hicolor/16x16/apps/*.png
+	hicolor22.path = $$HICOLOR/22x22/apps
+	hicolor22.files =icons/hicolor/22x22/apps/*.png
+	hicolor24.path = $$HICOLOR/24x24/apps
+	hicolor24.files =icons/hicolor/24x24/apps/*.png
+	hicolor32.path = $$HICOLOR/32x32/apps
+	hicolor32.files =icons/hicolor/32x32/apps/*.png
+	hicolor48.path = $$HICOLOR/48x48/apps
+	hicolor48.files =icons/hicolor/48x48/apps/*.png
+	desktop.path = $$PREFIX/share/applications
     desktop.files += myagent-im.desktop
     sounds.path = $$DATADIR/sounds
     sounds.files = sounds/*
     appicon.path = $$PREFIX/share/pixmaps
-    appicon.files += myagent-im.xpm
+	appicon.files += myagent-im.xpm
+	appicon.files += myagent-im.png
 }
 RESOURCES += res.qrc
 SOURCES += main.cpp \

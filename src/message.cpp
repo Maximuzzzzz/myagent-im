@@ -64,6 +64,7 @@ QTextDocumentFragment Message::documentFragment(int defR, int defG, int defB, in
 	}
 	else if (m_flags & MESSAGE_FLAG_RTF)
 	{
+		qDebug() << "Parsing RTF doc";
 		RtfParser rtfParser;
 		if (defR > -1)
 			rtfParser.parseToTextDocument(m_rtfText, &doc, defR, defG, defB, defSize, fontFamily);
