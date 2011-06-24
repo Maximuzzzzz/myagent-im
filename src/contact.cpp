@@ -27,13 +27,13 @@
 #include <QDebug>
 #include <QUrl>
 
-#include "mrimclient.h"
-#include "proto.h"
-#include "taskchangegroup.h"
-#include "tasksetvisibility.h"
-#include "taskrenamecontact.h"
-#include "taskrequestcontactinfo.h"
-#include "taskchangephones.h"
+#include "protocol/mrim/mrimclient.h"
+#include "protocol/mrim/proto.h"
+#include "tasks/taskchangegroup.h"
+#include "tasks/tasksetvisibility.h"
+#include "tasks/taskrenamecontact.h"
+#include "tasks/taskrequestcontactinfo.h"
+#include "tasks/taskchangephones.h"
 #include "contactlist.h"
 
 Contact::Contact(const ContactData& contactData, ContactGroup* group, Account* account)
@@ -390,3 +390,4 @@ void Contact::setFlags(quint32 f)
 	}
 	data.flags = f;
 }
+

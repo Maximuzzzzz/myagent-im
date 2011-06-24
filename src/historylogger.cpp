@@ -27,7 +27,7 @@
 #include "chatsession.h"
 #include "contact.h"
 #include "message.h"
-#include "proto.h"
+#include "protocol/mrim/proto.h"
 
 #include <iostream>
 

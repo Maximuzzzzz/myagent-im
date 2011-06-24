@@ -27,11 +27,11 @@
 #include <QList>
 
 #include "contactgroup.h"
-#include "mrimclient.h"
+#include "protocol/mrim/mrimclient.h"
 #include "onlinestatus.h"
 #include "contactdata.h"
-#include "contactlistmodel.h"
-#include "contactlistbroadcastmodel.h"
+#include "gui/models/contactlistmodel.h"
+#include "gui/models/contactlistbroadcastmodel.h"
 
 class Contact;
 class Account;

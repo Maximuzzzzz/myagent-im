@@ -28,7 +28,7 @@
 
 #include "rtfparser.h"
 #include "plaintextparser.h"
-#include "proto.h"
+#include "protocol/mrim/proto.h"
 
 Message::Message(Type type, quint32 flags, QString plainText, QByteArray rtfText, quint32 backgroundColor, QByteArray confUser, QDateTime dateTime)
 	: m_type(type), m_dateTime(dateTime), m_flags(flags), m_plainText(plainText), m_rtfText(rtfText), m_backgroundColor(backgroundColor), m_confUser(confUser)
@@ -64,7 +64,6 @@ QTextDocumentFragment Message::documentFragment(int defR, int defG, int defB, in
 	}
 	else if (m_flags & MESSAGE_FLAG_RTF)
 	{
-		qDebug() << "Parsing RTF doc";
 		RtfParser rtfParser;
 		if (defR > -1)
 			rtfParser.parseToTextDocument(m_rtfText, &doc, defR, defG, defB, defSize, fontFamily);

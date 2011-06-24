@@ -28,13 +28,13 @@
 #include <QApplication>
 #include <QTextCodec>
 
-#include "proto.h"
-#include "mrimclient.h"
+#include "protocol/mrim/proto.h"
+#include "protocol/mrim/mrimclient.h"
 #include "resourcemanager.h"
 #include "chatsmanager.h"
 #include "historymanager.h"
 #include "audio.h"
-#include "centerwindow.h"
+#include "gui/centerwindow.h"
 
 Account::Account(QByteArray email, QByteArray password, QObject* parent)
 	: QObject(parent)
@@ -92,7 +92,7 @@ void Account::reset(QByteArray email, QByteArray password)
 
 Account::~Account()
 {
-	qDebug() << "Account::~Account()";
+	qDebug() << Q_FUNC_INFO;
 	delete m_chatsManager;
 	delete m_client;
 	delete m_contactList;
@@ -279,7 +279,7 @@ void Account::setNickname(QString nickname)
 void Account::setStatusText(QString statusText)
 {
 	qDebug() << "Account::setStatusText" << statusText;
-	emit statusChanged(email(), statusText);
+	emit statusChanged(email(), statusText, QDateTime::currentDateTime());
 }
 
 void Account::saveOnlineStatus(OnlineStatus st)

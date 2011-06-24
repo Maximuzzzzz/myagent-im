@@ -27,10 +27,10 @@
 #include "account.h"
 #include "contact.h"
 #include "message.h"
-#include "filemessage.h"
-#include "mrimclient.h"
-#include "proto.h"
-#include "tasksendsms.h"
+#include "protocol/mrim/filemessage.h"
+#include "protocol/mrim/mrimclient.h"
+#include "protocol/mrim/proto.h"
+#include "tasks/tasksendsms.h"
 #include "rtfexporter.h"
 #include "audio.h"
 #include "resourcemanager.h"
@@ -50,6 +50,7 @@ ChatSession::~ChatSession()
 
 void ChatSession::appendMessage(Message* msg, bool addInHash)
 {
+	qDebug() << Q_FUNC_INFO;
 	if (addInHash)
 	{
 		while (messages.value(++numering, NULL) != NULL) {}
@@ -200,17 +201,6 @@ bool ChatSession::wakeupContact()
 
 	return false;
 }
-
-/*bool ChatSession::fileTransfer(FileMessage* fmsg)
-{
-	qDebug() << "ChatSession::fileTransfer()";
-
-	/*fmsg->setAccEmail(m_account->email());
-	fmsg->setContEmail(m_contact->email());*/
-	/*fmsg->sendFiles(m_account->client());
-
-	return true;
-}*/
 
 void ChatSession::fileReceived(quint32 totalSize, quint32 sessionId, QByteArray filesAnsi, QString filesUtf, QByteArray ips)
 {

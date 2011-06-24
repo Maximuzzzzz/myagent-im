@@ -25,9 +25,7 @@
 #include <QDebug>
 #include "chatsession.h"
 #include "contact.h"
-
 #include "account.h"
-#include "contact.h"
 #include "historylogger.h"
 
 HistoryManager::HistoryManager(QObject* parent)
@@ -42,7 +40,6 @@ HistoryManager::~HistoryManager()
 
 void HistoryManager::createLogger(ChatSession* session)
 {
-
 	Contact* contact = session->contact();
 	qDebug() << "HistoryManager::createLogger " << contact->email();
 	if (!contact->isPhone())

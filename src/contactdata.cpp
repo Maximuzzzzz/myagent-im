@@ -5,7 +5,7 @@
 #include <QTextCodec>
 #include <QVariant>
 
-#include "proto.h"
+#include "protocol/mrim/proto.h"
 
 QTextCodec* ContactData::codec = QTextCodec::codecForName("cp1251");
 

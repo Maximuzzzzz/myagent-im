@@ -25,7 +25,7 @@
 #include <QLocale>
 
 #include "resourcemanager.h"
-#include "proto.h"
+#include "protocol/mrim/proto.h"
 
 const int ResourceManager::maxDefaultStatuses = 10;
 const int ResourceManager::minDefaultStatuses = 5;

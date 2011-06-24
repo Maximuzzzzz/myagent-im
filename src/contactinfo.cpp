@@ -24,7 +24,7 @@
 
 #include <QDebug>
 
-#include "proto.h"
+#include "protocol/mrim/proto.h"
 
 void ContactInfo::setSex(const QString & sex)
 {

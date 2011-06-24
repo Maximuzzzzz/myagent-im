@@ -27,17 +27,17 @@
 #include <QFile>
 #include <QDataStream>
 
-#include "proto.h"
+#include "protocol/mrim/proto.h"
 #include "account.h"
 #include "contact.h"
-#include "taskremovecontact.h"
-#include "taskaddcontact.h"
-#include "taskaddsmscontact.h"
-#include "taskaddgroup.h"
-#include "taskremovegroup.h"
-#include "taskrenamegroup.h"
-#include "taskignorecontact.h"
-#include "tasknewconference.h"
+#include "tasks/taskremovecontact.h"
+#include "tasks/taskaddcontact.h"
+#include "tasks/taskaddsmscontact.h"
+#include "tasks/taskaddgroup.h"
+#include "tasks/taskremovegroup.h"
+#include "tasks/taskrenamegroup.h"
+#include "tasks/taskignorecontact.h"
+#include "tasks/tasknewconference.h"
 
 ContactList::ContactList(Account* account)
 	: QObject(account), m_account(account)
@@ -190,7 +190,6 @@ Contact* ContactList::findContact(const QByteArray& email, QList<Contact*> & lis
 	else
 		return *it;
 }
-
 
 Contact* ContactList::findSmsContact(const QString & nickname)
 {
@@ -684,7 +683,6 @@ void ContactList::addContactOnServerEnd(quint32 status, bool timeout)
 	addContact(task->contactData());
 }
 
-
 bool ContactList::newConferenceOnServer(QString confName, QByteArray owner, QList<QByteArray> members)
 {
 	qDebug() << "ContactList::newConferenceOnServer" << confName;
@@ -761,7 +759,7 @@ void ContactList::newConferenceOnServerEnd(quint32 status, bool timeout)
 bool ContactList::addSmsContactOnServer(const QString & nickname, const QStringList & phones)
 {
 	Contact* contact = findSmsContact(nickname);
-	if (contact)
+	if (contact && !contact->isHidden())
 	{
 		emit addSmsContactOnServerError(tr("Contact %1 already exists").arg(nickname));
 		return false;
@@ -916,7 +914,6 @@ void ContactList::removeGroupOnServerEnd(quint32 status, bool timeout)
 	emit updated();
 }
 
-
 bool ContactList::renameGroup(ContactGroup * group, const QString & newName)
 {
 	if (!group)
@@ -980,3 +977,4 @@ void ContactList::update()
 {
 	emit updated();
 }
+

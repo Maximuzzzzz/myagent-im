@@ -24,14 +24,14 @@
 
 #include <QDebug>
 
-#include "mrimclient.h"
+#include "protocol/mrim/mrimclient.h"
 #include "account.h"
 #include "contact.h"
 #include "contactlist.h"
 #include "chatsession.h"
 #include "message.h"
-#include "filemessage.h"
-#include "proto.h"
+#include "protocol/mrim/filemessage.h"
+#include "protocol/mrim/proto.h"
 #include "audio.h"
 #include "resourcemanager.h"
 

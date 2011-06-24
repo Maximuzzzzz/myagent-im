@@ -3,7 +3,7 @@
 #include <QDebug>
 #include <QTextCodec>
 
-#include "proto.h"
+#include "protocol/mrim/proto.h"
 #include "resourcemanager.h"
 
 const OnlineStatus OnlineStatus::unknown = OnlineStatus("status_gray");

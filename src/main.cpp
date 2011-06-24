@@ -27,9 +27,8 @@
 #include <QLocale>
 
 #include "accountmanager.h"
-#include "contactlist.h"
-#include "logindialog.h"
-#include "contactlistwindow.h"
+#include "gui/logindialog.h"
+#include "gui/contactlistwindow.h"
 
 #include "audio.h"
 #include "resourcemanager.h"

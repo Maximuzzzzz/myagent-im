@@ -1,0 +1,348 @@
+<ui version="4.0" >
+ <class>SearchContactsForm</class>
+ <widget class="QWidget" name="SearchContactsForm" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>473</width>
+    <height>454</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Search contacts</string>
+  </property>
+  <property name="windowIcon" >
+   <iconset resource="res.qrc" >
+    <normaloff>:/icons/cl_add_contact.png</normaloff>:/icons/cl_add_contact.png</iconset>
+  </property>
+  <layout class="QVBoxLayout" >
+   <item>
+    <widget class="RadioGroupBox" name="infoGroupBox" >
+     <property name="title" >
+      <string>Info</string>
+     </property>
+     <property name="checkable" >
+      <bool>true</bool>
+     </property>
+     <layout class="QVBoxLayout" >
+      <item>
+       <layout class="QVBoxLayout" >
+        <item>
+         <layout class="QGridLayout" >
+          <item row="0" column="0" >
+           <widget class="QLabel" name="label" >
+            <property name="text" >
+             <string>Nickname:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1" >
+           <widget class="QLineEdit" name="nicknameEdit" />
+          </item>
+          <item row="1" column="0" >
+           <widget class="QLabel" name="label_2" >
+            <property name="text" >
+             <string>Name:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1" >
+           <widget class="QLineEdit" name="nameEdit" />
+          </item>
+          <item row="2" column="0" >
+           <widget class="QLabel" name="label_3" >
+            <property name="text" >
+             <string>Last name:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1" >
+           <widget class="QLineEdit" name="lastnameEdit" />
+          </item>
+          <item row="3" column="0" >
+           <widget class="QLabel" name="label_4" >
+            <property name="text" >
+             <string>Sex:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1" >
+           <widget class="QComboBox" name="sexBox" />
+          </item>
+          <item row="4" column="0" >
+           <widget class="QLabel" name="label_5" >
+            <property name="text" >
+             <string>Country:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1" >
+           <widget class="QComboBox" name="countryBox" />
+          </item>
+          <item row="5" column="0" >
+           <widget class="QLabel" name="label_6" >
+            <property name="text" >
+             <string>Region:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1" >
+           <widget class="QComboBox" name="regionBox" >
+            <property name="enabled" >
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0" >
+           <widget class="QRadioButton" name="birthdateRadioButton" >
+            <property name="text" >
+             <string>Date of birth:</string>
+            </property>
+            <property name="checked" >
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0" >
+           <widget class="QRadioButton" name="zodiacRadioButton" >
+            <property name="enabled" >
+             <bool>true</bool>
+            </property>
+            <property name="text" >
+             <string>Zodiacal sign:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="1" >
+           <widget class="QComboBox" name="zodiacBox" >
+            <property name="enabled" >
+             <bool>false</bool>
+            </property>
+            <property name="maxVisibleItems" >
+             <number>13</number>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="0" >
+           <widget class="QLabel" name="label_7" >
+            <property name="text" >
+             <string>Age from</string>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="1" >
+           <layout class="QHBoxLayout" >
+            <item>
+             <widget class="QLineEdit" name="fromAgeEdit" />
+            </item>
+            <item>
+             <widget class="QLabel" name="label_8" >
+              <property name="text" >
+               <string>to</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="toAgeEdit" />
+            </item>
+           </layout>
+          </item>
+          <item row="6" column="1" >
+           <layout class="QHBoxLayout" >
+            <item>
+             <widget class="QComboBox" name="birthDayBox" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+                <horstretch>1</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="birthMonthBox" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+                <horstretch>3</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="onlineContactsCheckBox" >
+          <property name="text" >
+           <string>Search only online contacts</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="RadioGroupBox" name="emailGroupBox" >
+     <property name="title" >
+      <string>E-Mail</string>
+     </property>
+     <property name="checkable" >
+      <bool>true</bool>
+     </property>
+     <layout class="QVBoxLayout" >
+      <item>
+       <widget class="QLineEdit" name="emailEdit" />
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer>
+     <property name="orientation" >
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0" >
+      <size>
+       <width>455</width>
+       <height>31</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" >
+     <item>
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0" >
+        <size>
+         <width>271</width>
+         <height>29</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="errorLabel" >
+       <property name="palette" >
+        <palette>
+         <active>
+          <colorrole role="WindowText" >
+           <brush brushstyle="SolidPattern" >
+            <color alpha="255" >
+             <red>255</red>
+             <green>0</green>
+             <blue>0</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="WindowText" >
+           <brush brushstyle="SolidPattern" >
+            <color alpha="255" >
+             <red>255</red>
+             <green>0</green>
+             <blue>0</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled>
+          <colorrole role="WindowText" >
+           <brush brushstyle="SolidPattern" >
+            <color alpha="255" >
+             <red>119</red>
+             <green>119</green>
+             <blue>119</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </disabled>
+        </palette>
+       </property>
+       <property name="text" >
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="searchButton" >
+       <property name="text" >
+        <string>Search</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>RadioGroupBox</class>
+   <extends>QGroupBox</extends>
+   <header>gui/radiogroupbox.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="res.qrc" />
+ </resources>
+ <connections>
+  <connection>
+   <sender>zodiacRadioButton</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>zodiacBox</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>89</x>
+     <y>248</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>173</x>
+     <y>251</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>birthdateRadioButton</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>birthDayBox</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>95</x>
+     <y>221</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>148</x>
+     <y>223</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>birthdateRadioButton</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>birthMonthBox</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>69</x>
+     <y>221</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>318</x>
+     <y>222</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

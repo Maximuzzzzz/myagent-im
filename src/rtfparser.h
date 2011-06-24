@@ -60,22 +60,15 @@ public:
 	void setSmile(const char* str);
 	void setFont(int nFont);
 	void setFont(QString fontFamily);
-	//void setEncoding(unsigned nFont);
 	void setFontColor(unsigned short color);
 	void setBackgroundColor(unsigned short color);
-	//void setFontBgColor(unsigned short color);
 	void setFontSizeHalfPoints(unsigned short sizeInHalfPoints);
-	//void setFontSize(unsigned short sizeInPoints);
 	void setBold(bool);
 	void setItalic(bool);
 	void setUnderline(bool);
 	void startParagraph();
 	bool isParagraphOpen() const;
 	void clearParagraphFormatting();
-	//void setParagraphDirLTR();
-	//void setParagraphDirRTL();
-	//void addLineBreak();
-	//void flush();
 	void storeCharFormat();
 	void restoreCharFormat();
 
@@ -88,9 +81,6 @@ private:
 	void resetColors() { m_nRed = m_nGreen = m_nBlue = 0; m_bColorInit = false; }
 	void setColor(unsigned char val, unsigned char *p)
 	{ *p = val; m_bColorInit = true; }
-
-	//enum State { Free, FontTable, ColorTable };
-	//State state;
 
 	QString openFontTag();
 	QString openStyleAttribute();

@@ -71,7 +71,7 @@ rm -f lex.yy.c
 #include <QUrl>
 
 #include "resourcemanager.h"
-#include "animation.h"
+#include "gui/animation.h"
 #include "emoticonformat.h"
 
 RtfLevel::RtfLevel()

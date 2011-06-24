@@ -125,5 +125,9 @@
         <file>icons/editor/msg_bar_f_multi_p.png</file>
         <file>icons/editor/msg_bar_f_multi_ph.png</file>
         <file>icons/notify/unread.png</file>
+        <file>icons/conference_small.png</file>
+        <file>icons/sms_avatar_small.png</file>
+        <file>icons/sms_avatar.png</file>
+        <file>icons/msg_phone.png</file>
     </qresource>
 </RCC>

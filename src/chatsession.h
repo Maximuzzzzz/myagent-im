@@ -27,9 +27,9 @@
 #include <QList>
 
 #include "message.h"
-#include "filemessage.h"
-#include "tasksendmessage.h"
-#include "taskbroadcastmessage.h"
+#include "protocol/mrim/filemessage.h"
+#include "tasks/tasksendmessage.h"
+#include "tasks/taskbroadcastmessage.h"
 
 class Account;
 class Contact;

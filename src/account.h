@@ -28,9 +28,9 @@
 #include <QPointer>
 
 #include "onlinestatus.h"
-#include "onlinestatuseseditor.h"
+#include "gui/onlinestatuseseditor.h"
 #include "chatsmanager.h"
-#include "mrimclient.h"
+#include "protocol/mrim/mrimclient.h"
 #include "contactlist.h"
 
 class Account : public QObject
@@ -57,7 +57,7 @@ public:
 	QString avatarsPath() const;
 	MRIMClient* client() { return m_client; }
 	OnlineStatus onlineStatus() const { return m_onlineStatus; }
-	ChatsManager* chatsManager() const { return m_chatsManager; }	
+	ChatsManager* chatsManager() const { return m_chatsManager; }
 	uint unreadLetters() const { return m_unreadMessages; }
 
 	QSettings* settings() { return m_settings; }
@@ -76,7 +76,7 @@ signals:
 	void nicknameChanged();
 	void totalMessagesChanged(const QString& totalMessages);
 	void unreadLettersChanged(uint n);
-	void statusChanged(QByteArray email, QString text);
+	void statusChanged(QByteArray email, QString text, QDateTime dt);
 	void extendedStatusesChanged();
 	
 private slots:
