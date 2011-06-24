@@ -1,0 +1,1412 @@
+<ROOT>
+	<SMILES>
+		path = "/smiles"
+		ColumnsCount="8"
+		<ITEMS width="25" height="25">
+			<SET03>
+				title = "Τα κολομπόκια"
+				path = "/set03"
+				logo = "/smile.gif"
+				<ITEMS>
+					<OBJ01>
+						id = "400" 
+						alt = ":Αγγελάκι:"
+						tip = "Αγγελάκι"
+						<ICON><DEFAULT>src="/angel.gif"</DEFAULT></ICON>
+					</OBJ01>
+					<OBJ02>
+						id = "401" 
+						alt = ":Με πιάνει αναγολα:"
+						tip = "Με πιάνει αναγολα"
+						<ICON><DEFAULT>src="/bad.gif"</DEFAULT></ICON>
+					</OBJ02>
+					<OBJ03>
+						id = "402" 
+						alt = ":Χαμόγελο από αυτί μεχρί αυτί:"
+						tip = "Χαμόγελο από αυτί μεχρί αυτί"
+						<ICON><DEFAULT>src="/biggrin.gif"</DEFAULT></ICON>
+					</OBJ03>
+					<OBJ04>
+						id = "403" 
+						alt = ":Πειράζω:"
+						tip = "Πειράζω"
+						<ICON><DEFAULT>src="/blum.gif"</DEFAULT></ICON>
+					</OBJ04>
+					<OBJ05>
+						id = "404" 
+						alt = ":Κοκκινίζω:"
+						tip = "Κοκκινίζω"
+						<ICON><DEFAULT>src="/blush.gif"</DEFAULT></ICON>
+					</OBJ05>
+					<OBJ06>
+						id = "405" 
+						alt = ":Κλαίω:"
+						tip = "Κλαίω"
+						<ICON><DEFAULT>src="/cray.gif"</DEFAULT></ICON>
+					</OBJ06>
+					<OBJ07>
+						id = "406" 
+						alt = ":Τρελαίνομαι:"
+						tip = "Τρελαίνομαι"
+						<ICON><DEFAULT>src="/crazy.gif"</DEFAULT></ICON>
+					</OBJ07>
+					<OBJ08>
+						id = "407" 
+						alt = ":Χορεύω:"
+						tip = "Χορεύω"
+						<ICON><DEFAULT>src="/dance.gif"</DEFAULT></ICON>
+					</OBJ08>
+					<OBJ09>
+						id = "408" 
+						alt = ":Οργίζομαι:"
+						tip = "Οργίζομαι"
+						<ICON><DEFAULT>src="/diablo.gif"</DEFAULT></ICON>
+					</OBJ09>
+					<OBJ10>
+						id = "409" 
+						alt = ":I'm cooler:"
+						tip = "I'm cooler"
+						<ICON><DEFAULT>src="/dirol.gif"</DEFAULT></ICON>
+					</OBJ10>
+					<OBJ11>
+						id = "410" 
+						alt = ":Μπήρα:"
+						tip = "Μπήρα"
+						<ICON><DEFAULT>src="/drinks.gif"</DEFAULT></ICON>
+					</OBJ11>
+					<OBJ12>
+						id = "411" 
+						alt = ":You don't say so?!:"
+						tip = "You don't say so?!"
+						<ICON><DEFAULT>src="/fool.gif"</DEFAULT></ICON>
+					</OBJ12>
+					<OBJ13>
+						id = "412" 
+						alt = ":Δίνω το λουλούδι:"
+						tip = "Δίνω το λουλούδι"
+						<ICON><DEFAULT>src="/give_rose.gif"</DEFAULT></ICON>
+					</OBJ13>
+					<OBJ14>
+						id = "413" 
+						alt = ":Εντάξει!:"
+						tip = "Εντάξει!"
+						<ICON><DEFAULT>src="/good.gif"</DEFAULT></ICON>
+					</OBJ14>
+					<OBJ15>
+						id = "414" 
+						alt = ":Σε φίλω:"
+						tip = "Σε φίλω"
+						<ICON><DEFAULT>src="/kiss_mini.gif"</DEFAULT></ICON>
+					</OBJ15>
+					<OBJ16>
+						id = "415" 
+						alt = ":Φίλησες:"
+						tip = "Φίλησες"
+						<ICON><DEFAULT>src="/man_in_love.gif"</DEFAULT></ICON>
+					</OBJ16>
+					<OBJ17>
+						id = "416" 
+						alt = ":Giggling:"
+						tip = "Giggling"
+						<ICON><DEFAULT>src="/mocking.gif"</DEFAULT></ICON>
+					</OBJ17>
+					<OBJ18>
+						id = "417" 
+						alt = ":Ακούω τη μουσηκή:"
+						tip = "Ακούω τη μουσηκή"
+						<ICON><DEFAULT>src="/music.gif"</DEFAULT></ICON>
+					</OBJ18>
+					<OBJ19>
+						id = "418" 
+						alt = ":Ό-οχι:"
+						tip = "Ό-οχι"
+						<ICON><DEFAULT>src="/nea.gif"</DEFAULT></ICON>
+					</OBJ19>
+					<OBJ20>
+						id = "419" 
+						alt = ":Σύγνωμη:"
+						tip = "Σύγνωμη"
+						<ICON><DEFAULT>src="/pardon.gif"</DEFAULT></ICON>
+					</OBJ20>
+					<OBJ21>
+						id = "420" 
+						alt = ":I'll burst with laughter:"
+						tip = "I'll burst with laughter"
+						<ICON><DEFAULT>src="/rofl.gif"</DEFAULT></ICON>
+					</OBJ21>
+					<OBJ22>
+						id = "421" 
+						alt = ":Ονειροπολώ:"
+						tip = "Ονειροπολώ"
+						<ICON><DEFAULT>src="/rolleyes.gif"</DEFAULT></ICON>
+					</OBJ22>
+					<OBJ23>
+						id = "422" 
+						alt = ":Είμαι θλιβερός:"
+						tip = "Είμαι θλιβερός"
+						<ICON><DEFAULT>src="/sad.gif"</DEFAULT></ICON>
+					</OBJ23>
+					<OBJ24>
+						id = "423" 
+						alt = ":Πρέπει να σκεφτούμαι:"
+						tip = "Πρέπει να σκεφτούμαι"
+						<ICON><DEFAULT>src="/scratch_one-s_head.gif"</DEFAULT></ICON>
+					</OBJ24>
+					<OBJ25>
+						id = "424" 
+						alt = ":Oh, f...:"
+						tip = "Oh, f..."
+						<ICON><DEFAULT>src="/shok.gif"</DEFAULT></ICON>
+					</OBJ25>
+					<OBJ26>
+						id = "425" 
+						alt = ":Φωνάζω:"
+						tip = "Φωνάζω"
+						<ICON><DEFAULT>src="/shout.gif"</DEFAULT></ICON>
+					</OBJ26>
+					<OBJ27>
+						id = "426" 
+						alt = ":Χαμογελώ:"
+						tip = "Χαμογελώ"
+						<ICON><DEFAULT>src="/smile.gif"</DEFAULT></ICON>
+					</OBJ27>
+					<OBJ28>
+						id = "427" 
+						alt = ":Δεν ξέρω:"
+						tip = "Δεν ξέρω"
+						<ICON><DEFAULT>src="/unknw.gif"</DEFAULT></ICON>
+					</OBJ28>
+					<OBJ29>
+						id = "428" 
+						alt = ":Exhausted:"
+						tip = "Exhausted"
+						<ICON><DEFAULT>src="/wacko2.gif"</DEFAULT></ICON>
+					</OBJ29>
+					<OBJ30>
+						id = "429" 
+						alt = ":Winking:"
+						tip = "Winking"
+						<ICON><DEFAULT>src="/wink.gif"</DEFAULT></ICON>
+					</OBJ30>
+					<OBJ31>
+						id = "430" 
+						alt = ":Hurrrah!:"
+						tip = "Hurrrah!"
+						<ICON><DEFAULT>src="/yahoo.gif"</DEFAULT></ICON>
+					</OBJ31>
+					<OBJ32>
+						id = "431" 
+						alt = ":Old hat:"
+						tip = "Old hat"
+						<ICON><DEFAULT>src="/boian.png"</DEFAULT></ICON>
+					</OBJ32>
+					<OBJ33>
+						id = "432" 
+						alt = ":Κθούλχου:"
+						tip = "Κθούλχου"
+						<ICON><DEFAULT>src="/kut.png"</DEFAULT></ICON>
+					</OBJ33>
+				</ITEMS>
+			</SET03>
+			<SET01>
+				title = "Κλασσικοί"
+				path = "/smiles"
+				logo = "/biggrin.gif"
+				<ITEMS>
+					<OBJ01>
+						id = "<###20###img010>" 
+						tip = ":)"
+						<ICON><DEFAULT>src="/smile.gif"</DEFAULT></ICON>
+					</OBJ01>
+					<OBJ02>
+						id = "<###20###img011>"
+						tip = ";)"
+						<ICON><DEFAULT>src="/blink.gif"</DEFAULT></ICON>
+					</OBJ02>
+					<OBJ03>
+						id = "<###20###img012>" 
+						tip = ":-))"
+						<ICON><DEFAULT>src="/laughter.gif"</DEFAULT></ICON>
+					</OBJ03>
+					<OBJ04>
+						id = "<###20###img013>" 
+						tip = ";-P"
+						<ICON><DEFAULT>src="/bee.gif"</DEFAULT></ICON>
+					</OBJ04>
+					<OBJ05>
+						id = "<###20###img014>" 
+						tip = "8-)"
+						<ICON><DEFAULT>src="/coolguy.gif"</DEFAULT></ICON>
+					</OBJ05>
+					<OBJ06>
+						id = "<###20###img015>"
+						tip = ":-D"
+						<ICON><DEFAULT>src="/biggrin.gif"</DEFAULT></ICON>
+					</OBJ06>
+					<OBJ07>
+						id = "<###20###img016>" 
+						tip = "}:o)"
+						<ICON><DEFAULT>src="/pig.gif"</DEFAULT></ICON>
+					</OBJ07>
+					<OBJ08>
+						id = "<###20###img017>" 
+						tip = "$-)"
+						<ICON><DEFAULT>src="/bazilio.gif"</DEFAULT></ICON>
+					</OBJ08>
+					<OBJ09>
+						id = "<###20###img018>" 
+						tip = ":-'"
+						<ICON><DEFAULT>src="/hm.gif"</DEFAULT></ICON>
+					</OBJ09>
+					<OBJ10>
+						id = "<###20###img019>"
+						tip = ":-("
+						<ICON><DEFAULT>src="/disappointed.gif"</DEFAULT></ICON>
+					</OBJ10>
+					<OBJ11>
+						id = "<###20###img020>" 
+						tip = "8-("
+						<ICON><DEFAULT>src="/tears.gif"</DEFAULT></ICON>
+					</OBJ11>
+					<OBJ12>
+						id = "<###20###img021>" 
+						tip = ":'("
+						<ICON><DEFAULT>src="/cry.gif"</DEFAULT></ICON>
+					</OBJ12>
+					<OBJ13>
+						id = "<###20###img022>" 
+						tip = ":''()"
+						<ICON><DEFAULT>src="/crocodile.gif"</DEFAULT></ICON>
+					</OBJ13>
+					<OBJ14>
+						id = "<###20###img023>"
+						tip = "S:-o"
+						<ICON><DEFAULT>src="/really.gif"</DEFAULT></ICON>
+					</OBJ14>
+					<OBJ16>
+						id = "<###20###img024>" 
+						tip = "(:-o"
+						<ICON><DEFAULT>src="/oo.gif"</DEFAULT></ICON>
+					</OBJ16>
+					<OBJ17>
+						id = "<###20###img025>" 
+						tip = "8-0"
+						<ICON><DEFAULT>src="/amazed.gif"</DEFAULT></ICON>
+					</OBJ17>
+					<OBJ18>
+						id = "<###20###img026>"
+						tip = "8-[o]"
+						<ICON><DEFAULT>src="/aaa.gif"</DEFAULT></ICON>
+					</OBJ18>
+					<OBJ19>
+						id = "<###20###img027>" 
+						tip = "):-p"
+						<ICON><DEFAULT>src="/bullshit.gif"</DEFAULT></ICON>
+					</OBJ19>
+					<OBJ20>
+						id = "<###20###img028>" 
+						tip = "):-("
+						<ICON><DEFAULT>src="/angry.gif"</DEFAULT></ICON>
+					</OBJ20>
+					<OBJ21>
+						id = "<###20###img029>" 
+						tip = "):-$"
+						<ICON><DEFAULT>src="/rrr.gif"</DEFAULT></ICON>
+					</OBJ21>
+					<OBJ22>
+						id = "<###20###img030>"
+						tip = "):-D"
+						<ICON><DEFAULT>src="/zloradstvo.gif"</DEFAULT></ICON>
+					</OBJ22>
+					<OBJ24>
+						id = "<###20###img031>" 
+						tip = ":-E"
+						<ICON><DEFAULT>src="/biganger.gif"</DEFAULT></ICON>
+					</OBJ24>
+					<OBJ25>
+						id = "<###20###img032>" 
+						tip = "Διαβολάκι"
+						<ICON><DEFAULT>src="/devil.gif"</DEFAULT></ICON>
+					</OBJ25>
+					<OBJ26>
+						id = "<###20###img033>" 
+						tip = "Little vampire"
+						<ICON><DEFAULT>src="/vampire.gif"</DEFAULT></ICON>
+					</OBJ26>
+					<OBJ27>
+						id = "<###20###img034>"
+						tip = ":-]["
+						<ICON><DEFAULT>src="/plug.gif"</DEFAULT></ICON>
+					</OBJ27>
+					<OBJ28>
+						id = "<###20###img035>"
+						tip = ":-|"
+						<ICON><DEFAULT>src="/detzl.gif"</DEFAULT></ICON>
+					</OBJ28>
+					<OBJ29>
+						id = "<###20###img036>" 
+						tip = "B-j"
+						<ICON><DEFAULT>src="/sceptic.gif"</DEFAULT></ICON>
+					</OBJ29>
+					<OBJ30>
+						id = "<###20###img037>" 
+						tip = ":~o"
+						<ICON><DEFAULT>src="/shy.gif"</DEFAULT></ICON>
+					</OBJ30>
+					<OBJ31>
+						id = "<###20###img038>"
+						tip = "(_I_)"
+						<ICON><DEFAULT>src="/ass.gif"</DEFAULT></ICON>
+					</OBJ31>
+					<OBJ32>
+						id = "<###20###img039>" 
+						tip = "Καρδιά"
+						<ICON><DEFAULT>src="/heart.gif"</DEFAULT></ICON>
+					</OBJ32>
+					<OBJ33>
+						id = "<###20###img040>" 
+						tip = ":-*"
+						<ICON><DEFAULT>src="/kiss.gif"</DEFAULT></ICON>
+					</OBJ33>
+					<OBJ34>
+						id = "<###20###img041>"
+						tip = "Κοιμούμαι"
+						<ICON><DEFAULT>src="/sleepy.gif"</DEFAULT></ICON>
+					</OBJ34>
+					<OBJ35>
+						id = "<###20###img000>" 
+						tip = "Excellent!"
+						<ICON><DEFAULT>src="/live.gif"</DEFAULT></ICON>
+					</OBJ35>
+					<OBJ36>
+						id = "<###20###img001>"
+						tip = "Ειρήνη!"
+						<ICON><DEFAULT>src="/victory.gif"</DEFAULT></ICON>
+					</OBJ36>
+					<OBJ37>
+						id = "<###20###img002>"
+						tip = "Εντάξει!"
+						<ICON><DEFAULT>src="/ok.gif"</DEFAULT></ICON>
+					</OBJ37>
+					<OBJ38>
+						id = "<###20###img003>"
+						tip = "Left_corna"
+						<ICON><DEFAULT>src="/koza_left.gif"</DEFAULT></ICON>
+					</OBJ38>
+					<OBJ39>
+						id = "<###20###img004>"
+						tip = "Right_corna"
+						<ICON><DEFAULT>src="/koza_right.gif"</DEFAULT></ICON>
+					</OBJ39>
+					<OBJ40>
+						id = "<###20###img005>"
+						tip = "Κακό"
+						<ICON><DEFAULT>src="/die.gif"</DEFAULT></ICON>
+					</OBJ40>
+					<OBJ41>
+						id = "<###20###img006>"
+						tip = "Προσοχή!"
+						<ICON><DEFAULT>src="/think.gif"</DEFAULT></ICON>
+					</OBJ41>
+					<OBJ42>
+						id = "<###20###img007>"
+						tip = "Fig"
+						<ICON><DEFAULT>src="/kukes.gif"</DEFAULT></ICON>
+					</OBJ42>
+					<OBJ43>
+						id = "<###20###img008>"
+						tip = "Γροθιά"
+						<ICON><DEFAULT>src="/fist.gif"</DEFAULT></ICON>
+					</OBJ43>
+					<OBJ44>
+						id = "<###20###img009>"
+						tip = "Get lost!"
+						<ICON><DEFAULT>src="/fuck.gif"</DEFAULT></ICON>
+					</OBJ44>
+				</ITEMS>
+			</SET01>
+			<ANIMATED_SET>
+				title = "Κινούμενοι"
+				path = "/animated"
+				logo = "/dance.gif"
+				<ITEMS>
+					<OBJ01>
+						id = "200" 
+						alt = ":Αγγελάκι:"
+						tip = "Αγγελάκι"
+						<ICON><DEFAULT>src="/angel.gif"</DEFAULT></ICON>
+					</OBJ01>
+					<OBJ02>
+						id = "201" 
+						alt = ":Χειροκροτήματα:"
+						tip = "Χειροκροτήματα"
+						<ICON><DEFAULT>src="/appl.gif"</DEFAULT></ICON>
+					</OBJ02>
+					<OBJ03>
+						id = "202" 
+						alt = ":Beauty:"
+						tip = "Beauty"
+						<ICON><DEFAULT>src="/beauty.gif"</DEFAULT></ICON>
+					</OBJ03>
+					<OBJ04>
+						id = "203" 
+						alt = ":Μπυρά:"
+						tip = "Μπυρά"
+						<ICON><DEFAULT>src="/beer.gif"</DEFAULT></ICON>
+					</OBJ04>
+					<OBJ05>
+						id = "204" 
+						alt = ":Διαβάζω:"
+						tip = "Διαβάζω"
+						<ICON><DEFAULT>src="/book.gif"</DEFAULT></ICON>
+					</OBJ05>
+					<OBJ06>
+						id = "205" 
+						alt = ":Είμαι κρύα:"
+						tip = "Είμαι κρύα"
+						<ICON><DEFAULT>src="/could.gif"</DEFAULT></ICON>
+					</OBJ06>
+					<OBJ07>
+						id = "206" 
+						alt = ":Κλαίω:"
+						tip = "Κλαίω"
+						<ICON><DEFAULT>src="/cry.gif"</DEFAULT></ICON>
+					</OBJ07>
+					<OBJ08>
+						id = "207" 
+						alt = ":Χορεύω:"
+						tip = "Χορεύω"
+						<ICON><DEFAULT>src="/dance.gif"</DEFAULT></ICON>
+					</OBJ08>
+					<OBJ09>
+						id = "208" 
+						alt = ":Οργίζομαι:"
+						tip = "Οργίζομαι"
+						<ICON><DEFAULT>src="/devil.gif"</DEFAULT></ICON>
+					</OBJ09>
+					<OBJ10>
+						id = "209" 
+						alt = ":Μασώ:"
+						tip = "Μασώ"
+						<ICON><DEFAULT>src="/eat.gif"</DEFAULT></ICON>
+					</OBJ10>
+					<OBJ11>
+						id = "210" 
+						alt = ":Θα σε χτυπώ:"
+						tip = "Θα σε χτυπώ"
+						<ICON><DEFAULT>src="/fight.gif"</DEFAULT></ICON>
+					</OBJ11>
+					<OBJ12>
+						id = "211" 
+						alt = ":Beaten up:"
+						tip = "Beaten up"
+						<ICON><DEFAULT>src="/fingal.gif"</DEFAULT></ICON>
+					</OBJ12>
+					<OBJ13>
+						id = "212" 
+						alt = ":Δίνω το λουλούδι:"
+						tip = "Δίνω το λουλούδι"
+						<ICON><DEFAULT>src="/flowr.gif"</DEFAULT></ICON>
+					</OBJ13>
+					<OBJ14>
+						id = "213" 
+						alt = ":Γελώ:"
+						tip = "Γελώ"
+						<ICON><DEFAULT>src="/gg.gif"</DEFAULT></ICON>
+					</OBJ14>
+					<OBJ15>
+						id = "214" 
+						alt = ":Γελώ και κλαίω:"
+						tip = "Γελώ και κλαίω"
+						<ICON><DEFAULT>src="/gg2.gif"</DEFAULT></ICON>
+					</OBJ15>
+					<OBJ16>
+						id = "215" 
+						alt = ":Δώρο:"
+						tip = "Δώρο"
+						<ICON><DEFAULT>src="/gift.gif"</DEFAULT></ICON>
+					</OBJ16>
+					<OBJ17>
+						id = "216" 
+						alt = ":Γκρινιάζω:"
+						tip = "Γκρινιάζω"
+						<ICON><DEFAULT>src="/hungry.gif"</DEFAULT></ICON>
+					</OBJ17>
+					<OBJ18>
+						id = "217" 
+						alt = ":Σε φίλω:"
+						tip = "Σε φίλω"
+						<ICON><DEFAULT>src="/kiss.gif"</DEFAULT></ICON>
+					</OBJ18>
+					<OBJ19>
+						id = "218" 
+						alt = ":Αγάπη:"
+						tip = "Αγάπη"
+						<ICON><DEFAULT>src="/love.gif"</DEFAULT></ICON>
+					</OBJ19>
+					<OBJ20>
+						id = "219" 
+						alt = ":I'll shoot you down:"
+						tip = "I'll shoot you down"
+						<ICON><DEFAULT>src="/pistolet.gif"</DEFAULT></ICON>
+					</OBJ20>
+					<OBJ21>
+						id = "220" 
+						alt = ":Να πίνεις το δηλητήριο:"
+						tip = "Να πίνεις το δηλητήριο"
+						<ICON><DEFAULT>src="/poison.gif"</DEFAULT></ICON>
+					</OBJ21>
+					<OBJ22>
+						id = "221" 
+						alt = ":Radiant:"
+						tip = "Radiant"
+						<ICON><DEFAULT>src="/rainbow.gif"</DEFAULT></ICON>
+					</OBJ22>
+					<OBJ23>
+						id = "222" 
+						alt = ":Κοκκινίζω:"
+						tip = "Κοκκινίζω"
+						<ICON><DEFAULT>src="/red.gif"</DEFAULT></ICON>
+					</OBJ23>
+					<OBJ24>
+						id = "223" 
+						alt = ":Getting upset:"
+						tip = "Getting upset"
+						<ICON><DEFAULT>src="/sad.gif"</DEFAULT></ICON>
+					</OBJ24>
+					<OBJ25>
+						id = "224" 
+						alt = ":Τραγουδώ:"
+						tip = "Τραγουδώ"
+						<ICON><DEFAULT>src="/sing.gif"</DEFAULT></ICON>
+					</OBJ25>
+					<OBJ26>
+						id = "225" 
+						alt = ":Πληξή:"
+						tip = "Πληξή"
+						<ICON><DEFAULT>src="/skuka.gif"</DEFAULT></ICON>
+					</OBJ26>
+					<OBJ27>
+						id = "226" 
+						alt = ":Falling asleep:"
+						tip = "Falling asleep"
+						<ICON><DEFAULT>src="/sleep.gif"</DEFAULT></ICON>
+					</OBJ27>
+					<OBJ28>
+						id = "227" 
+						alt = ":Χαμογελώ:"
+						tip = "Χαμογελώ"
+						<ICON><DEFAULT>src="/smile.gif"</DEFAULT></ICON>
+					</OBJ28>
+					<OBJ29>
+						id = "228" 
+						alt = ":Sticking tongue out:"
+						tip = "Sticking tongue out"
+						<ICON><DEFAULT>src="/tongue.gif"</DEFAULT></ICON>
+					</OBJ29>
+					<OBJ30>
+						id = "229" 
+						alt = ":Ειρήνη!:"
+						tip = "Ειρήνη!"
+						<ICON><DEFAULT>src="/victory.gif"</DEFAULT></ICON>
+					</OBJ30>
+					<OBJ31>
+						id = "230" 
+						alt = ":Wondering:"
+						tip = "Wondering"
+						<ICON><DEFAULT>src="/wonder.gif"</DEFAULT></ICON>
+					</OBJ31>
+					<OBJ32>
+						id = "231" 
+						alt = ":Με πιάνει αναγολα:"
+						tip = "Με πιάνει αναγολα"
+						<ICON><DEFAULT>src="/blew.gif"</DEFAULT></ICON>
+					</OBJ32>
+				</ITEMS>
+			</ANIMATED_SET>
+			<STATIC_PNG>
+				title = "Advanced"
+				path = "/static_png"
+				logo = "/smiles_murmansk_03.png"
+				<ITEMS>
+					<OBJ01>
+						id = "300" 
+						alt = ":Χαμογελώ:"
+						tip = "Χαμογελώ"
+						<ICON><DEFAULT>src="/smiles_murmansk_03.png"</DEFAULT></ICON>
+					</OBJ01>
+					<OBJ02>
+						id = "301" 
+						alt = ":Gloating:"
+						tip = "Gloating"
+						<ICON><DEFAULT>src="/smiles_murmansk_05.png"</DEFAULT></ICON>
+					</OBJ02>
+					<OBJ03>
+						id = "302" 
+						alt = ":Happy:"
+						tip = "Happy"
+						<ICON><DEFAULT>src="/smiles_murmansk_07.png"</DEFAULT></ICON>
+					</OBJ03>
+					<OBJ04>
+						id = "303" 
+						alt = ":Old man:"
+						tip = "Old man"
+						<ICON><DEFAULT>src="/smiles_murmansk_09.png"</DEFAULT></ICON>
+					</OBJ04>
+					<OBJ05>
+						id = "304" 
+						alt = ":Ferocious:"
+						tip = "Ferocious"
+						<ICON><DEFAULT>src="/smiles_murmansk_11.png"</DEFAULT></ICON>
+					</OBJ05>
+					<OBJ06>
+						id = "305" 
+						alt = ":Φοβούμαι:"
+						tip = "Φοβούμαι"
+						<ICON><DEFAULT>src="/smiles_murmansk_13.png"</DEFAULT></ICON>
+					</OBJ06>
+					<OBJ07>
+						id = "306" 
+						alt = ":Poking tongue out:"
+						tip = "Poking tongue out"
+						<ICON><DEFAULT>src="/smiles_murmansk_21.png"</DEFAULT></ICON>
+					</OBJ07>
+					<OBJ08>
+						id = "307" 
+						alt = ":Know-all:"
+						tip = "Know-all"
+						<ICON><DEFAULT>src="/smiles_murmansk_22.png"</DEFAULT></ICON>
+					</OBJ08>
+					<OBJ09>
+						id = "308" 
+						alt = ":Alcoholic:"
+						tip = "Alcoholic"
+						<ICON><DEFAULT>src="/smiles_murmansk_23.png"</DEFAULT></ICON>
+					</OBJ09>
+					<OBJ10>
+						id = "309" 
+						alt = ":Soldier:"
+						tip = "Soldier"
+						<ICON><DEFAULT>src="/smiles_murmansk_24.png"</DEFAULT></ICON>
+					</OBJ10>
+					<OBJ11>
+						id = "310" 
+						alt = ":Surprised:"
+						tip = "Surprised"
+						<ICON><DEFAULT>src="/smiles_murmansk_25.png"</DEFAULT></ICON>
+					</OBJ11>
+					<OBJ12>
+						id = "311" 
+						alt = ":Οργίζομαι:"
+						tip = "Οργίζομαι"
+						<ICON><DEFAULT>src="/smiles_murmansk_26.png"</DEFAULT></ICON>
+					</OBJ12>
+					<OBJ13>
+						id = "312" 
+						alt = ":Upset:"
+						tip = "Upset"
+						<ICON><DEFAULT>src="/smiles_murmansk_33.png"</DEFAULT></ICON>
+					</OBJ13>
+					<OBJ14>
+						id = "313" 
+						alt = ":Punk:"
+						tip = "Punk"
+						<ICON><DEFAULT>src="/smiles_murmansk_34.png"</DEFAULT></ICON>
+					</OBJ14>
+					<OBJ15>
+						id = "314" 
+						alt = ":Laughing out loud:"
+						tip = "Laughing out loud"
+						<ICON><DEFAULT>src="/smiles_murmansk_35.png"</DEFAULT></ICON>
+					</OBJ15>
+					<OBJ16>
+						id = "315" 
+						alt = ":Winking:"
+						tip = "Winking"
+						<ICON><DEFAULT>src="/smiles_murmansk_36.png"</DEFAULT></ICON>
+					</OBJ16>
+					<OBJ17>
+						id = "316" 
+						alt = ":Σκεφτομαί:"
+						tip = "Σκεφτομαί"
+						<ICON><DEFAULT>src="/smiles_murmansk_37.png"</DEFAULT></ICON>
+					</OBJ17>
+					<OBJ18>
+						id = "317" 
+						alt = ":Αγάπη:"
+						tip = "Αγάπη"
+						<ICON><DEFAULT>src="/smiles_murmansk_38.png"</DEFAULT></ICON>
+					</OBJ18>
+					<OBJ19>
+						id = "318" 
+						alt = ":Depressed:"
+						tip = "Depressed"
+						<ICON><DEFAULT>src="/smiles_murmansk_45.png"</DEFAULT></ICON>
+					</OBJ19>
+					<OBJ20>
+						id = "319" 
+						alt = ":Κλαίω:"
+						tip = "Κλαίω"
+						<ICON><DEFAULT>src="/smiles_murmansk_46.png"</DEFAULT></ICON>
+					</OBJ20>
+					<OBJ21>
+						id = "320" 
+						alt = ":I'm gonna cry:"
+						tip = "I'm gonna cry"
+						<ICON><DEFAULT>src="/smiles_murmansk_47.png"</DEFAULT></ICON>
+					</OBJ21>
+					<OBJ22>
+						id = "321" 
+						alt = ":I'm mad:"
+						tip = "I'm mad"
+						<ICON><DEFAULT>src="/smiles_murmansk_48.png"</DEFAULT></ICON>
+					</OBJ22>
+					<OBJ23>
+						id = "322" 
+						alt = ":Sick:"
+						tip = "Sick"
+						<ICON><DEFAULT>src="/smiles_murmansk_49.png"</DEFAULT></ICON>
+					</OBJ23>
+					<OBJ24>
+						id = "323" 
+						alt = ":Madness:"
+						tip = "Madness"
+						<ICON><DEFAULT>src="/smiles_murmansk_50.png"</DEFAULT></ICON>
+					</OBJ24>
+					<OBJ25>
+						id = "324" 
+						alt = ":Σε φίλω:"
+						tip = "Σε φίλω"
+						<ICON><DEFAULT>src="/smiles_murmansk_57.png"</DEFAULT></ICON>
+					</OBJ25>
+					<OBJ26>
+						id = "325" 
+						alt = ":Φίλησες:"
+						tip = "Φίλησες"
+						<ICON><DEFAULT>src="/smiles_murmansk_58.png"</DEFAULT></ICON>
+					</OBJ26>
+					<OBJ27>
+						id = "326" 
+						alt = ":Beauty:"
+						tip = "Beauty"
+						<ICON><DEFAULT>src="/smiles_murmansk_59.png"</DEFAULT></ICON>
+					</OBJ27>
+					<OBJ28>
+						id = "327" 
+						alt = ":Αγγελάκι:"
+						tip = "Αγγελάκι"
+						<ICON><DEFAULT>src="/smiles_murmansk_60.png"</DEFAULT></ICON>
+					</OBJ28>
+					<OBJ29>
+						id = "328" 
+						alt = ":Suspicious:"
+						tip = "Suspicious"
+						<ICON><DEFAULT>src="/smiles_murmansk_61.png"</DEFAULT></ICON>
+					</OBJ29>
+					<OBJ30>
+						id = "329" 
+						alt = ":Μασώ:"
+						tip = "Μασώ"
+						<ICON><DEFAULT>src="/smiles_murmansk_62.png"</DEFAULT></ICON>
+					</OBJ30>
+					<OBJ31>
+						id = "330" 
+						alt = ":Κοκκινίζω:"
+						tip = "Κοκκινίζω"
+						<ICON><DEFAULT>src="/smiles_murmansk_69.png"</DEFAULT></ICON>
+					</OBJ31>
+					<OBJ32>
+						id = "331" 
+						alt = ":Ashamed:"
+						tip = "Ashamed"
+						<ICON><DEFAULT>src="/smiles_murmansk_70.png"</DEFAULT></ICON>
+					</OBJ32>
+				</ITEMS>
+			</STATIC_PNG>
+			<SET05>
+				title = "Big smiles 1"
+				path = "/set05"
+				logo = "/logo.png"
+				<ITEMS>
+					<OBJ01>
+						id = "601"
+						alt = ":I'll burst with laughter:"
+						tip = "I'll burst with laughter"
+						<ICON><DEFAULT>src="/s001.gif"</DEFAULT></ICON>
+					</OBJ01>
+					<OBJ02>
+						id = "602"
+						alt = ":Οργίζομαι:"
+						tip = "Οργίζομαι"
+						width = "32"
+						height = "32"
+						<ICON><DEFAULT>src="/s002.gif"</DEFAULT></ICON>
+					</OBJ02>
+					<OBJ03>
+						id = "603"
+						alt = ":Μυστικό:"
+						tip = "Μυστικό"
+						width = "32"
+						height = "32"
+						<ICON><DEFAULT>src="/s003.gif"</DEFAULT></ICON>
+					</OBJ03>
+					<OBJ04>
+						id = "604"
+						alt = ":Exhausted:"
+						tip = "Exhausted"
+						width = "32"
+						height = "32"
+						<ICON><DEFAULT>src="/s004.gif"</DEFAULT></ICON>
+					</OBJ04>
+					<OBJ17>
+						id = "617"
+						alt = ":I need:"
+						tip = "I need"
+						width = "48"
+						height = "32"
+						<ICON><DEFAULT>src="/s017.gif"</DEFAULT></ICON>
+					</OBJ17>
+					<OBJ05>
+						id = "605"
+						alt = ":In love:"
+						tip = "In love"
+						width = "32"
+						height = "32"
+						<ICON><DEFAULT>src="/s005.gif"</DEFAULT></ICON>
+					</OBJ05>
+					<OBJ06>
+						id = "606"
+						alt = ":Σε φίλω:"
+						tip = "Σε φίλω"
+						width = "32"
+						height = "32"
+						<ICON><DEFAULT>src="/s006.gif"</DEFAULT></ICON>
+					</OBJ06>
+					<OBJ07>
+						id = "607"
+						alt = ":Shame:"
+						tip = "Shame"
+						width = "32"
+						height = "32"
+						<ICON><DEFAULT>src="/s007.gif"</DEFAULT></ICON>
+					</OBJ07>
+					<OBJ08>
+						id = "608"
+						alt = ":Tired:"
+						tip = "Tired"
+						width = "32"
+						height = "32"
+						<ICON><DEFAULT>src="/s008.gif"</DEFAULT></ICON>
+					</OBJ08>
+					<OBJ18>
+						id = "618"
+						alt = ":Με πιάνει αναγολα:"
+						tip = "Με πιάνει αναγολα"
+						width = "48"
+						height = "32"
+						<ICON><DEFAULT>src="/s018.gif"</DEFAULT></ICON>
+					</OBJ18>
+					<OBJ09>
+						id = "609"
+						alt = ":Winking:"
+						tip = "Winking"
+						width = "32"
+						height = "32"
+						<ICON><DEFAULT>src="/s009.gif"</DEFAULT></ICON>
+					</OBJ09>
+					<OBJ10>
+						id = "610"
+						alt = ":Nasty trick:"
+						tip = "Nasty trick"
+						width = "32"
+						height = "32"
+						<ICON><DEFAULT>src="/s010.gif"</DEFAULT></ICON>
+					</OBJ10>
+					<OBJ11>
+						id = "611"
+						alt = ":Είμαι φταίχτης:"
+						tip = "Είμαι φταίχτης"
+						width = "32"
+						height = "32"
+						<ICON><DEFAULT>src="/s011.gif"</DEFAULT></ICON>
+					</OBJ11>
+					<OBJ12>
+						id = "612"
+						alt = ":Αγάπη:"
+						tip = "Αγάπη"
+						width = "32"
+						height = "32"
+						<ICON><DEFAULT>src="/s012.gif"</DEFAULT></ICON>
+					</OBJ12>
+					<OBJ19>
+						id = "619"
+						alt = ":Δίνω το λουλούδι:"
+						tip = "Δίνω το λουλούδι"
+						width = "48"
+						height = "32"
+						<ICON><DEFAULT>src="/s019.gif"</DEFAULT></ICON>
+					</OBJ19>
+					<OBJ13>
+						id = "613"
+						alt = ":Disappointment:"
+						tip = "Disappointment"
+						width = "32"
+						height = "32"
+						<ICON><DEFAULT>src="/s013.gif"</DEFAULT></ICON>
+					</OBJ13>
+					<OBJ14>
+						id = "614"
+						alt = ":Κοιμούμαι:"
+						tip = "Κοιμούμαι"
+						width = "32"
+						height = "32"
+						<ICON><DEFAULT>src="/s014.gif"</DEFAULT></ICON>
+					</OBJ14>
+					<OBJ15>
+						id = "615"
+						alt = ":Oh, f...:"
+						tip = "Oh, f..."
+						width = "32"
+						height = "32"
+						<ICON><DEFAULT>src="/s015.gif"</DEFAULT></ICON>
+					</OBJ15>
+					<OBJ16>
+						id = "616"
+						alt = ":Πηδώ:"
+						tip = "Πηδώ"
+						width = "32"
+						height = "32"
+						<ICON><DEFAULT>src="/s016.gif"</DEFAULT></ICON>
+					</OBJ16>
+					<OBJ20>
+						id = "620"
+						alt = ":I am suspicious:"
+						tip = "I am suspicious"
+						width = "48"
+						height = "32"
+						<ICON><DEFAULT>src="/s020.gif"</DEFAULT></ICON>
+					</OBJ20>
+				</ITEMS>
+			</SET05>
+			<SET04>
+				title = "Big smiles 2"
+				path = "/set04"
+				logo = "/logo.png"
+				<ITEMS>
+					<OBJ01>
+						id = "501"
+						alt = ":Hurrah!:"
+						tip = "Hurrah!"
+						width = "64"
+						height = "32"
+						<ICON><DEFAULT>src="/s001.gif"</DEFAULT></ICON>
+					</OBJ01>
+					<OBJ02>
+						id = "502"
+						alt = ":Hi!:"
+						tip = "Hi!"
+						width = "48"
+						height = "32"
+						<ICON><DEFAULT>src="/s002.gif"</DEFAULT></ICON>
+					</OBJ02>
+					<OBJ03>
+						id = "503"
+						alt = ":I am eating:"
+						tip = "I am eating"
+						width = "48"
+						height = "32"
+						<ICON><DEFAULT>src="/s003.gif"</DEFAULT></ICON>
+					</OBJ03>
+					<OBJ04>
+						id = "504"
+						alt = ":Dancing:"
+						tip = "Dancing"
+						width = "64"
+						height = "32"
+						<ICON><DEFAULT>src="/s004.gif"</DEFAULT></ICON>
+					</OBJ04>
+					<OBJ05>
+						id = "505"
+						alt = ":Kissing:"
+						tip = "Kissing"
+						width = "64"
+						height = "32"
+						<ICON><DEFAULT>src="/s005.gif"</DEFAULT></ICON>
+					</OBJ05>
+					<OBJ06>
+						id = "506"
+						alt = ":Bye!:"
+						tip = "Bye!"
+						width = "48"
+						height = "32"
+						<ICON><DEFAULT>src="/s006.gif"</DEFAULT></ICON>
+					</OBJ06>
+					<OBJ07>
+						id = "507"
+						alt = ":Listening_to_the_music:"
+						tip = "Listening_to_the_music"
+						width = "48"
+						height = "32"
+						<ICON><DEFAULT>src="/s007.gif"</DEFAULT></ICON>
+					</OBJ07>
+					<OBJ08>
+						id = "508"
+						alt = ":Help:"
+						tip = "Help"
+						width = "64"
+						height = "32"
+						<ICON><DEFAULT>src="/s008.gif"</DEFAULT></ICON>
+					</OBJ08>
+					<OBJ09>
+						id = "509"
+						alt = ":Lots of money:"
+						tip = "Lots of money"
+						width = "64"
+						height = "32"
+						<ICON><DEFAULT>src="/s009.gif"</DEFAULT></ICON>
+					</OBJ09>
+					<OBJ10>
+						id = "510"
+						alt = ":Yes!:"
+						tip = "Yes!"
+						width = "48"
+						height = "32"
+						<ICON><DEFAULT>src="/s010.gif"</DEFAULT></ICON>
+					</OBJ10>
+					<OBJ11>
+						id = "511"
+						alt = ":Banging head on wall:"
+						tip = "Banging head on wall"
+						width = "48"
+						height = "32"
+						<ICON><DEFAULT>src="/s011.gif"</DEFAULT></ICON>
+					</OBJ11>
+					<OBJ12>
+						id = "512"
+						alt = ":Charge!:"
+						tip = "Charge!"
+						width = "64"
+						height = "32"
+						<ICON><DEFAULT>src="/s012.gif"</DEFAULT></ICON>
+					</OBJ12>
+					<OBJ13>
+						id = "513"
+						alt = ":Villain:"
+						tip = "Villain"
+						width = "64"
+						height = "32"
+						<ICON><DEFAULT>src="/s013.gif"</DEFAULT></ICON>
+					</OBJ13>
+					<OBJ14>
+						id = "514"
+						alt = ":No!:"
+						tip = "No!"
+						width = "48"
+						height = "32"
+						<ICON><DEFAULT>src="/s014.gif"</DEFAULT></ICON>
+					</OBJ14>
+					<OBJ15>
+						id = "515"
+						alt = ":Peace!:"
+						tip = "Peace!"
+						width = "48"
+						height = "32"
+						<ICON><DEFAULT>src="/s015.gif"</DEFAULT></ICON>
+					</OBJ15>
+					<OBJ16>
+						id = "516"
+						alt = ":Dragon:"
+						tip = "Dragon"
+						width = "64"
+						height = "32"
+						<ICON><DEFAULT>src="/s016.gif"</DEFAULT></ICON>
+					</OBJ16>
+				</ITEMS>
+			</SET04>
+		</ITEMS>
+	</SMILES>
+	<STATUSES>
+		path = "/status"
+		ColumnsCount="6"
+		<ITEMS  width="25" height="25">
+			<SELECTABLE>
+				path = "/set01"
+				<ITEMS>
+					<OBJ07>
+						id = "status_5" 
+						icon = "/doma.png"
+					</OBJ07>
+					<OBJ08>
+						id = "status_18" 
+						icon = "/na_rabote.png"
+					</OBJ08>
+					<OBJ09>
+						id = "status_19" 
+						icon = "/na_vstreche.png"
+					</OBJ09>
+					<OBJ10>
+						id = "status_7" 
+						icon = "/gde_ia.png"
+					</OBJ10>
+					<OBJ11>
+						id = "status_10" 
+						icon = "/gulau.png"
+					</OBJ11>
+					<OBJ12>
+						id = "status_47" 
+						icon = "/rocket.png"
+					</OBJ12>
+					<OBJ13>
+						id = "status_22" 
+						icon = "/rabotau.png"
+					</OBJ13>
+					<OBJ14>
+						id = "status_26" 
+						icon = "/v_institute.png"
+					</OBJ14>
+					<OBJ15>
+						id = "status_24" 
+						icon = "/telefon.png"
+					</OBJ15>
+					<OBJ16>
+						id = "status_27" 
+						icon = "/v_shkole.png"
+					</OBJ16>
+					<OBJ17>
+						id = "status_23" 
+						icon = "/splu.png"
+					</OBJ17>
+					<OBJ18>
+						id = "status_4" 
+						icon = "/boleu.png"
+					</OBJ18>
+					<OBJ19>
+						id = "status_9" 
+						icon = "/gotovlu.png"
+					</OBJ19>
+					<OBJ20>
+						id = "status_6" 
+						icon = "/em.png"
+					</OBJ20>
+					<OBJ21>
+						id = "status_21" 
+						icon = "/pu_kofe.png"
+					</OBJ21>
+					<OBJ22>
+						id = "status_20" 
+						icon = "/pivo.png"
+					</OBJ22>
+					<OBJ23>
+						id = "status_17" 
+						icon = "/kuru.png"
+					</OBJ23>
+					<OBJ24>
+						id = "status_8" 
+						icon = "/gizn_gavno.png"
+					</OBJ24>
+					<OBJ25>
+						id = "status_15" 
+						icon = "/ia_utko.png"
+					</OBJ25>
+					<OBJ26>
+						id = "status_16" 
+						icon = "/igrau.png"
+					</OBJ26>
+					<OBJ27>
+						id = "status_28" 
+						icon = "/vi_oshiblis_nomerom.png"
+					</OBJ27>			
+					<OBJ28>
+						id = "status_51" 
+						icon = "/belka.png"
+					</OBJ28>			
+					<OBJ29>
+						id = "status_52" 
+						icon = "/star.png"
+					</OBJ29>			
+					<OBJ30>
+						id = "status_46" 
+						icon = "/cherep.png"
+					</OBJ30>
+					<OBJ31>
+						id = "status_12" 
+						icon = "/ia_krivetko.png"
+					</OBJ31>
+					<OBJ32>
+						id = "status_13" 
+						icon = "/ia_poteralsa.png"
+					</OBJ32>
+					<OBJ33>
+						id = "status_11" 
+						icon = "/ia_inoplanet_razum.png"
+					</OBJ33>
+					<OBJ34>
+						id = "status_14" 
+						icon = "/ia_soshl_asuma.png"
+					</OBJ34>
+					<OBJ35>
+						id = "status_48" 
+						icon = "/kut.png"
+					</OBJ35>
+					<OBJ36>
+						id = "status_53" 
+						icon = "/music.png"
+					</OBJ36>
+					<OBJ37>
+						id = "status_29" 
+						icon = "/1.png"
+					</OBJ37>
+					<OBJ38>
+						id = "status_30" 
+						icon = "/2.png"
+					</OBJ38>
+					<OBJ39>
+						id = "status_32" 
+						icon = "/4.png"
+					</OBJ39>
+					<OBJ40>
+						id = "status_33" 
+						icon = "/5.png"
+					</OBJ40>
+					<OBJ41>
+						id = "status_40" 
+						icon = "/12.png"
+					</OBJ41>
+					<OBJ43>
+						id = "status_41" 
+						icon = "/13.png"
+					</OBJ43>
+					<OBJ44>
+						id = "status_34" 
+						icon = "/6.png"
+					</OBJ44>
+					<OBJ45>
+						id = "status_35" 
+						icon = "/7.png"
+					</OBJ45>
+					<OBJ46>
+						id = "status_36" 
+						icon = "/8.png"
+					</OBJ46>
+					<OBJ47>
+						id = "status_37" 
+						icon = "/9.png"
+					</OBJ47>
+					<OBJ48>
+						id = "status_38" 
+						icon = "/10.png"
+					</OBJ48>
+					<OBJ49>
+						id = "status_39" 
+						icon = "/11.png"
+					</OBJ49>
+					<OBJ50>
+						id = "status_42" 
+						icon = "/14.png"
+					</OBJ50>
+					<OBJ51>
+						id = "status_43" 
+						icon = "/15.png"
+					</OBJ51>
+					<OBJ52>
+						id = "status_49" 
+						icon = "/18.png"
+					</OBJ52>
+					<OBJ53>
+						id = "status_44" 
+						icon = "/16.png"
+					</OBJ53>
+					<OBJ54>
+						id = "status_45" 
+						icon = "/17.png"
+					</OBJ54>
+					<OBJ55>
+						id = "status_50" 
+						icon = "/20.png"
+					</OBJ55>
+				</ITEMS>
+			</SET01>
+			<AGENT_BUILT_IN>
+				path = "/set01"
+				<ITEMS>
+					<OBJ00>
+						id = "status_0" 
+						icon = "/status_offline.png"
+						builtin = "1"
+					</OBJ00>
+					<OBJ01>
+						id = "status_1" 
+						icon = "/status_online.png"
+						builtin = "1"
+						available = "1"
+					</OBJ01>
+					<OBJ02>
+						id = "status_2" 
+						icon = "/status_away.png"
+						builtin = "1"
+						available = "1"
+					</OBJ02>
+					<OBJ03>
+						id = "status_3" 
+						icon = "/status_invisible.png"
+						builtin = "1"
+						available = "1"
+					</OBJ03>
+					<OBJ04>
+						id = "status_chat" 
+						icon = "/chat.png"
+						builtin = "1"
+						available = "1"
+					</OBJ04>
+					<OBJ05>
+						id = "status_dnd" 
+						icon = "/dnd.png"
+						builtin = "1"
+						available = "1"
+					</OBJ05>
+					<OBJ06>
+						id = "status_gray" 
+						icon = "/status_gray.png"
+						builtin = "1"
+					</OBJ06>
+					<OBJ07>
+						id = "status_connecting" 
+						icon = "/status_connecting.png"
+						builtin = "1"
+					</OBJ07>
+					<OBJ08>
+						id = "wrong_data" 
+						icon = "/wrong_data.png"
+						builtin = "1"
+					</OBJ08>
+					<OBJ09>
+						id = "STATUS_OFFLINE" 
+						icon = "/status_offline.png"
+						builtin = "1"
+					</OBJ09>
+					<OBJ10>
+						id = "STATUS_ONLINE" 
+						icon = "/status_online.png"
+						builtin = "1"
+					</OBJ10>
+					<OBJ11>
+						id = "STATUS_AWAY" 
+						icon = "/status_away.png"
+						builtin = "1"
+					</OBJ11>
+					<OBJ12>
+						id = "STATUS_INVISIBLE"
+						icon = "/status_invisible.png"
+						builtin = "1"
+					</OBJ12>
+					<OBJ13>
+						id = "status_dating" 
+						icon = "/seekfriends.png"
+						builtin = "1"
+						available = "1"
+					</OBJ13>					
+				</ITEMS>
+			</AGENT_BUILT_IN>
+		</ITEMS>		
+	</STATUSES>
+</ROOT>
