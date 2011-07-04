@@ -148,54 +148,51 @@ void MRIMClient::changeStatus(OnlineStatus newStatus)
 
 quint32 MRIMClient::sendMessage(QByteArray email, const Message* message)
 {
+	qDebug() << Q_FUNC_INFO << email;
 	//QByteArray baText = p->codec->fromUnicode(message->plainText());
-	QByteArray packedRtf = p->packRtf(message->rtfText());
-	
 	QByteArray data;
 	MRIMDataStream out(&data, QIODevice::WriteOnly);
 
-	out << quint32(message->flags());
-	out << email;
-	out << message->plainText();
-	out << packedRtf;
+	if (message->isMultMessage())
+	{
+		QString multName = message->multAlt();
+		//QString text = tr("Your interlocutor sent you %1 mult. But you have old version of myagent-im. You could download new version here: http://code.google.com/p/myagent-im").arg(multName);
 
-	qDebug() << "MRIMClient::sendMessage" << data.toHex();
+		QByteArray baText = p->codecUTF16->fromUnicode(message->plainText()).remove(0, 2);
+		out << quint32(message->flags());
+		out << email;
+		out << baText;
+
+/*		int i;
+		QByteArray rtfText = "{\\rtf1\\ansi\\ansicpg1251\\deff0\\deflang1049{\\fonttbl{\\f0\\fnil\\fcharset204 Tahoma;}}\n{\\colortbl;\\red0\\green0\\blue0;\\red255\\green255\\blue255;\\red255\\green0\\blue0;\\red0\\green255\\blue0;\\red0\\green0\\blue255;\\red51\\green153\\blue0;\\red255\\green153\\blue153;\\red153\\green153\\blue255;\\red64\\green64\\blue64;\\red0\\green0\\blue128;\\red135\\green135\\blue135;\\red00\\green70\\blue140;}\n\\viewkind4\\uc1\\pard\\f0\\fs18\\cb3\\cf1\\b0\\protect\n";
+		for (i = 0; i < text.length(); i++)
+			rtfText += QByteArray("\\u") + QByteArray::number(text.at(i).unicode()) + QByteArray("?");
+		rtfText += "\\par \n}";*/
+		QString smileTag = QByteArray("<SMILE>id=").append(message->multId()).append(" alt=':").append(multName).append(":'</SMILE>");
+		qDebug() << smileTag;
+		QByteArray packedRtf = p->packRtf(message->rtfText(), 1, p->codec1251->fromUnicode(smileTag), p->codecUTF16->fromUnicode(smileTag));
+		out << packedRtf;
+	}
+	else
+	{
+		QByteArray packedRtf = p->packRtf(message->rtfText());
+
+		out << quint32(message->flags());
+		out << email;
+		out << message->plainText();
+		out << packedRtf;
+
+		qDebug() << "MRIMClient::sendMessage" << data.toHex();
+	}
 
 	return p->sendPacket(MRIM_CS_MESSAGE, data);
 }
-
+/*
 quint32 MRIMClient::sendMult(QByteArray email, const MultInfo* multInfo)
 {
-	qDebug() << Q_FUNC_INFO << email;
-
-	QString multName = multInfo->alt();
-	QString text = tr("Your interlocutor sent you %1 mult. But you have old version of myagent-im. You could download new version here: http://code.google.com/p/myagent-im").arg(multName);
-
-	QByteArray data;
-	MRIMDataStream out(&data, QIODevice::WriteOnly);
-
-	QByteArray baText = p->codecUTF16->fromUnicode(text).remove(0, 2);
-	out << quint32(0x8080);
-	out << email;
-	out << baText;
-
-	int i;
-//	QByteArray rtfText = "{\\rtf1\\ansi\\ansicpg1251\\deff0\\deflang1049{\\fonttbl{\\f0\\fnil\\fcharset204 Tahoma;}}\n{\\colortbl;\\red0\\green0\\blue0;\\red255\\green255\\blue255;\\red255\\green0\\blue0;\\red0\\green255\\blue0;\\red0\\green0\\blue255;\\red51\\green153\\blue0;\\red255\\green153\\blue153;\\red153\\green153\\blue255;\\red64\\green64\\blue64;\\red0\\green0\\blue128;\\red135\\green135\\blue135;\\red00\\green70\\blue140;}\n\\viewkind4\\uc1\\pard\\f0\\fs18\\cb3\\cf1\\b0\\protect\n\\u1057?\\u1086?\\u1073?\\u1077?\\u1089?\\u1077?\\u1076?\\u1085?\\u1080?\\u1082? \\u1087?\\u1088?\\u1080?\\u1089?\\u1083?\\u1072?\\u1083? \\u1074?\\u1072?\\u1084? \\u1084?\\u1091?\\u1083?\\u1100?\\u1090? ";
-	QByteArray rtfText = "{\\rtf1\\ansi\\ansicpg1251\\deff0\\deflang1049{\\fonttbl{\\f0\\fnil\\fcharset204 Tahoma;}}\n{\\colortbl;\\red0\\green0\\blue0;\\red255\\green255\\blue255;\\red255\\green0\\blue0;\\red0\\green255\\blue0;\\red0\\green0\\blue255;\\red51\\green153\\blue0;\\red255\\green153\\blue153;\\red153\\green153\\blue255;\\red64\\green64\\blue64;\\red0\\green0\\blue128;\\red135\\green135\\blue135;\\red00\\green70\\blue140;}\n\\viewkind4\\uc1\\pard\\f0\\fs18\\cb3\\cf1\\b0\\protect\n";
-	for (i = 0; i < text.length(); i++)
-		/*if (text.at(i).unicode() != 32 && text.at(i).unicode() != 33)*/
-			rtfText += QByteArray("\\u") + QByteArray::number(text.at(i).unicode()) + QByteArray("?");
-		/*else
-			rtfText += text.at(i);*/
-//	rtfText += ", \\u1081?\\u1076?\\u1085?\\u1072?\\u1082?\\u1086? \\u1091? \\u1074?\\u1072?\\u1089? \\u1091?\\u1089?\\u1090?\\u1072?\\u1085?\\u1086?\\u1074?\\u1083?\\u1077?\\u1085?\\u1072? \\u1091?\\u1089?\\u1090?\\u1072?\\u1088?\\u1077?\\u1074?\\u1096?\\u1072?\\u1103? \\u1074?\\u1077?\\u1088?\\u1089?\\u1080?\\u1103? Mail.Ru \\u1040?\\u1075?\\u1077?\\u1085?\\u1090?\\u1072? \\u1073?\\u1077?\\u1079? \\u1087?\\u1086?\\u1076?\\u1076?\\u1077?\\u1088?\\u1078?\\u1082?\\u1080? \\u1084?\\u1091?\\u1083?\\u1100?\\u1090?\\u1086?\\u1074?. \\u1047?\\u1072?\\u1075?\\u1088?\\u1091?\\u1079?\\u1080?\\u1090?\\u1100? \\u1089?\\u1072?\\u1084?\\u1091?\\u1102? \\u1085?\\u1086?\\u1074?\\u1091?\\u1102? \\u1074?\\u1077?\\u1088?\\u1089?\\u1080?\\u1102? \\u1074?\\u1099? \\u1084?\\u1086?\\u1078?\\u1077?\\u1090?\\u1077? \\u1079?\\u1076?\\u1077?\\u1089?\\u1100?: http://agent.mail.ru/\\par \n}";
-	rtfText += "\\par \n}";
-	QString smileTag = QByteArray("<SMILE>id=").append(multInfo->id()).append(" alt=':").append(multName).append(":'</SMILE>");
-	qDebug() << smileTag;
-	QByteArray packedRtf = p->packRtf(rtfText, 1, p->codec1251->fromUnicode(smileTag), p->codecUTF16->fromUnicode(smileTag));
-	out << packedRtf;
 
 	return p->sendPacket(MRIM_CS_MESSAGE, data);
-}
+}*/
 
 quint32 MRIMClient::broadcastMessage(const Message* message, QList<QByteArray> receivers)
 {

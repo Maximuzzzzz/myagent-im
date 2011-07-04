@@ -92,11 +92,14 @@ signals:
 
 private slots:
 	void send();
-	quint32 sendMessage();
-	quint32 sendSms();
-	void contactTyping();
+	bool sendMessage();
+	bool sendSms();
+	void sendMult(const QString& id);
 	void appendMessageToView(const Message* msg, bool newIncoming = true);
-	void appendMultToView(QString multId);
+/*	void appendMessageToView(QTextDocumentFragment fragment);*/
+/*	void appendMultToView(QString multId);*/
+	void contactTyping();
+	void putHeader(QString & nick, Msg currMessage, QString* prompt);
 	void checkContactStatus(OnlineStatus status);
 	void microblogChanged(QString text, QDateTime mbDateTime);
 

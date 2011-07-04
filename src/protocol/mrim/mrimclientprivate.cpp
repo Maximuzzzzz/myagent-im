@@ -436,8 +436,6 @@ UnpackedRTF MRIMClientPrivate::unpackRtf(const QByteArray& packedRtf)
 
 	MRIMDataStream rtfStream(unc);
 
-	/*quint32 nLines;
-	quint32 bcLPSLen;*/
 	rtfStream >> res.lines;
 	rtfStream >> res.rtf;
 	rtfStream >> res.bcLPSLen >> res.bgColor;
@@ -1019,9 +1017,13 @@ void MRIMClientPrivate::processMessageAck(QByteArray data)
 	{
 		QString smileTag = codecUTF16->toUnicode(uRtf.smileTagUTF16);
 		QString smileId = smileTag.remove(0, 10);
+		QString smileAlt = smileTag.left(smileTag.indexOf(":'</SMILE>")).remove(0, smileTag.indexOf("alt=':") + 6);
 		smileId = smileId.left(smileId.indexOf(" "));
-		qDebug() << "Received flash mult" << smileId;
-		emit q->multReceived(from, smileId);
+		qDebug() << "Received flash mult" << smileId << flags;
+		Message* msg = new Message(Message::Incoming, flags, plainText, uRtf.rtf, uRtf.bgColor, confOwner);
+		msg->setMultParameters(smileId, smileAlt);
+		emit q->messageReceived(from, msg);
+		/*emit q->multReceived(from, smileId);*/
 		return;
 	}
 

@@ -44,12 +44,16 @@ public:
 	const QString plainText() const { return m_plainText; }
 	const QByteArray rtfText() const { return m_rtfText; }
 	const QDateTime dateTime() const { return m_dateTime; }
+	const QString multId() const { return m_multId; }
+	const QString multAlt() const { return m_multAlt; }
 	Type type() const { return m_type; }
 	quint32 getId() const { return m_id; }
 	QByteArray getConfUser() const { return m_confUser; }
 	bool isConfMessage() const { return m_confUser != ""; }
+	bool isMultMessage() const;
 
 	void setId(quint32 id);
+	void setMultParameters(QString id, QString alt) { m_multId = id; m_multAlt = alt; }
 
 	QTextDocumentFragment documentFragment(int defR = -1, int defG = -1, int defB = -1, int defSize = -1, QString fontFamily = "") const;
 	QTextDocumentFragment documentFragment(QFont defFont, QColor defFontColor, QColor defBkColor) const;
@@ -63,6 +67,8 @@ private:
 	quint32 m_backgroundColor;
 	quint32 m_id;
 	QByteArray m_confUser;
+	QString m_multId;
+	QString m_multAlt;
 
 	bool m_ignoreStyle;
 };

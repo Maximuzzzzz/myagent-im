@@ -665,7 +665,7 @@ void MessageEditor::slotCurrentCharFormatChanged(const QTextCharFormat & f)
 void MessageEditor::checkContactStatus(OnlineStatus status)
 {
 	wakeupButton->setEnabled(status.connected());
-	//multsAction->setEnabled(status.connected());
+	multsAction->setEnabled(status.connected());
 	fileTransferAction->setEnabled(status.connected());
 	if (fileTransferAction->isChecked())
 	{

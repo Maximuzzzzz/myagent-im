@@ -47,11 +47,11 @@ bool SendMessage::exec()
 		delete this;
 		return false;
 	}
-	
+
 	connect(mc, SIGNAL(messageStatus(quint32, quint32)), this, SLOT(checkResult(quint32, quint32)));
-	
+
 	setTimer();
-	
+
 	seq = mc->sendMessage(contact->email(), message);
 	message->setId(seq);
 	if (seq == 0)
@@ -59,7 +59,7 @@ bool SendMessage::exec()
 		delete this;
 		return false;
 	}
-	
+
 	return true;
 }
 

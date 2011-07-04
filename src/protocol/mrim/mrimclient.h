@@ -63,7 +63,7 @@ signals:
 	void contactStatusChanged(OnlineStatus status, QByteArray email);
 	void contactTyping(QByteArray email);
 	void messageReceived(QByteArray from, Message* msg);
-	void multReceived(QByteArray from, QString multId);
+	//void multReceived(QByteArray from, QString multId);
 	void fileReceived(QByteArray from, quint32 totalSize, quint32 sessionId, QByteArray filesAnsi, QString filesUtf, QByteArray ips);
 	void messageStatus(quint32 id, quint32 status);
 	void contactModified(quint32 id, quint32 status);
@@ -92,7 +92,7 @@ public slots:
 	quint32 searchContacts(const SearchParams& params);
 	void changeStatus(OnlineStatus newStatus);
 	quint32 sendMessage(QByteArray email, const Message* message);
-	quint32 sendMult(QByteArray email, const MultInfo* multInfo);
+	//quint32 sendMult(QByteArray email, const MultInfo* multInfo);
 	quint32 broadcastMessage(const Message* message, QList<QByteArray> receivers);
 	quint32 sendRtfMessage(QByteArray email, QString text, QByteArray message);
 	void sendTyping(QByteArray email);

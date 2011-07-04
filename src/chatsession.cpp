@@ -23,6 +23,7 @@
 #include "chatsession.h"
 
 #include <QDebug>
+#include <QTextCursor>
 
 #include "account.h"
 #include "contact.h"
@@ -58,11 +59,11 @@ void ChatSession::appendMessage(Message* msg, bool addInHash)
 	}
 	emit messageAppended(msg);
 }
-
+/*
 void ChatSession::appendMult(QString multId)
 {
-	emit multAppended(multId);
-}
+	emit multAppended(multId, msg);
+}*/
 
 void ChatSession::appendBroadcastMessage(Message* msg, ReceiversList rec, bool addInHash)
 {
@@ -108,6 +109,20 @@ bool ChatSession::broadcastMessage(Message* msg, ReceiversList receivers)
 	appendBroadcastMessage(msg, receivers);
 
 	return task->exec();
+}
+
+bool ChatSession::sendMult(const MultInfo* info)
+{
+	QString text = tr("Your interlocutor sent you %1 mult. But you have old version of myagent-im. You could download new version here: http://code.google.com/p/myagent-im").arg(info->alt());
+	QTextDocument doc;
+	QTextCursor cursor(&doc);
+	cursor.insertHtml(text);
+
+	RtfExporter rtfExporter(&doc);
+	Message* msg = new Message(Message::Outgoing, MESSAGE_FLAG_RTF | MESSAGE_FLAG_FLASH, text, rtfExporter.toRtf(), 0x00FFFFFF);
+	msg->setMultParameters(info->id(), info->alt());
+
+	return sendMessage(msg);
 }
 
 void ChatSession::slotMessageStatus(quint32 status, bool timeout)

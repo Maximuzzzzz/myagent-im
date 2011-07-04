@@ -39,7 +39,7 @@ ChatsManager::ChatsManager(Account* account)
  : QObject(account), m_account(account)
 {
 	connect(m_account->client(), SIGNAL(messageReceived(QByteArray, Message*)), this, SLOT(processMessage(QByteArray, Message*)));
-	connect(m_account->client(), SIGNAL(multReceived(QByteArray, QString)), this, SLOT(processMult(QByteArray, QString)));
+	//connect(m_account->client(), SIGNAL(multReceived(QByteArray, QString)), this, SLOT(processMult(QByteArray, QString)));
 	connect(m_account->client(), SIGNAL(fileReceived(QByteArray, quint32, quint32, QByteArray, QString, QByteArray)), this, SLOT(processFileMessage(QByteArray, quint32, quint32, QByteArray, QString, QByteArray)));
 	connect(m_account->client(), SIGNAL(microblogChanged(QByteArray, QString, QDateTime)), this, SLOT(processMicroblogChanged(QByteArray, QString, QDateTime)));
 }
@@ -51,6 +51,7 @@ ChatsManager::~ChatsManager()
 
 void ChatsManager::processMessage(QByteArray from, Message* msg)
 {
+	qDebug() << Q_FUNC_INFO << msg->flags();
 	Contact* contact;
 	
 	if (msg->flags() & (MESSAGE_FLAG_SMS | MESSAGE_SMS_DELIVERY_REPORT))
@@ -70,16 +71,21 @@ void ChatsManager::processMessage(QByteArray from, Message* msg)
 		if (msg->flags() & MESSAGE_FLAG_ALARM)
 			theRM.getAudio()->play(STRing);
 		else
-			if (from.contains("@chat.agent"))
-				theRM.getAudio()->play(STConference);
-			else
-				theRM.getAudio()->play(STMessage);
+			if (!(msg->flags() & MESSAGE_FLAG_FLASH ))
+			{
+				if (from.contains("@chat.agent"))
+					theRM.getAudio()->play(STConference);
+				else
+					theRM.getAudio()->play(STMessage);
+			}
 	}
+	qDebug() << msg->flags();
 	session->appendMessage(msg);
+	qDebug() << msg->flags();
 	emit messageReceived(session, msg);
 }
 
-void ChatsManager::processMult(QByteArray from, QString multId)
+/*void ChatsManager::processMult(QByteArray from, QString multId)
 {
 	Contact* contact = m_account->contactList()->getContact(from);
 
@@ -87,7 +93,7 @@ void ChatsManager::processMult(QByteArray from, QString multId)
 	session->appendMult(multId);
 
 	emit multReceived(session, multId);
-}
+}*/
 
 void ChatsManager::processFileMessage(QByteArray from, quint32 totalSize, quint32 sessionId, QByteArray filesAnsi, QString filesUtf, QByteArray ips)
 {

@@ -46,6 +46,7 @@ void Message::setId(quint32 id)
 
 QTextDocumentFragment Message::documentFragment(int defR, int defG, int defB, int defSize, QString fontFamily) const
 {
+	qDebug() << Q_FUNC_INFO;
 	QTextDocument doc;
 	
 	if (m_flags & MESSAGE_FLAG_ALARM)
@@ -64,11 +65,29 @@ QTextDocumentFragment Message::documentFragment(int defR, int defG, int defB, in
 	}
 	else if (m_flags & MESSAGE_FLAG_RTF)
 	{
-		RtfParser rtfParser;
-		if (defR > -1)
-			rtfParser.parseToTextDocument(m_rtfText, &doc, defR, defG, defB, defSize, fontFamily);
+		if (m_flags & MESSAGE_FLAG_FLASH)
+		{
+			qDebug() << "This is mult";
+			QTextCursor cursor(&doc);
+			QString html = "<font color=green>";
+
+			if (m_type == Error)
+				html.append(m_plainText);
+			else if (m_type == Incoming)
+				html.append(tr("You have got mult %1 from your interlocutor").arg(m_multAlt));
+			else
+				html.append(tr("You have sent mult %1 to your interlocutor").arg(m_multAlt));
+
+			cursor.insertHtml(html + "</font><br>");
+		}
 		else
-			rtfParser.parseToTextDocument(m_rtfText, &doc); /*TODO: add font family and all values will be taken from chatwindow*/
+		{
+			RtfParser rtfParser;
+			if (defR > -1)
+				rtfParser.parseToTextDocument(m_rtfText, &doc, defR, defG, defB, defSize, fontFamily);
+			else
+				rtfParser.parseToTextDocument(m_rtfText, &doc); /*TODO: add font family and all values will be taken from chatwindow*/
+		}
 	}
 	else
 	{
@@ -85,4 +104,9 @@ QTextDocumentFragment Message::documentFragment(int defR, int defG, int defB, in
 QTextDocumentFragment Message::documentFragment(QFont defFont, QColor defFontColor, QColor defBkColor) const
 {
 	return documentFragment(defFontColor.red(), defFontColor.green(), defFontColor.blue(), defFont.pointSize(), defFont.family());
+}
+
+bool Message::isMultMessage() const
+{
+	return (m_flags & MESSAGE_FLAG_FLASH);
 }

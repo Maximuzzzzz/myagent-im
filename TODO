@@ -2,6 +2,7 @@
 - Mult images instead of swf-widgets
 
 later:
+- Alarm must shake single window, if windows are split, and main window, if "windows in tabs" chosen
 - Double clicking Enter doesn't works
 - Add links at services mail.ru in contact context menu
 - Conferences don't self-authorized sometimes
@@ -15,7 +16,6 @@ later:
 - Interface like original mail agent has
 - Support phone and video calling
 - Support games
-- Support flash-mult
 - Hide contact list during account is offline
 - Multiprotocoling
 - Repository for deb-files

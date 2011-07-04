@@ -124,7 +124,7 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoti
 		connect(messageEditor, SIGNAL(sendPressed()), this, SLOT(sendMessage()));
 		connect(messageEditor, SIGNAL(textChanged()), session, SLOT(sendTyping()));
 		connect(messageEditor, SIGNAL(wakeupPressed()), this, SLOT(wakeupContact()));
-		connect(messageEditor, SIGNAL(showMult(const QString&)), this, SLOT(showMult(const QString&)));
+		connect(messageEditor, SIGNAL(showMult(const QString&)), this, SLOT(sendMult(const QString&)));
 		connect(this, SIGNAL(messageEditorActivate()), messageEditor, SLOT(messageEditorActivate()));
 
 		connect(messageEditor, SIGNAL(setIgnore(bool)), this, SIGNAL(setIgnore(bool)));
@@ -231,7 +231,7 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoti
 
 	connect(session, SIGNAL(messageDelivered(bool, Message*)), this, SLOT(messageDelivered(bool, Message*)));
 	connect(session, SIGNAL(messageAppended(const Message*)), this, SLOT(appendMessageToView(const Message*)));
-	connect(session, SIGNAL(multAppended(QString)), this, SLOT(appendMultToView(QString)));
+	/*connect(session, SIGNAL(multAppended(QString, Message*)), this, SLOT(appendMultToView(QString, Message*)));*/
 
 	connect(session, SIGNAL(microblogChanged(QString, QDateTime)), this, SLOT(microblogChanged(QString, QDateTime)));
 
@@ -272,18 +272,20 @@ void ChatWindow::send()
 		sendSms();
 }
 
-quint32 ChatWindow::sendMessage()
+bool ChatWindow::sendMessage()
 {
+	/*if (messageEditor->document()->isEmpty())
+		return false;
+
+	QTextCursor cursor = chatView->textCursor();
+	QTextDocumentFragment fr(messageEditor->document());
+	appendMessageToView(fr);*/
+
 	PlainTextExporter textExporter(messageEditor->document());
 	QString messageText = textExporter.toText();
 
 	RtfExporter rtfExporter(messageEditor->document());
 	QByteArray messageRtf = rtfExporter.toRtf();
-
-	if (messageText.isEmpty())
-		return 0;
-
-	qDebug() << "ChatWindow::sendMessage()" << messageRtf;
 
 	messageEditor->clear();
 
@@ -301,16 +303,16 @@ quint32 ChatWindow::sendMessage()
 		return session->sendMessage(messageText, messageRtf);
 }
 
-quint32 ChatWindow::sendSms()
+bool ChatWindow::sendSms()
 {
 	if (!m_account->onlineStatus().connected())
-		return 0;
+		return false;
 
 	QString text = smsEditor->text();
 	QByteArray number = smsEditor->phoneNumber();
 
 	if (smsEditor->text().isEmpty())
-		return 0;
+		return false;
 
 	smsEditor->blockInput();
 	emit smsEditorActivate();
@@ -320,9 +322,47 @@ quint32 ChatWindow::sendSms()
 	return session->sendSms(number, text);
 }
 
+void ChatWindow::sendMult(const QString& id)
+{
+	showMult(id);
+	session->sendMult(multInfo);
+}
+
+void ChatWindow::putHeader(QString & nick, Msg currMessage, QString* prompt)
+{
+	QByteArray tmpBA = m_account->settings()->value("Messages/mergeMessages", "").toByteArray();
+	if (tmpBA != "" && tmpBA != "contact" && tmpBA != "minute" && tmpBA != "hour")
+	{
+		session->account()->settings()->remove("Messages/mergeMessages");
+		tmpBA = "";
+	}
+	if (currMessage.from != lastMessage.from || (tmpBA == "") || (tmpBA == "contact" && currMessage.from != lastMessage.from) ||
+	 ((tmpBA == "minute" && currMessage.dateTime > lastMessage.dateTime.addSecs(60)) || (currMessage.dateTime < lastMessage.dateTime.addSecs(60) && currMessage.dateTime.time().minute() != lastMessage.dateTime.time().minute())) ||
+	 ((tmpBA == "hour" && currMessage.dateTime > lastMessage.dateTime.addSecs(3600)) || (currMessage.dateTime < lastMessage.dateTime.addSecs(3600) && currMessage.dateTime.time().hour() != lastMessage.dateTime.time().hour())))
+		*prompt = nick + " (" + currMessage.dateTime.toString(m_account->settings()->value("Messages/DateMask", theRM.defDateFormat).toString()) + ") :</font><br>";
+	lastMessage = currMessage;
+}
+/*
+void ChatWindow::appendMessageToView(QTextDocumentFragment fragment)
+{
+	qDebug() << Q_FUNC_INFO;
+	QTextCursor cursor = chatView->textCursor();
+	cursor.movePosition(QTextCursor::End);
+	QString prompt = "";
+	Msg currMessage;
+	currMessage.from = session->account()->email();
+	currMessage.dateTime = QDateTime::currentDateTime();
+	QString nick = "<font color=red>" + session->account()->nickname();
+	putHeader(nick, currMessage, &prompt);
+	cursor.insertFragment(fragment);
+	cursor.insertHtml("<br>");
+	cursor.insertHtml("<br>");
+}
+*/
 void ChatWindow::appendMessageToView(const Message* msg, bool newIncoming)
 {
-	qDebug() << "ChatWindow::appendMessageToView Message, newIncoming =" << newIncoming;
+	qDebug() << Q_FUNC_INFO << msg->flags();
+
 	if (msg->type() == Message::Incoming)
 	{
 		clearStatus();
@@ -367,6 +407,7 @@ void ChatWindow::appendMessageToView(const Message* msg, bool newIncoming)
 		Msg currMessage;
 		if (msg->type() == Message::Outgoing)
 		{
+	/*		return;*/
 			nick = "<font color=blue>" + session->account()->nickname();
 			currMessage.from = session->account()->email();
 		}
@@ -395,18 +436,11 @@ void ChatWindow::appendMessageToView(const Message* msg, bool newIncoming)
 		currMessage.dateTime = msg->dateTime();
 
 		prompt = "";
-		QByteArray tmpBA = m_account->settings()->value("Messages/mergeMessages", "").toByteArray();
-		if (tmpBA != "" && tmpBA != "contact" && tmpBA != "minute" && tmpBA != "hour")
-		{
-			session->account()->settings()->remove("Messages/mergeMessages");
-			tmpBA = "";
-		}
-		if (currMessage.from != lastMessage.from || (tmpBA == "") || (tmpBA == "contact" && currMessage.from != lastMessage.from) ||
-		 ((tmpBA == "minute" && currMessage.dateTime > lastMessage.dateTime.addSecs(60)) || (currMessage.dateTime < lastMessage.dateTime.addSecs(60) && currMessage.dateTime.time().minute() != lastMessage.dateTime.time().minute())) ||
-		 ((tmpBA == "hour" && currMessage.dateTime > lastMessage.dateTime.addSecs(3600)) || (currMessage.dateTime < lastMessage.dateTime.addSecs(3600) && currMessage.dateTime.time().hour() != lastMessage.dateTime.time().hour())))
-			prompt = nick + " (" + msg->dateTime().toString(m_account->settings()->value("Messages/DateMask", theRM.defDateFormat).toString()) + ") :</font><br>";
-		lastMessage = currMessage;
+		putHeader(nick, currMessage, &prompt);
 	}
+
+	if (msg->isMultMessage())
+		showMult(msg->multId());
 
 	cursor.insertHtml(prompt);
 	if (session->contact()->isPhone())
@@ -428,11 +462,11 @@ void ChatWindow::appendMessageToView(const Message* msg, bool newIncoming)
 	emit newMessage(this);
 }
 
-void ChatWindow::appendMultToView(QString multId)
+/*void ChatWindow::appendMultToView(QString multId)
 {
 	qDebug() << Q_FUNC_INFO;
 	showMult(multId);
-}
+}*/
 
 void ChatWindow::microblogChanged(QString text, QDateTime mbDateTime)
 {
@@ -905,8 +939,6 @@ void ChatWindow::showMult(const QString& id)
 	playerSteps = 0;
 
 	player->setPlaying(true);
-
-	m_account->client()->sendMult(session->contact()->email(), multInfo);
 }
 
 void ChatWindow::multSignal(QString name)
