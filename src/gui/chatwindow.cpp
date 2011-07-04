@@ -56,9 +56,9 @@
 #include "gui/avatarboxwithhandle.h"
 #include "audio.h"
 
-ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoticonSelector)
+ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoticonSelector, MultSelector* multSelector)
 	: QWidget(),
-	m_account(account), session(s), messageEditor(0), smsEditor(0)
+	m_account(account), session(s), messageEditor(0), smsEditor(0), player(NULL)
 {
 	qDebug() << Q_FUNC_INFO << "{";
 
@@ -87,11 +87,11 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoti
 	QToolBar* topToolbar = new QToolBar;
 	QAction* games = new QAction(QIcon(), "", this);
 	games->setCheckable(true);
-	connect(games, SIGNAL(triggered(bool)), this, SLOT(showGameMenu()));
+	connect(games, SIGNAL(triggered(bool)), this, SLOT(showGameMenu(bool)));
 
 	topToolbar->addAction(games);
 
-	//layout->addWidget(topToolbar);
+	layout->addWidget(topToolbar);
 
 	chatView = new AnimatedTextBrowser;
 	chatWidgetLayout->addWidget(chatView);
@@ -120,10 +120,11 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoti
 		editorsWidget->setTabPosition(QTabWidget::South);
 		editorsWidget->setTabShape(QTabWidget::Triangular);
 
-		messageEditor = new MessageEditor(m_account, session->contact(), emoticonSelector);
+		messageEditor = new MessageEditor(m_account, session->contact(), emoticonSelector, multSelector);
 		connect(messageEditor, SIGNAL(sendPressed()), this, SLOT(sendMessage()));
 		connect(messageEditor, SIGNAL(textChanged()), session, SLOT(sendTyping()));
 		connect(messageEditor, SIGNAL(wakeupPressed()), this, SLOT(wakeupContact()));
+		connect(messageEditor, SIGNAL(showMult(const QString&)), this, SLOT(showMult(const QString&)));
 		connect(this, SIGNAL(messageEditorActivate()), messageEditor, SLOT(messageEditorActivate()));
 
 		connect(messageEditor, SIGNAL(setIgnore(bool)), this, SIGNAL(setIgnore(bool)));
@@ -230,6 +231,7 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoti
 
 	connect(session, SIGNAL(messageDelivered(bool, Message*)), this, SLOT(messageDelivered(bool, Message*)));
 	connect(session, SIGNAL(messageAppended(const Message*)), this, SLOT(appendMessageToView(const Message*)));
+	connect(session, SIGNAL(multAppended(QString)), this, SLOT(appendMultToView(QString)));
 
 	connect(session, SIGNAL(microblogChanged(QString, QDateTime)), this, SLOT(microblogChanged(QString, QDateTime)));
 
@@ -256,6 +258,8 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoti
 	connect(shakeTimeLine, SIGNAL(finished()), SLOT(restorePosAfterShake()));
 
 	setLayout(layout);
+
+	playerWidget = new SwfdecQtWidget(this);
 
 	qDebug() << Q_FUNC_INFO << "}";
 }
@@ -422,6 +426,12 @@ void ChatWindow::appendMessageToView(const Message* msg, bool newIncoming)
 	if (msg->flags() & MESSAGE_FLAG_ALARM && msg->type() == Message::Incoming)
 		shake();
 	emit newMessage(this);
+}
+
+void ChatWindow::appendMultToView(QString multId)
+{
+	qDebug() << Q_FUNC_INFO;
+	showMult(multId);
 }
 
 void ChatWindow::microblogChanged(QString text, QDateTime mbDateTime)
@@ -860,10 +870,55 @@ void ChatWindow::transferringCancelled()
 		fileMessageOut->cancelTransferring(fileMessageOut->getSessionId());
 	else if (transferStatus == FilesReceiving)
 		fileMessageIn->cancelTransferring(fileMessageIn->getSessionId());
-	//transferStatus = None;
 }
 
-void ChatWindow::showGameMenu()
+void ChatWindow::showGameMenu(bool triggered)
 {
 	qDebug() << Q_FUNC_INFO;
+}
+
+void ChatWindow::showMult(const QString& id)
+{
+	qDebug() << Q_FUNC_INFO;
+
+	multInfo = theRM.mults()->getMultInfo(id);
+
+	if (!multInfo)
+	{
+		qDebug() << "Can't get mult for id = " << id;
+		return;
+	}
+
+	QString filename = theRM.flashResourcePrefix().append(":").append(multInfo->fileName()).append(".swf");
+
+	if (filename.indexOf ("://") < 0)
+		filename = QUrl::fromLocalFile (QFileInfo
+				(filename).absoluteFilePath()).toEncoded();
+
+	/*if (player)
+		delete player;*/ //TODO: Segmentation fault
+	player = new SwfdecQtPlayer(filename, QByteArray(), this);
+	playerWidget->setPlayer(player);
+	playerWidget->setGeometry(geometry());
+	playerWidget->show();
+	connect(player, SIGNAL(unknownSignal(QString)), this, SLOT(multSignal(QString)));
+	playerSteps = 0;
+
+	player->setPlaying(true);
+
+	m_account->client()->sendMult(session->contact()->email(), multInfo);
+}
+
+void ChatWindow::multSignal(QString name)
+{
+	if (name != "next-event")
+		return;
+
+	if (++playerSteps == multInfo->frames().toInt())
+	{
+		qDebug() << "Mult finished with" << playerSteps << "frames";
+		playerSteps = 0;
+		player->setPlaying(false);
+		playerWidget->hide();
+	}
 }

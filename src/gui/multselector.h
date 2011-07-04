@@ -20,30 +20,42 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "smallavatar.h"
+#ifndef MULTSELECTOR_H
+#define MULTSELECTOR_H
 
-SmallAvatar::SmallAvatar(QObject* parent)
-	: Avatar(parent)
-{
-	reset();
-}
+#include <QFrame>
 
-QString SmallAvatar::avatarHref() const
-{
-	return avatarBaseHref() + "/_mrimavatarsmall";
-}
+#include "gui/messageeditor.h"
 
-QString SmallAvatar::emptyAvatarFilename() const
+class MultSelector : public QFrame
 {
-	return ":icons/noavatar_small.png";
-}
+Q_OBJECT
+public:
+	MultSelector(QWidget *parent = 0);
+	~MultSelector();
 
-QString SmallAvatar::loadingAvatarFilename() const
-{
-	return ":icons/loadavatar_small.png";
-}
+signals:
+	void selected(MessageEditor* editor, QString id);
+	void closed();
 
-QString SmallAvatar::imageName() const
-{
-	return email() + "_small.jpg";
-}
+public slots:
+	void appear(MessageEditor* editor, bool visible);
+
+private slots:
+	void slotClicked(QString id);
+/*	void correctSize();*/
+	void setCurrentLayout();
+
+protected:
+	virtual void closeEvent(QCloseEvent* event);
+
+private:
+	QWidget* createMultIconsWidget();
+/*	void setCurrentLayout();*/
+
+private:
+	QWidget* mults;
+	MessageEditor* m_selectorSender;
+};
+
+#endif // MULTSELECTOR_H

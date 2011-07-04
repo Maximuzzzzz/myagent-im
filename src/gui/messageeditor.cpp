@@ -44,9 +44,10 @@
 #include "protocol/mrim/proto.h"
 #include "protocol/mrim/mrimdatastream.h"
 #include "gui/emoticonselector.h"
+#include "gui/multselector.h"
 
-MessageEditor::MessageEditor(Account* account, Contact* contact, EmoticonSelector* emSel, QWidget* parent)
-	: QWidget(parent), m_account(account), m_contact(contact), emoticonSelector(emSel)
+MessageEditor::MessageEditor(Account* account, Contact* contact, EmoticonSelector* emSel, MultSelector* multSel, QWidget* parent)
+	: QWidget(parent), m_account(account), m_contact(contact), emoticonSelector(emSel), multSelector(multSel)
 {
 	connect(m_contact, SIGNAL(destroyed(Contact*)), this, SLOT(writeSettings()));
 
@@ -71,6 +72,9 @@ MessageEditor::MessageEditor(Account* account, Contact* contact, EmoticonSelecto
 
 	connect(emoticonSelector, SIGNAL(selected(MessageEditor*, QString)), SLOT(insertEmoticon(MessageEditor*, QString)));
 	connect(emoticonSelector, SIGNAL(closed()), smilesAction, SLOT(toggle()));
+
+	connect(multSelector, SIGNAL(selected(MessageEditor*, QString)), SLOT(insertFlash(MessageEditor*, QString)));
+	connect(multSelector, SIGNAL(closed()), multsAction, SLOT(toggle()));
 
 	readSettings();
 
@@ -176,6 +180,13 @@ void MessageEditor::createToolBar()
 	toolBar->addSeparator();
 	
 	smilesAction = addToolAction(toolIcon("smiles"), this, SLOT(triggerEmoticonSelector()));
+
+	QIcon multIcon;
+	multIcon.addPixmap(QPixmap(":/icons/editor/msg_bar_s_mults_dis.png"), QIcon::Disabled, QIcon::Off);
+	multIcon.addPixmap(QPixmap(":/icons/editor/msg_bar_s_mults_d.png"), QIcon::Normal, QIcon::Off);
+	multIcon.addPixmap(QPixmap(":/icons/editor/msg_bar_s_mults_p.png"), QIcon::Normal, QIcon::On);
+	multIcon.addPixmap(QPixmap(":/icons/editor/msg_bar_s_mults_h.png"), QIcon::Active, QIcon::Off);
+	multsAction = addToolAction(multIcon, this, SLOT(triggerMultSelector()));
 	
 	toolBar->addSeparator();
 	
@@ -339,6 +350,26 @@ void MessageEditor::insertEmoticon(MessageEditor* editor, const QString & id)
 	emoticonSelector->hide();
 }
 
+void MessageEditor::insertFlash(MessageEditor* editor, const QString & id)
+{
+	qDebug() << Q_FUNC_INFO << id;
+	if (editor != this)
+		return;
+
+	QTextCursor cursor = messageEdit->textCursor();
+	QTextCharFormat currentFormat = cursor.charFormat();
+	EmoticonFormat fmt(currentFormat, id);
+/*	cursor.insertText(QString(QChar::ObjectReplacementCharacter), fmt);
+	messageEdit->setTextCursor(cursor);
+	messageEdit->setFocus(Qt::OtherFocusReason);
+	messageEdit->setCurrentCharFormat(currentFormat);*/
+
+	multsAction->setChecked(false);
+	multSelector->hide();
+
+	emit showMult(id);
+}
+
 void MessageEditor::readSettings()
 {
 	if (m_account.isNull() || m_contact.isNull())
@@ -418,10 +449,32 @@ void MessageEditor::triggerEmoticonSelector()
 	emoticonSelector->appear(this, !emoticonSelector->isVisible());
 }
 
+void MessageEditor::triggerMultSelector()
+{
+	QDesktopWidget Screen;
+	int screenWidth = Screen.screenGeometry().width();
+	int screenHeight = Screen.screenGeometry().height();
+
+	int XPos, YPos;
+
+	if (multSelector->geometry().width() + mapToGlobal(this->pos()).x() + 180 > screenWidth)
+		XPos = mapToGlobal(this->pos()).x() + 30;
+	else
+		XPos = mapToGlobal(this->pos()).x() + 180;
+	if (multSelector->geometry().height() + mapToGlobal(this->pos()).y() + 30 > screenHeight)
+		YPos = mapToGlobal(this->pos()).y() - 275;
+	else
+		YPos = mapToGlobal(this->pos()).y() + 30;
+	multSelector->setGeometry(XPos, YPos, NULL, NULL);
+	multSelector->appear(this, !multSelector->isVisible());
+}
+
 void MessageEditor::hideEvent(QHideEvent*)
 {
 	emoticonSelector->hide();
+	multSelector->hide();
 	smilesAction->setChecked(false);
+	multsAction->setChecked(false);
 }
 
 void MessageEditor::updateFormatActions()
@@ -612,6 +665,7 @@ void MessageEditor::slotCurrentCharFormatChanged(const QTextCharFormat & f)
 void MessageEditor::checkContactStatus(OnlineStatus status)
 {
 	wakeupButton->setEnabled(status.connected());
+	//multsAction->setEnabled(status.connected());
 	fileTransferAction->setEnabled(status.connected());
 	if (fileTransferAction->isChecked())
 	{
@@ -678,6 +732,7 @@ void MessageEditor::receiveFiles()
 	qDebug() << "MessageEditor::fileReceived";
 }
 */
+
 void MessageEditor::slotProgress(FileMessage::Status action, int percentage)
 {
 	qDebug() << Q_FUNC_INFO;

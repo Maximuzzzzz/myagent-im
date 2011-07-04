@@ -8,7 +8,8 @@ Homepage: http://code.google.com/p/myagent-im
 
 Package: myagent-im
 Architecture: amd64
-Depends: ${shlibs:Depends}, ${misc:Depends}, phonon-backend-gstreamer (>= 0) | phonon-backend-xine (>= 0) | phonon-backend (>= 0)
+Depends: libaspell15, libc6, libgcc1, libphonon4, libqt4-network, libqtcore4, libqtgui4, libstdc++6, libx11-6, libxapian15, libxss1, zlib1g, phonon-backend-gstreamer | phonon-backend-xine | phonon-backend, phonon-backend-gstreamer | phonon-backend-xine | phonon-backend
+Conflicts: myagent-im-smiles-fix (<= 0.1)
 Description: Instant messaging application for Mail.ru
  Instant messenger with basic Mail.ru protocol support
 

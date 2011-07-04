@@ -33,6 +33,17 @@
 class MRIMClient;
 class Account;
 
+typedef struct UnpackedRTF
+{
+	bool unpacked;
+	quint32 lines;
+	QByteArray rtf;
+	quint32 bcLPSLen;
+	quint32 bgColor;
+	QByteArray smileTag1251;
+	QByteArray smileTagUTF16;
+} UnpackedRTF;
+
 class MRIMClientPrivate : public QObject
 {
 Q_OBJECT
@@ -69,9 +80,10 @@ private:
 	quint32 sendPacket(quint32 msgtype, QByteArray data = QByteArray(), quint32 protoVersionMinor = PROTO_VERSION_MINOR);
 	void processPacket(QByteArray header, QByteArray data);
 	
-	QByteArray packRtf(QByteArray rtf);
-	bool unpackRtf(const QByteArray& packedRtf, QByteArray* rtf, quint32* backgroundColor);
-	
+	QByteArray packRtf(QByteArray rtf, quint32 type = 0, QByteArray smileTag1251 = "", QByteArray smileTagUTF16 = "", quint32 backgroundColor = 0x00FFFFFF);
+	//bool unpackRtf(const QByteArray& packedRtf, QByteArray* rtf, quint32* backgroundColor);
+	UnpackedRTF unpackRtf(const QByteArray& packedRtf);
+
 	QByteArray packAuthorizationMessage(const QString& message);
 	void unpackAuthorizationMessage(const QByteArray& message, QString& nickname, QString& unpackedMessage);
 	

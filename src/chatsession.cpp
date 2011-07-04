@@ -59,6 +59,11 @@ void ChatSession::appendMessage(Message* msg, bool addInHash)
 	emit messageAppended(msg);
 }
 
+void ChatSession::appendMult(QString multId)
+{
+	emit multAppended(multId);
+}
+
 void ChatSession::appendBroadcastMessage(Message* msg, ReceiversList rec, bool addInHash)
 {
 	if (addInHash)

@@ -220,7 +220,7 @@ void RtfExporter::checkChar(QChar ch)
 
 	if (!foundCodec)
 	{
-		rtf += ((controlCodeApplied) ? QByteArray(" ") : QByteArray("")) +  QByteArray("\\u") + QByteArray::number(ch.unicode()) + QByteArray("?");
+		rtf += ((controlCodeApplied) ? QByteArray(" ") : QByteArray("")) + QByteArray("\\u") + QByteArray::number(ch.unicode()) + QByteArray("?");
 		controlCodeApplied = false;
 		return;
 	}

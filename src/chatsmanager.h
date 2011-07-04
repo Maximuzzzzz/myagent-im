@@ -46,9 +46,11 @@ signals:
 	void sessionCreated(ChatSession* session);
 	void sessionInitialized(ChatSession* session);
 	void messageReceived(ChatSession* session, Message* msg);
+	void multReceived(ChatSession* session, QString multId);
 	
 private slots:
 	void processMessage(QByteArray from, Message* msg);
+	void processMult(QByteArray from, QString multId);
 	void processFileMessage(QByteArray from, quint32 totalSize, quint32 sessionId, QByteArray filesAnsi, QString filesUtf, QByteArray ips);
 	void processMicroblogChanged(QByteArray from, QString text, QDateTime mbDateTime);
 	void removeSession(Contact* contact);

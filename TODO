@@ -1,4 +1,4 @@
-0.4.7:
+0.5:
 - Mult images instead of swf-widgets
 
 later:
@@ -6,7 +6,6 @@ later:
 - Add links at services mail.ru in contact context menu
 - Conferences don't self-authorized sometimes
 - Try to create status "Unvisible" for all
-- Sending by double clicking Enter
 - Add group "old archives", which contains deleted users, history of whom was not deleted. Deleting contact from this group will delete log
 - Changing symbolic smiles on graphical
 - Hide empty groups (for example, when online filter is on)

@@ -87,7 +87,8 @@ void EmoticonMovie::load(const QString& id, int from)
 			return;
 		}
 
-		QString filename = theRM.emoticonsResourcePrefix() + ":" + info->path();
+		QString filename = theRM.emoticonsResourcePrefix().append(":").append(info->path());
+		qDebug() << "emoticon file = " << filename;
 		setFileName(filename);
 		id_ = id;
 
@@ -102,7 +103,22 @@ void EmoticonMovie::load(const QString& id, int from)
 			return;
 		}
 
-		QString filename = theRM.statusesResourcePrefix() + ":" + info->icon();
+		QString filename = theRM.statusesResourcePrefix().append(":").append(info->icon());
+		setFileName(filename);
+		id_ = id;
+	}
+	else if (from == 2)
+	{
+		const MultInfo* info = theRM.mults()->getMultInfo(id);
+
+		if (!info)
+		{
+			qDebug() << "EmoticonMovie::load: can't get mult for id = " << id;
+			return;
+		}
+
+		QString filename = theRM.flashResourcePrefix().append(":").append(info->fileName()).append(".png");
+		qDebug() << "EmoticonMovie::Loading" << filename;
 		setFileName(filename);
 		id_ = id;
 	}

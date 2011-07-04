@@ -35,6 +35,8 @@
 #include "emoticonselector.h"
 #include "contactlistbroadcast.h"
 #include "contactlistconferencewithhandle.h"
+#include "libswf/swfdecqtplayer.h"
+#include "libswf/swfdecqtwidget.h"
 
 class QSplitter;
 class QTimeLine;
@@ -64,7 +66,7 @@ public:
 		QDateTime dateTime;
 	};
 
-	ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoticonSelector);
+	ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoticonSelector, MultSelector* multSelector);
 	~ChatWindow();
 
 public slots:
@@ -94,6 +96,7 @@ private slots:
 	quint32 sendSms();
 	void contactTyping();
 	void appendMessageToView(const Message* msg, bool newIncoming = true);
+	void appendMultToView(QString multId);
 	void checkContactStatus(OnlineStatus status);
 	void microblogChanged(QString text, QDateTime mbDateTime);
 
@@ -129,9 +132,12 @@ private slots:
 	void sendButtonEnabledProcess();
 
 	void showBroadcastPanel(bool visible);
-	void showGameMenu();
+	void showGameMenu(bool triggered);
 
 	void contactIgnored();
+
+	void showMult(const QString& id);
+	void multSignal(QString name);
 
 protected:
 	QTimer* timer;
@@ -164,6 +170,11 @@ private:
 	FileMessage* fileMessageIn;
 
 	TransferStatus transferStatus;
+
+	SwfdecQtWidget* playerWidget;
+	SwfdecQtPlayer* player;
+	quint32 playerSteps;
+	const MultInfo* multInfo;
 };
 
 #endif

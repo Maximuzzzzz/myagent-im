@@ -40,6 +40,7 @@ class MessageEdit;
 class QAction;
 class QToolButton;
 class EmoticonSelector;
+class MultSelector;
 class ToolButton;
 class QComboBox;
 class QLabel;
@@ -51,7 +52,7 @@ class MessageEditor : public QWidget
 {
 Q_OBJECT
 public:
-	MessageEditor(Account* account, Contact* contact, EmoticonSelector* emSel, QWidget* parent = 0);
+	MessageEditor(Account* account, Contact* contact, EmoticonSelector* emSel, MultSelector* multSel, QWidget* parent = 0);
 	~MessageEditor();
 
 	bool isBlocked();
@@ -64,7 +65,6 @@ public:
 
 public slots:
 	void clear();
-//	void fileReceived(FileMessage* fmsg);
 	void receiveFiles();
 	void cancelTransferring(quint32 sessId = 0);
 	bool isIgnoreFont();
@@ -83,6 +83,7 @@ signals:
 	void setSignalCheckSpelling(bool b);
 	void showBroadcastPanel(bool visible);
 	void transferringCancel();
+	void showMult(const QString& id);
 
 protected:
 	virtual void hideEvent(QHideEvent* event);
@@ -103,10 +104,12 @@ private slots:
 	void setFontUnderline(bool b);
 
 	void insertEmoticon(MessageEditor* editor, const QString& id);
+	void insertFlash(MessageEditor* editor, const QString& id);
 
 	void updateFormatActions();
 
 	void triggerEmoticonSelector();
+	void triggerMultSelector();
 
 	void addFile();
 	void deleteFile();
@@ -155,10 +158,12 @@ private:
 	QAction* ignoreAction;
 	
 	QAction* smilesAction;
+	QAction* multsAction;
 
 	ToolButton* wakeupButton;
 
 	EmoticonSelector* emoticonSelector;
+	MultSelector* multSelector;
 
 	QTextCharFormat lastUserFormat;
 

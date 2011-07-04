@@ -129,5 +129,9 @@
         <file>icons/sms_avatar_small.png</file>
         <file>icons/sms_avatar.png</file>
         <file>icons/msg_phone.png</file>
+        <file>icons/editor/msg_bar_s_mults_d.png</file>
+        <file>icons/editor/msg_bar_s_mults_dis.png</file>
+        <file>icons/editor/msg_bar_s_mults_h.png</file>
+        <file>icons/editor/msg_bar_s_mults_p.png</file>
     </qresource>
 </RCC>

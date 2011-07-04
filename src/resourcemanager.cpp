@@ -41,14 +41,17 @@ ResourceManager::ResourceManager(QObject *parent)
 	QString emoticonsPath = QLatin1String(DATADIR) + "/emoticons";
 	QString onlineStatusesPath = QLatin1String(DATADIR) + "/emoticons";
 	QString soundsPath = QLatin1String(DATADIR) + "/sounds";
+	QString flashPath = QLatin1String(DATADIR) + "/emoticons/flash";
 #else
 	QString emoticonsPath = QCoreApplication::applicationDirPath() + "/emoticons";
 	QString onlineStatusesPath = QCoreApplication::applicationDirPath() + "/emoticons";
 	QString soundsPath = QCoreApplication::applicationDirPath() + "/sounds";
+	QString flashPath = QCoreApplication::applicationDirPath() + "/emoticons/flash";
 #endif
 	QDir::addSearchPath(emoticonsResourcePrefix(), emoticonsPath);
 	QDir::addSearchPath(statusesResourcePrefix(), onlineStatusesPath);
 	QDir::addSearchPath(soundsResourcePrefix(), soundsPath);
+	QDir::addSearchPath(flashResourcePrefix(), flashPath);
 	m_locale = QLocale::system().name();
 	qDebug() << "loc:" << (emoticonsPath + "/skin/" + m_locale + "/skin.txt");
 	QFile f(emoticonsPath + "/skin/" + m_locale + "/skin.txt");
@@ -63,6 +66,7 @@ ResourceManager::ResourceManager(QObject *parent)
 		m_onlineStatuses.load(emoticonsPath + "/skin/" + m_locale + "/user/" + (*it));
 	for (it = userSkinFiles.begin(); it != userSkinFiles.end(); ++it)
 		m_emoticons.load(emoticonsPath + "/skin/" + m_locale + "/user/" + (*it), m_settings);
+	m_mults.load();
 	m_locations.load(":/region.txt");
 }
 
@@ -112,6 +116,11 @@ QString ResourceManager::statusesResourcePrefix()
 QString ResourceManager::soundsResourcePrefix()
 {
 	return "sounds";
+}
+
+QString ResourceManager::flashResourcePrefix()
+{
+	return "flash";
 }
 
 void ResourceManager::setAudio(Audio* a)

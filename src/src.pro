@@ -1,3 +1,5 @@
+CLEBS += swfdec-0.6
+include (libswf/clebs.pri)
 TEMPLATE = app
 TARGET = myagent-im
 CONFIG += qt # warn_on debug
@@ -36,7 +38,7 @@ unix {
     DATADIR = $$PREFIX/share/myagent-im
     HICOLOR = $$PREFIX/share/icons/hicolor
     DEFINES += DATADIR=\\\"$$DATADIR\\\"
-    DEFINES += VERSION=\\\"0.4.6\\\"
+    DEFINES += VERSION=\\\"0.5.0\\\"
     INSTALLS += target \
         smiles_animated \
         smiles_set03 \
@@ -57,7 +59,8 @@ unix {
         hicolor22 \
         hicolor24 \
         hicolor32 \
-        hicolor48
+        hicolor48 \
+        mults
     target.path = $$BINDIR
     data.path = $$DATADIR
     data.files += locale/*.qm
@@ -99,6 +102,10 @@ unix {
     hicolor32.files = icons/hicolor/32x32/apps/*.png
     hicolor48.path = $$HICOLOR/48x48/apps
     hicolor48.files = icons/hicolor/48x48/apps/*.png
+    MULTSDIR = $$DATADIR/emoticons/flash
+    mults.files = emoticons/flash/*.swf
+    mults.files += emoticons/flash/*.png
+    mults.path = $$MULTSDIR
     desktop.path = $$PREFIX/share/applications
     desktop.files += myagent-im.desktop
     sounds.path = $$DATADIR/sounds
@@ -233,7 +240,13 @@ SOURCES += main.cpp \
     tasks/taskaddgroup.cpp \
     tasks/taskaddcontact.cpp \
     tasks/task.cpp \
-    gui/contactlistitemdelegate.cpp
+    gui/contactlistitemdelegate.cpp \
+    libswf/swfdecqtwidget.cpp \
+    libswf/swfdecqtplayer.cpp \
+    libswf/swfdecqtloader.cpp \
+    libswf/swfdecqtkeys.cpp \
+    mults.cpp \
+    gui/multselector.cpp
 HEADERS += accountmanager.h \
     account.h \
     gui/logindialog.h \
@@ -366,7 +379,15 @@ HEADERS += accountmanager.h \
     tasks/taskaddcontact.h \
     tasks/task.h \
     tasks/simpleblockingtask.h \
-    gui/contactlistitemdelegate.h
+    gui/contactlistitemdelegate.h \
+    libswf/swfdecqtwidget.h \
+    libswf/swfdecqtplayer.h \
+    libswf/swfdecqtloader.h \
+    libswf/swfdecqtkeys.h \
+    libswf/swfdecqtglobal.h \
+    libswf/swfdecqtexception.h \
+    mults.h \
+    gui/multselector.h
 FORMS += gui/logindialog.ui \
     gui/authorize.ui \
     gui/newconference.ui \

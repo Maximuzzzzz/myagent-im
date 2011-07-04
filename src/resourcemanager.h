@@ -31,6 +31,7 @@
 #include "emoticons.h"
 #include "locations.h"
 #include "onlinestatus.h"
+#include "mults.h"
 #include "audio.h"
 
 class ResourceManager : public QObject
@@ -44,11 +45,13 @@ public:
 	QString basePath();
 	QSettings* settings() { return m_settings; }
 	Emoticons& emoticons() { return m_emoticons; }
+	Mults* mults() { return (&m_mults); }
 	OnlineStatuses* onlineStatuses() { return (&m_onlineStatuses); }
 	const Locations& locations() const { return m_locations; }
 	QString emoticonsResourcePrefix();
 	QString statusesResourcePrefix();
 	QString soundsResourcePrefix();
+	QString flashResourcePrefix();
 	Audio* getAudio() { return audio; }
 	QString locale() { return m_locale; }
 	Account* account() { return m_account; }
@@ -74,6 +77,7 @@ private:
 	Emoticons m_emoticons;
 	OnlineStatuses m_onlineStatuses;
 	Locations m_locations;
+	Mults m_mults;
 	Audio* audio;
 	QString m_locale;
 

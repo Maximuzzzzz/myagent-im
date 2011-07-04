@@ -358,31 +358,44 @@ void MRIMClientPrivate::processPacket(QByteArray header, QByteArray data)
 	}
 }
 
-QByteArray MRIMClientPrivate::packRtf(QByteArray rtf)
+QByteArray MRIMClientPrivate::packRtf(QByteArray rtf, quint32 type, QByteArray smileTag1251, QByteArray smileTagUTF16, quint32 backgroundColor)
 {
+	qDebug() << Q_FUNC_INFO;
+
 	QByteArray pack;
 	MRIMDataStream packStream(&pack, QIODevice::WriteOnly);
 
-	packStream << quint32(2);
+	if (type == 0) //simple text rtf
+		packStream << 2;
+	else if (type == 1) //for flash
+		packStream << 4;
 	packStream << rtf;
 	packStream << quint32(4);
-	packStream << quint32(0x00FFFFFF);
+	packStream << backgroundColor;
+
+	if (type == 1)
+	{
+		packStream << smileTag1251;
+		packStream << smileTagUTF16;
+	}
 
 	QString uncompressError;
 	QByteArray zip = ZlibByteArray::compress(pack, ZlibByteArray::Zlib, &uncompressError);
 	if (!uncompressError.isEmpty())
 		qDebug() << uncompressError;
-
 	return zip.toBase64();
 }
 
-bool MRIMClientPrivate::unpackRtf(const QByteArray& packedRtf, QByteArray* rtf, quint32* backgroundColor)
+/*bool MRIMClientPrivate::unpackRtf(const QByteArray& packedRtf, QByteArray* rtf, quint32* backgroundColor)
 {
+	qDebug() << Q_FUNC_INFO;
 	QByteArray tmp = QByteArray::fromBase64(packedRtf);
 	QString uncompressError;
 	QByteArray unc = ZlibByteArray::uncompress(tmp, ZlibByteArray::Zlib, &uncompressError);
 	if (!uncompressError.isEmpty())
 		qDebug() << uncompressError;
+
+	qDebug() << "unc" << unc.toHex();
 
 	MRIMDataStream rtfStream(unc);
 
@@ -391,12 +404,57 @@ bool MRIMClientPrivate::unpackRtf(const QByteArray& packedRtf, QByteArray* rtf, 
 	rtfStream >> nLines;
 	rtfStream >> *rtf;
 	rtfStream >> bcLPSLen >> *backgroundColor;
+
 	qDebug() << "messageAck: lines = " << nLines;
 	qDebug() << "messageAck: rtfText = " << *rtf;
 	qDebug() << "messageAck: bcLPSLen = " << bcLPSLen;
 	qDebug() << "messageAck: backColor = " << QString::number(*backgroundColor, 16);
 
+	if (unc.length() > 0)
+	{
+		QByteArray smileTag1251, smileTagUTF16;
+		rtfStream >> smileTag1251 >> smileTagUTF16;
+		qDebug() << "messageAck: smile Tag" << smileTag1251;
+	}
+
 	return true;
+}*/
+
+UnpackedRTF MRIMClientPrivate::unpackRtf(const QByteArray& packedRtf)
+{
+	QByteArray tmp = QByteArray::fromBase64(packedRtf);
+	QString uncompressError;
+	QByteArray unc = ZlibByteArray::uncompress(tmp, ZlibByteArray::Zlib, &uncompressError);
+
+	UnpackedRTF res;
+	res.unpacked = true;
+	if (!uncompressError.isEmpty())
+	{
+		qDebug() << uncompressError;
+		res.unpacked = false;
+	}
+
+	MRIMDataStream rtfStream(unc);
+
+	/*quint32 nLines;
+	quint32 bcLPSLen;*/
+	rtfStream >> res.lines;
+	rtfStream >> res.rtf;
+	rtfStream >> res.bcLPSLen >> res.bgColor;
+
+	qDebug() << "messageAck: lines = " << res.lines;
+	qDebug() << "messageAck: rtfText = " << res.rtf;
+	qDebug() << "messageAck: bcLPSLen = " << res.bcLPSLen;
+	qDebug() << "messageAck: backColor = " << QString::number(res.bgColor);
+
+	if (unc.length() > 0)
+	{
+		/*QByteArray smileTag1251, smileTagUTF16;*/
+		rtfStream >> res.smileTag1251 >> res.smileTagUTF16;
+		qDebug() << "messageAck: smile Tag" << res.smileTag1251;
+	}
+
+	return res;
 }
 
 QByteArray MRIMClientPrivate::packAuthorizationMessage(const QString & message)
@@ -840,7 +898,7 @@ void MRIMClientPrivate::processMessageAck(QByteArray data)
 	qDebug() << "from =" << from;
 	qDebug() << "text =" << text;
 	qDebug() << "plainText" << plainText;
-	qDebug() << "rtf =" << rtf;
+//	qDebug() << "rtf =" << rtf;
 
 	QByteArray(data2);
 	in >> data2;
@@ -852,12 +910,17 @@ void MRIMClientPrivate::processMessageAck(QByteArray data)
 	qDebug() << "flags = " << QString::number(flags, 16);
 	qDebug() << "confOwner" << confOwner;
 
-	QByteArray rtfText;
-	quint32 backgroundColor = 0x00FFFFFF;
+	/*QByteArray rtfText;
+	quint32 backgroundColor = 0x00FFFFFF;*/
+	UnpackedRTF uRtf;
 
 	if (rtf != "")
 		if (flags & MESSAGE_FLAG_RTF)
-			unpackRtf(rtf, &rtfText, &backgroundColor);
+//		{
+			uRtf = unpackRtf(rtf);
+			/*rtfText = uRtf.rtf;
+			backgroundColor = uRtf.bgColor;*/
+//		}
 
 	if (!(flags & MESSAGE_FLAG_NORECV))
 	{
@@ -952,9 +1015,19 @@ void MRIMClientPrivate::processMessageAck(QByteArray data)
 		return;
 	}
 
+	if (flags & MESSAGE_FLAG_FLASH && flags & MESSAGE_FLAG_RTF)
+	{
+		QString smileTag = codecUTF16->toUnicode(uRtf.smileTagUTF16);
+		QString smileId = smileTag.remove(0, 10);
+		smileId = smileId.left(smileId.indexOf(" "));
+		qDebug() << "Received flash mult" << smileId;
+		emit q->multReceived(from, smileId);
+		return;
+	}
+
 	emit q->messageReceived
 	(
-		from, new Message(Message::Incoming, flags, plainText, rtfText, backgroundColor, confOwner)
+		from, new Message(Message::Incoming, flags, plainText, uRtf.rtf, uRtf.bgColor, confOwner)
 	);
 }
 
@@ -1038,10 +1111,15 @@ void MRIMClientPrivate::processOfflineMessageAck(QByteArray data)
 		qDebug() << "Codec" << mimeMsg.plainTextCharset() << "PlainText" << plainText << "in bytearray" << mimeMsg.plainText() << mimeMsg.plainText().toHex();
 	}
 
-	QByteArray rtfText;
-	quint32 bgColor;
+	/*QByteArray rtfText;
+	quint32 bgColor = 0x00FFFFFF;*/
+	UnpackedRTF uRtf;
 	if (mimeMsg.hasRtfText() && mimeMsg.xMrimFlags() & MESSAGE_FLAG_RTF)
-		unpackRtf(mimeMsg.rtfBase64(), &rtfText, &bgColor);
+//	{
+		uRtf = unpackRtf(mimeMsg.rtfBase64());
+		/*rtfText = uRtf.rtf;
+		bgColor = uRtf.bgColor;*/
+//	}
 
 	//qDebug() << rtfText;
 
@@ -1071,10 +1149,10 @@ void MRIMClientPrivate::processOfflineMessageAck(QByteArray data)
 			/*case 7:
 				return;*/
 		}
-		newMsg = new Message(Message::Incoming, mimeMsg.xMrimFlags(), plainText, rtfText, bgColor, mimeMsg.sender(), mimeMsg.dateTime());
+		newMsg = new Message(Message::Incoming, mimeMsg.xMrimFlags(), plainText, uRtf.rtf, uRtf.bgColor, mimeMsg.sender(), mimeMsg.dateTime());
 	}
 	else
-		newMsg = new Message(Message::Incoming, mimeMsg.xMrimFlags(), plainText, rtfText, bgColor, "", mimeMsg.dateTime());
+		newMsg = new Message(Message::Incoming, mimeMsg.xMrimFlags(), plainText, uRtf.rtf, uRtf.bgColor, "", mimeMsg.dateTime());
 
 	if (mimeMsg.xMrimFlags() & MESSAGE_FLAG_AUTHORIZE)
 	{

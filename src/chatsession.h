@@ -54,6 +54,7 @@ public:
 
 signals:
 	void messageAppended(const Message* msg) const;
+	void multAppended(QString multId) const;
 	void messageDelivered(bool really, Message* msg);
 	void smsDelivered(QByteArray phoneNumber, QString text);
 	void smsFailed();
@@ -62,6 +63,7 @@ signals:
 
 public slots:	
 	void appendMessage(Message* msg, bool addInHash = true);
+	void appendMult(QString multId);
 	void appendBroadcastMessage(Message* msg, ReceiversList rec, bool addInHash = true);
 	void slotMicroblogChanged(QString text, QDateTime mbDateTime);
 	bool sendMessage(QString plainText, QByteArray rtf);

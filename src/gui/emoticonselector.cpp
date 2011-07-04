@@ -185,7 +185,6 @@ EmoticonSelector::~EmoticonSelector()
 void EmoticonSelector::slotClicked(QString id)
 {
 	emit selected(m_selectorSender, id);
-	qDebug() << "DblClicked";
 }
 
 void EmoticonSelector::appear(MessageEditor* editor, bool visible)

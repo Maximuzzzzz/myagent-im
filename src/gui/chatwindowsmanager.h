@@ -27,6 +27,7 @@
 #include <QHash>
 
 #include "gui/emoticonselector.h"
+#include "gui/multselector.h"
 
 class QIcon;
 class QTabWidget;
@@ -77,6 +78,7 @@ private:
 	QWidget* tabsWindow;
 
 	EmoticonSelector* emoticonSelector;
+	MultSelector* multSelector;
 };
 
 #endif

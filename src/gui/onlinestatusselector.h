@@ -41,10 +41,10 @@ signals:
 private slots:
 	void slotClicked(QString id);
 	void correctSize();
+	void setCurrentLayout();
 
 private:
 	QWidget* createStatusIconsWidget(int emoticonsPerRow);
-	void setCurrentLayout();
 
 private:
 	QWidget* statuses;
