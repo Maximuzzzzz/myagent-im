@@ -41,7 +41,7 @@ public:
 
 	bool savePassword() { return savePass->isChecked(); }
 
-private slots:
+private Q_SLOTS:
 	void checkEmail();
 	void checkPassword();
 	void slotEmailChanged();

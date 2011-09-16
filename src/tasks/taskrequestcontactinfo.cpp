@@ -66,7 +66,7 @@ void RequestContactInfo::checkResult(quint32 msgseq, quint32 status, MRIMClient:
 			m_info.setPhones(info["Phone"].first());
 		}
 		
-		emit done(status, false);
+		Q_EMIT done(status, false);
 		delete this;
 	}
 	else

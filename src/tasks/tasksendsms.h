@@ -39,7 +39,7 @@ public:
 	QByteArray phoneNumber() const { return m_number; }
 	QString text() const { return m_text; }
 
-private slots:
+private Q_SLOTS:
 	void checkResult(quint32 msgseq, quint32 status);
 
 private:

@@ -39,7 +39,7 @@ public:
 	virtual bool exec();
 	
 	ContactGroup* group() const { return m_group; }
-private slots:
+private Q_SLOTS:
 	void checkResult(quint32 msgseq, quint32 status);
 
 private:

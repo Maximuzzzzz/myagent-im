@@ -63,7 +63,7 @@ public:
 	QColor getDefFontColor() { return defaultFontColor; }
 	QColor getDefBkColor() { return defaultBkColor; }
 
-public slots:
+public Q_SLOTS:
 	void clear();
 	void receiveFiles();
 	void cancelTransferring(quint32 sessId = 0);
@@ -71,7 +71,7 @@ public slots:
 	void slotIgnoreSet(bool ignore);
 	void setCheckSpelling(bool on);
 
-signals:
+Q_SIGNALS:
 	void textChanged();
 	void sendPressed();
 	void wakeupPressed();
@@ -90,7 +90,7 @@ protected:
 	bool eventFilter(QObject *obj, QEvent *ev);
 	virtual bool event(QEvent* event);
 
-private slots:
+private Q_SLOTS:
 	void chooseFont();
 	void chooseFontColor();
 	void chooseBackgroundColor();

@@ -86,7 +86,7 @@ public:
 
 	quint32 error() { return fm_error; }
 
-public slots:
+public Q_SLOTS:
 	void slotFileTransferStatus(quint32 status, QByteArray email, quint32 sessionId, QByteArray mirrorIps);
 	void slotProxy(QByteArray email, quint32 idRequest, quint32 dataType, QByteArray filesAnsi, QByteArray proxyIps, quint32 sessionId, quint32 unk1, quint32 unk2, quint32 unk3);
 	void slotProxyAck(quint32 status, QByteArray email, quint32 idRequest, quint32 dataType, QByteArray filesAnsi, QByteArray proxyIps, quint32 sessionId, quint32 unk1, quint32 unk2, quint32 unk3);
@@ -97,7 +97,7 @@ public slots:
 	void setFileList(QList<QFileInfo> & files);
 	void setParameters(quint32 totalSize, quint32 sessionId, QByteArray filesAnsi, QString filesUtf, QByteArray ips);
 
-signals:
+Q_SIGNALS:
 	void progress(FileMessage::Status action, int percentage);
 	void fileAck(quint32 status, QByteArray email, quint32 sessionId, QByteArray ips);
 	void proxy(FileMessage* fmsg, quint32 dataType);
@@ -105,7 +105,7 @@ signals:
 	void startTransferring(quint32 sessId);
 	void fileTransferred(FileMessage::Status action, QString filesInHtml, QString destination);
 
-private slots:
+private Q_SLOTS:
 	void slotConnectedToPeer();
 	void slotReadyRead();
 	void slotDisconnected();
@@ -198,7 +198,7 @@ public:
 	FileExistsDialog(QString fileName, QWidget* parent = 0, Qt::WindowFlags f = 0);
 	QString fileName() const { return m_newFileName; }
 
-private slots:
+private Q_SLOTS:
 	void rewriteFile();
 
 private:

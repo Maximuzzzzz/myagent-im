@@ -32,7 +32,7 @@ void SoundPlayer::finish()
 {
 	qDebug() << "Emitting \"finished\"";
 	deleteLater();
-	emit finished(currentSound);
+	Q_EMIT finished(currentSound);
 }
 
 QString SoundPlayer::soundDescription(SoundType soundType)

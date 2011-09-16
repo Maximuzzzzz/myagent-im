@@ -39,10 +39,10 @@ public:
 	void setTimer(int msec);
 	void unsetTimer();
 
-signals:
+Q_SIGNALS:
 	void done(quint32 status, bool timeout);
 	
-protected slots:
+protected Q_SLOTS:
 	virtual void timeout();
 protected:
 	virtual void onTimeout() {}

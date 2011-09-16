@@ -105,7 +105,7 @@ bool MessageEditor::eventFilter(QObject * obj, QEvent * ev)
 			{
 				if (!keyEvent->isAutoRepeat() && keyEvent->modifiers() == Qt::NoModifier)
 				{
-					emit sendPressed();
+					Q_EMIT sendPressed();
 					return true;
 				}
 			}
@@ -113,7 +113,7 @@ bool MessageEditor::eventFilter(QObject * obj, QEvent * ev)
 			{
 				if (keyEvent->isAutoRepeat() && keyEvent->modifiers() == Qt::NoModifier)
 				{
-					emit sendPressed();
+					Q_EMIT sendPressed();
 					return true;
 				}
 			}
@@ -121,7 +121,7 @@ bool MessageEditor::eventFilter(QObject * obj, QEvent * ev)
 			{
 				if (!keyEvent->isAutoRepeat() && keyEvent->modifiers() == Qt::ControlModifier)
 				{
-					emit sendPressed();
+					Q_EMIT sendPressed();
 					return true;
 				}
 			}
@@ -129,7 +129,7 @@ bool MessageEditor::eventFilter(QObject * obj, QEvent * ev)
 		
 		if ((keyEvent->key() == Qt::Key_S || keyEvent->key() == 0x42b) && keyEvent->modifiers() == Qt::AltModifier)
 		{
-			emit sendPressed();
+			Q_EMIT sendPressed();
 			return true;
 		}
 	}
@@ -367,7 +367,7 @@ void MessageEditor::insertFlash(MessageEditor* editor, const QString & id)
 	multsAction->setChecked(false);
 	multSelector->hide();
 
-	emit showMult(id);
+	Q_EMIT showMult(id);
 }
 
 void MessageEditor::readSettings()
@@ -700,7 +700,7 @@ bool MessageEditor::event(QEvent* event)
 void MessageEditor::cancelTransferring(quint32 sessId)
 {
 	qDebug() << "MessageEditor::cancelTransferring()";
-	emit transferringCancel();
+	Q_EMIT transferringCancel();
 }
 
 void MessageEditor::sendFiles()
@@ -711,7 +711,7 @@ void MessageEditor::sendFiles()
 	fileProcessBar->setVisible(true);
 	fileTransferBar->setVisible(false);
 
-	emit filesTransfer(fileList);
+	Q_EMIT filesTransfer(fileList);
 }
 
 void MessageEditor::receiveFiles()

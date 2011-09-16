@@ -14,10 +14,10 @@ public:
 	AvatarBoxWithHandle(const QString& avatarsPath, const QString & email, QWidget* parent = 0);
 
 	void toggle(bool visible);
-signals:
+Q_SIGNALS:
 	void toggled(bool);
 
-private slots:
+private Q_SLOTS:
 	void toggleAvatarBox(bool);
 private:
 	AvatarBox* avatarBox;

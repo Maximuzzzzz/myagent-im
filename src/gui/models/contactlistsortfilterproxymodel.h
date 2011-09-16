@@ -41,11 +41,11 @@ public:
 
 	virtual void setSourceModel(QAbstractItemModel* sourceModel);
 
-public slots:
+public Q_SLOTS:
 	void setFilterString(const QString&);
 	void allowOnlineOnlyContacts(bool allow);
 
-signals:
+Q_SIGNALS:
 	void modelRebuilded();
 	void expandGroup(QModelIndex index);
 

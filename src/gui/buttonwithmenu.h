@@ -35,7 +35,7 @@ public:
 	~ButtonWithMenu();
 	
 	void setMenu(QMenu* menu);
-private slots:
+private Q_SLOTS:
 	void execMenu();
 private:
 	QMenu* menu;

@@ -43,7 +43,7 @@ void Tasks::RemoveGroup::checkResult(quint32 msgseq, quint32 status)
 {
 	if (isMyResponse(msgseq))
 	{
-		emit done(status, false);
+		Q_EMIT done(status, false);
 		delete this;
 	}
 }

@@ -188,13 +188,13 @@ int ResourceManager::removeFolder(QString path)
 	QStringList lstDirs  = dir.entryList(QDir::Dirs | QDir::AllDirs | QDir::NoDotAndDotDot);
 	QStringList lstFiles = dir.entryList(QDir::Files);
 
-	foreach (QString entry, lstFiles)
+	Q_FOREACH (QString entry, lstFiles)
 	{
 		QString entryAbsPath = dir.absolutePath() + "/" + entry;
 		QFile::remove(entryAbsPath);
 	}
 
-	foreach (QString entry, lstDirs)
+	Q_FOREACH (QString entry, lstDirs)
 	{
 		QString entryAbsPath = dir.absolutePath() + "/" + entry;
 		removeFolder(entryAbsPath);

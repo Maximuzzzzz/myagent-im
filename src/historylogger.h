@@ -37,7 +37,7 @@ public:
 	~HistoryLogger();
 
 	static Message* createMessage(const Xapian::Document& doc);
-public slots:
+public Q_SLOTS:
 	void saveMessage(const Message* message);
 
 private:

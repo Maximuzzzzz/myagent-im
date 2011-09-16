@@ -75,7 +75,7 @@ bool SmsEditor::eventFilter(QObject * obj, QEvent * ev)
 			{
 				if (!keyEvent->isAutoRepeat() && keyEvent->modifiers() == Qt::NoModifier)
 				{
-					emit sendPressed();
+					Q_EMIT sendPressed();
 					return true;
 				}
 			}
@@ -83,7 +83,7 @@ bool SmsEditor::eventFilter(QObject * obj, QEvent * ev)
 			{
 				if (keyEvent->isAutoRepeat() && keyEvent->modifiers() == Qt::NoModifier)
 				{
-					emit sendPressed();
+					Q_EMIT sendPressed();
 					return true;
 				}
 			}
@@ -91,7 +91,7 @@ bool SmsEditor::eventFilter(QObject * obj, QEvent * ev)
 			{
 				if (!keyEvent->isAutoRepeat() && keyEvent->modifiers() == Qt::ControlModifier)
 				{
-					emit sendPressed();
+					Q_EMIT sendPressed();
 					return true;
 				}
 			}
@@ -99,7 +99,7 @@ bool SmsEditor::eventFilter(QObject * obj, QEvent * ev)
 		
 		if ((keyEvent->key() == Qt::Key_S || keyEvent->key() == 0x42b) && keyEvent->modifiers() == Qt::AltModifier)
 		{
-			emit sendPressed();
+			Q_EMIT sendPressed();
 			return true;
 		}
 	}

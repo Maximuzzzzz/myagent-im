@@ -110,11 +110,11 @@ void SwfdecQtPlayerPrivate::notifyCallback (SwfdecPlayer *swfdec,
 //	qDebug() << Q_FUNC_INFO << pspec->name;
 
     if (g_str_equal (pspec->name, "mouse-cursor"))
-        emit player->mouseCursorChanged();
+        Q_EMIT player->mouseCursorChanged();
 	else if (g_str_equal (pspec->name, "initialized"))
-        emit player->initialized();
+        Q_EMIT player->initialized();
 	else
-		emit player->unknownSignal(QString(pspec->name));
+		Q_EMIT player->unknownSignal(QString(pspec->name));
 }
 
 void SwfdecQtPlayerPrivate::invalidateCallback (SwfdecPlayer *swfdec,
@@ -128,9 +128,9 @@ void SwfdecQtPlayerPrivate::invalidateCallback (SwfdecPlayer *swfdec,
     QRegion region;
     for (unsigned i = 0; i < n_rectangles; ++i)
         region += rect ((SwfdecRectangle *) &rectangles[i]);
-    emit player->invalidate (region);
+    Q_EMIT player->invalidate (region);
 
-    emit player->invalidate (rect (extents));
+    Q_EMIT player->invalidate (rect (extents));
 }
 
 void SwfdecQtPlayerPrivate::timer()
@@ -242,7 +242,7 @@ void SwfdecQtPlayer::setPlaying (bool playing)
     } else {
         return;
     }
-    emit playingChanged (d->playing);
+    Q_EMIT playingChanged (d->playing);
 }
 
 void SwfdecQtPlayer::setBackgroundColor (const QColor &color)

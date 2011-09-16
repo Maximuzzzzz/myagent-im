@@ -36,7 +36,7 @@ public:
 	void load(const QString& id, int from = 0);
 	QString id() const { return id_; }
 	
-public slots:
+public Q_SLOTS:
 	void start();
 	void setPaused(bool paused);
 

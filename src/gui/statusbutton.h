@@ -40,7 +40,7 @@ public:
 
 	~StatusButton();
 
-private slots:
+private Q_SLOTS:
 	void slotStatusChanged(OnlineStatus status);
 };
 

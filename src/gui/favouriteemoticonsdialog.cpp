@@ -134,7 +134,7 @@ FavouriteEmoticonsDialog::FavoritesEmoticonsWidget::FavoritesEmoticonsWidget(int
 
 	FlowLayout* layout = new FlowLayout(6);
 
-	foreach (QString emoticonId, theRM.emoticons().favouriteEmoticons())
+	Q_FOREACH (QString emoticonId, theRM.emoticons().favouriteEmoticons())
 	{
 		const EmoticonInfo* info = theRM.emoticons().getEmoticonInfo(emoticonId);
 
@@ -288,5 +288,5 @@ QStringList FavouriteEmoticonsDialog::FavoritesEmoticonsWidget::favouriteEmotico
 void FavouriteEmoticonsDialog::slotDoubleClicked(QString id)
 {
 	close();
-	emit doubleClicked(id);
+	Q_EMIT doubleClicked(id);
 }

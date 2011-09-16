@@ -44,10 +44,10 @@ public:
 	bool hasSelection() const;
 	ContactInfo selectedInfo() const;
 	
-public slots:
+public Q_SLOTS:
 	void showPhotos(bool b);
 	
-private slots:
+private Q_SLOTS:
 	void updateAvatar();
 	void slotDoubleClicked(const QModelIndex& index);
 private:

@@ -43,7 +43,7 @@ public:
 	QList<ContactInfo> getContactsInfo() const { return contactsInfo; }
 	quint32 getMaxRows() const { return m_maxRows; }
 
-private slots:
+private Q_SLOTS:
 	void checkResult(quint32 msgseq, quint32 status, MRIMClient::ContactsInfo info, quint32 maxRows, quint32 serverTime);
 
 private:

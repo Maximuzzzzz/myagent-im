@@ -33,7 +33,7 @@ Q_OBJECT
 public:
 	AnimatedTextEdit(QWidget* parent = 0);
 
-private slots:
+private Q_SLOTS:
 	void processDocumentChange(int position, int charsRemoved, int charsAdded)
 	{
 		AnimationSupport<QTextEdit>::processDocumentChange(position, charsRemoved, charsAdded);

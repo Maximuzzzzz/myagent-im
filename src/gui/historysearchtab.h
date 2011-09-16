@@ -39,7 +39,7 @@ public:
 	HistorySearchTab(Xapian::Database* db, const QString& incomingName, const QString& outgoingName, QWidget *parent = 0);
 	~HistorySearchTab();
 	
-private slots:
+private Q_SLOTS:
 	void checkUrl(const QUrl&);
 
 	void slotProcessQuery();

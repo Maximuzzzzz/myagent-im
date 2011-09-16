@@ -65,7 +65,7 @@ void ContactList::clear()
 	qDeleteAll(m_groups);
 	m_groups.clear();
 
-	emit groupsCleared();
+	Q_EMIT groupsCleared();
 
 	qDeleteAll(m_hiddenGroups);
 	m_hiddenGroups.clear();
@@ -74,7 +74,7 @@ void ContactList::clear()
 	m_contacts.clear();
 	
 	constructing = false;
-	emit updated();
+	Q_EMIT updated();
 }
 
 void ContactList::addGroup(quint32 id, quint32 flags, const QString& name)
@@ -92,14 +92,14 @@ void ContactList::addGroup(quint32 id, quint32 flags, const QString& name)
 				tmpGroups.append(*it);
 				m_groups.removeAll(*it);
 				delete group;
-				emit groupAdded(*it);
+				Q_EMIT groupAdded(*it);
 			}
 			else
 			{
 				m_groups.removeAll(*it);
 				m_groups.append(group);
 				//delete (*it);
-				emit groupAdded(group);
+				Q_EMIT groupAdded(group);
 			}
 			return;
 		}
@@ -108,10 +108,10 @@ void ContactList::addGroup(quint32 id, quint32 flags, const QString& name)
 	else
 	{
 		m_groups.append(group);
-		emit updated();
+		Q_EMIT updated();
 	}
 
-	emit groupAdded(group);
+	Q_EMIT groupAdded(group);
 }
 
 Contact* ContactList::addContact(const ContactData& data)
@@ -160,7 +160,7 @@ void ContactList::addContact(Contact* contact)
 {
 	m_contacts.append(contact);
 
-	if (!constructing) emit contactAdded(contact);
+	if (!constructing) Q_EMIT contactAdded(contact);
 }
 
 void ContactList::changeContactStatus(OnlineStatus status, QByteArray email)
@@ -257,7 +257,7 @@ void ContactList::beginUpdating()
 {
 	qDebug() << "ContactList::beginUpdating()";
 
-	emit groupsCleared();
+	Q_EMIT groupsCleared();
 	
 	qDeleteAll(m_hiddenGroups);
 	m_hiddenGroups.clear();
@@ -311,7 +311,7 @@ void ContactList::endUpdating()
 //	m_contacts = tmpContacts;
 	
 	constructing = false;
-	emit updated();
+	Q_EMIT updated();
 }
 
 bool ContactList::removeContactOnServer(Contact* contact)
@@ -326,7 +326,7 @@ bool ContactList::removeContactOnServer(Contact* contact)
 	if (contact->isTemporary() && !contact->isConference())
 	{
 		m_contacts.removeAll(contact);
-		emit contactRemoved(contact);
+		Q_EMIT contactRemoved(contact);
 
 		return true;
 	}
@@ -342,14 +342,14 @@ void ContactList::removeContactOnServerEnd(quint32 status, bool timeout)
 	if (timeout || status != CONTACT_OPER_SUCCESS)
 	{
 		qDebug() << "checkRemoveContactResult: timeout = " << timeout << ", status = " << status;
-		emit removeContactOnServerError(tr("Removing contact failed"));
+		Q_EMIT removeContactOnServerError(tr("Removing contact failed"));
 		return;
 	}
 	
 	Tasks::RemoveContact* task = qobject_cast<Tasks::RemoveContact*>(sender());
 	Contact* contact = task->contact();
 	m_contacts.removeAll(contact);
-	emit contactRemoved(contact);
+	Q_EMIT contactRemoved(contact);
 }
 
 bool ContactList::ignoreContactOnServer(Contact* contact, bool ignore)
@@ -390,7 +390,7 @@ void ContactList::ignoreContactOnServerEnd(quint32 status, bool timeout)
 	}
 
 	task->contact()->setFlags(task->getFlags());
-	emit contactIgnored(task->contact()->isIgnored());
+	Q_EMIT contactIgnored(task->contact()->isIgnored());
 }
 
 void ContactList::slotContactAuthorized(const QByteArray& email)
@@ -433,7 +433,7 @@ void ContactList::load()
 	if (in.status() != QDataStream::Ok)
 	{
 		file.close();
-		emit updated();
+		Q_EMIT updated();
 		return;
 	}
 
@@ -443,7 +443,7 @@ void ContactList::load()
 		if (group->groupType() == ContactGroup::Simple)
 		{
 			m_groups.append(group);
-			emit groupAdded(group);
+			Q_EMIT groupAdded(group);
 		}
 	}
 
@@ -530,7 +530,7 @@ void ContactList::load()
 	if (in.status() != QDataStream::Ok)
 		clear();
 
-	emit updated();
+	Q_EMIT updated();
 	
 	file.close();
 }
@@ -651,12 +651,12 @@ void ContactList::addContactOnServerEnd(quint32 status, bool timeout)
 {
 	if (timeout)
 	{
-		emit addContactOnServerError(tr("Time is out"));
+		Q_EMIT addContactOnServerError(tr("Time is out"));
 		return;
 	}
 	else if (status != CONTACT_OPER_SUCCESS)
 	{
-		emit addContactOnServerError(tr("Error"));
+		Q_EMIT addContactOnServerError(tr("Error"));
 		return;
 	}
 
@@ -671,7 +671,7 @@ void ContactList::addContactOnServerEnd(quint32 status, bool timeout)
 			qDebug() << "addContactOnServerEnd remove temporary contact";
 			qDebug() << constructing;
 			((constructing) ? (tmpContacts) : (m_contacts)).removeAll(contact);
-			emit contactRemoved(contact);
+			Q_EMIT contactRemoved(contact);
 		}
 		else
 		{
@@ -724,12 +724,12 @@ void ContactList::newConferenceOnServerEnd(quint32 status, bool timeout)
 	qDebug() << "ContactList::newConferenceOnServerEnd";
 	if (timeout)
 	{
-		emit newConferenceOnServerError(tr("Time is out"));
+		Q_EMIT newConferenceOnServerError(tr("Time is out"));
 		return;
 	}
 	else if (status != CONTACT_OPER_SUCCESS)
 	{
-		emit newConferenceOnServerError(tr("Error"));
+		Q_EMIT newConferenceOnServerError(tr("Error"));
 		return;
 	}
 
@@ -744,7 +744,7 @@ void ContactList::newConferenceOnServerEnd(quint32 status, bool timeout)
 		{
 			qDebug() << "addContactOnServerEnd remove temporary contact";
 			m_contacts.removeAll(contact);
-			emit contactRemoved(contact);
+			Q_EMIT contactRemoved(contact);
 		}
 		else
 		{
@@ -761,7 +761,7 @@ bool ContactList::addSmsContactOnServer(const QString & nickname, const QStringL
 	Contact* contact = findSmsContact(nickname);
 	if (contact && !contact->isHidden())
 	{
-		emit addSmsContactOnServerError(tr("Contact %1 already exists").arg(nickname));
+		Q_EMIT addSmsContactOnServerError(tr("Contact %1 already exists").arg(nickname));
 		return false;
 	}
 	
@@ -782,12 +782,12 @@ void ContactList::addSmsContactOnServerEnd(quint32 status, bool timeout)
 {
 	if (timeout)
 	{
-		emit addSmsContactOnServerError(tr("Time is out"));
+		Q_EMIT addSmsContactOnServerError(tr("Time is out"));
 		return;
 	}
 	else if (status != CONTACT_OPER_SUCCESS)
 	{
-		emit addSmsContactOnServerError(tr("Error"));
+		Q_EMIT addSmsContactOnServerError(tr("Error"));
 		return;
 	}
 
@@ -801,7 +801,7 @@ bool ContactList::addGroupOnServer(const QString& groupName)
 	{
 		if (m_groups.at(i)->name() == groupName)
 		{
-			emit addGroupOnServerError(tr("Group %1 already exists.").arg(groupName));
+			Q_EMIT addGroupOnServerError(tr("Group %1 already exists.").arg(groupName));
 			return false;
 		}
 	}
@@ -812,7 +812,7 @@ bool ContactList::addGroupOnServer(const QString& groupName)
 	connect(task, SIGNAL(done(quint32, bool)), this, SLOT(addGroupOnServerEnd(quint32, bool)));
 	if (!task->exec())
 	{
-		emit addGroupOnServerError(tr("Adding group is currently impossible"));
+		Q_EMIT addGroupOnServerError(tr("Adding group is currently impossible"));
 		return false;
 	}
 	
@@ -838,7 +838,7 @@ void ContactList::addGroupOnServerEnd(quint32 status, bool timeout)
 	
 	if (!error.isEmpty())
 	{
-		emit addGroupOnServerError(error);
+		Q_EMIT addGroupOnServerError(error);
 		return;
 	}
 
@@ -850,7 +850,7 @@ bool ContactList::removeGroupOnServer(ContactGroup* group)
 {
 	if (!group)
 	{
-		emit removeGroupOnServerError(tr("Unknown group"));
+		Q_EMIT removeGroupOnServerError(tr("Unknown group"));
 		return false;
 	}
 	
@@ -865,7 +865,7 @@ bool ContactList::removeGroupOnServer(ContactGroup* group)
 
 	if (it != contactsEnd())
 	{
-		emit removeGroupOnServerError(tr("Group is not empty"));
+		Q_EMIT removeGroupOnServerError(tr("Group is not empty"));
 		return false;
 	}
 	
@@ -874,7 +874,7 @@ bool ContactList::removeGroupOnServer(ContactGroup* group)
 	connect(task, SIGNAL(done(quint32, bool)), this, SLOT(removeGroupOnServerEnd(quint32, bool)));
 	if (!task->exec())
 	{
-		emit removeGroupOnServerError(tr("Removing group is currently impossible"));
+		Q_EMIT removeGroupOnServerError(tr("Removing group is currently impossible"));
 		return false;
 	}
 	
@@ -900,7 +900,7 @@ void ContactList::removeGroupOnServerEnd(quint32 status, bool timeout)
 	
 	if (!error.isEmpty())
 	{
-		emit removeGroupOnServerError(error);
+		Q_EMIT removeGroupOnServerError(error);
 		return;
 	}
 
@@ -910,15 +910,15 @@ void ContactList::removeGroupOnServerEnd(quint32 status, bool timeout)
 	m_groups.removeAll(group);
 	delete group;
 
-	emit groupRemoved(group);
-	emit updated();
+	Q_EMIT groupRemoved(group);
+	Q_EMIT updated();
 }
 
 bool ContactList::renameGroup(ContactGroup * group, const QString & newName)
 {
 	if (!group)
 	{
-		emit renameGroupError(tr("Unknown group"));
+		Q_EMIT renameGroupError(tr("Unknown group"));
 		return false;
 	}
 	
@@ -927,7 +927,7 @@ bool ContactList::renameGroup(ContactGroup * group, const QString & newName)
 	connect(task, SIGNAL(done(quint32, bool)), this, SLOT(renameGroupEnd(quint32, bool)));
 	if (!task->exec())
 	{
-		emit renameGroupError(tr("Renaming group is currently impossible"));
+		Q_EMIT renameGroupError(tr("Renaming group is currently impossible"));
 		return false;
 	}
 	
@@ -953,7 +953,7 @@ void ContactList::renameGroupEnd(quint32 status, bool timeout)
 	
 	if (!error.isEmpty())
 	{
-		emit renameGroupError(error);
+		Q_EMIT renameGroupError(error);
 		return;
 	}
 
@@ -963,8 +963,8 @@ void ContactList::renameGroupEnd(quint32 status, bool timeout)
 	QString name = task->name();
 	group->setName(name);
 
-	emit groupRenamed(group);
-	emit updated();
+	Q_EMIT groupRenamed(group);
+	Q_EMIT updated();
 }
 
 void ContactList::setLastSmsFrom(QByteArray & number, Contact* c)
@@ -975,6 +975,6 @@ void ContactList::setLastSmsFrom(QByteArray & number, Contact* c)
 
 void ContactList::update()
 {
-	emit updated();
+	Q_EMIT updated();
 }
 

@@ -39,7 +39,7 @@ public:
 protected:
 	virtual void paintEvent(QPaintEvent* event);
 	
-private slots:
+private Q_SLOTS:
 	void slotAvatarUpdated();
 private:
 	Avatar avatar;

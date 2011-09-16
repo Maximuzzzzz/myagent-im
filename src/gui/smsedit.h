@@ -38,13 +38,13 @@ public:
 	bool setAutoTranslit(bool b);
 
 	QString text() const;
-signals:
+Q_SIGNALS:
 	void freeSpaceChanged(int n);
 protected:
 	virtual void insertFromMimeData(const QMimeData* source);
 	virtual void keyPressEvent(QKeyEvent* event);
 	virtual void contextMenuEvent(QContextMenuEvent* event);
-private slots:
+private Q_SLOTS:
 	void checkText();
 private:
 	inline int maxStandardLength() const;

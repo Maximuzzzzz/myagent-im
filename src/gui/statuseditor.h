@@ -39,10 +39,10 @@ public:
 
 	void setStatus(QString text);
 
-signals:
+Q_SIGNALS:
 	void sendMicrotext(const QString& text);
 
-private slots:
+private Q_SLOTS:
 	void slotTextChanged(const QString& text);
 	void slotSendMicrotext();
 

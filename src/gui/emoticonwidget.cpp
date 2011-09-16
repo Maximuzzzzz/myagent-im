@@ -83,7 +83,7 @@ void EmoticonWidget::paintEvent(QPaintEvent* event)
 
 void EmoticonWidget::mouseReleaseEvent(QMouseEvent* /*event*/)
 {
-	emit clicked(movie->id());
+	Q_EMIT clicked(movie->id());
 }
 
 void EmoticonWidget::showEvent(QShowEvent* /*event*/)
@@ -126,7 +126,7 @@ void EmoticonWidget::mouseMoveEvent(QMouseEvent * event)
 	QPixmap pm = movie->currentPixmap();
 	drag->setPixmap(pm);
 	drag->setHotSpot(QPoint(pm.width(), pm.height()));
-	emit draggingStarted();
+	Q_EMIT draggingStarted();
 	drag->exec(Qt::CopyAction);
 }
 
@@ -137,5 +137,5 @@ QString EmoticonWidget::emoticonId() const
 
 void EmoticonWidget::mouseDoubleClickEvent(QMouseEvent* /*event*/)
 {
-	emit doubleClicked(movie->id());
+	Q_EMIT doubleClicked(movie->id());
 }

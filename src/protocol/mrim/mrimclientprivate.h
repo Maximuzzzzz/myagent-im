@@ -52,7 +52,7 @@ public:
 	MRIMClientPrivate(Account* a, MRIMClient* parent);
 	~MRIMClientPrivate();
 	
-private slots:
+private Q_SLOTS:
 	void readData();
 	void checkProxy();
 	void slotDisconnectedFromServer();

@@ -139,9 +139,9 @@ void OnlineStatusesEditor::saveStatuses()
 		m_account->settings()->setValue("Statuses/statusid" + QByteArray::number(statusRow->id()), statusRow->statusId());
 		m_account->settings()->setValue("Statuses/statusdescr" + QByteArray::number(statusRow->id()), statusRow->statusDescr());
 
-		emit statusChanged(statusRow->id(), OnlineStatus(statusRow->statusId(), statusRow->statusDescr()));
+		Q_EMIT statusChanged(statusRow->id(), OnlineStatus(statusRow->statusId(), statusRow->statusDescr()));
 	}
-	emit statusesChanged();
+	Q_EMIT statusesChanged();
 
 	qDebug() << "ok";
 	close();

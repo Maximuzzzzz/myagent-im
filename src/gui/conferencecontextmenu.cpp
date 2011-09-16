@@ -90,7 +90,7 @@ void ConferenceContextMenu::showHistory()
 {
 	QString viewDescription = "HistoryView:" + m_contact->email();
 	
-	foreach (QWidget* widget, QApplication::topLevelWidgets())
+	Q_FOREACH (QWidget* widget, QApplication::topLevelWidgets())
 	{
 		if (widget->objectName() == viewDescription)
 		{

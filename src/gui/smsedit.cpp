@@ -156,7 +156,7 @@ void SmsEdit::checkText()
 		if (m_freeSpace != freeSpace)
 		{
 			m_freeSpace = freeSpace;
-			emit freeSpaceChanged(m_freeSpace);
+			Q_EMIT freeSpaceChanged(m_freeSpace);
 		}
 	}
 	else

@@ -59,9 +59,9 @@ void Contact::update(const ContactData & contactData, ContactGroup * group)
 
 	if (isConference())
 		m_activeConference = true;
-	emit statusChanged(status());
-	emit renamed(data.nick);
-	emit phonesChanged();
+	Q_EMIT statusChanged(status());
+	Q_EMIT renamed(data.nick);
+	Q_EMIT phonesChanged();
 }
 
 QString Contact::path() const
@@ -82,13 +82,13 @@ void Contact::changeStatus(OnlineStatus newStatus)
 	if (data.status != newStatus)
 	{
 		data.status = newStatus;
-		emit statusChanged(status());
+		Q_EMIT statusChanged(status());
 	}
 }
 
 void Contact::contactTyping()
 {
-	emit typing();
+	Q_EMIT typing();
 }
 
 bool Contact::changeGroup(quint32 group)
@@ -117,7 +117,7 @@ void Contact::slotChangeGroupResult(quint32 status, bool timeout)
 {
 	if (timeout == true || status != CONTACT_OPER_SUCCESS)
 	{
-		emit groupChanged(false);
+		Q_EMIT groupChanged(false);
 		return;
 	}
 	
@@ -129,7 +129,7 @@ void Contact::slotChangeGroupResult(quint32 status, bool timeout)
 	}
 	
 	setGroup(task->getGroup());
-	emit groupChanged(true);
+	Q_EMIT groupChanged(true);
 }
 
 void Contact::setAuthorized()
@@ -137,7 +137,7 @@ void Contact::setAuthorized()
 	if (data.internalFlags & CONTACT_INTFLAG_NOT_AUTHORIZED)
 	{
 		data.internalFlags = data.internalFlags & ~CONTACT_INTFLAG_NOT_AUTHORIZED;
-		emit statusChanged(status());
+		Q_EMIT statusChanged(status());
 	}
 }
 
@@ -157,7 +157,7 @@ void Contact::rename(const QString& newNickname)
 	if (!m_group)
 	{
 		data.nick = newNickname;
-		emit renamed(nickname());
+		Q_EMIT renamed(nickname());
 		return;
 	}
 
@@ -187,7 +187,7 @@ void Contact::slotRenameResult(quint32 status, bool timeout)
 	}
 	
 	data.nick = task->getNickname();
-	emit renamed(nickname());
+	Q_EMIT renamed(nickname());
 }
 
 quint32 Contact::setMyVisibility(bool alwaysVisible, bool alwaysInvisible)
@@ -221,7 +221,7 @@ void Contact::slotSetVisibilityResult(quint32 status, bool timeout)
 	if (data.flags != newFlags)
 	{
 		data.flags = newFlags;
-		emit visibilityChanged();
+		Q_EMIT visibilityChanged();
 	}
 }
 
@@ -229,7 +229,7 @@ Contact::~Contact()
 {
 	qDebug() << "Contact::~ Contact() email = " << email() << (void*)this;
 
-	emit destroyed(this);
+	Q_EMIT destroyed(this);
 }
 
 void Contact::setGroup(quint32 id)
@@ -354,7 +354,7 @@ void Contact::changePhonesEnd(quint32 status, bool timeout)
 	}
 	
 	data.phones = task->phones();
-	emit phonesChanged();
+	Q_EMIT phonesChanged();
 }
 
 QIcon Contact::chatWindowIcon(QString type)
@@ -385,7 +385,7 @@ void Contact::setFlags(quint32 f)
 	if (!(data.flags & CONTACT_FLAG_IGNORE & f))
 	{
 		data.flags = f;
-		emit ignoredChanged();
+		Q_EMIT ignoredChanged();
 		return;
 	}
 	data.flags = f;

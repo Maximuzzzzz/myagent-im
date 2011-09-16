@@ -69,7 +69,7 @@ public:
 	ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoticonSelector, MultSelector* multSelector);
 	~ChatWindow();
 
-public slots:
+public Q_SLOTS:
 	void messageDelivered(bool, Message*);
 	void shake();
 
@@ -79,7 +79,7 @@ public slots:
 
 	void editorActivate();
 
-signals:
+Q_SIGNALS:
 	void messageEditorActivate();
 	void smsEditorActivate();
 	void setMainWindowIconAndTitle(QIcon icon, ChatWindow* sender);
@@ -90,7 +90,7 @@ signals:
 	void signalCheckSpellingSet(bool b);
 	void contactIgnored(bool b);
 
-private slots:
+private Q_SLOTS:
 	void send();
 	bool sendMessage();
 	bool sendSms();

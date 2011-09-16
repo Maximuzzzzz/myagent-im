@@ -41,7 +41,7 @@ public:
 	quint32 getFlags() const { return m_flags; }
 	Contact* contact() { return m_contact; }
 
-private slots:
+private Q_SLOTS:
 	void checkResult(quint32 msgseq, quint32 status);
 private:
 	Contact* m_contact;

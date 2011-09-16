@@ -42,7 +42,7 @@ public:
 
 	void correctSize();
 
-private slots:
+private Q_SLOTS:
 	void setupFavouriteEmoticons();
 
 private:
@@ -65,11 +65,11 @@ public:
 	EmoticonSelector(QWidget* parent = 0);
 	~EmoticonSelector();
 
-public slots:
+public Q_SLOTS:
 	void slotClicked(QString id);
 	void appear(MessageEditor* editor, bool visible);
 
-signals:
+Q_SIGNALS:
 	void selected(MessageEditor* editor, QString id);
 	void closed();
 

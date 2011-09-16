@@ -82,7 +82,7 @@ void ChatsManager::processMessage(QByteArray from, Message* msg)
 	qDebug() << msg->flags();
 	session->appendMessage(msg);
 	qDebug() << msg->flags();
-	emit messageReceived(session, msg);
+	Q_EMIT messageReceived(session, msg);
 }
 
 /*void ChatsManager::processMult(QByteArray from, QString multId)
@@ -92,7 +92,7 @@ void ChatsManager::processMessage(QByteArray from, Message* msg)
 	ChatSession* session = getSession(contact);
 	session->appendMult(multId);
 
-	emit multReceived(session, multId);
+	Q_EMIT multReceived(session, multId);
 }*/
 
 void ChatsManager::processFileMessage(QByteArray from, quint32 totalSize, quint32 sessionId, QByteArray filesAnsi, QString filesUtf, QByteArray ips)
@@ -111,8 +111,8 @@ ChatSession* ChatsManager::getSession(Contact* contact)
 		session = new ChatSession(m_account, contact);
 		connect(contact, SIGNAL(destroyed(Contact*)), this, SLOT(removeSession(Contact*)));
 		sessions.insert(contact, session);
-		emit sessionCreated(session);
-		emit sessionInitialized(session);
+		Q_EMIT sessionCreated(session);
+		Q_EMIT sessionInitialized(session);
 	}
 	
 	return session;

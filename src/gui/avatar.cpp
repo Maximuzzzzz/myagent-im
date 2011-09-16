@@ -46,20 +46,20 @@ void Avatar::reset()
 {
 	QPixmap::load(emptyAvatarFilename());
 	m_state = Null;
-	emit updated();
+	Q_EMIT updated();
 }
 
 void Avatar::setLoading()
 {
 	QPixmap::load(loadingAvatarFilename());
 	m_state = Loading;
-	emit updated();
+	Q_EMIT updated();
 }
 
 void Avatar::setLoaded()
 {
 	m_state = Loaded;
-	emit updated();
+	Q_EMIT updated();
 }
 
 void Avatar::load(const QString& dirname, const QString& email)

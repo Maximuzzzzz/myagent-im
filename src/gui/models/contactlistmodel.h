@@ -54,11 +54,11 @@ public:
 	bool hasNotInGroup() { return notInGroup != 0; }
 	bool hasNotAuthorized() { return notAuthorized != 0; }
 
-signals:
+Q_SIGNALS:
 	void modelRebuilded();
 	void expandGroup(QModelIndex index);
 
-private slots:
+private Q_SLOTS:
 	void rebuild();
 	void changeContactGroup(bool indeed);
 	void addContact(Contact* c);

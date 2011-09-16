@@ -44,7 +44,7 @@ MultSelector::MultSelector(QWidget* parent)
 
 void MultSelector::closeEvent(QCloseEvent* event)
 {
-	emit closed();
+	Q_EMIT closed();
 }
 
 MultSelector::~MultSelector()
@@ -63,7 +63,7 @@ QWidget* MultSelector::createMultIconsWidget()
 	int row = 0;
 	int col = 0;
 
-	foreach (QString multId, theRM.mults()->multList())
+	Q_FOREACH (QString multId, theRM.mults()->multList())
 	{
 		const MultInfo* info = theRM.mults()->getMultInfo(multId);
 
@@ -104,6 +104,6 @@ void MultSelector::appear(MessageEditor* editor, bool visible)
 
 void MultSelector::slotClicked(QString id)
 {
-	emit selected(m_selectorSender, id);
+	Q_EMIT selected(m_selectorSender, id);
 	//close();
 }

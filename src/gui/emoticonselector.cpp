@@ -58,7 +58,7 @@ QWidget* EmoticonSelectorPage::createEmoticonsWidget()
 	int col = 0;
 	int width = 0;
 
-	foreach (QString emoticonId, m_set)
+	Q_FOREACH (QString emoticonId, m_set)
 	{
 		const EmoticonInfo* info = theRM.emoticons().getEmoticonInfo(emoticonId);
 		EmoticonWidget* w = new EmoticonWidget(info->id(), this);
@@ -174,7 +174,7 @@ EmoticonSelector::EmoticonSelector(QWidget* parent)
 
 void EmoticonSelector::closeEvent(QCloseEvent* /*event*/)
 {
-	emit closed();
+	Q_EMIT closed();
 }
 
 EmoticonSelector::~EmoticonSelector()
@@ -184,7 +184,7 @@ EmoticonSelector::~EmoticonSelector()
 
 void EmoticonSelector::slotClicked(QString id)
 {
-	emit selected(m_selectorSender, id);
+	Q_EMIT selected(m_selectorSender, id);
 }
 
 void EmoticonSelector::appear(MessageEditor* editor, bool visible)

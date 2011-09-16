@@ -43,9 +43,9 @@ public:
 	
 	bool exec();
 	Message* getMessage() { return message; }
-protected slots:
+protected Q_SLOTS:
 	virtual void timeout();
-private slots:
+private Q_SLOTS:
 	void checkResult(quint32 msgseq, quint32 status);
 private:
 	Contact* contact;

@@ -79,7 +79,7 @@ public:
 	void save(QDataStream& stream) const;
 	
 	void updateStatus();
-signals:
+Q_SIGNALS:
 	void updated();
 	void statusChanged(OnlineStatus status);
 	void typing();
@@ -91,12 +91,12 @@ signals:
 
 	void destroyed(Contact* obj = 0);
 	
-public slots:
+public Q_SLOTS:
 	void changeStatus(OnlineStatus status);
 	void contactTyping();
 	void setFlags(quint32 f);
 
-private slots:
+private Q_SLOTS:
 	void slotChangeGroupResult(quint32 status, bool timeout);
 	void changePhonesEnd(quint32 status, bool timeout);
 	void slotSetVisibilityResult(quint32 status, bool timeout);

@@ -92,7 +92,7 @@ void ContactListModel::rebuild()
 
 			ContactGroup* currGroup = groupFromIndex(groupItem->index());
 			if (currGroup->isExpanded())
-				emit expandGroup(groupItem->index());
+				Q_EMIT expandGroup(groupItem->index());
 		}
 		groupRows = rowCount(indexFromItem(rootItem));
 		qDebug() << "ContactListModel::rebuild groupRows = " << groupRows;
@@ -104,7 +104,7 @@ void ContactListModel::rebuild()
 		addContact(*cit);
 	}
 	
-	emit modelRebuilded();
+	Q_EMIT modelRebuilded();
 }
 
 Qt::DropActions ContactListModel::supportedDropActions() const
@@ -238,7 +238,7 @@ void ContactListModel::addContact(Contact* c)
 			phones = new ContactListItem(m_contactList->phones());
 			invisibleRootItem()->insertRow(groupRows++, phones);
 			if (m_contactList->phones()->isExpanded())
-				emit expandGroup(phones->index());
+				Q_EMIT expandGroup(phones->index());
 		}
 		
 		groupItem = phones;
@@ -252,7 +252,7 @@ void ContactListModel::addContact(Contact* c)
 			conferences = new ContactListItem(m_contactList->conferences());
 			invisibleRootItem()->insertRow(groupRows++, conferences);
 			if (m_contactList->conferences()->isExpanded())
-				emit expandGroup(conferences->index());
+				Q_EMIT expandGroup(conferences->index());
 		}
 
 		groupItem = conferences;
@@ -266,7 +266,7 @@ void ContactListModel::addContact(Contact* c)
 			temporary = new ContactListItem(m_contactList->temporary());
 			invisibleRootItem()->insertRow(groupRows++, temporary);
 			if (m_contactList->temporary()->isExpanded())
-				emit expandGroup(temporary->index());
+				Q_EMIT expandGroup(temporary->index());
 		}
 
 		groupItem = temporary;
@@ -280,7 +280,7 @@ void ContactListModel::addContact(Contact* c)
 			notAuthorized = new ContactListItem(m_contactList->notAuthorized());
 			invisibleRootItem()->insertRow(groupRows++, notAuthorized);
 			if (m_contactList->notAuthorized()->isExpanded())
-				emit expandGroup(notAuthorized->index());
+				Q_EMIT expandGroup(notAuthorized->index());
 		}
 
 		groupItem = notAuthorized;
@@ -296,7 +296,7 @@ void ContactListModel::addContact(Contact* c)
 			{
 				notInGroup = new ContactListItem(m_contactList->notInGroup());
 				if (m_contactList->notInGroup()->isExpanded())
-					emit expandGroup(notInGroup->index());
+					Q_EMIT expandGroup(notInGroup->index());
 			}
 			groupItem = notInGroup;
 		}
@@ -310,7 +310,7 @@ void ContactListModel::addContact(Contact* c)
 				{
 					notInGroup = new ContactListItem(m_contactList->notInGroup());
 					if (m_contactList->notInGroup()->isExpanded())
-						emit expandGroup(notInGroup->index());
+						Q_EMIT expandGroup(notInGroup->index());
 				}
 				groupItem = notInGroup;
 			}

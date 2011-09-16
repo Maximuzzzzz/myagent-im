@@ -83,7 +83,7 @@ void ContactListConferenceWithHandle::toggleConferenceList(bool checked)
 	contactListConference->setVisible(checked);
 	iconLabel->setVisible(checked);
 	addMembersLabel->setVisible(checked);
-	emit toggled(checked);
+	Q_EMIT toggled(checked);
 }
 
 void ContactListConferenceWithHandle::toggle(bool visible)

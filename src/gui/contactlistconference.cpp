@@ -48,7 +48,7 @@ void ContactListConference::addContact(QByteArray & contact)
 	qDebug() << Q_FUNC_INFO << contact;
 	membersCount++;
 	m_model->addContact(contact);
-	emit setMembersCount(membersCount);
+	Q_EMIT setMembersCount(membersCount);
 }
 
 void ContactListConference::onlineStatusChanged(OnlineStatus st)
@@ -60,6 +60,6 @@ void ContactListConference::onlineStatusChanged(OnlineStatus st)
 	if (!st.connected())
 	{
 		membersCount = 0;
-		emit setMembersCount(0);
+		Q_EMIT setMembersCount(0);
 	}
 }

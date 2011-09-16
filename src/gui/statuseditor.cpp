@@ -96,7 +96,7 @@ void StatusEditor::slotTextChanged(const QString& text)
 void StatusEditor::slotSendMicrotext()
 {
 	qDebug() << "StatusEditor::slotSendStatus()";
-	emit sendMicrotext(editor->text());
+	Q_EMIT sendMicrotext(editor->text());
 	close();
 }
 

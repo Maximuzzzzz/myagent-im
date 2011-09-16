@@ -49,17 +49,17 @@ public:
 	void unblockInput();
 	bool isBlocked();
 
-signals:
+Q_SIGNALS:
 	void sendPressed();
 
-public slots:
+public Q_SLOTS:
 	void clear();
 
 protected:
 	bool eventFilter(QObject * obj, QEvent * ev);
 	virtual bool event(QEvent* event);
 
-private slots:
+private Q_SLOTS:
 	void updateRemainingSymbolsNumber(int n);
 	void setAutoTranslit(bool b);
 	void updatePhones();

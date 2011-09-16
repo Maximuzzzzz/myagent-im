@@ -51,14 +51,14 @@ public:
 	virtual bool event(QEvent* e);
 	SysTrayPosition sysTrayPosition();
 
-signals:
+Q_SIGNALS:
 	void messageActivated(QByteArray & email);
 
-public slots:
+public Q_SLOTS:
 	void newMessage(Contact * from, const QString & to, const QDateTime dateTime);
 	void notificationTypeChange();
 
-private slots:
+private Q_SLOTS:
 	void processActivation(QSystemTrayIcon::ActivationReason reason);
 	void updateTooltip();
 	void newLetter(QString sender, QString subject, QDateTime dateTime);

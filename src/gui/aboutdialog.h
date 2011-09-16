@@ -34,7 +34,7 @@ public:
 	AboutDialog();
 	~AboutDialog();
 
-private slots:
+private Q_SLOTS:
 	void openHomeURL();
 	void openLicenseURL();
 };

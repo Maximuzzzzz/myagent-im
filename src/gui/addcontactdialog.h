@@ -39,7 +39,7 @@ Q_OBJECT
 	~AddContactDialog();
 	static QList<AddContactDialog*> windows;
 
-signals:
+Q_SIGNALS:
 	void accepted();
 
 public:
@@ -52,7 +52,7 @@ public:
 	bool askAuthorization() const { return authorizationCheckBox->isChecked(); }
 	QString authorizationMessage() const { return authorizationMessageEdit->toPlainText(); }
 	
-private slots:
+private Q_SLOTS:
 	void showContactInfo();
 	void accept();
 private:

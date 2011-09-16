@@ -44,7 +44,7 @@ public:
 	QString email() const { return m_email; }
 	State state() const { return m_state; }
 	
-signals:
+Q_SIGNALS:
 	void updated();
 	
 protected:
@@ -57,7 +57,7 @@ protected:
 	virtual QString loadingAvatarFilename() const;
 	virtual QString imageName() const;
 	
-private slots:
+private Q_SLOTS:
 	void httpDone(bool error);
 
 private:

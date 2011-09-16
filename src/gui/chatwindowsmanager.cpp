@@ -323,7 +323,7 @@ void ChatWindowsManager::messageProcess(ChatSession* session, Message* msg)
 	if (wnd == NULL || !wnd->isActiveWindow())
 	{
 		qDebug() << "Window isn't active";
-		emit messageReceived(session->contact(), session->account()->email(), msg->dateTime());
+		Q_EMIT messageReceived(session->contact(), session->account()->email(), msg->dateTime());
 	}
 	/*if (wnd != NULL)
 		wnd->appendMessageToView(msg);*/

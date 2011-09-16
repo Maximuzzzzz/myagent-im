@@ -70,7 +70,7 @@ void MessageEdit::contextMenuEvent(QContextMenuEvent * e)
 				QMenu spellMenu;
 				if (!suggestions.isEmpty())
 				{
-					foreach(QString suggestion, suggestions)
+					Q_FOREACH (QString suggestion, suggestions)
 					{
 						QAction* suggestionAction = spellMenu.addAction(suggestion);
 						connect(suggestionAction,SIGNAL(triggered()),SLOT(applySuggestion()));

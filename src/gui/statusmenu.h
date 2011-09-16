@@ -36,14 +36,14 @@ public:
 
 	~StatusMenu();
 
-public slots:
+public Q_SLOTS:
 	void updateExtendedStatuses();
 
-signals:
+Q_SIGNALS:
 	void showOnlineStatusesEditor();
 	void statusChanged(OnlineStatus status, qint32 id);
 
-private slots:
+private Q_SLOTS:
 	QAction* createStatusAction(OnlineStatus status);
 	void slotActionTriggered(QAction* action);
 

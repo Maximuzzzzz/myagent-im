@@ -72,7 +72,7 @@ protected:
     void resizeEvent(QResizeEvent *event);
     bool event(QEvent *event);
 
-protected slots:
+protected Q_SLOTS:
     void updateTextMargins();
 
 private:

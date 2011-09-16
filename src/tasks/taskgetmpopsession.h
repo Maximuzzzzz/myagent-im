@@ -39,7 +39,7 @@ public:
 	QString url() const { return m_url; }
 	QByteArray session() const { return m_session; }
 
-private slots:
+private Q_SLOTS:
 	void checkResult(quint32 msgseq, quint32 status, QByteArray session);
 
 private:

@@ -86,6 +86,6 @@ int AuthorizeDialog::group() const
 
 void AuthorizeDialog::slotOkClicked()
 {
-	emit accepted();
+	Q_EMIT accepted();
 	close();
 }

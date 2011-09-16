@@ -39,7 +39,7 @@ Q_OBJECT
 public:
 	HistoryViewTab(Xapian::Database* db, const QString& incomingName, const QString& outgoingName, QWidget* parent = 0);
 	~HistoryViewTab();
-private slots:
+private Q_SLOTS:
 	void updateDates(int year, int month);
 	void newDateSelectedInList();
 	void newDateSelectedInCalendar();

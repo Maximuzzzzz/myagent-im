@@ -165,7 +165,7 @@ void ContactListTreeView::slotActivated(const QModelIndex & index)
 {
 	Contact* contact = contactListModel->contactFromIndex(index);
 	if (contact && !contact->isIgnored())
-		emit contactItemActivated(contact);
+		Q_EMIT contactItemActivated(contact);
 }
 
 void ContactListTreeView::groupCollapsed(QModelIndex index)

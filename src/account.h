@@ -64,14 +64,14 @@ public:
 	OnlineStatusesEditor* onlineStatusesEditor() { return m_onlineStatusesEditor; }
 
 	void setAutoAway(bool on);
-public slots:
+public Q_SLOTS:
 	void setOnlineStatus(OnlineStatus status, qint32 id = -1);
 	void saveOnlineStatus(OnlineStatus st);
 	void savePassword(bool really);
 	void showOnlineStatusesEditor();
 	void extendedStatusChanged(qint32 id, OnlineStatus status);
 
-signals:
+Q_SIGNALS:
 	void onlineStatusChanged(OnlineStatus status);
 	void nicknameChanged();
 	void totalMessagesChanged(const QString& totalMessages);
@@ -79,7 +79,7 @@ signals:
 	void statusChanged(QByteArray email, QString text, QDateTime dt);
 	void extendedStatusesChanged();
 	
-private slots:
+private Q_SLOTS:
 	void slotLoggedIn(OnlineStatus status);
 	void slotLoginRejected(QString reason);
 	void slotDisconnectedFromServer();

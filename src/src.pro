@@ -2,7 +2,7 @@ CLEBS += swfdec-0.6
 include (libswf/clebs.pri)
 TEMPLATE = app
 TARGET = myagent-im
-CONFIG += qt # warn_on debug
+CONFIG += qt no_keywords# warn_on debug
 QT += network \
     phonon
 INCLUDEPATH += /usr/include

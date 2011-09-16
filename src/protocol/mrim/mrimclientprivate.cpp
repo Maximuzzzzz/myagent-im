@@ -163,7 +163,7 @@ void MRIMClientPrivate::slotDisconnectedFromServer()
 		currentStatus = OnlineStatus::offline;
 		gettingAddress = false;
 		manualDisconnect = false;
-		emit q->disconnectedFromServer();
+		Q_EMIT q->disconnectedFromServer();
 	}
 }
 
@@ -183,9 +183,9 @@ void MRIMClientPrivate::slotSocketError(QAbstractSocket::SocketError error)
 	qDebug() << "MRIMClientPrivate::slotSocketError" << error;
 
 	if (error == QAbstractSocket::ProxyConnectionRefusedError)
-		emit q->connectError(tr("Proxy connection refused error!"));
+		Q_EMIT q->connectError(tr("Proxy connection refused error!"));
 	if (error == QAbstractSocket::ProxyNotFoundError)
-		emit q->connectError(tr("Proxy not found!"));
+		Q_EMIT q->connectError(tr("Proxy not found!"));
 
 	if (error == QAbstractSocket::SocketTimeoutError)
 	{
@@ -613,7 +613,7 @@ void MRIMClientPrivate::processUserInfo(QByteArray data)
 		{
 			unreadMessages = descr;
 			quint32 unreadMessages = descr.toUInt();
-			emit q->newNumberOfUnreadLetters(unreadMessages);
+			Q_EMIT q->newNumberOfUnreadLetters(unreadMessages);
 			account->setUnreadMessages(descr);
 		}
 		else if (param == "MRIM.NICKNAME")
@@ -732,7 +732,7 @@ void MRIMClientPrivate::processAnketaInfo(QByteArray data, quint32 msgseq)
 	if (status != MRIM_ANKETA_INFO_STATUS_OK)
 	{
 		qDebug() << "Anketa status = " << status;
-		emit q->contactInfoReceived(msgseq, status, info, 0, 0);
+		Q_EMIT q->contactInfoReceived(msgseq, status, info, 0, 0);
 		return;
 	}
 
@@ -769,18 +769,18 @@ void MRIMClientPrivate::processAnketaInfo(QByteArray data, quint32 msgseq)
 			}
 		}
 
-	emit q->contactInfoReceived(msgseq, status, info, maxRows, serverTime);
+	Q_EMIT q->contactInfoReceived(msgseq, status, info, maxRows, serverTime);
 
 	QByteArray email = codecUTF8->fromUnicode(info["Username"].first()).append("@").append(codecUTF8->fromUnicode(info["Domain"].first()));
 	if (email == account->email())
-		emit q->accountInfoReceived(status, info, maxRows, serverTime);
+		Q_EMIT q->accountInfoReceived(status, info, maxRows, serverTime);
 }
 
 void MRIMClientPrivate::processLoginAcknowledged(QByteArray data)
 {
 	qDebug() << "MRIM_CS_LOGIN_ACK, bytes = " << data.size();
 	currentStatus = newStatus;
-	emit q->loginAcknowledged(currentStatus);
+	Q_EMIT q->loginAcknowledged(currentStatus);
 }
 
 void MRIMClientPrivate::processLoginRejected(QByteArray data)
@@ -791,7 +791,7 @@ void MRIMClientPrivate::processLoginRejected(QByteArray data)
 	QByteArray ba;
 	in >> ba;
 	QString reason = codec1251->toUnicode(ba);
-	emit q->loginRejected(reason);
+	Q_EMIT q->loginRejected(reason);
 }
 
 void MRIMClientPrivate::processLogout(QByteArray data)
@@ -804,7 +804,7 @@ void MRIMClientPrivate::processLogout(QByteArray data)
 	in >> reason;
 	qDebug() << "logout reason = " << reason;
 
-	emit q->loggedOut(reason);
+	Q_EMIT q->loggedOut(reason);
 }
 
 void MRIMClientPrivate::processConnectionParams(QByteArray data)
@@ -832,7 +832,7 @@ void MRIMClientPrivate::processMailBoxStatus(QByteArray data)
 
 	qDebug() << "mailbox status: unreadMessages = " << unreadMessages;
 
-	emit q->newNumberOfUnreadLetters(unreadMessages);
+	Q_EMIT q->newNumberOfUnreadLetters(unreadMessages);
 }
 
 void MRIMClientPrivate::processNewMail(QByteArray data)
@@ -849,8 +849,8 @@ void MRIMClientPrivate::processNewMail(QByteArray data)
 	quint32 unixTime;
 	in >> baSender >> baSubject >> unixTime;
 
-//	emit q->newNumberOfUnreadLetters(unreadMessages);
-	emit q->newLetter(codec1251->toUnicode(baSender), codec1251->toUnicode(baSubject), QDateTime::fromTime_t(unixTime));
+//	Q_EMIT q->newNumberOfUnreadLetters(unreadMessages);
+	Q_EMIT q->newLetter(codec1251->toUnicode(baSender), codec1251->toUnicode(baSubject), QDateTime::fromTime_t(unixTime));
 }
 
 void MRIMClientPrivate::processUserStatus(QByteArray data)
@@ -871,7 +871,7 @@ void MRIMClientPrivate::processUserStatus(QByteArray data)
 	userStatus.setDescr(statusDescr);
 	if (statusId != "")
 		userStatus.setIdStatus(statusId);
-	emit q->contactStatusChanged(userStatus, email);
+	Q_EMIT q->contactStatusChanged(userStatus, email);
 }
 
 void MRIMClientPrivate::processMessageAck(QByteArray data)
@@ -943,7 +943,7 @@ void MRIMClientPrivate::processMessageAck(QByteArray data)
 		if (conferenceType == 7)
 		{
 			if (!account->contactList()->findContact(from))
-				emit q->conferenceAsked(from, confName);
+				Q_EMIT q->conferenceAsked(from, confName);
 		}
 		else if (conferenceType == 2)
 		{
@@ -956,7 +956,7 @@ void MRIMClientPrivate::processMessageAck(QByteArray data)
 			for (i = 0; i < membersCount; i++)
 			{
 				in3 >> confClContact;
-				emit q->conferenceClAddContact(confClContact);
+				Q_EMIT q->conferenceClAddContact(confClContact);
 			}
 			return;
 		}
@@ -972,7 +972,7 @@ void MRIMClientPrivate::processMessageAck(QByteArray data)
 			for (i = 0; i < membersCount; i++)
 			{
 				in3 >> confClContact;
-				emit q->conferenceClAddContact(confClContact);
+				Q_EMIT q->conferenceClAddContact(confClContact);
 			}
 			return;
 		}
@@ -988,7 +988,7 @@ void MRIMClientPrivate::processMessageAck(QByteArray data)
 	if (flags & MESSAGE_FLAG_NOTIFY)
 	{
 		qDebug() << "--- contact typing ---";
-		emit q->contactTyping(from);
+		Q_EMIT q->contactTyping(from);
 		return;
 	}
 
@@ -999,14 +999,14 @@ void MRIMClientPrivate::processMessageAck(QByteArray data)
 
 		qDebug() << "authMessage =" << message;
 
-		emit q->contactAsksAuthorization(from, nickname, message);
+		Q_EMIT q->contactAsksAuthorization(from, nickname, message);
 
 		return;
 	}
 
 	if (flags & (MESSAGE_FLAG_SMS | MESSAGE_SMS_DELIVERY_REPORT))
 	{
-		emit q->messageReceived
+		Q_EMIT q->messageReceived
 		(
 			from, new Message(Message::Incoming, flags, plainText, from, 0x00FFFFFF)
 		);
@@ -1022,12 +1022,12 @@ void MRIMClientPrivate::processMessageAck(QByteArray data)
 		qDebug() << "Received flash mult" << smileId << flags;
 		Message* msg = new Message(Message::Incoming, flags, plainText, uRtf.rtf, uRtf.bgColor, confOwner);
 		msg->setMultParameters(smileId, smileAlt);
-		emit q->messageReceived(from, msg);
-		/*emit q->multReceived(from, smileId);*/
+		Q_EMIT q->messageReceived(from, msg);
+		/*Q_EMIT q->multReceived(from, smileId);*/
 		return;
 	}
 
-	emit q->messageReceived
+	Q_EMIT q->messageReceived
 	(
 		from, new Message(Message::Incoming, flags, plainText, uRtf.rtf, uRtf.bgColor, confOwner)
 	);
@@ -1040,7 +1040,7 @@ void MRIMClientPrivate::processMessageStatus(QByteArray data, quint32 msgseq)
 
 	quint32 st;
 	in >> st;
-	emit q->messageStatus(msgseq, st);
+	Q_EMIT q->messageStatus(msgseq, st);
 }
 
 void MRIMClientPrivate::processModifyContactAck(QByteArray data, quint32 msgseq)
@@ -1051,7 +1051,7 @@ void MRIMClientPrivate::processModifyContactAck(QByteArray data, quint32 msgseq)
 	quint32 status;
 	in >> status;
 	qDebug() << "seq = " << msgseq << ", status = " << status;
-	emit q->contactModified(msgseq, status);
+	Q_EMIT q->contactModified(msgseq, status);
 }
 
 void MRIMClientPrivate::processAddContactAck(QByteArray data, quint32 msgseq)
@@ -1071,11 +1071,11 @@ void MRIMClientPrivate::processAddContactAck(QByteArray data, quint32 msgseq)
 
 	if (chatAgent != "")
 		if (chatAgent.contains("@chat.agent"))
-			emit q->conferenceBegan(msgseq, status, contactId, chatAgent);
+			Q_EMIT q->conferenceBegan(msgseq, status, contactId, chatAgent);
 		else
-			emit q->contactAdded(msgseq, status, contactId);
+			Q_EMIT q->contactAdded(msgseq, status, contactId);
 	else
-		emit q->contactAdded(msgseq, status, contactId);
+		Q_EMIT q->contactAdded(msgseq, status, contactId);
 }
 
 void MRIMClientPrivate::processAuthorizeAck(QByteArray data)
@@ -1086,7 +1086,7 @@ void MRIMClientPrivate::processAuthorizeAck(QByteArray data)
 	QByteArray email;
 	in >> email;
 
-	emit q->contactAuthorizedMe(email);
+	Q_EMIT q->contactAuthorizedMe(email);
 }
 
 void MRIMClientPrivate::processOfflineMessageAck(QByteArray data)
@@ -1143,7 +1143,7 @@ void MRIMClientPrivate::processOfflineMessageAck(QByteArray data)
 		{
 			case 7:
 				if (!account->contactList()->findContact(mimeMsg.from()))
-					emit q->conferenceAsked(mimeMsg.from(), mimeMsg.subject());
+					Q_EMIT q->conferenceAsked(mimeMsg.from(), mimeMsg.subject());
 				break;
 			case 5:
 				plainText = tr("User %1 left the conference").arg(codec1251->toUnicode(mimeMsg.sender()));
@@ -1161,12 +1161,12 @@ void MRIMClientPrivate::processOfflineMessageAck(QByteArray data)
 		QString nickname, message;
 		unpackAuthorizationMessage(mimeMsg.rtfBase64(), nickname, message);
 
-		emit q->contactAsksAuthorization(mimeMsg.from(), nickname, message);
+		Q_EMIT q->contactAsksAuthorization(mimeMsg.from(), nickname, message);
 
 		return;
 	}
 
-	emit q->messageReceived(mimeMsg.from(), newMsg);
+	Q_EMIT q->messageReceived(mimeMsg.from(), newMsg);
 }
 
 void MRIMClientPrivate::processFileTransfer(QByteArray data)
@@ -1214,7 +1214,7 @@ void MRIMClientPrivate::processFileTransfer(QByteArray data)
 	connect(fmsg, SIGNAL(fileAck(quint32, QByteArray, quint32, QByteArray)), q, SLOT(sendFileAck(quint32, QByteArray, quint32, QByteArray)));
 	connect(fmsg, SIGNAL(proxyAck(FileMessage*, quint32, quint32, quint32, quint32, quint32, quint32)), q, SLOT(sendProxyAck(FileMessage*, quint32, quint32, quint32, quint32, quint32, quint32)));*/
 
-	emit q->fileReceived(email, totalSize, sessionId, filesAnsi, filesUtf, ips);
+	Q_EMIT q->fileReceived(email, totalSize, sessionId, filesAnsi, filesUtf, ips);
 }
 
 void MRIMClientPrivate::processFileTransferAck(QByteArray data)
@@ -1232,7 +1232,7 @@ void MRIMClientPrivate::processFileTransferAck(QByteArray data)
 
 	qDebug() << "status = " << status << ", email = " << email << ", sessionId = " << sessionId << ", mirrorIps = " << mirrorIps;
 
-	emit q->fileTransferAck(status, email, sessionId, mirrorIps);
+	Q_EMIT q->fileTransferAck(status, email, sessionId, mirrorIps);
 }
 
 void MRIMClientPrivate::processMPOPSession(QByteArray data, quint32 msgseq)
@@ -1244,7 +1244,7 @@ void MRIMClientPrivate::processMPOPSession(QByteArray data, quint32 msgseq)
 	QByteArray session;
 	in >> status >> session;
 
-	emit q->receivedMPOPSession(msgseq, status, session);
+	Q_EMIT q->receivedMPOPSession(msgseq, status, session);
 }
 
 void MRIMClientPrivate::processSmsAck(QByteArray data, quint32 msgseq)
@@ -1257,7 +1257,7 @@ void MRIMClientPrivate::processSmsAck(QByteArray data, quint32 msgseq)
 
 	qDebug() << "sms status = " << QString::number(status, 16);
 
-	emit q->smsAck(msgseq, status);
+	Q_EMIT q->smsAck(msgseq, status);
 }
 
 void MRIMClientPrivate::processProxy(QByteArray data, quint32 msgseq)
@@ -1288,7 +1288,7 @@ void MRIMClientPrivate::processProxy(QByteArray data, quint32 msgseq)
 
 	qDebug() << unk1 << unk2 << unk3;
 
-	emit q->proxy(email, idRequest, dataType, filesAnsi, proxyIps, sessionId, unk1, unk2, unk3);
+	Q_EMIT q->proxy(email, idRequest, dataType, filesAnsi, proxyIps, sessionId, unk1, unk2, unk3);
 }
 
 void MRIMClientPrivate::processProxyAck(QByteArray data, quint32 msgseq)
@@ -1313,7 +1313,7 @@ void MRIMClientPrivate::processProxyAck(QByteArray data, quint32 msgseq)
 
 	qDebug() << status;
 
-	emit q->proxyAck(status, email, idRequest, dataType, filesAnsi, ips, sessionId, unk1, unk2, unk3);
+	Q_EMIT q->proxyAck(status, email, idRequest, dataType, filesAnsi, ips, sessionId, unk1, unk2, unk3);
 }
 
 void MRIMClientPrivate::processMicroblogChanged(QByteArray data)
@@ -1344,5 +1344,5 @@ void MRIMClientPrivate::processMicroblogChanged(QByteArray data)
 	mbDateTimeD.setTime_t(mbDateTimeT);
 
 	if (!microText.isEmpty())
-		emit q->microblogChanged(email, microText, mbDateTimeD);
+		Q_EMIT q->microblogChanged(email, microText, mbDateTimeD);
 }

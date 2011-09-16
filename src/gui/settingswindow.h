@@ -57,11 +57,11 @@ public:
 
 	void setChatWindowsManager(ChatWindowsManager* cwm);
 
-signals:
+Q_SIGNALS:
 	void statusesCountChanged();
 	void newNotificationType();
 
-private slots:
+private Q_SLOTS:
 	void saveSettings();
 	void setProxyType();
 	void showFormatHelp();

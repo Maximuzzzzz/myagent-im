@@ -40,7 +40,7 @@ public:
 	
 	quint32 getGroup() const { return group; }
 
-private slots:
+private Q_SLOTS:
 	void checkResult(quint32 msgseq, quint32 status);
 
 private:

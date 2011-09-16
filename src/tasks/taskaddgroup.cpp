@@ -44,7 +44,7 @@ void Tasks::AddGroup::checkResult(quint32 msgseq, quint32 status, quint32 groupI
 	if (isMyResponse(msgseq))
 	{
 		m_groupId = groupId;
-		emit done(status, false);
+		Q_EMIT done(status, false);
 		deleteLater();
 	}
 }

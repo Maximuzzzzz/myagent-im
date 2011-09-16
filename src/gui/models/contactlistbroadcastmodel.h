@@ -17,7 +17,7 @@ public:
 	Contact* contactFromIndex(const QModelIndex& index);
 	QList<QByteArray> & broadcastList();
 
-private slots:
+private Q_SLOTS:
 	void rebuild();
 	void addContact(Contact* c);
 	void slotRemoveContactItem(Contact* c);

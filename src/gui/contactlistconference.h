@@ -15,10 +15,10 @@ public:
 	ContactListConference(Contact* conference, Account* acc, QWidget* parent = 0);
 	~ContactListConference();
 
-signals:
+Q_SIGNALS:
 	void setMembersCount(quint32);
 
-private slots:
+private Q_SLOTS:
 	void addContact(QByteArray & contact);
 	void onlineStatusChanged(OnlineStatus);
 

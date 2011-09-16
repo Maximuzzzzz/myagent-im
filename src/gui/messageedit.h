@@ -36,7 +36,7 @@ public:
 	MessageEdit(QWidget* parent = 0);
 	void setCheckSpelling(bool on);
 
-private slots:
+private Q_SLOTS:
  	void applySuggestion();
  	void addToDictionary();
 

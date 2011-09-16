@@ -17,10 +17,10 @@ public:
 
 	void toggle(bool visible);
 
-signals:
+Q_SIGNALS:
 	void toggled(bool);
 
-private slots:
+private Q_SLOTS:
 	void toggleConferenceList(bool checked);
 	void setMembersCount(quint32 cnt);
 

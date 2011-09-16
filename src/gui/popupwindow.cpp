@@ -42,12 +42,12 @@ bool NotifyTextBrowser::event(QEvent * event)
 	if (event->type() == QEvent::Enter)
 	{
 		qobject_cast<PopupWindow*>(parent())->m_notToClose = true;
-		emit qobject_cast<PopupWindow*>(parent())->mouseEntered();
+		Q_EMIT qobject_cast<PopupWindow*>(parent())->mouseEntered();
 	}
 	else if (event->type() == QEvent::Leave)
 	{
 		qobject_cast<PopupWindow*>(parent())->m_notToClose = false;
-		emit qobject_cast<PopupWindow*>(parent())->mouseLeaved();
+		Q_EMIT qobject_cast<PopupWindow*>(parent())->mouseLeaved();
 	}
 	return QWidget::event(event);
 }
@@ -55,7 +55,7 @@ bool NotifyTextBrowser::event(QEvent * event)
 void NotifyTextBrowser::mousePressEvent(QMouseEvent * event)
 {
 	if (event->type() == QEvent::MouseButtonPress)
-		emit qobject_cast<PopupWindow*>(parent())->activated();
+		Q_EMIT qobject_cast<PopupWindow*>(parent())->activated();
 }
 
 
@@ -93,7 +93,7 @@ PopupWindow::~PopupWindow()
 {
 	qDebug() << Q_FUNC_INFO;
 	timer.stop();
-	emit closePopupWindow();
+	Q_EMIT closePopupWindow();
 }
 
 void PopupWindow::closeWindow()
@@ -103,7 +103,7 @@ void PopupWindow::closeWindow()
 	if (!m_notToClose)
 	{
 		close();
-		emit closePopupWindow();
+		Q_EMIT closePopupWindow();
 	}
 }
 

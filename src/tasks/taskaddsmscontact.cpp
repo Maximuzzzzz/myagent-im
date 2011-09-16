@@ -52,7 +52,7 @@ void Tasks::AddSmsContact::checkResult(quint32 msgseq, quint32 status, quint32 c
 	if (isMyResponse(msgseq))
 	{
 		m_contactId = contactId;
-		emit done(status, false);
+		Q_EMIT done(status, false);
 		deleteLater();
 	}
 }

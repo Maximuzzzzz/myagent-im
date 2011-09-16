@@ -40,7 +40,7 @@ public:
 	
 	ContactGroup* group() const { return m_group; }
 	QString name() const { return m_name; }
-private slots:
+private Q_SLOTS:
 	void checkResult(quint32 msgseq, quint32 status);
 
 private:

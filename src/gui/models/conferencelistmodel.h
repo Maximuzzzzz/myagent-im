@@ -13,7 +13,7 @@ public:
 	ConferenceListModel();
 	~ConferenceListModel();
 
-public slots:
+public Q_SLOTS:
 	void addContact(QByteArray & email);
 	void slotRemoveContactItem(Contact* c);
 

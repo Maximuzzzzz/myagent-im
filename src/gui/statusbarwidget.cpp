@@ -80,7 +80,7 @@ void StatusBarWidget::mousePressEvent(QMouseEvent* event)
 {
 	if (event->button() == Qt::LeftButton)
 		if (active)
-			emit clicked();
+			Q_EMIT clicked();
 }
 
 void StatusBarWidget::setActive(bool state)

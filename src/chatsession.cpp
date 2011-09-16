@@ -57,12 +57,12 @@ void ChatSession::appendMessage(Message* msg, bool addInHash)
 		while (messages.value(++numering, NULL) != NULL) {}
 		messages.insert(numering, msg);
 	}
-	emit messageAppended(msg);
+	Q_EMIT messageAppended(msg);
 }
 /*
 void ChatSession::appendMult(QString multId)
 {
-	emit multAppended(multId, msg);
+	Q_EMIT multAppended(multId, msg);
 }*/
 
 void ChatSession::appendBroadcastMessage(Message* msg, ReceiversList rec, bool addInHash)
@@ -73,7 +73,7 @@ void ChatSession::appendBroadcastMessage(Message* msg, ReceiversList rec, bool a
 		messages.insert(numering, msg);
 		broadcastMessages.insert(msg, rec);
 	}
-	emit messageAppended(msg);
+	Q_EMIT messageAppended(msg);
 }
 
 bool ChatSession::sendMessage(QString plainText, QByteArray rtf)
@@ -132,12 +132,12 @@ void ChatSession::slotMessageStatus(quint32 status, bool timeout)
 	{
 		qDebug() << "Message delivered";
 		messages.remove(messages.key(task->getMessage()));
-		emit messageDelivered(true, task->getMessage());
+		Q_EMIT messageDelivered(true, task->getMessage());
 	}
 	else
 	{
 		qDebug() << "Message NOT delivered";
-		emit messageDelivered(false, task->getMessage());
+		Q_EMIT messageDelivered(false, task->getMessage());
 	}
 }
 
@@ -149,12 +149,12 @@ void ChatSession::slotBroadcastMessageStatus(quint32 status, bool timeout)
 		qDebug() << "Message delivered";
 		messages.remove(messages.key(task->getMessage()));
 		broadcastMessages.remove(broadcastMessages.key(task->getReceivers()));
-		emit messageDelivered(true, task->getMessage());
+		Q_EMIT messageDelivered(true, task->getMessage());
 /*	}
 	else
 	{
 		qDebug() << "Message NOT delivered";
-		emit messageDelivered(false, task->getMessage());
+		Q_EMIT messageDelivered(false, task->getMessage());
 	}*/
 }
 
@@ -183,10 +183,10 @@ void ChatSession::slotSmsStatus(quint32 status, bool timeout)
 	if (!timeout && status == SMS_STATUS_OK)
 	{
 		Tasks::SendSms* task = qobject_cast<Tasks::SendSms*>(sender());
-		emit smsDelivered(task->phoneNumber(), task->text());
+		Q_EMIT smsDelivered(task->phoneNumber(), task->text());
 	}
 	else
-		emit smsFailed();
+		Q_EMIT smsFailed();
 }
 
 bool ChatSession::wakeupContact()
@@ -225,7 +225,7 @@ bool ChatSession::wakeupContact()
 void ChatSession::fileReceived(quint32 totalSize, quint32 sessionId, QByteArray filesAnsi, QString filesUtf, QByteArray ips)
 {
 	qDebug() << "ChatSession::fileReceived";
-	emit signalFileReceived(totalSize, sessionId, filesAnsi, filesUtf, ips);
+	Q_EMIT signalFileReceived(totalSize, sessionId, filesAnsi, filesUtf, ips);
 }
 
 void ChatSession::resendMessage(quint32 id)
@@ -275,5 +275,5 @@ void ChatSession::clearHash()
 
 void ChatSession::slotMicroblogChanged(QString text, QDateTime mbDateTime)
 {
-	emit microblogChanged(text, mbDateTime);
+	Q_EMIT microblogChanged(text, mbDateTime);
 }

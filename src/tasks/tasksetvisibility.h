@@ -40,7 +40,7 @@ public:
 	
 	quint32 flags() const;
 
-private slots:
+private Q_SLOTS:
 	void checkResult(quint32 msgseq, quint32 status);
 private:
 	Contact* m_contact;

@@ -38,10 +38,10 @@ public:
 	void stop();
 	int secondsIdle();
 
-signals:
+Q_SIGNALS:
 	void secondsIdle(int);
 
-private slots:
+private Q_SLOTS:
 	void doCheck();
 
 private:

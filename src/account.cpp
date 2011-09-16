@@ -150,19 +150,19 @@ void Account::setOnlineStatus(OnlineStatus newStatus, qint32 id)
 	{
 		qDebug() << "newStatus = offline";
 		m_client->disconnectFromServer();
-		emit onlineStatusChanged(newStatus);
+		Q_EMIT onlineStatusChanged(newStatus);
 	}
 	else if (m_onlineStatus == OnlineStatus::offline)
 	{
 		m_onlineStatus = OnlineStatus::connecting;
 		m_contactList->load();
-		emit onlineStatusChanged(m_onlineStatus);
+		Q_EMIT onlineStatusChanged(m_onlineStatus);
 		m_client->connectToServer(newStatus);
 	}
 	else if (m_onlineStatus == OnlineStatus::connecting)
 	{
 		m_client->disconnectFromServer();
-		emit onlineStatusChanged(m_onlineStatus);
+		Q_EMIT onlineStatusChanged(m_onlineStatus);
 		m_client->connectToServer(newStatus);
 	}
 	else
@@ -171,7 +171,7 @@ void Account::setOnlineStatus(OnlineStatus newStatus, qint32 id)
 		if (m_isInAutoAway)
 			m_isInAutoAway = false;
 		m_client->changeStatus(m_onlineStatus);
-		emit onlineStatusChanged(m_onlineStatus);
+		Q_EMIT onlineStatusChanged(m_onlineStatus);
 	}
 	if (m_onlineStatus.connected())
 		saveOnlineStatus(m_onlineStatus);
@@ -185,7 +185,7 @@ void Account::slotDisconnectedFromServer()
 	
 	m_onlineStatus = OnlineStatus::offline;
 	m_isInAutoAway = false;
-	emit onlineStatusChanged(m_onlineStatus);
+	Q_EMIT onlineStatusChanged(m_onlineStatus);
 }
 
 void Account::slotLoggedIn(OnlineStatus status)
@@ -208,7 +208,7 @@ void Account::slotLoggedIn(OnlineStatus status)
 	if (m_onlineStatus != status)
 	{
 		m_onlineStatus = status;
-		emit onlineStatusChanged(m_onlineStatus);
+		Q_EMIT onlineStatusChanged(m_onlineStatus);
 	}
 }
 
@@ -221,13 +221,13 @@ void Account::slotLoginRejected(QString reason)
 void Account::setUnreadLetters(quint32 n)
 {
 	m_unreadMessages = n;
-	emit unreadLettersChanged(m_unreadMessages);
+	Q_EMIT unreadLettersChanged(m_unreadMessages);
 }
 
 void Account::slotNewLetter()
 {
 	m_unreadMessages++;
-	emit unreadLettersChanged(m_unreadMessages);
+	Q_EMIT unreadLettersChanged(m_unreadMessages);
 }
 
 void Account::setAutoAway(bool on)
@@ -256,7 +256,7 @@ void Account::setTotalMessages(const QString& totalMessages)
 	qDebug() << "Account::setTotalMessages = " << totalMessages;
 	m_totalMessages  = totalMessages.toUInt();
 
-	emit totalMessagesChanged(totalMessages);
+	Q_EMIT totalMessagesChanged(totalMessages);
 }
 
 void Account::setUnreadMessages(const QString& unreadMessages)
@@ -264,7 +264,7 @@ void Account::setUnreadMessages(const QString& unreadMessages)
 	qDebug() << "Account::setUnreadMessages" << unreadMessages;
 	m_unreadMessages = unreadMessages.toUInt();
 
-	emit unreadLettersChanged(m_unreadMessages);
+	Q_EMIT unreadLettersChanged(m_unreadMessages);
 }
 
 void Account::setNickname(QString nickname)
@@ -273,13 +273,13 @@ void Account::setNickname(QString nickname)
 
 	m_nickname = nickname;
 
-	emit nicknameChanged();
+	Q_EMIT nicknameChanged();
 }
 
 void Account::setStatusText(QString statusText)
 {
 	qDebug() << "Account::setStatusText" << statusText;
-	emit statusChanged(email(), statusText, QDateTime::currentDateTime());
+	Q_EMIT statusChanged(email(), statusText, QDateTime::currentDateTime());
 }
 
 void Account::saveOnlineStatus(OnlineStatus st)

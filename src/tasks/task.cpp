@@ -59,6 +59,6 @@ void Task::timeout()
 	qDebug() << "Task::timeout()";
 	onTimeout();
 	
-	emit done(0, true);
+	Q_EMIT done(0, true);
 	deleteLater();
 }

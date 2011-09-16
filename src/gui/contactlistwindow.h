@@ -64,14 +64,14 @@ public:
 		MicroBlog
 	};
 
-public slots:
+public Q_SLOTS:
 	void openMail();
 	void visibleWidget(Widgets w, bool st);
 
 protected:
 	virtual void closeEvent(QCloseEvent* event);
 
-private slots:
+private Q_SLOTS:
 	void slotContactItemActivated(Contact* contact);
 	void slotLoginRejected(QString reason);
 	void slotLoggedOut(quint32 reason);

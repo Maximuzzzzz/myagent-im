@@ -39,11 +39,11 @@ public:
 	ContactInfoListWindow(Account* account);
 	
 	void setInfo(const QList<ContactInfo>& info, uint maxRows);
-signals:
+Q_SIGNALS:
 	void addButtonClicked(const ContactInfo& info);
 	void moreContactsButtonClicked();
 	void newSearchButtonClicked();
-private slots:
+private Q_SLOTS:
 	void slotAddButtonClicked();
 private:
 	ContactInfoListWidget* infoListWidget;

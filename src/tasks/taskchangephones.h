@@ -42,7 +42,7 @@ public:
 	
 	QStringList phones() const { return m_phones; }
 
-private slots:
+private Q_SLOTS:
 	void checkResult(quint32 msgseq, quint32 status);
 
 private:

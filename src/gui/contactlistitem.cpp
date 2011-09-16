@@ -123,7 +123,7 @@ void ContactListItem::update()
 void ContactListItem::changeGroup(bool indeed)
 {
 	qDebug() << Q_FUNC_INFO << indeed;
-	emit groupChanged(indeed);
+	Q_EMIT groupChanged(indeed);
 }
 
 void ContactListItem::destroyItem()

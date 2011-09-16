@@ -34,7 +34,7 @@ Q_OBJECT
 public:
 	InputLineDialog(const QString& title, const QIcon& icon, const QString& label, const QString& regExp, const QString& text, QWidget* parent = 0);
 	QString text() const;
-private slots:
+private Q_SLOTS:
 	void checkText();
 private:
 	QLineEdit* lineEdit;

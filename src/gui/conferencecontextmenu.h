@@ -41,7 +41,7 @@ public:
 	~ConferenceContextMenu();
 
 	void setContact(Contact* c);
-private slots:
+private Q_SLOTS:
 	void exitConference();
 //	void renameContact();
 	void showHistory();

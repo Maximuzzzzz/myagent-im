@@ -36,7 +36,7 @@ public:
 
 	QString nickname() const;
 	QStringList phones() const;
-private slots:
+private Q_SLOTS:
 	void checkData();
 };
 

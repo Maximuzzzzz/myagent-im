@@ -43,16 +43,16 @@ public:
 	quint32 groupsCount() { return m_groups.count(); };
 
 	void setContact(Contact* c);
-signals:
+Q_SIGNALS:
 	void moveContact(quint32);
 
-public slots:
+public Q_SLOTS:
 	void addGroup(ContactGroup* group);
 	void renameGroup(ContactGroup* group);
 	void removeGroup(ContactGroup* group);
 	void clearAll();
 
-private slots:
+private Q_SLOTS:
 	void moveContactTo();
 
 private:
@@ -69,7 +69,7 @@ public:
 	~ContactContextMenu();
 
 	void setContact(Contact* c);
-private slots:
+private Q_SLOTS:
 	void showContactInfo();
 	void removeContact();
 	void ignoreContact();

@@ -38,10 +38,10 @@ public:
 	bool addContact() const;
 	int group() const;
 
-signals:
+Q_SIGNALS:
 	void accepted();
 
-private slots:
+private Q_SLOTS:
 	void showContactInfo();
 	void slotOkClicked();
 private:

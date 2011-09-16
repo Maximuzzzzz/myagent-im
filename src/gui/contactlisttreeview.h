@@ -42,7 +42,7 @@ public:
 
 	virtual void setModel(QAbstractItemModel* model);
 
-signals:
+Q_SIGNALS:
 	void contactItemActivated(Contact* contact);
 
 protected:
@@ -54,7 +54,7 @@ protected:
 	//virtual void paintEvent(QPaintEvent* event);
 	virtual void contextMenuEvent(QContextMenuEvent* e);
 
-private slots:
+private Q_SLOTS:
 	void slotActivated(const QModelIndex& index);
 	void groupCollapsed(QModelIndex index);
 	void groupExpanded(QModelIndex index);

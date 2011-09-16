@@ -49,7 +49,7 @@ public:
 	QString statusDescr() { return m_statusDescr->text(); }
 	bool changed() { return m_changed; }
 
-private slots:
+private Q_SLOTS:
 	void showStatusSelector();
 	void statusSelected(QString id);
 	void statusChanged();
@@ -73,11 +73,11 @@ public:
 	OnlineStatusesEditor(Account* account);
 	~OnlineStatusesEditor();
 
-signals:
+Q_SIGNALS:
 	void statusChanged(qint32 i, OnlineStatus);
 	void statusesChanged();
 
-private slots:
+private Q_SLOTS:
 	void saveStatuses();
 
 private:

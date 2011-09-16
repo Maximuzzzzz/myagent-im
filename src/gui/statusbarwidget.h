@@ -33,13 +33,13 @@ public:
 	StatusBarWidget();
 	~StatusBarWidget();
 
-public slots:
+public Q_SLOTS:
 	void clearStatus();
 	void setStatus(const QString& status);
 	void setStatus(QByteArray status);
 	void setActive(bool state);
 
-signals:
+Q_SIGNALS:
 	void clicked();
 
 protected:

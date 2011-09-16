@@ -244,7 +244,7 @@ void ContactContextMenu::showHistory()
 {
 	QString viewDescription = "HistoryView:" + m_contact->email();
 	
-	foreach (QWidget* widget, QApplication::topLevelWidgets())
+	Q_FOREACH (QWidget* widget, QApplication::topLevelWidgets())
 	{
 		if (widget->objectName() == viewDescription)
 		{
@@ -362,7 +362,7 @@ void SubmenuMoveToGroup::moveContactTo()
 {
 	qDebug() << "SubmenuMoveToGroup::moveContactTo()";
 	ContactGroup* group = m_groups.key(qobject_cast<QAction*>(sender()));
-	emit moveContact(group->id());
+	Q_EMIT moveContact(group->id());
 }
 
 void SubmenuMoveToGroup::setContact(Contact* c)

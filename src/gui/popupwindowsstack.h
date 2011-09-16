@@ -22,7 +22,7 @@ public:
 	PopupWindowsStack(SystemTrayIcon* sysTray);
 	~PopupWindowsStack();
 
-public slots:
+public Q_SLOTS:
 	void showNewMessage(Contact * from, const QString & to, const QDateTime dateTime);
 	void showNewLetter(const QString & from, const QString & subject, const QDateTime dateTime);
 	void showLettersUnread(const quint32 cnt);
@@ -31,14 +31,14 @@ public slots:
 	void showAllUnclosedWindows();
 	void closeAllUnclosedWindows();
 
-signals:
+Q_SIGNALS:
 	void mouseEntered();
 	void mouseLeaved();
 	void popupWindowActivated(PopupWindow::Type type);
 	void messageActivated(QByteArray & email);
 	void allPopupWindowsRemoved();
 
-private slots:
+private Q_SLOTS:
 	void retranslateWindowsGeometry();
 	void windowClosed();
 	void slotPopupWindowActivated();

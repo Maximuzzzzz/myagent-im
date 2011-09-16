@@ -50,7 +50,7 @@ void AvatarBoxWithHandle::toggleAvatarBox(bool checked)
 {
 	qDebug() << "AvatarBoxWithHandle::toggleAvatarBox checked = " << checked;
 	avatarBox->setVisible(checked);
-	emit toggled(checked);
+	Q_EMIT toggled(checked);
 }
 
 void AvatarBoxWithHandle::toggle(bool visible)

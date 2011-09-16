@@ -86,7 +86,7 @@ void StatusMenu::slotActionTriggered(QAction* action)
 		}
 		if (it == extendedActions->actions().end() && action != (*it))
 			i = -1;
-		emit statusChanged(newStatus, i);
+		Q_EMIT statusChanged(newStatus, i);
 	}
 }
 

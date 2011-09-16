@@ -10,9 +10,9 @@ class FavouriteEmoticonsDialog : public QDialog
 	class FavoritesEmoticonsWidget;
 public:
 	FavouriteEmoticonsDialog();
-signals:
+Q_SIGNALS:
 	void doubleClicked(QString id);
-private slots:
+private Q_SLOTS:
 	void slotAccepted();
 	void slotDoubleClicked(QString id);
 private:
@@ -32,7 +32,7 @@ protected:
 	virtual void dragLeaveEvent ( QDragLeaveEvent * event );
 	virtual void dragMoveEvent(QDragMoveEvent* event);
 	virtual void paintEvent(QPaintEvent* event);
-private slots:
+private Q_SLOTS:
 	void emoticonDraggingStarted();
 private:
 	QRect cursorRect;

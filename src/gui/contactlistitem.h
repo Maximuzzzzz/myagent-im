@@ -43,10 +43,10 @@ public:
 	const Contact* contact() const { return m_contact; }
 	ContactGroup* contactGroup() const { return m_group; }
 
-signals:
+Q_SIGNALS:
 	void groupChanged(bool indeed);
 
-private slots:
+private Q_SLOTS:
 //	void setStatusIcon(OnlineStatus status);
 	void changeGroup(bool indeed);
 	void destroyItem();

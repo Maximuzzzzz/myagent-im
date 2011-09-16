@@ -34,14 +34,14 @@ public:
 	MultSelector(QWidget *parent = 0);
 	~MultSelector();
 
-signals:
+Q_SIGNALS:
 	void selected(MessageEditor* editor, QString id);
 	void closed();
 
-public slots:
+public Q_SLOTS:
 	void appear(MessageEditor* editor, bool visible);
 
-private slots:
+private Q_SLOTS:
 	void slotClicked(QString id);
 /*	void correctSize();*/
 	void setCurrentLayout();

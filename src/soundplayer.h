@@ -24,7 +24,7 @@ public:
 	~SoundPlayer();
 	void playSound(SoundType soundType);
 
-signals:
+Q_SIGNALS:
 	void finished(SoundType soundType);
 
 private:
@@ -34,7 +34,7 @@ private:
 	QString soundDescription(SoundType soundType);
 	SoundType currentSound;
 
-private slots:
+private Q_SLOTS:
 	void finish();
 };
 

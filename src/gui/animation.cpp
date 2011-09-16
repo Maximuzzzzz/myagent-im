@@ -81,6 +81,6 @@ QSize Animation::size()
 
 void Animation::hide()
 {
-	foreach (EmoticonWidget* widget, emoticonWidgets)
+	Q_FOREACH (EmoticonWidget* widget, emoticonWidgets)
 		widget->hide();
 }

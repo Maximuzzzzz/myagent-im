@@ -52,7 +52,7 @@ public:
 	BroadcastMessageIterator broadcastMessagesBegin() const { return broadcastMessages.begin(); }
 	BroadcastMessageIterator broadcastMessagesEnd() const { return broadcastMessages.end(); }
 
-signals:
+Q_SIGNALS:
 	void messageAppended(const Message* msg) const;
 	/*void multAppended(QString multId, Message* msg) const;*/
 	void messageDelivered(bool really, Message* msg);
@@ -61,7 +61,7 @@ signals:
 	void signalFileReceived(quint32 totalSize, quint32 sessionId, QByteArray filesAnsi, QString filesUtf, QByteArray ips);
 	void microblogChanged(QString text, QDateTime mbDateTime);
 
-public slots:	
+public Q_SLOTS:	
 	void appendMessage(Message* msg, bool addInHash = true);
 	/*void appendMult(QString multId);*/
 	void appendBroadcastMessage(Message* msg, ReceiversList rec, bool addInHash = true);
@@ -79,7 +79,7 @@ public slots:
 	void resendMessage(quint32 id);
 	void clearHash();
 
-private slots:
+private Q_SLOTS:
 	void slotMessageStatus(quint32 status, bool timeout);
 	void slotBroadcastMessageStatus(quint32 status, bool timeout);
 	void slotSmsStatus(quint32 status, bool timeout);

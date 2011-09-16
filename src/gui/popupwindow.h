@@ -17,7 +17,7 @@ public:
 	NotifyTextBrowser(QWidget* parent = 0);
 	~NotifyTextBrowser();
 
-signals:
+Q_SIGNALS:
 	void mouseEntered();
 	void mouseLeaved();
 
@@ -53,7 +53,7 @@ public:
 
 	QByteArray & from() { return m_from; }
 
-signals:
+Q_SIGNALS:
 	void closePopupWindow();
 	void mouseEntered();
 	void mouseLeaved();
@@ -62,7 +62,7 @@ signals:
 protected:
 /*	bool eventFilter(QObject *obj, QEvent *event);*/
 
-private slots:
+private Q_SLOTS:
 	void closeWindow();
 
 private:

@@ -38,7 +38,7 @@ public:
 
 	QString groupName() const { return m_groupName; }
 	quint32 groupId() const { return m_groupId; }
-private slots:
+private Q_SLOTS:
 	void checkResult(quint32 msgseq, quint32 status, quint32 groupId);
 private:
 	QString m_groupName;

@@ -85,7 +85,7 @@ void Tasks::SearchContacts::checkResult(quint32 msgseq, quint32 status, MRIMClie
 			}
 		}
 		
-		emit done(status, false);
+		Q_EMIT done(status, false);
 		delete this;
 	}
 	else

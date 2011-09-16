@@ -39,7 +39,7 @@ public:
 
 	ContactData contactData() const;
 
-private slots:
+private Q_SLOTS:
 	void checkResult(quint32 msgseq, quint32 status, quint32 contactId);
 private:
 	quint32 m_contactId;

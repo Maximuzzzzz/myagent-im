@@ -37,7 +37,7 @@ public:
 /*protected:
 	virtual void setSource(const QString & name);*/
 
-private slots: 
+private Q_SLOTS: 
 	void processDocumentChange(int position, int charsRemoved, int charsAdded)
 	{
 		AnimationSupport<QTextBrowser>::processDocumentChange(position, charsRemoved, charsAdded);

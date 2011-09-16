@@ -39,15 +39,15 @@ public:
 	QByteArray email() const { return emailEdit->text().toLatin1(); }
 	MRIMClient::SearchParams info() const;
 
-signals:
+Q_SIGNALS:
 	void searchButtonClicked();
 
-private slots:
+private Q_SLOTS:
 	void checkCountryBox(int index);
 	void checkBirthMonth(int index);
 	void checkBirthDay(int index);
 	
-private slots:
+private Q_SLOTS:
 	void checkDate(bool b);
 private:
 	void showWarning(bool condition, const QString& msg);

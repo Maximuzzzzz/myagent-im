@@ -56,7 +56,7 @@ public:
 	
 	typedef QMap<QString, QStringList> ContactsInfo;
 	typedef QMap<quint32, QByteArray> SearchParams;
-signals:
+Q_SIGNALS:
 	void loginRejected(QString reason);
 	void loginAcknowledged(OnlineStatus status);
 	void disconnectedFromServer();
@@ -86,7 +86,7 @@ signals:
 	void connectError(QString errorMessage);
 	void conferenceClAddContact(QByteArray& contact);
 	
-public slots:
+public Q_SLOTS:
 	void connectToServer(OnlineStatus status);
 	quint32 requestContactInfo(QByteArray email);
 	quint32 searchContacts(const SearchParams& params);

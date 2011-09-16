@@ -72,7 +72,7 @@ void NewConferenceDialog::accept()
 	for (i = 1; i <= membersList->count(); i++)
 		members.append(membersList->item(i - 1)->text().toAscii());
 
-	emit accepted(conferenceName->text(), ((onlyMeRadioButton->isChecked()) ? (m_account->email()) : ("")), members);
+	Q_EMIT accepted(conferenceName->text(), ((onlyMeRadioButton->isChecked()) ? (m_account->email()) : ("")), members);
 	close();
 }
 

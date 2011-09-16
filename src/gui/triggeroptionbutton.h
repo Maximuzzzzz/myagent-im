@@ -9,7 +9,7 @@ Q_OBJECT
 public:
 	TriggerOptionButton(const QString& iconPrefix, const QString& optionName, QWidget* parent = 0);
 
-private slots:
+private Q_SLOTS:
 	void updateSettings(bool enableOption);
 
 private:

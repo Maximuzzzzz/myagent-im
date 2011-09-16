@@ -67,7 +67,7 @@ void BroadcastMessage::checkResult(quint32 msgseq, quint32 status)
 	if (seq == msgseq)
 	{
 		unsetTimer();
-		emit done(status, false);
+		Q_EMIT done(status, false);
 		delete this;
 	}
 }

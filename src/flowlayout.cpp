@@ -118,7 +118,7 @@ QSize FlowLayout::minimumSize() const
 {
 	QSize size;
 	QLayoutItem *item;
-	foreach ( item, itemList )
+	Q_FOREACH ( item, itemList )
 	size = size.expandedTo ( item->minimumSize() );
 
 	int left, top, right, bottom;
@@ -137,7 +137,7 @@ int FlowLayout::doLayout ( const QRect &rect, bool testOnly ) const
 	int lineHeight = 0;
 
 	QLayoutItem *item;
-	foreach ( item, itemList )
+	Q_FOREACH ( item, itemList )
 	{
 		int nextX = x + item->sizeHint().width() + spacing();
 		if ( nextX - spacing() > (rect.right() - right) && lineHeight > 0 )

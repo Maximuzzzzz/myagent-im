@@ -48,7 +48,7 @@ void Tasks::AddContact::checkResult(quint32 msgseq, quint32 status, quint32 cont
 	if (isMyResponse(msgseq))
 	{
 		m_contactId = contactId;
-		emit done(status, false);
+		Q_EMIT done(status, false);
 		deleteLater();
 	}
 }

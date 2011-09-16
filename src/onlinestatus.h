@@ -83,7 +83,7 @@ public:
 	bool operator<=(OnlineStatus another) { return (m_type <= another.m_type);  }
 	bool operator<(OnlineStatus another) { return (m_type < another.m_type); }
 
-private slots:
+private Q_SLOTS:
 	void setMType();
 
 private:

@@ -168,7 +168,7 @@ void PopupWindowsStack::deleteAllWindows()
 	qDeleteAll(existingWindows);
 	existingWindows.clear();
 	shownWindows.clear();
-	emit allPopupWindowsRemoved();
+	Q_EMIT allPopupWindowsRemoved();
 }
 
 void PopupWindowsStack::showAllUnclosedWindows()
@@ -213,7 +213,7 @@ void PopupWindowsStack::slotPopupWindowActivated()
 	{
 /*		existingWindows.removeAll(p);
 		shownWindows.removeAll(p);*/
-		emit messageActivated(p->from());
+		Q_EMIT messageActivated(p->from());
 /*		p->deleteLater();
 		retranslateWindowsGeometry();*/
 	} //TODO: ChatWindow::activated NEEDS!

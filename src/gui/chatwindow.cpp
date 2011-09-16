@@ -315,7 +315,7 @@ bool ChatWindow::sendSms()
 		return false;
 
 	smsEditor->blockInput();
-	emit smsEditorActivate();
+	Q_EMIT smsEditorActivate();
 
 	theRM.getAudio()->play(STOtprav);
 
@@ -459,7 +459,7 @@ void ChatWindow::appendMessageToView(const Message* msg, bool newIncoming)
 
 	if (msg->flags() & MESSAGE_FLAG_ALARM && msg->type() == Message::Incoming)
 		shake();
-	emit newMessage(this);
+	Q_EMIT newMessage(this);
 }
 
 /*void ChatWindow::appendMultToView(QString multId)
@@ -523,7 +523,7 @@ void ChatWindow::messageDelivered(bool really, Message* msg)
 		else
 			theRM.getAudio()->play(STMessage);
 
-		emit newMessage(this);
+		Q_EMIT newMessage(this);
 	}
 	else
 		delete msg;
@@ -568,7 +568,7 @@ void ChatWindow::appendSmsToView(QByteArray phoneNumber, QString text)
 	smsEditor->clear();
 
 	qApp->alert(this);
-	emit newMessage(this);
+	Q_EMIT newMessage(this);
 }
 
 void ChatWindow::smsFailed()
@@ -633,9 +633,9 @@ void ChatWindow::editorActivate()
 void ChatWindow::slotEditorActivate(int tab)
 {
 	if (tab == 0 && !session->contact()->isPhone())
-		emit messageEditorActivate();
+		Q_EMIT messageEditorActivate();
 	else if (tab == 1)
-		emit smsEditorActivate();
+		Q_EMIT smsEditorActivate();
 }
 
 void ChatWindow::slotTimeout()
@@ -725,7 +725,7 @@ void ChatWindow::fileReceiving(quint32 totalSize, quint32 sessionId, QByteArray 
 	vScrollBar->triggerAction(QAbstractSlider::SliderToMaximum);
 
 	qApp->alert(this);
-	emit newMessage(this);
+	Q_EMIT newMessage(this);
 }
 
 void ChatWindow::slotAnchorClicked(QUrl url)
@@ -861,7 +861,7 @@ void ChatWindow::slotFileTransferred(FileMessage::Status action, QString filesIn
 void ChatWindow::setContactStatusIcon(QString type)
 {
 	setWindowIcon(session->contact()->chatWindowIcon(type));
-	emit setMainWindowIconAndTitle(windowIcon(), this);
+	Q_EMIT setMainWindowIconAndTitle(windowIcon(), this);
 }
 
 void ChatWindow::contactUpdated()
@@ -871,7 +871,7 @@ void ChatWindow::contactUpdated()
 	else
 		setWindowTitle(session->contact()->nickname() + " - " + session->contact()->status().statusDescr());
 	sendButtonEnabledProcess();
-	emit setMainWindowIconAndTitle(windowIcon(), this);
+	Q_EMIT setMainWindowIconAndTitle(windowIcon(), this);
 }
 
 void ChatWindow::sendButtonEnabledProcess()
@@ -892,9 +892,9 @@ void ChatWindow::showBroadcastPanel(bool visible)
 void ChatWindow::contactIgnored()
 {
 	if (session->contact()->isIgnored())
-		emit contactIgnored(true);
+		Q_EMIT contactIgnored(true);
 	else
-		emit contactIgnored(false);
+		Q_EMIT contactIgnored(false);
 }
 
 void ChatWindow::transferringCancelled()

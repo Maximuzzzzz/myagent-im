@@ -34,9 +34,9 @@ Q_OBJECT
 public:
 	NewLettersLabel(Account* account, QWidget* parent = 0);
 	~NewLettersLabel();
-signals:
+Q_SIGNALS:
 	void clicked();
-private slots:
+private Q_SLOTS:
 	void updateLettersNumber(uint n);
 private:
 	QLabel* lettersLabel;

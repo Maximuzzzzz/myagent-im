@@ -66,7 +66,7 @@ FileMessage::FileMessage(Type type/*, QList<QFileInfo> & files, QByteArray accEm
 		int randomPort = 1234; /*TODO: generate random port*/
 		listeningPorts << "2041" << QByteArray::number(randomPort) << "443";
 		QList<QHostAddress> IPs = QNetworkInterface::allAddresses();
-		foreach (QHostAddress ip, IPs)
+		Q_FOREACH (QHostAddress ip, IPs)
 		{
 			if (!ip.isNull() && !ip.toString().contains(':') && ip != QHostAddress::LocalHost)
 				for (i = 0; i < listeningPorts.count(); i++)
@@ -209,7 +209,7 @@ void FileMessage::processIncomingMessage(QByteArray in)
 	{
 		qDebug() << "Proxy said hello";
 		sayHello();
-//		emit startTransferring(fm_sessionId);
+//		Q_EMIT startTransferring(fm_sessionId);
 	}
 	else if (transferStatus == WAITING_FOR_HELLO && in.contains("MRA_FT_HELLO") && in.contains(fm_contEmail))
 	{
@@ -226,7 +226,7 @@ void FileMessage::processIncomingMessage(QByteArray in)
 			{
 				qDebug() << "Not mirror";
 				sayHello();
-//				emit startTransferring(fm_sessionId);
+//				Q_EMIT startTransferring(fm_sessionId);
 			}
 		}
 		else if (fm_type == Incoming)
@@ -237,7 +237,7 @@ void FileMessage::processIncomingMessage(QByteArray in)
 				qDebug() << "Mirror, not proxy";
 				sayHello();
 			}
-			emit startTransferring(fm_sessionId);
+			Q_EMIT startTransferring(fm_sessionId);
 			getFile();
 		}
 		in = in.right(in.length() - in.indexOf(fm_contEmail) - fm_contEmail.length() - 1);
@@ -270,7 +270,7 @@ void FileMessage::processIncomingMessage(QByteArray in)
 			if (++currFile > fm_fileListAnsi.count() - 1)
 			{
 				setTransferStatus(RECEIVING_COMPLETE, 0);
-				//emit fileTransferred(transferStatus, fm_filesHtml, getReceivingDir());
+				//Q_EMIT fileTransferred(transferStatus, fm_filesHtml, getReceivingDir());
 				fm_socket->disconnectFromHost();
 			}
 			else
@@ -422,7 +422,7 @@ void FileMessage::sendFileAck(quint32 status)
 	{
 		QList<QHostAddress> localIps = QNetworkInterface::allAddresses();
 		int i;
-		foreach (QHostAddress ip, localIps)
+		Q_FOREACH (QHostAddress ip, localIps)
 		{
 			for (i = 0; i < listeningPorts.count(); i++)
 				if (!ip.isNull() && !ip.toString().contains(':') && ip != QHostAddress::LocalHost)
@@ -430,7 +430,7 @@ void FileMessage::sendFileAck(quint32 status)
 		}
 	}
 	theRM.account()->client()->sendFileAck(status, fm_contEmail, fm_sessionId, ips);
-/*	emit fileAck(status, fm_contEmail, fm_sessionId, ips);*/
+/*	Q_EMIT fileAck(status, fm_contEmail, fm_sessionId, ips);*/
 }
 
 void FileMessage::sayHello()
@@ -475,9 +475,9 @@ void FileMessage::setTransferStatus(Status s, int p)
 	transferStatus = s;
 
 	/*if (s == TRANSFERRING_COMPLETE || s == RECEIVING_COMPLETE || s == TRANSFER_ERROR || s == RECEIVE_ERROR)
-		emit fileTransferred(s, fm_filesHtml, fm_defaultDir);*/
-	emit progress(s, p);
-	emit fileTransferred(transferStatus, fm_filesHtml, getReceivingDir());
+		Q_EMIT fileTransferred(s, fm_filesHtml, fm_defaultDir);*/
+	Q_EMIT progress(s, p);
+	Q_EMIT fileTransferred(transferStatus, fm_filesHtml, getReceivingDir());
 }
 
 void FileMessage::sendFiles(/*MRIMClient* cl*/)
@@ -563,7 +563,7 @@ void FileMessage::slotFileTransferStatus(quint32 status, QByteArray email, quint
 			{
 				qDebug() << "I can't to connect to you. Let's try proxy?";
 				useProxy = true;
-				//emit proxy(this, MRIM_PROXY_TYPE_FILES);
+				//Q_EMIT proxy(this, MRIM_PROXY_TYPE_FILES);
 				theRM.account()->client()->sendProxy(this, MRIM_PROXY_TYPE_FILES);
 			}
 		}
@@ -723,7 +723,7 @@ void FileMessage::initProxy(quint32 dataType, QByteArray proxyIps, quint32 sessi
 	{
 		qDebug() << "Connected to proxy";
 		theRM.account()->client()->sendProxyAck(this, PROXY_STATUS_OK, dataType, sessionId, fm_unk[0], fm_unk[1], fm_unk[2]);
-/*		emit proxyAck(this, PROXY_STATUS_OK, dataType, sessionId, fm_unk[0], fm_unk[1], fm_unk[2]);*/
+/*		Q_EMIT proxyAck(this, PROXY_STATUS_OK, dataType, sessionId, fm_unk[0], fm_unk[1], fm_unk[2]);*/
 		proxyHello();
 	}
 	else
@@ -774,12 +774,12 @@ bool FileMessage::cancelTransferring(quint32 sessId, bool sendCancelPackage)
 
 	if (fm_type == Incoming)
 	{
-		//emit fileTransferred(RECEIVE_CANCEL, fm_filesHtml, getReceivingDir());
+		//Q_EMIT fileTransferred(RECEIVE_CANCEL, fm_filesHtml, getReceivingDir());
 		setTransferStatus(RECEIVE_CANCEL, 0);
 	}
 	else if (fm_type == Outgoing)
 	{
-		//emit fileTransferred(TRANSFER_CANCEL, fm_filesHtml, getReceivingDir());
+		//Q_EMIT fileTransferred(TRANSFER_CANCEL, fm_filesHtml, getReceivingDir());
 		setTransferStatus(TRANSFER_CANCEL, 0);
 	}
 
@@ -788,7 +788,7 @@ bool FileMessage::cancelTransferring(quint32 sessId, bool sendCancelPackage)
 			theRM.account()->client()->sendFileAck(FILE_TRANSFER_STATUS_DECLINE, fm_contEmail, fm_sessionId, "");
 		else
 			theRM.account()->client()->sendProxyAck(this, PROXY_STATUS_DECLINE, MRIM_PROXY_TYPE_FILES, fm_proxySessId, fm_unk[0], fm_unk[1], fm_unk[2]);
-			//emit proxyAck(this, PROXY_STATUS_DECLINE, MRIM_PROXY_TYPE_FILES, fm_proxySessId, fm_unk[0], fm_unk[1], fm_unk[2]);
+			//Q_EMIT proxyAck(this, PROXY_STATUS_DECLINE, MRIM_PROXY_TYPE_FILES, fm_proxySessId, fm_unk[0], fm_unk[1], fm_unk[2]);
 
 	clearParameters();
 

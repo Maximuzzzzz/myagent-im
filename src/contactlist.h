@@ -94,7 +94,7 @@ public:
 	ContactGroup* notInGroup() { return m_notInGroup; }
 	ContactGroup* notAuthorized() { return m_notAuthorized; }
 
-signals:
+Q_SIGNALS:
 	void groupAdded(ContactGroup* group);
 	void groupRenamed(ContactGroup* group);
 	void groupRemoved(ContactGroup* group);
@@ -112,7 +112,7 @@ signals:
 	void addGroupOnServerError(QString error);
 	void renameGroupError(QString error);
 
-public slots:
+public Q_SLOTS:
 	void changeContactStatus(OnlineStatus status, QByteArray email);
 	void contactTyping(QByteArray email);
 	void slotContactAuthorized(const QByteArray& email);
@@ -122,7 +122,7 @@ public slots:
 	void setLastSmsFrom(QByteArray & number, Contact* c);
 	void useModel(ContactListModel* model) { m_model = model; }
 
-private slots:
+private Q_SLOTS:
 	void checkOnlineStatus(OnlineStatus status);
 
 	void removeContactOnServerEnd(quint32 status, bool timeout);

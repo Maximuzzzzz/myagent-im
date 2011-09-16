@@ -84,5 +84,5 @@ void ContactInfoListWindow::setInfo(const QList<ContactInfo>& info, uint maxRows
 void ContactInfoListWindow::slotAddButtonClicked()
 {
 	if (infoListWidget->hasSelection())
-		emit addButtonClicked(infoListWidget->selectedInfo());
+		Q_EMIT addButtonClicked(infoListWidget->selectedInfo());
 }

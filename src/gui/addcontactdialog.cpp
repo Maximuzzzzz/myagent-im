@@ -95,6 +95,6 @@ void AddContactDialog::showContactInfo()
 
 void AddContactDialog::accept()
 {
-	emit accepted();
+	Q_EMIT accepted();
 	close();
 }

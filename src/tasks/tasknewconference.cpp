@@ -48,7 +48,7 @@ void Tasks::NewConference::checkResult(quint32 msgseq, quint32 status, quint32 c
 	{
 		m_contactId = contactId;
 		m_chatAgent = chatAgent;
-		emit done(status, false);
+		Q_EMIT done(status, false);
 		deleteLater();
 	}
 }

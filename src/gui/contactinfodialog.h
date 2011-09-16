@@ -43,10 +43,10 @@ public:
 
 	QStringList editablePhones() const;
 
-public slots:
+public Q_SLOTS:
 	void show();
 
-private slots:
+private Q_SLOTS:
 	void showContactInfo(quint32 status, bool timeout);
 	void checkPhones();
 	void savePhones();

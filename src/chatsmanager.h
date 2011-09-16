@@ -42,13 +42,13 @@ public:
 
 	ChatSession* getSession(Contact* c);
 	
-signals:
+Q_SIGNALS:
 	void sessionCreated(ChatSession* session);
 	void sessionInitialized(ChatSession* session);
 	void messageReceived(ChatSession* session, Message* msg);
 	//void multReceived(ChatSession* session, QString multId);
 	
-private slots:
+private Q_SLOTS:
 	void processMessage(QByteArray from, Message* msg);
 	//void processMult(QByteArray from, QString multId);
 	void processFileMessage(QByteArray from, quint32 totalSize, quint32 sessionId, QByteArray filesAnsi, QString filesUtf, QByteArray ips);

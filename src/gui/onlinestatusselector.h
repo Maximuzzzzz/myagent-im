@@ -35,10 +35,10 @@ public:
 	OnlineStatusSelector(QWidget *parent = 0);
 	~OnlineStatusSelector();
 
-signals:
+Q_SIGNALS:
 	void selected(QString id);
 
-private slots:
+private Q_SLOTS:
 	void slotClicked(QString id);
 	void correctSize();
 	void setCurrentLayout();

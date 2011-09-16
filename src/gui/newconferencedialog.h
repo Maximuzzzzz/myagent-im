@@ -36,12 +36,12 @@ public:
 	NewConferenceDialog(Account* account);
 	~NewConferenceDialog();
 
-signals:
+Q_SIGNALS:
 	void accepted(QString confName, QByteArray owner, QList<QByteArray> members);
 
 public:
 	
-private slots:
+private Q_SLOTS:
 	void addMember();
 	void removeMember();
 	void accept();

@@ -34,7 +34,7 @@ public:
 	HistoryManager(QObject* parent = 0);
 	~HistoryManager();
 
-public slots:
+public Q_SLOTS:
 	void createLogger(ChatSession* session);
 };
 

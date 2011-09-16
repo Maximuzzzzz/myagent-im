@@ -39,7 +39,7 @@ public:
 	void setDragEnabled(bool on);
 	QString emoticonId() const;
 	
-signals:
+Q_SIGNALS:
 	void clicked(QString id);
 	void draggingStarted();
 	void doubleClicked(QString id);

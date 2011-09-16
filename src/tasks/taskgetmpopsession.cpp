@@ -54,7 +54,7 @@ void Tasks::GetMPOPSession::checkResult(quint32 msgseq, quint32 status, QByteArr
 	{
 		if (status == MRIM_GET_SESSION_SUCCESS)
 			m_session = session;
-		emit done(status, false);
+		Q_EMIT done(status, false);
 		delete this;
 	}
 }

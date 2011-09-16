@@ -17,7 +17,7 @@ public:
 	
 	void setGroup(ContactGroup* group);
 
-private slots:
+private Q_SLOTS:
 	void checkOnlineStatus(OnlineStatus status);
 
 	void removeGroup();

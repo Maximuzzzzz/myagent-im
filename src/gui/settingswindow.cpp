@@ -184,7 +184,7 @@ void SettingsWindow::saveCommonSettings()
 	if (onlineStatusesCount->text().toInt() >= 5 && onlineStatusesCount->text().toInt() <= 10)
 	{
 		m_account->settings()->setValue("Statuses/count", onlineStatusesCount->text());
-		emit statusesCountChanged();
+		Q_EMIT statusesCountChanged();
 	}
 }
 
@@ -596,7 +596,7 @@ void SettingsWindow::saveNotificationSettings()
 	m_account->settings()->setValue("Notification/LetterReceivedText", letterReceivedCommand->text());
 	m_account->settings()->setValue("Notification/LettersCount", lettersCountCommand->text());
 
-	emit newNotificationType();
+	Q_EMIT newNotificationType();
 }
 
 

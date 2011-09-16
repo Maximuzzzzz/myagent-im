@@ -61,7 +61,7 @@ QWidget* OnlineStatusSelector::createStatusIconsWidget(int emoticonsPerRow)
 	int row = 0;
 	int col = 0;
 
-	foreach (QString statusId, theRM.onlineStatuses()->statusesList())
+	Q_FOREACH (QString statusId, theRM.onlineStatuses()->statusesList())
 	{
 		const OnlineStatusInfo* info = theRM.onlineStatuses()->getOnlineStatusInfo(statusId);
 
@@ -90,7 +90,7 @@ OnlineStatusSelector::~OnlineStatusSelector()
 
 void OnlineStatusSelector::slotClicked(QString id)
 {
-	emit selected(id);
+	Q_EMIT selected(id);
 	close();
 }
 

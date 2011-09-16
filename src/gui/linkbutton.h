@@ -36,7 +36,7 @@ public:
 protected:
 	virtual void mouseReleaseEvent(QMouseEvent* event);
 
-private slots:
+private Q_SLOTS:
 	void copyLinkLocation();
 
 private:

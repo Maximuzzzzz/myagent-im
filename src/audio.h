@@ -12,7 +12,7 @@ Q_OBJECT
 public:
 	void play(SoundType soundType);
 
-public slots:
+public Q_SLOTS:
 	void stop(SoundType soundType);
 	void setAccount(Account* account);
 

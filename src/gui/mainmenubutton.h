@@ -44,11 +44,11 @@ public:
 	void setChatWindowsManager(ChatWindowsManager* cwm);
 	SettingsWindow* getSettingsWindow() { return settingsWindow; }
 
-signals:
+Q_SIGNALS:
 	void statusesCountChanged();
 	void notificationTypeChanged();
 
-private slots:
+private Q_SLOTS:
 	void searchContacts();
 	void showSearchResults(quint32 status, bool timeout);
 	void showAddContactDialog(const ContactInfo& info);
