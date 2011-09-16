@@ -1,8 +1,6 @@
-CLEBS += swfdec-0.6
-include (libswf/clebs.pri)
 TEMPLATE = app
 TARGET = myagent-im
-CONFIG += qt no_keywords# warn_on debug
+CONFIG += qt no_keywords #warn_on debug
 QT += network \
     phonon
 INCLUDEPATH += /usr/include
@@ -27,10 +25,15 @@ win32 {
         -llibinmemory \
         -llibquartz
 }
-unix { 
-    LIBS += -lxapian
+unix {
+    QMAKE_CXXFLAGS += $$system(xapian-config --cxxflags)
+    LIBS += $$system(xapian-config --libs)
     CONFIG += link_pkgconfig
-    PKGCONFIG += xscrnsaver
+    PKGCONFIG += xscrnsaver zlib x11
+    exists(/usr/include/swfdec/swfdec.h) {
+        HAVE_SWFDEC = yes
+        DEFINES += HAVE_SWFDEC
+    }
 }
 unix { 
     isEmpty(PREFIX):PREFIX = /usr/local
@@ -241,10 +244,6 @@ SOURCES += main.cpp \
     tasks/taskaddcontact.cpp \
     tasks/task.cpp \
     gui/contactlistitemdelegate.cpp \
-    libswf/swfdecqtwidget.cpp \
-    libswf/swfdecqtplayer.cpp \
-    libswf/swfdecqtloader.cpp \
-    libswf/swfdecqtkeys.cpp \
     mults.cpp \
     gui/multselector.cpp
 HEADERS += accountmanager.h \
@@ -380,12 +379,6 @@ HEADERS += accountmanager.h \
     tasks/task.h \
     tasks/simpleblockingtask.h \
     gui/contactlistitemdelegate.h \
-    libswf/swfdecqtwidget.h \
-    libswf/swfdecqtplayer.h \
-    libswf/swfdecqtloader.h \
-    libswf/swfdecqtkeys.h \
-    libswf/swfdecqtglobal.h \
-    libswf/swfdecqtexception.h \
     mults.h \
     gui/multselector.h
 FORMS += gui/logindialog.ui \
@@ -400,6 +393,24 @@ LEXSOURCES += onlinestatuses.ll \
     emoticons.ll \
     rtf.ll \
     plaintextparser.ll
+
+!isEmpty(HAVE_SWFDEC) {
+    CLEBS += swfdec-0.6
+    include (libswf/clebs.pri)
+
+    SOURCES += libswf/swfdecqtwidget.cpp \
+        libswf/swfdecqtplayer.cpp \
+        libswf/swfdecqtloader.cpp \
+        libswf/swfdecqtkeys.cpp
+
+    HEADERS += libswf/swfdecqtwidget.h \
+        libswf/swfdecqtplayer.h \
+        libswf/swfdecqtloader.h \
+        libswf/swfdecqtkeys.h \
+        libswf/swfdecqtglobal.h \
+        libswf/swfdecqtexception.h
+}
+
 DESTDIR = ../bin
 OBJECTS_DIR = ../build/obj
 MOC_DIR = ../build/moc

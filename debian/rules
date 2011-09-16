@@ -36,6 +36,7 @@ clean:
 
 	# Add here commands to clean up after the build process.
 	if [ -e Makefile ]; then $(MAKE) distclean; fi
+	rm -rf bin build
 
 	dh_clean 
 
@@ -77,9 +78,9 @@ binary-arch: build install
 	dh_compress
 	dh_fixperms
 #	dh_perl
-	dh_makeshlibs
+#	dh_makeshlibs
 	dh_installdeb
-##	dh_shlibdeps
+	dh_shlibdeps
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb

@@ -41,6 +41,11 @@
 #include <QToolBar>
 #include <QAction>
 
+#ifdef HAVE_SWFDEC
+#include "libswf/swfdecqtplayer.h"
+#include "libswf/swfdecqtwidget.h"
+#endif
+
 #include "protocol/mrim/proto.h"
 #include "account.h"
 #include "contact.h"
@@ -58,7 +63,10 @@
 
 ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoticonSelector, MultSelector* multSelector)
 	: QWidget(),
-	m_account(account), session(s), messageEditor(0), smsEditor(0), player(NULL)
+	m_account(account), session(s), messageEditor(0), smsEditor(0)
+#ifdef HAVE_SWFDEC
+	, player(NULL)
+#endif
 {
 	qDebug() << Q_FUNC_INFO << "{";
 
@@ -259,7 +267,9 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoti
 
 	setLayout(layout);
 
+#ifdef HAVE_SWFDEC
 	playerWidget = new SwfdecQtWidget(this);
+#endif
 
 	qDebug() << Q_FUNC_INFO << "}";
 }
@@ -324,7 +334,17 @@ bool ChatWindow::sendSms()
 
 void ChatWindow::sendMult(const QString& id)
 {
-	showMult(id);
+	const MultInfo* multInfo = theRM.mults()->getMultInfo(id);
+
+	if (!multInfo)
+	{
+		qDebug() << "Can't get mult for id = " << id;
+		return;
+	}
+
+#ifdef HAVE_SWFDEC
+	showMult(multInfo);
+#endif
 	session->sendMult(multInfo);
 }
 
@@ -439,8 +459,10 @@ void ChatWindow::appendMessageToView(const Message* msg, bool newIncoming)
 		putHeader(nick, currMessage, &prompt);
 	}
 
+#ifdef HAVE_SWFDEC
 	if (msg->isMultMessage())
 		showMult(msg->multId());
+#endif
 
 	cursor.insertHtml(prompt);
 	if (session->contact()->isPhone())
@@ -911,17 +933,10 @@ void ChatWindow::showGameMenu(bool triggered)
 	qDebug() << Q_FUNC_INFO;
 }
 
-void ChatWindow::showMult(const QString& id)
+#ifdef HAVE_SWFDEC
+void ChatWindow::showMult(const MultInfo* multInfo)
 {
 	qDebug() << Q_FUNC_INFO;
-
-	multInfo = theRM.mults()->getMultInfo(id);
-
-	if (!multInfo)
-	{
-		qDebug() << "Can't get mult for id = " << id;
-		return;
-	}
 
 	QString filename = theRM.flashResourcePrefix().append(":").append(multInfo->fileName()).append(".swf");
 
@@ -937,6 +952,7 @@ void ChatWindow::showMult(const QString& id)
 	playerWidget->show();
 	connect(player, SIGNAL(unknownSignal(QString)), this, SLOT(multSignal(QString)));
 	playerSteps = 0;
+	maxPlayerSteps = multInfo->frames().toInt();
 
 	player->setPlaying(true);
 }
@@ -946,7 +962,7 @@ void ChatWindow::multSignal(QString name)
 	if (name != "next-event")
 		return;
 
-	if (++playerSteps == multInfo->frames().toInt())
+	if (++playerSteps == maxPlayerSteps)
 	{
 		qDebug() << "Mult finished with" << playerSteps << "frames";
 		playerSteps = 0;
@@ -954,3 +970,4 @@ void ChatWindow::multSignal(QString name)
 		playerWidget->hide();
 	}
 }
+#endif

@@ -2,14 +2,13 @@ Source: myagent-im
 Section: net
 Priority: optional
 Maintainer: Alexander Volkov <volkov0aa@gmail.com>
-Build-Depends: debhelper (>= 7), libqt4-dev (>= 4.4), pkg-config, flex, zlib1g-dev, libxapian-dev, libxss-dev, libaspell-dev, libphonon-dev
+Build-Depends: debhelper (>= 7), libqt4-dev (>= 4.4), pkg-config, flex, zlib1g-dev, libxapian-dev, libx11-dev, libxss-dev, libaspell-dev, libphonon-dev
 Standards-Version: 3.8.3
 Homepage: http://code.google.com/p/myagent-im
 
 Package: myagent-im
-Architecture: amd64
-Depends: libaspell15, libc6, libgcc1, libphonon4, libqt4-network, libqtcore4, libqtgui4, libstdc++6, libx11-6, libxapian15, libxss1, zlib1g, phonon-backend-gstreamer | phonon-backend-xine | phonon-backend, phonon-backend-gstreamer | phonon-backend-xine | phonon-backend
+Architecture: any
+Depends: ${shlibs:Depends}, aspell-ru, phonon-backend-gstreamer | phonon-backend-xine | phonon-backend
 Conflicts: myagent-im-smiles-fix (<= 0.1)
 Description: Instant messaging application for Mail.ru
  Instant messenger with basic Mail.ru protocol support
-

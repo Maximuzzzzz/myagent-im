@@ -35,8 +35,11 @@
 #include "emoticonselector.h"
 #include "contactlistbroadcast.h"
 #include "contactlistconferencewithhandle.h"
-#include "libswf/swfdecqtplayer.h"
-#include "libswf/swfdecqtwidget.h"
+
+#ifdef HAVE_SWFDEC
+class SwfdecQtWidget;
+class SwfdecQtPlayer;
+#endif
 
 class QSplitter;
 class QTimeLine;
@@ -139,8 +142,10 @@ private Q_SLOTS:
 
 	void contactIgnored();
 
-	void showMult(const QString& id);
+#ifdef HAVE_SWFDEC
+	void showMult(const MultInfo* multInfo);
 	void multSignal(QString name);
+#endif
 
 protected:
 	QTimer* timer;
@@ -174,10 +179,13 @@ private:
 
 	TransferStatus transferStatus;
 
+#ifdef HAVE_SWFDEC
 	SwfdecQtWidget* playerWidget;
 	SwfdecQtPlayer* player;
+
 	quint32 playerSteps;
-	const MultInfo* multInfo;
+	quint32 maxPlayerSteps;
+#endif
 };
 
 #endif
