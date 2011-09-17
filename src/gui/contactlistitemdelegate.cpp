@@ -44,10 +44,6 @@ void ContactListItemDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 		painter->fillRect(option.rect, brush);
 	}
 
-	int x;
-	int w;
-	int y;
-
 	if (!m_model->isGroup(index))
 	{
 		Contact* contact = m_model->contactFromIndex(index);
@@ -60,9 +56,8 @@ void ContactListItemDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 		else
 			avatar = QPixmap(":/icons/noavatar_small.png");
 		avatar = avatar.scaledToHeight(45, Qt::SmoothTransformation);
-		x = option.rect.x();
-		w = option.rect.width();
-		y = option.rect.y() + ((option.rect.height() - avatar.rect().height()) / 2);
+		int x = option.rect.x();
+		int y = option.rect.y() + ((option.rect.height() - avatar.rect().height()) / 2);
 		painter->drawPixmap(x, y, avatar);
 		painter->setPen(QColor(Qt::gray));
 		painter->drawRect(x, y, avatar.rect().width(), avatar.rect().height());
@@ -115,8 +110,8 @@ void ContactListItemDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 	}
 	else
 	{
-		x = option.rect.x() + 3;
-		y = option.rect.y() + 14;
+		int x = option.rect.x() + 3;
+		int y = option.rect.y() + 14;
 		ContactGroup* group = m_model->groupFromIndex(index);
 
 		QFont f;

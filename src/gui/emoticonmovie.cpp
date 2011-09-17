@@ -124,6 +124,6 @@ void EmoticonMovie::load(const QString& id, int from)
 	}
 
 	jumpToFrame(0);
-	QSize size = currentPixmap().size();
+	//QSize size = currentPixmap().size();
 	//qDebug() << "EmoticonMovie::load currentPixmap size = " << size;
 }

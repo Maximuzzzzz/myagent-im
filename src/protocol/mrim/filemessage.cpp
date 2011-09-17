@@ -25,6 +25,8 @@
 #include <QTextCodec>
 #include <QBoxLayout>
 
+#include <limits>
+
 #include "filemessage.h"
 #include "protocol/mrim/proto.h"
 #include "protocol/mrim/mrimdatastream.h"
@@ -75,7 +77,7 @@ FileMessage::FileMessage(Type type/*, QList<QFileInfo> & files, QByteArray accEm
 	}
 	fm_error = 0;
 
-	fm_sessionId = ((double)qrand() / (double)RAND_MAX) * MAX_INT32;
+	fm_sessionId = ((double)qrand() / (double)RAND_MAX) * std::numeric_limits<quint32>::max();
 
 }
 
@@ -784,11 +786,13 @@ bool FileMessage::cancelTransferring(quint32 sessId, bool sendCancelPackage)
 	}
 
 	if (sendCancelPackage)
+	{
 		if (!useProxy)
 			theRM.account()->client()->sendFileAck(FILE_TRANSFER_STATUS_DECLINE, fm_contEmail, fm_sessionId, "");
 		else
 			theRM.account()->client()->sendProxyAck(this, PROXY_STATUS_DECLINE, MRIM_PROXY_TYPE_FILES, fm_proxySessId, fm_unk[0], fm_unk[1], fm_unk[2]);
 			//Q_EMIT proxyAck(this, PROXY_STATUS_DECLINE, MRIM_PROXY_TYPE_FILES, fm_proxySessId, fm_unk[0], fm_unk[1], fm_unk[2]);
+	}
 
 	clearParameters();
 

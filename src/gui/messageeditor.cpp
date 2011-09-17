@@ -445,7 +445,7 @@ void MessageEditor::triggerEmoticonSelector()
 		YPos = mapToGlobal(this->pos()).y() - 275;
 	else
 		YPos = mapToGlobal(this->pos()).y() + 30;
-	emoticonSelector->setGeometry(XPos, YPos, NULL, NULL);
+	emoticonSelector->setGeometry(XPos, YPos, 0, 0);
 	emoticonSelector->appear(this, !emoticonSelector->isVisible());
 }
 
@@ -465,7 +465,7 @@ void MessageEditor::triggerMultSelector()
 		YPos = mapToGlobal(this->pos()).y() - 275;
 	else
 		YPos = mapToGlobal(this->pos()).y() + 30;
-	multSelector->setGeometry(XPos, YPos, NULL, NULL);
+	multSelector->setGeometry(XPos, YPos, 0, 0);
 	multSelector->appear(this, !multSelector->isVisible());
 }
 

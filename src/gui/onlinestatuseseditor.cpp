@@ -63,7 +63,10 @@ void StatusRow::showStatusSelector()
 {
 	qDebug() << "OnlineStatusesEditor::showStatusSelector()";
 
-	QRect rect(m_parent->mapToGlobal(m_buttonIcon->pos()).x(), m_parent->mapToGlobal(m_buttonIcon->pos()).y() + m_buttonIcon->geometry().height(), NULL, NULL);
+	QRect rect(m_parent->mapToGlobal(m_buttonIcon->pos()).x(),
+		   m_parent->mapToGlobal(m_buttonIcon->pos()).y() + m_buttonIcon->geometry().height(),
+		   0, 0);
+
 	m_selector->setGeometry(rect);
 	m_selector->show();
 }

@@ -403,7 +403,10 @@ void ContactListWindow::openStatusEditor()
 	qDebug() << "ContactListWindow::openStatusEditor()";
 
 	statusEditor->show();
-	statusEditor->setGeometry(this->geometry().x(), statusBar->geometry().y() + this->geometry().y() - statusEditor->geometry().height() + statusBar->geometry().height(), this->geometry().width(), NULL);
+	statusEditor->setGeometry(this->geometry().x(),
+				  statusBar->geometry().y() + this->geometry().y() - statusEditor->geometry().height() + statusBar->geometry().height(),
+				  this->geometry().width(),
+				  0);
 }
 
 void ContactListWindow::sendMicrotext(const QString& microText)
