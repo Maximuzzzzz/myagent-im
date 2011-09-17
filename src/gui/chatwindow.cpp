@@ -41,11 +41,6 @@
 #include <QToolBar>
 #include <QAction>
 
-#ifdef HAVE_SWFDEC
-#include "libswf/swfdecqtplayer.h"
-#include "libswf/swfdecqtwidget.h"
-#endif
-
 #include "protocol/mrim/proto.h"
 #include "account.h"
 #include "contact.h"
@@ -60,13 +55,15 @@
 #include "plaintextparser.h"
 #include "gui/avatarboxwithhandle.h"
 #include "audio.h"
+#include "iflashplayer.h"
+
+#ifdef HAVE_SWFDEC
+#include "swfdecflashplayer.h"
+#endif
 
 ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoticonSelector, MultSelector* multSelector)
 	: QWidget(),
-	m_account(account), session(s), messageEditor(0), smsEditor(0)
-#ifdef HAVE_SWFDEC
-	, player(NULL)
-#endif
+	  m_account(account), session(s), messageEditor(0), smsEditor(0), flashPlayer(0)
 {
 	qDebug() << Q_FUNC_INFO << "{";
 
@@ -268,7 +265,7 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoti
 	setLayout(layout);
 
 #ifdef HAVE_SWFDEC
-	playerWidget = new SwfdecQtWidget(this);
+	flashPlayer = new SwfdecFlashPlayer(this);
 #endif
 
 	qDebug() << Q_FUNC_INFO << "}";
@@ -342,9 +339,8 @@ void ChatWindow::sendMult(const QString& id)
 		return;
 	}
 
-#ifdef HAVE_SWFDEC
 	showMult(multInfo);
-#endif
+
 	session->sendMult(multInfo);
 }
 
@@ -459,10 +455,13 @@ void ChatWindow::appendMessageToView(const Message* msg, bool newIncoming)
 		putHeader(nick, currMessage, &prompt);
 	}
 
-#ifdef HAVE_SWFDEC
 	if (msg->isMultMessage())
-		showMult(msg->multId());
-#endif
+	{
+		const MultInfo* multInfo = theRM.mults()->getMultInfo(msg->multId());
+
+		if (multInfo)
+			showMult(multInfo);
+	}
 
 	cursor.insertHtml(prompt);
 	if (session->contact()->isPhone())
@@ -933,10 +932,12 @@ void ChatWindow::showGameMenu(bool triggered)
 	qDebug() << Q_FUNC_INFO;
 }
 
-#ifdef HAVE_SWFDEC
 void ChatWindow::showMult(const MultInfo* multInfo)
 {
 	qDebug() << Q_FUNC_INFO;
+
+	if (!flashPlayer)
+		return;
 
 	QString filename = theRM.flashResourcePrefix().append(":").append(multInfo->fileName()).append(".swf");
 
@@ -944,30 +945,5 @@ void ChatWindow::showMult(const MultInfo* multInfo)
 		filename = QUrl::fromLocalFile (QFileInfo
 				(filename).absoluteFilePath()).toEncoded();
 
-	/*if (player)
-		delete player;*/ //TODO: Segmentation fault
-	player = new SwfdecQtPlayer(filename, QByteArray(), this);
-	playerWidget->setPlayer(player);
-	playerWidget->setGeometry(geometry());
-	playerWidget->show();
-	connect(player, SIGNAL(unknownSignal(QString)), this, SLOT(multSignal(QString)));
-	playerSteps = 0;
-	maxPlayerSteps = multInfo->frames().toInt();
-
-	player->setPlaying(true);
+	flashPlayer->play(filename, geometry());
 }
-
-void ChatWindow::multSignal(QString name)
-{
-	if (name != "next-event")
-		return;
-
-	if (++playerSteps == maxPlayerSteps)
-	{
-		qDebug() << "Mult finished with" << playerSteps << "frames";
-		playerSteps = 0;
-		player->setPlaying(false);
-		playerWidget->hide();
-	}
-}
-#endif

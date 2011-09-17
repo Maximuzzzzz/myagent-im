@@ -36,11 +36,6 @@
 #include "contactlistbroadcast.h"
 #include "contactlistconferencewithhandle.h"
 
-#ifdef HAVE_SWFDEC
-class SwfdecQtWidget;
-class SwfdecQtPlayer;
-#endif
-
 class QSplitter;
 class QTimeLine;
 class QTabWidget;
@@ -52,6 +47,8 @@ class MessageEditor;
 class SmsEditor;
 
 class Account;
+
+class IFlashPlayer;
 
 class ChatWindow : public QWidget
 {
@@ -142,10 +139,7 @@ private Q_SLOTS:
 
 	void contactIgnored();
 
-#ifdef HAVE_SWFDEC
 	void showMult(const MultInfo* multInfo);
-	void multSignal(QString name);
-#endif
 
 protected:
 	QTimer* timer;
@@ -179,13 +173,7 @@ private:
 
 	TransferStatus transferStatus;
 
-#ifdef HAVE_SWFDEC
-	SwfdecQtWidget* playerWidget;
-	SwfdecQtPlayer* player;
-
-	quint32 playerSteps;
-	quint32 maxPlayerSteps;
-#endif
+	IFlashPlayer* flashPlayer;
 };
 
 #endif
