@@ -59,6 +59,8 @@
 
 #ifdef HAVE_SWFDEC
 #include "swfdecflashplayer.h"
+#else
+#include "gnashplayer.h"
 #endif
 
 ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoticonSelector, MultSelector* multSelector)
@@ -266,6 +268,8 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoti
 
 #ifdef HAVE_SWFDEC
 	flashPlayer = new SwfdecFlashPlayer(this);
+#else
+	flashPlayer = new GnashPlayer(this);
 #endif
 
 	qDebug() << Q_FUNC_INFO << "}";
@@ -339,7 +343,8 @@ void ChatWindow::sendMult(const QString& id)
 		return;
 	}
 
-	showMult(multInfo);
+	/*qDebug() << Q_FUNC_INFO << "showing mult";
+	showMult(multInfo);*/
 
 	session->sendMult(multInfo);
 }
@@ -460,7 +465,10 @@ void ChatWindow::appendMessageToView(const Message* msg, bool newIncoming)
 		const MultInfo* multInfo = theRM.mults()->getMultInfo(msg->multId());
 
 		if (multInfo)
+		{
+			qDebug() << Q_FUNC_INFO << "showing mult";
 			showMult(multInfo);
+		}
 	}
 
 	cursor.insertHtml(prompt);
@@ -934,7 +942,7 @@ void ChatWindow::showGameMenu(bool triggered)
 
 void ChatWindow::showMult(const MultInfo* multInfo)
 {
-	qDebug() << Q_FUNC_INFO;
+	qDebug() << Q_FUNC_INFO << "sender =" << sender();
 
 	if (!flashPlayer)
 		return;
@@ -945,5 +953,7 @@ void ChatWindow::showMult(const MultInfo* multInfo)
 		filename = QUrl::fromLocalFile (QFileInfo
 				(filename).absoluteFilePath()).toEncoded();
 
-	flashPlayer->play(filename, geometry());
+	QRect geom = geometry();
+	QRect multGeom(mapToGlobal(geom.topLeft()), mapToGlobal(geom.bottomRight()));
+	flashPlayer->play(filename, multGeom);
 }

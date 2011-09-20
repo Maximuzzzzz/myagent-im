@@ -245,7 +245,8 @@ SOURCES += main.cpp \
     tasks/task.cpp \
     gui/contactlistitemdelegate.cpp \
     mults.cpp \
-    gui/multselector.cpp
+    gui/multselector.cpp \
+    gui/gnashplayer.cpp
 
 HEADERS += accountmanager.h \
     account.h \
@@ -382,7 +383,8 @@ HEADERS += accountmanager.h \
     gui/contactlistitemdelegate.h \
     mults.h \
     gui/multselector.h \
-    iflashplayer.h
+    gui/iflashplayer.h \
+    gui/gnashplayer.h
 
 FORMS += gui/logindialog.ui \
     gui/authorize.ui \
@@ -405,7 +407,7 @@ LEXSOURCES += onlinestatuses.ll \
         libswf/swfdecqtplayer.cpp \
         libswf/swfdecqtloader.cpp \
 	libswf/swfdecqtkeys.cpp \
-	swfdecflashplayer.cpp
+	gui/swfdecflashplayer.cpp
 
     HEADERS += libswf/swfdecqtwidget.h \
         libswf/swfdecqtplayer.h \
@@ -413,7 +415,7 @@ LEXSOURCES += onlinestatuses.ll \
         libswf/swfdecqtkeys.h \
         libswf/swfdecqtglobal.h \
 	libswf/swfdecqtexception.h \
-	swfdecflashplayer.h
+	gui/swfdecflashplayer.h
 }
 
 DESTDIR = ../bin

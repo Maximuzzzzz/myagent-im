@@ -1,6 +1,9 @@
 #ifndef IFLASHPLAYER_H
 #define IFLASHPLAYER_H
 
+class QString;
+class QRect;
+
 class IFlashPlayer
 {
 public:
