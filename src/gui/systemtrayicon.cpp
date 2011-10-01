@@ -61,11 +61,11 @@ SystemTrayIcon::SystemTrayIcon(Account* a, ContactListWindow* w, StatusMenu* sm)
 	
 	contextMenu = new QMenu;
 
-	timer = new QTimer;
+	timer = new QTimer(this);
 	connect(timer, SIGNAL(timeout()), popsStack, SLOT(closeAllUnclosedWindows()));
 	timer->setSingleShot(true);
 
-	iconTimer = new QTimer;
+	iconTimer = new QTimer(this);
 	connect(iconTimer, SIGNAL(timeout()), this, SLOT(iconTimerTimeOver()));
 	iconTimer->setSingleShot(true);
 	iconTimer->setInterval(500);

@@ -59,8 +59,7 @@ public:
 		TRANSFER_CANCEL
 	};
 
-	FileMessage(Type type);
-	
+	FileMessage(Type type, QObject* parent = 0);
 	~FileMessage();
 	
 	Type type() const { return fm_type; }

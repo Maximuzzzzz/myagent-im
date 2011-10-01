@@ -24,6 +24,7 @@
 #define HISTORYLOGGER_H
 
 #include <QObject>
+
 #include <xapian.h>
 
 class ChatSession;

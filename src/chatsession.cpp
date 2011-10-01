@@ -44,7 +44,7 @@ ChatSession::ChatSession(Account* account, Contact* contact)
 
 ChatSession::~ChatSession()
 {
-	qDebug() << "ChatSession::~ChatSession() ";
+	qDebug() << Q_FUNC_INFO;
 	qDeleteAll(messages);
 	messages.clear();
 }
@@ -54,10 +54,14 @@ void ChatSession::appendMessage(Message* msg, bool addInHash)
 	qDebug() << Q_FUNC_INFO;
 	if (addInHash)
 	{
-		while (messages.value(++numering, NULL) != NULL) {}
+		while (messages.value(++numering, 0) != 0) {}
 		messages.insert(numering, msg);
 	}
+
 	Q_EMIT messageAppended(msg);
+
+	if (!addInHash)
+		delete msg;
 }
 /*
 void ChatSession::appendMult(QString multId)
@@ -69,7 +73,7 @@ void ChatSession::appendBroadcastMessage(Message* msg, ReceiversList rec, bool a
 {
 	if (addInHash)
 	{
-		while (messages.value(++numering, NULL) != NULL) {}
+		while (messages.value(++numering, 0) != 0) {}
 		messages.insert(numering, msg);
 		broadcastMessages.insert(msg, rec);
 	}

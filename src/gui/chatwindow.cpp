@@ -140,8 +140,8 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoti
 		connect(messageEditor, SIGNAL(setSignalCheckSpelling(bool)), this, SIGNAL(setSignalCheckSpelling(bool)));
 		connect(this, SIGNAL(signalCheckSpellingSet(bool)), messageEditor, SLOT(setCheckSpelling(bool)));
 
-		fileMessageOut = new FileMessage(FileMessage::Outgoing);
-		fileMessageIn = new FileMessage(FileMessage::Incoming);
+		fileMessageOut = new FileMessage(FileMessage::Outgoing, this);
+		fileMessageIn = new FileMessage(FileMessage::Incoming, this);
 		fileMessageIn->setAccEmail(account->email());
 		fileMessageIn->setContEmail(session->contact()->email());
 		fileMessageOut->setAccEmail(account->email());

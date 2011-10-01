@@ -164,7 +164,7 @@ void HistoryViewTab::newDateSelectedInCalendar()
 
 void HistoryViewTab::showMessage(const Xapian::Document & doc)
 {
-	Message* msg = HistoryLogger::createMessage(doc);
+	QScopedPointer<Message> msg(HistoryLogger::createMessage(doc));
 	
 	QString nick;
 	if (msg->type() == Message::Outgoing)
@@ -177,8 +177,6 @@ void HistoryViewTab::showMessage(const Xapian::Document & doc)
 	cursor.movePosition(QTextCursor::End);
 	cursor.insertHtml(prompt);
 	cursor.insertFragment(msg->documentFragment());
-
-	delete msg;
 }
 
 void HistoryViewTab::showMessagesForDate(const QDate & date)

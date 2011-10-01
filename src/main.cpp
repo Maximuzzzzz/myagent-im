@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
 	Audio* audio = new Audio();
 	theRM.setAudio(audio);
 
-	LoginDialog* ld = new LoginDialog;
+	QScopedPointer<LoginDialog> ld(new LoginDialog);
 	
 	if (ld->exec() == QDialog::Rejected)
 		return 0;
@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
 	
 	account->setOnlineStatus(ld->status());
 
-	delete ld;
+	ld.reset();
 	
 	return app.exec();
 }

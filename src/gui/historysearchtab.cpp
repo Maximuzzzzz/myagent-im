@@ -109,7 +109,7 @@ HistorySearchTab::~HistorySearchTab()
 
 void HistorySearchTab::showMessage(const Xapian::Document & doc)
 {
-	Message* msg = HistoryLogger::createMessage(doc);
+	QScopedPointer<Message> msg(HistoryLogger::createMessage(doc));
 	
 	QString nick;
 	if (msg->type() == Message::Outgoing)
@@ -123,8 +123,6 @@ void HistorySearchTab::showMessage(const Xapian::Document & doc)
 	cursor.movePosition(QTextCursor::End);
 	cursor.insertHtml(prompt);
 	cursor.insertFragment(msg->documentFragment());
-
-	delete msg;
 }
 
 void HistorySearchTab::startSearch()

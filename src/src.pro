@@ -1,6 +1,6 @@
 TEMPLATE = app
 TARGET = myagent-im
-CONFIG += qt no_keywords #warn_on debug
+CONFIG += qt no_keywords warn_on debug
 QT += network \
     phonon
 INCLUDEPATH += /usr/include

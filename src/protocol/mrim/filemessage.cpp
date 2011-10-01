@@ -57,8 +57,8 @@ Steps:
 10. When Receiver gets "MRA_FT_HELLO sender@mail.ru", it sends "MRA_FT_GET_FILE file[i]", where file[i] - each of files, which sends Sender.
 */
 
-FileMessage::FileMessage(Type type/*, QList<QFileInfo> & files, QByteArray accEmail, QByteArray contEmail*/)
- : fm_type(type)
+FileMessage::FileMessage(Type type/*, QList<QFileInfo> & files, QByteArray accEmail, QByteArray contEmail*/, QObject* parent)
+ : QObject(parent), fm_type(type)
 {
 	clearParameters();
 

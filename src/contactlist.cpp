@@ -57,6 +57,21 @@ ContactList::~ContactList()
 	qDebug() << "ContactList::~ContactList()";
 	save();
 	clear();
+
+	delete m_phones;
+	m_phones = 0;
+
+	delete m_conferences;
+	m_conferences = 0;
+
+	delete m_temporary;
+	m_temporary = 0;
+
+	delete m_notInGroup;
+	m_notInGroup = 0;
+
+	delete m_notAuthorized;
+	m_notAuthorized = 0;
 }
 
 void ContactList::clear()
@@ -262,7 +277,10 @@ void ContactList::beginUpdating()
 	qDeleteAll(m_hiddenGroups);
 	m_hiddenGroups.clear();
 
+	qDeleteAll(tmpContacts);
 	tmpContacts.clear();
+
+	qDeleteAll(tmpGroups);
 	tmpGroups.clear();
 	
 	constructing = true;
@@ -445,6 +463,8 @@ void ContactList::load()
 			m_groups.append(group);
 			Q_EMIT groupAdded(group);
 		}
+		else
+			delete group;
 	}
 
 	int i;

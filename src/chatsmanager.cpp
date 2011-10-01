@@ -46,6 +46,9 @@ ChatsManager::ChatsManager(Account* account)
 
 ChatsManager::~ChatsManager()
 {
+	Q_FOREACH (ChatSession* session, sessions)
+		delete session;
+
 	qDebug() << "ChatsManager::~ChatsManager()";
 }
 
