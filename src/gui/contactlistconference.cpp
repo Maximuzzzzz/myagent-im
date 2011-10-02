@@ -28,7 +28,7 @@ ContactListConference::ContactListConference(Contact* conference, Account* acc, 
  : m_account(acc), m_conf(conference)
 {
 	qDebug() << Q_FUNC_INFO;
-	connect(acc->client(), SIGNAL(conferenceClAddContact(QByteArray&)), this, SLOT(addContact(QByteArray&)));
+	connect(acc->client(), SIGNAL(conferenceClAddContact(const QByteArray&)), this, SLOT(addContact(const QByteArray&)));
 	connect(acc, SIGNAL(onlineStatusChanged(OnlineStatus)), this, SLOT(onlineStatusChanged(OnlineStatus)));
 	accountWasConnected = acc->onlineStatus().connected();
 	membersCount = 0;
@@ -43,7 +43,7 @@ ContactListConference::~ContactListConference()
 {
 }
 
-void ContactListConference::addContact(QByteArray & contact)
+void ContactListConference::addContact(const QByteArray& contact)
 {
 	qDebug() << Q_FUNC_INFO << contact;
 	membersCount++;

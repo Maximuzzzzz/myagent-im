@@ -29,7 +29,6 @@
 
 #include "gui/emoticonmovie.h"
 
-class QPainter;
 class QTextEdit;
 class EmoticonWidget;
 

@@ -113,7 +113,7 @@ ContactListWindow::ContactListWindow(Account* account)
 	contactsTreeView->setItemDelegate(delegate);
 	contactsTreeView->setUniformRowHeights(false);
 
-	StatusMenu* statusesMenu = new StatusMenu(m_account);
+	StatusMenu* statusesMenu = new StatusMenu(m_account, this);
 	statusesMenu->setTitle(tr("My status"));
 
 	connect(statusesMenu, SIGNAL(statusChanged(OnlineStatus, qint32)), account, SLOT(setOnlineStatus(OnlineStatus, qint32)));
@@ -172,7 +172,7 @@ ContactListWindow::ContactListWindow(Account* account)
 	connect(account->chatsManager(), SIGNAL(messageReceived(ChatSession*, Message*)), chatWindowsManager, SLOT(messageProcess(ChatSession*, Message*)));
 	connect(chatWindowsManager, SIGNAL(messageReceived(Contact*, const QString&, const QDateTime)), sysTray, SLOT(newMessage(Contact*, const QString&, const QDateTime)));
 	connect(mainMenuButton, SIGNAL(notificationTypeChanged()), sysTray, SLOT(notificationTypeChange()));
-	connect(sysTray, SIGNAL(messageActivated(QByteArray&)), chatWindowsManager, SLOT(raiseWindow(QByteArray&)));
+	connect(sysTray, SIGNAL(messageActivated(const QByteArray&)), chatWindowsManager, SLOT(raiseWindow(const QByteArray&)));
 
 	sysTray->show();
 

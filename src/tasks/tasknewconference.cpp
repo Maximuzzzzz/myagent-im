@@ -37,12 +37,12 @@ bool Tasks::NewConference::exec()
 	if (!block())
 		return false;
 	
-	connect(mc, SIGNAL(conferenceBegan(quint32, quint32, quint32, QByteArray&)), this, SLOT(checkResult(quint32, quint32, quint32, QByteArray&)));
+	connect(mc, SIGNAL(conferenceBegan(quint32, quint32, quint32, const QByteArray&)), this, SLOT(checkResult(quint32, quint32, quint32, const QByteArray&)));
 	
 	return checkCall(mc->addConference(m_conferenceName, m_owner, m_members));
 }
 
-void Tasks::NewConference::checkResult(quint32 msgseq, quint32 status, quint32 contactId, QByteArray & chatAgent)
+void Tasks::NewConference::checkResult(quint32 msgseq, quint32 status, quint32 contactId, const QByteArray& chatAgent)
 {
 	if (isMyResponse(msgseq))
 	{

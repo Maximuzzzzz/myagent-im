@@ -14,7 +14,7 @@ public:
 	~ConferenceListModel();
 
 public Q_SLOTS:
-	void addContact(QByteArray & email);
+	void addContact(const QByteArray& email);
 	void slotRemoveContactItem(Contact* c);
 
 private:

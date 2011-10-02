@@ -32,6 +32,7 @@ PopupWindowsStack::PopupWindowsStack(SystemTrayIcon* sysTray)
 
 PopupWindowsStack::~PopupWindowsStack()
 {
+	deleteAllWindows();
 }
 
 void PopupWindowsStack::showNewMessage(Contact * from, const QString & to, const QDateTime dateTime)

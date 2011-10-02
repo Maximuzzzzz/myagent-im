@@ -68,7 +68,7 @@ Q_SIGNALS:
 	void messageStatus(quint32 id, quint32 status);
 	void contactModified(quint32 id, quint32 status);
 	void contactAdded(quint32 id, quint32 status, quint32 contactId);
-	void conferenceBegan(quint32 seq, quint32 status, quint32 contactId, QByteArray & chatAgent);
+	void conferenceBegan(quint32 seq, quint32 status, quint32 contactId, const QByteArray& chatAgent);
 	void contactInfoReceived(quint32 id, quint32 status, MRIMClient::ContactsInfo info, quint32 maxRows, quint32 serverTime);
 	void accountInfoReceived(quint32 status, MRIMClient::ContactsInfo info, quint32 maxRows, quint32 serverTime);
 	void contactAuthorizedMe(const QByteArray& email);
@@ -84,7 +84,7 @@ Q_SIGNALS:
 	void microblogChanged(QByteArray, QString, QDateTime);
 	void conferenceAsked(const QByteArray& confChat, const QString& confName);
 	void connectError(QString errorMessage);
-	void conferenceClAddContact(QByteArray& contact);
+	void conferenceClAddContact(const QByteArray& contact);
 	
 public Q_SLOTS:
 	void connectToServer(OnlineStatus status);
@@ -99,7 +99,7 @@ public Q_SLOTS:
 	quint32 changeContactGroup(quint32 groupID, Contact* c);
 	quint32 addContact(quint32 group, const QString& nickname, const QByteArray& email, const QString& authorizationMessage);
 	quint32 addConference(QString confName, QByteArray owner, QList<QByteArray> members);
-	quint32 addGroup(QString& name);
+	quint32 addGroup(const QString& name);
 	quint32 addSmsContact(const QString& nickname, const QStringList& phones);
 	quint32 removeContact(Contact* c);
 	quint32 removeGroup(ContactGroup* group);

@@ -51,7 +51,7 @@ public:
 
 public Q_SLOTS:
 	void raiseWindow(ChatWindow* wnd);
-	void raiseWindow(QByteArray & contact);
+	void raiseWindow(const QByteArray& contact);
 	void messageProcess(ChatSession* session, Message* msg);
 
 Q_SIGNALS:

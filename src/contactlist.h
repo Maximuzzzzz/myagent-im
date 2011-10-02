@@ -119,7 +119,7 @@ public Q_SLOTS:
 	bool newConferenceOnServer(QString confName, QByteArray owner, QList<QByteArray> members = QList<QByteArray>());
 	bool addConferenceOnServer(const QByteArray & chat, const QString & confName);
 	void ignoreContactOnServerEnd(quint32 status, bool timeout);
-	void setLastSmsFrom(QByteArray & number, Contact* c);
+	void setLastSmsFrom(const QByteArray& number, Contact* c);
 	void useModel(ContactListModel* model) { m_model = model; }
 
 private Q_SLOTS:

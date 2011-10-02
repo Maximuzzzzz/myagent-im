@@ -442,7 +442,7 @@ quint32 MRIMClient::addSmsContact(const QString & nickname, const QStringList & 
 	return p->sendPacket(MRIM_CS_ADD_CONTACT, data);
 }
 
-quint32 MRIMClient::addGroup(QString& name)
+quint32 MRIMClient::addGroup(const QString& name)
 {
 	qDebug() << "addGroup" << name;
 	

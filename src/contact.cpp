@@ -39,6 +39,8 @@
 Contact::Contact(const ContactData& contactData, ContactGroup* group, Account* account)
 	: data(contactData), m_group(group), m_account(account)
 {
+	qDebug() << Q_FUNC_INFO << "email =" << email();
+
 	m_showMicroblogText = false;
 }
 
@@ -46,6 +48,13 @@ Contact::Contact(Account* account)
 	: m_account(account)
 {
 	m_showMicroblogText = false;
+}
+
+Contact::~Contact()
+{
+	qDebug() << Q_FUNC_INFO << "email =" << email() << (void*)this;
+
+	Q_EMIT destroyed(this);
 }
 
 void Contact::update(const ContactData & contactData, ContactGroup * group)
@@ -223,13 +232,6 @@ void Contact::slotSetVisibilityResult(quint32 status, bool timeout)
 		data.flags = newFlags;
 		Q_EMIT visibilityChanged();
 	}
-}
-
-Contact::~Contact()
-{
-	qDebug() << "Contact::~ Contact() email = " << email() << (void*)this;
-
-	Q_EMIT destroyed(this);
 }
 
 void Contact::setGroup(quint32 id)

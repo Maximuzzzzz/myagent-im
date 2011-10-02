@@ -349,7 +349,7 @@ void ChatWindow::sendMult(const QString& id)
 	session->sendMult(multInfo);
 }
 
-void ChatWindow::putHeader(QString & nick, Msg currMessage, QString* prompt)
+void ChatWindow::putHeader(const QString& nick, Msg currMessage, QString* prompt)
 {
 	QByteArray tmpBA = m_account->settings()->value("Messages/mergeMessages", "").toByteArray();
 	if (tmpBA != "" && tmpBA != "contact" && tmpBA != "minute" && tmpBA != "hour")

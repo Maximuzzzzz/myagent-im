@@ -791,7 +791,7 @@ void RtfParser::parseToTextDocument(QByteArray rtf, QTextDocument* doc, int defR
 	parse(rtf, defR, defG, defB, defSize, fontFamily);
 }
 
-void RtfParser::parseToHTML(QByteArray rtf, QString & html)
+void RtfParser::parseToHTML(QByteArray rtf, QString& html)
 {
 	m_type = 1;
 	parse(rtf);

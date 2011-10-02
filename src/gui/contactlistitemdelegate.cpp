@@ -22,6 +22,8 @@
 
 #include "contactlistitemdelegate.h"
 
+#include <QDebug>
+
 #include "contactgroup.h"
 #include "contact.h"
 #include "protocol/mrim/proto.h"

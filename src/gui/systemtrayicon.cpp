@@ -49,7 +49,7 @@ SystemTrayIcon::SystemTrayIcon(Account* a, ContactListWindow* w, StatusMenu* sm)
 	popsStack = new PopupWindowsStack(this);
 	connect(popsStack, SIGNAL(mouseEntered()), this, SLOT(popsStackMouseEntered()));
 	connect(popsStack, SIGNAL(mouseLeaved()), this, SLOT(popsStackMouseLeaved()));
-	connect(popsStack, SIGNAL(messageActivated(QByteArray&)), this, SIGNAL(messageActivated(QByteArray&)));
+	connect(popsStack, SIGNAL(messageActivated(const QByteArray&)), this, SIGNAL(messageActivated(const QByteArray&)));
 	connect(popsStack, SIGNAL(allPopupWindowsRemoved()), this, SLOT(popusRemovedAll()));
 
 	//contextMenu->addAction(QIcon(""), tr("Check e-mail"), NULL, SLOT()); //TODO

@@ -22,7 +22,6 @@
 
 #include "animation.h"
 
-#include <QPainter>
 #include <QDebug>
 #include <QTextEdit>
 

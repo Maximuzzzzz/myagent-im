@@ -31,7 +31,7 @@ ConferenceListModel::~ConferenceListModel()
 {
 }
 
-void ConferenceListModel::addContact(QByteArray & email)
+void ConferenceListModel::addContact(const QByteArray& email)
 {
 	QStandardItem* item = new QStandardItem(QString(email));
 	invisibleRootItem()->appendRow(item);

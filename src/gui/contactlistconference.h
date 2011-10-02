@@ -19,7 +19,7 @@ Q_SIGNALS:
 	void setMembersCount(quint32);
 
 private Q_SLOTS:
-	void addContact(QByteArray & contact);
+	void addContact(const QByteArray& contact);
 	void onlineStatusChanged(OnlineStatus);
 
 private:

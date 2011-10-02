@@ -135,8 +135,9 @@ Contact* ContactList::addContact(const ContactData& data)
 	uint id = data.group;
 
 	QList<ContactGroup*>::const_iterator it = ((constructing) ? tmpGroups.begin() : m_groups.begin());
-	while (it != ((constructing) ? tmpGroups.end() : m_groups.end()) && (*it)->id() != id) ++it;
-	if (it != ((constructing) ? tmpGroups.end() : m_groups.end()))
+	QList<ContactGroup*>::const_iterator end_it = (constructing) ? tmpGroups.end() : m_groups.end();
+	while (it != end_it && (*it)->id() != id) ++it;
+	if (it != end_it)
 		group = *it;
 	else
 	{
@@ -987,7 +988,7 @@ void ContactList::renameGroupEnd(quint32 status, bool timeout)
 	Q_EMIT updated();
 }
 
-void ContactList::setLastSmsFrom(QByteArray & number, Contact* c)
+void ContactList::setLastSmsFrom(const QByteArray& number, Contact* c)
 {
 	qDebug() << "setLastSmsFrom" << number.right(11) << c->nickname();
 	lastSmsFrom[number.right(11)] = c;

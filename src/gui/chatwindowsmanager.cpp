@@ -293,7 +293,7 @@ void ChatWindowsManager::raiseWindow(ChatWindow* wnd)
 	}
 }
 
-void ChatWindowsManager::raiseWindow(QByteArray & contact)
+void ChatWindowsManager::raiseWindow(const QByteArray& contact)
 {
 	Contact * c = m_account->contactList()->findContact(contact);
 	ChatSession * s = m_account->chatsManager()->getSession(c);

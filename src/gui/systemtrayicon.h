@@ -52,7 +52,7 @@ public:
 	SysTrayPosition sysTrayPosition();
 
 Q_SIGNALS:
-	void messageActivated(QByteArray & email);
+	void messageActivated(const QByteArray& email);
 
 public Q_SLOTS:
 	void newMessage(Contact * from, const QString & to, const QDateTime dateTime);

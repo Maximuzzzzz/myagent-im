@@ -64,9 +64,12 @@ PopupWindow::PopupWindow(QRect position, QWidget *parent)
 {
 	m_type = None;
 	qDebug() << Q_FUNC_INFO;
-	QVBoxLayout* verticalLayout = new QVBoxLayout(this);
+	QVBoxLayout* verticalLayout = new QVBoxLayout;
+	setLayout(verticalLayout);
+
 	verticalLayout->setSpacing(0);
 	verticalLayout->setContentsMargins(0, 0, 0, 0);
+
 	textBrowser = new NotifyTextBrowser(this);
 	textBrowser->setContentsMargins(0, 0, 0, 0);
 	textBrowser->setMinimumSize(QSize(0, 50));
@@ -138,7 +141,7 @@ void PopupWindow::setLetterReceived(const QString & from, const QString & subjec
 	textBrowser->setHtml(html);
 }
 
-void PopupWindow::setMessageReceived(const QByteArray & fromEmail, const QString & fromNick, const QString & to, const QDateTime dateTime)
+void PopupWindow::setMessageReceived(const QByteArray& fromEmail, const QString& fromNick, const QString& to, const QDateTime& dateTime)
 {
 	qDebug() << Q_FUNC_INFO;
 	m_type = NewMessage;

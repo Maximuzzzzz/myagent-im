@@ -34,7 +34,6 @@
 #include <QLabel>
 #include <QComboBox>
 #include <QKeyEvent>
-#include <QPainter>
 #include <QTextCodec>
 
 #include "messageedit.h"

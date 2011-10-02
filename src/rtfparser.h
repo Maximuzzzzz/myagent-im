@@ -132,7 +132,7 @@ public:
 	
 	void parse(QByteArray rtf, int defR = -1, int defG = -1, int defB = -1, int defSize = 1, QString fontFamily = "");
 	void parseToTextDocument(QByteArray rtf, QTextDocument* doc, int defR = -1, int defG = -1, int defB = -1, int defSize = -1, QString fontFamily = "");
-	void parseToHTML(QByteArray rtf, QString & html);
+	void parseToHTML(QByteArray rtf, QString& html);
 	
 private:	
 	// Fonts table.

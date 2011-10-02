@@ -35,7 +35,7 @@ Q_SIGNALS:
 	void mouseEntered();
 	void mouseLeaved();
 	void popupWindowActivated(PopupWindow::Type type);
-	void messageActivated(QByteArray & email);
+	void messageActivated(const QByteArray& email);
 	void allPopupWindowsRemoved();
 
 private Q_SLOTS:

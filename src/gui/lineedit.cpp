@@ -229,4 +229,3 @@ void LineEdit::paintEvent(QPaintEvent *event)
         painter.drawText(textRect, Qt::AlignLeft | Qt::AlignVCenter, m_inactiveText);
     }
 }
-

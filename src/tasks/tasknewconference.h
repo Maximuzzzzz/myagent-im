@@ -41,7 +41,7 @@ public:
 	ContactData contactData() const;
 
 private Q_SLOTS:
-	void checkResult(quint32 msgseq, quint32 status, quint32 contactId, QByteArray & chatAgent);
+	void checkResult(quint32 msgseq, quint32 status, quint32 contactId, const QByteArray& chatAgent);
 
 private:
 	QString m_conferenceName;

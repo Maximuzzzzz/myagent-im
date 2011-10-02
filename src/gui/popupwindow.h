@@ -45,13 +45,13 @@ public:
 	~PopupWindow();
 	void setUnreadLettersText(const quint32 letters);
 	void setLetterReceived(const QString & from, const QString & subject, const QDateTime dateTime);
-	void setMessageReceived(const QByteArray & fromEmail, const QString & fromNick, const QString & to, const QDateTime dateTime);
+	void setMessageReceived(const QByteArray& fromEmail, const QString& fromNick, const QString& to, const QDateTime& dateTime);
 
 	bool isClosed() { return m_closed; }
 	void setNotToClose(bool really) { m_notToClose = really; }
 	Type type() { return m_type; }
 
-	QByteArray & from() { return m_from; }
+	QByteArray from() const { return m_from; }
 
 Q_SIGNALS:
 	void closePopupWindow();

@@ -35,7 +35,7 @@
 #include "protocol/mrim/proto.h"
 
 ContactListModel::ContactListModel(ContactList* contactList, bool showGroups)
- : m_showGroups(showGroups)
+ : QStandardItemModel(contactList), m_showGroups(showGroups)
 {
 	m_contactList = contactList;
 	
