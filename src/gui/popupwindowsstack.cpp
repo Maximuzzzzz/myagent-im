@@ -64,7 +64,7 @@ void PopupWindowsStack::showLettersUnread(const quint32 cnt)
 
 void PopupWindowsStack::retranslateWindowsGeometry()
 {
-	qDebug() << Q_FUNC_INFO;
+	qDebug() << Q_FUNC_INFO << "{";
 	QList<PopupWindow*>::iterator it = shownWindows.begin();
 	quint32 i = 1;
 	for (; it != shownWindows.end(); ++it)
@@ -73,11 +73,12 @@ void PopupWindowsStack::retranslateWindowsGeometry()
 		(*it)->setGeometry(g);
 		++i;
 	}
+	qDebug() << Q_FUNC_INFO << "}";
 }
 
 QRect PopupWindowsStack::newCoords(quint32 n)
 {
-	qDebug() << Q_FUNC_INFO;
+	qDebug() << Q_FUNC_INFO << "{";
 	int x = 0;
 	int y = 0;
 	switch (m_sysTray->sysTrayPosition())
@@ -139,18 +140,20 @@ QRect PopupWindowsStack::newCoords(quint32 n)
 			y = m_sysTray->geometry().bottom() + (n == 0 ? shownWindows.count() : n - 1) * theRM.popupWindowHeight;
 	}
 
+	qDebug() << Q_FUNC_INFO << "}";
 	return QRect(x, y, theRM.popupWindowWidth, theRM.popupWindowHeight);
 }
 
 PopupWindow* PopupWindowsStack::newWindow()
 {
-	qDebug() << Q_FUNC_INFO;
+	qDebug() << Q_FUNC_INFO << "{";
 	PopupWindow* p = new PopupWindow(newCoords());
 	connect(p, SIGNAL(closePopupWindow()), this, SLOT(windowClosed()));
 	connect(p, SIGNAL(mouseEntered()), this, SIGNAL(mouseEntered()));
 	connect(p, SIGNAL(mouseLeaved()), this, SIGNAL(mouseLeaved()));
 	existingWindows.append(p);
 	shownWindows.append(p);	
+	qDebug() << Q_FUNC_INFO << "}";
 	return p;
 }
 
@@ -174,7 +177,7 @@ void PopupWindowsStack::deleteAllWindows()
 
 void PopupWindowsStack::showAllUnclosedWindows()
 {
-	qDebug() << Q_FUNC_INFO;
+	qDebug() << Q_FUNC_INFO << "{";
 	QList<PopupWindow*>::iterator it = existingWindows.begin();
 	quint32 i = 1;
 	for (; it != existingWindows.end(); ++it)
@@ -184,6 +187,7 @@ void PopupWindowsStack::showAllUnclosedWindows()
 		(*it)->show();
 		++i;
 	}
+	qDebug() << Q_FUNC_INFO << "}";
 }
 
 void PopupWindowsStack::closeAllUnclosedWindows()

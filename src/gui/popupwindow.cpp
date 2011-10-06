@@ -49,7 +49,7 @@ bool NotifyTextBrowser::event(QEvent * event)
 		qobject_cast<PopupWindow*>(parent())->m_notToClose = false;
 		Q_EMIT qobject_cast<PopupWindow*>(parent())->mouseLeaved();
 	}
-	return QWidget::event(event);
+	return QTextBrowser::event(event);
 }
 
 void NotifyTextBrowser::mousePressEvent(QMouseEvent * event)
@@ -60,17 +60,20 @@ void NotifyTextBrowser::mousePressEvent(QMouseEvent * event)
 
 
 PopupWindow::PopupWindow(QRect position, QWidget *parent)
- : QWidget(parent)
+	: QWidget(parent), m_type(None)
 {
-	m_type = None;
 	qDebug() << Q_FUNC_INFO;
+
+	setWindowFlags(windowFlags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::ToolTip);
+	setAttribute(Qt::WA_QuitOnClose, false);
+
 	QVBoxLayout* verticalLayout = new QVBoxLayout;
 	setLayout(verticalLayout);
 
 	verticalLayout->setSpacing(0);
 	verticalLayout->setContentsMargins(0, 0, 0, 0);
 
-	textBrowser = new NotifyTextBrowser(this);
+	textBrowser = new NotifyTextBrowser;
 	textBrowser->setContentsMargins(0, 0, 0, 0);
 	textBrowser->setMinimumSize(QSize(0, 50));
 	textBrowser->setFocusPolicy(Qt::ClickFocus);
@@ -82,11 +85,8 @@ PopupWindow::PopupWindow(QRect position, QWidget *parent)
 
 	verticalLayout->addWidget(textBrowser);
 
-	QMetaObject::connectSlotsByName(this);
-
-	setWindowFlags(windowFlags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::ToolTip);
-	setAttribute(Qt::WA_QuitOnClose, false);
 	setGeometry(position);
+
 	m_closed = false;
 	m_notToClose = false;
 	timer.singleShot(3000, this, SLOT(closeWindow()));

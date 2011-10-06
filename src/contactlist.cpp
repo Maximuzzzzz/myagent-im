@@ -40,9 +40,8 @@
 #include "tasks/tasknewconference.h"
 
 ContactList::ContactList(Account* account)
-	: QObject(account), m_account(account)
+	: m_account(account), m_updatingFromServer(false)
 {
-	constructing = false;
 	connect(m_account, SIGNAL(onlineStatusChanged(OnlineStatus)), this, SLOT(checkOnlineStatus(OnlineStatus)));
 
 	m_phones = new ContactGroup(0, 0, tr("Phone contacts"), ContactGroup::Phones);
@@ -88,23 +87,24 @@ void ContactList::clear()
 	qDeleteAll(m_contacts);
 	m_contacts.clear();
 	
-	constructing = false;
+	m_updatingFromServer = false;
 	Q_EMIT updated();
 }
 
 void ContactList::addGroup(quint32 id, quint32 flags, const QString& name)
 {
-	qDebug() << Q_FUNC_INFO << constructing;
+	qDebug() << Q_FUNC_INFO << "m_updatingFromServer =" << m_updatingFromServer;
 	ContactGroup* group = new ContactGroup(id, flags, name);
 
 	QList<ContactGroup*>::iterator it = m_groups.begin();
 	for (; it != m_groups.end(); ++it)
+	{
 		if ((*it)->id() == group->id())
 		{
-			if (constructing)
+			if (m_updatingFromServer)
 			{
 				(*it)->update((*it)->flags(), group->name());
-				tmpGroups.append(*it);
+				m_receivedGroups.append(*it);
 				m_groups.removeAll(*it);
 				delete group;
 				Q_EMIT groupAdded(*it);
@@ -118,8 +118,10 @@ void ContactList::addGroup(quint32 id, quint32 flags, const QString& name)
 			}
 			return;
 		}
-	if (constructing)
-		tmpGroups.append(group);
+	}
+
+	if (m_updatingFromServer)
+		m_receivedGroups.append(group);
 	else
 	{
 		m_groups.append(group);
@@ -134,8 +136,8 @@ Contact* ContactList::addContact(const ContactData& data)
 	ContactGroup* group;
 	uint id = data.group;
 
-	QList<ContactGroup*>::const_iterator it = ((constructing) ? tmpGroups.begin() : m_groups.begin());
-	QList<ContactGroup*>::const_iterator end_it = (constructing) ? tmpGroups.end() : m_groups.end();
+	QList<ContactGroup*>::const_iterator it = (m_updatingFromServer ? m_receivedGroups.begin() : m_groups.begin());
+	QList<ContactGroup*>::const_iterator end_it = (m_updatingFromServer ? m_receivedGroups.end() : m_groups.end());
 	while (it != end_it && (*it)->id() != id) ++it;
 	if (it != end_it)
 		group = *it;
@@ -145,11 +147,11 @@ Contact* ContactList::addContact(const ContactData& data)
 		m_hiddenGroups.append(group);
 	}
 
-	Contact* contact = findContact(data.email, (constructing) ? (tmpContacts) : (m_contacts));
+	Contact* contact = findContact(data.email, m_updatingFromServer ? m_receivedContacts : m_contacts);
 	if (contact)
 	{
 		qDebug() << "preserving contact" << contact->email();
-		((constructing) ? (tmpContacts) : (m_contacts)).removeAll(contact);
+		(m_updatingFromServer ? m_receivedContacts : m_contacts).removeAll(contact);
 		contact->update(data, group);
 	}
 	else
@@ -158,10 +160,10 @@ Contact* ContactList::addContact(const ContactData& data)
 		contact = new Contact(data, group, m_account);
 	}
 	
-	if (constructing)
+	if (m_updatingFromServer)
 	{
 		qDebug() << "adding contact to temporary contacts";
-		tmpContacts.append(contact);
+		m_receivedContacts.append(contact);
 	}
 	else
 	{
@@ -176,7 +178,7 @@ void ContactList::addContact(Contact* contact)
 {
 	m_contacts.append(contact);
 
-	if (!constructing) Q_EMIT contactAdded(contact);
+	if (!m_updatingFromServer) Q_EMIT contactAdded(contact);
 }
 
 void ContactList::changeContactStatus(OnlineStatus status, QByteArray email)
@@ -188,7 +190,7 @@ void ContactList::changeContactStatus(OnlineStatus status, QByteArray email)
 
 Contact* ContactList::findContact(const QByteArray & email)
 {
-	return findContact(email, (constructing) ? (tmpContacts) : (m_contacts));
+	return findContact(email, m_updatingFromServer ? m_receivedContacts : m_contacts);
 }
 
 Contact* ContactList::findContact(const QByteArray& email, QList<Contact*> & list)
@@ -243,7 +245,7 @@ Contact* ContactList::findContactWithPhone(const QByteArray& phoneNumber)
 {
 	qDebug() << phoneNumber;
 
-	Contact* c = lastSmsFrom.value(phoneNumber, NULL);
+	Contact* c = m_lastSmsFrom.value(phoneNumber, NULL);
 	if (c)
 	{
 		qDebug() << "Contact found" << c->nickname();
@@ -271,20 +273,26 @@ void ContactList::contactTyping(QByteArray email)
 
 void ContactList::beginUpdating()
 {
-	qDebug() << "ContactList::beginUpdating()";
+	qDebug() << Q_FUNC_INFO << "{";
+	qDebug() << Q_FUNC_INFO << "m_receivedContacts:" << m_receivedContacts;
 
 	Q_EMIT groupsCleared();
 	
 	qDeleteAll(m_hiddenGroups);
 	m_hiddenGroups.clear();
 
-	qDeleteAll(tmpContacts);
-	tmpContacts.clear();
+	qDebug() << Q_FUNC_INFO << "m_receivedContacts:" << m_receivedContacts;
+	qDebug() << Q_FUNC_INFO << "m_contacts:" << m_contacts;
 
-	qDeleteAll(tmpGroups);
-	tmpGroups.clear();
+	qDeleteAll(m_receivedContacts);
+	m_receivedContacts.clear();
+
+	qDeleteAll(m_receivedGroups);
+	m_receivedGroups.clear();
 	
-	constructing = true;
+	m_updatingFromServer = true;
+
+	qDebug() << Q_FUNC_INFO << "}";
 }
 
 void ContactList::endUpdating()
@@ -292,44 +300,42 @@ void ContactList::endUpdating()
 	qDebug() << "ContactList::endUpdating()";
 
 	qDeleteAll(m_groups);
-	m_groups = tmpGroups;
+	m_groups = m_receivedGroups;
 
-	QList<Contact*> contactsForDelete;
 	QList<Contact*>::iterator it = m_contacts.begin();
 	for (; it != m_contacts.end(); ++it)
 	{
-		QList<Contact*>::iterator tmp_it = tmpContacts.begin();
+		Contact* contact = *it;
+
+		QList<Contact*>::iterator rcv_it = m_receivedContacts.begin();
 		bool found = false;
-		for (; tmp_it != tmpContacts.end(); ++tmp_it)
+		for (; rcv_it != m_receivedContacts.end(); ++rcv_it)
 		{
-			if ((*it)->email() == (*tmp_it)->email())
+			Contact* receivedContact = *rcv_it;
+			if (contact->email() == receivedContact->email())
 			{
 				found = true;
-				//Update m_contacts contact, found in tmpContacts
-				(*it)->update((*tmp_it)->contactData(), (*tmp_it)->group());
-				//Remove item from tmpContacts;
-				tmpContacts.removeAll(*tmp_it);
+				//Update m_contacts contact, found in m_receivedContacts
+				contact->update(receivedContact->contactData(), receivedContact->group());
+				//Remove item from m_receivedContacts;
+				m_receivedContacts.erase(rcv_it);
+				delete receivedContact;
 				break;
 			}
 		}
 		if (!found)
-			contactsForDelete.append(*it);
+		{
+			it = m_contacts.erase(it);
+			delete contact;
+		}
 	}
 
-	//Remove from m_contacts contact, which not found in tmpContacts
-	for (it = contactsForDelete.begin(); it != contactsForDelete.end(); ++it)
-		m_contacts.removeAll(*it);
-	qDeleteAll(contactsForDelete);
-	contactsForDelete.clear();
+	//Add in m_contacts all contacts, residuary in m_receivedContacts
+	m_contacts << m_receivedContacts;
 
-	//Add in m_contacts all contacts, residuary in tmpContacts
-	for (it = tmpContacts.begin(); it != tmpContacts.end(); ++it)
-		m_contacts.append(*it);
-
-//	qDeleteAll(m_contacts);
-//	m_contacts = tmpContacts;
+	m_receivedContacts.clear();
 	
-	constructing = false;
+	m_updatingFromServer = false;
 	Q_EMIT updated();
 }
 
@@ -686,12 +692,12 @@ void ContactList::addContactOnServerEnd(quint32 status, bool timeout)
 	Contact* contact = findContact(task->email());
 	if (contact != NULL)
 	{
-		qDebug() << "Contact found in" << ((constructing) ? ("tmpContacts") : ("m_contacts"));
+		qDebug() << "Contact found in" << (m_updatingFromServer ? "m_receivedContacts" : "m_contacts");
 		if (contact->isTemporary())
 		{
 			qDebug() << "addContactOnServerEnd remove temporary contact";
-			qDebug() << constructing;
-			((constructing) ? (tmpContacts) : (m_contacts)).removeAll(contact);
+			qDebug() << "m_updatingFromServer =" << m_updatingFromServer;
+			(m_updatingFromServer ? m_receivedContacts : m_contacts).removeAll(contact);
 			Q_EMIT contactRemoved(contact);
 		}
 		else
@@ -991,7 +997,7 @@ void ContactList::renameGroupEnd(quint32 status, bool timeout)
 void ContactList::setLastSmsFrom(const QByteArray& number, Contact* c)
 {
 	qDebug() << "setLastSmsFrom" << number.right(11) << c->nickname();
-	lastSmsFrom[number.right(11)] = c;
+	m_lastSmsFrom[number.right(11)] = c;
 }
 
 void ContactList::update()

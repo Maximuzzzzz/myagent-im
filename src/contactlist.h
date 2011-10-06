@@ -137,10 +137,10 @@ private:
 	QList<ContactGroup*> m_groups;
 	QList<ContactGroup*> m_hiddenGroups;
 	QList<Contact*> m_contacts;
-	QList<Contact*> tmpContacts;
-	QList<ContactGroup*> tmpGroups;
+	QList<Contact*> m_receivedContacts;
+	QList<ContactGroup*> m_receivedGroups;
 
-	QMap<QByteArray, Contact*> lastSmsFrom;
+	QMap<QByteArray, Contact*> m_lastSmsFrom;
 
 	ContactListModel* m_model;
 
@@ -150,9 +150,9 @@ private:
 	ContactGroup* m_notInGroup;
 	ContactGroup* m_notAuthorized;
 
-	bool constructing;
-
 	Account* m_account;
+
+	bool m_updatingFromServer;
 };
 
 #endif

@@ -93,8 +93,9 @@ void Account::reset(QByteArray email, QByteArray password)
 Account::~Account()
 {
 	qDebug() << Q_FUNC_INFO;
-	delete m_chatsManager;
-	delete m_client;
+
+	// we must delete contact list here, cause it calls account methods in it's destructor
+	// and so it's impossible to use QObject hierarchy system
 	delete m_contactList;
 }
 
