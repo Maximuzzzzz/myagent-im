@@ -94,41 +94,42 @@ void ContactList::clear()
 void ContactList::addGroup(quint32 id, quint32 flags, const QString& name)
 {
 	qDebug() << Q_FUNC_INFO << "m_updatingFromServer =" << m_updatingFromServer;
-	ContactGroup* group = new ContactGroup(id, flags, name);
+	ContactGroup* newGroup = new ContactGroup(id, flags, name);
 
 	QList<ContactGroup*>::iterator it = m_groups.begin();
 	for (; it != m_groups.end(); ++it)
 	{
-		if ((*it)->id() == group->id())
+		ContactGroup* group = *it;
+		if (group->id() == newGroup->id())
 		{
 			if (m_updatingFromServer)
 			{
-				(*it)->update((*it)->flags(), group->name());
-				m_receivedGroups.append(*it);
-				m_groups.removeAll(*it);
-				delete group;
-				Q_EMIT groupAdded(*it);
+				group->update(newGroup->flags(), newGroup->name());
+				m_receivedGroups.append(group);
+				m_groups.removeAll(group);
+				delete newGroup;
+				Q_EMIT groupAdded(group);
 			}
 			else
 			{
-				m_groups.removeAll(*it);
-				m_groups.append(group);
+				m_groups.removeAll(group);
+				m_groups.append(newGroup);
 				//delete (*it);
-				Q_EMIT groupAdded(group);
+				Q_EMIT groupAdded(newGroup);
 			}
 			return;
 		}
 	}
 
 	if (m_updatingFromServer)
-		m_receivedGroups.append(group);
+		m_receivedGroups.append(newGroup);
 	else
 	{
-		m_groups.append(group);
+		m_groups.append(newGroup);
 		Q_EMIT updated();
 	}
 
-	Q_EMIT groupAdded(group);
+	Q_EMIT groupAdded(newGroup);
 }
 
 Contact* ContactList::addContact(const ContactData& data)
