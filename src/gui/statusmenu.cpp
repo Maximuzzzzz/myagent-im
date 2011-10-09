@@ -55,8 +55,8 @@ StatusMenu::StatusMenu(Account* acc, QWidget* parent)
 
 	addActions(statusActions->actions());
 
-	connect(statusActions, SIGNAL(triggered(QAction*)), this, SLOT(slotActionTriggered(QAction*)));	
-	connect(extendedActions, SIGNAL(triggered(QAction*)), this, SLOT(slotActionTriggered(QAction*)));	
+	connect(statusActions, SIGNAL(triggered(QAction*)), this, SLOT(slotActionTriggered(QAction*)));
+	connect(extendedActions, SIGNAL(triggered(QAction*)), this, SLOT(slotActionTriggered(QAction*)));
 	connect(editStatuses, SIGNAL(triggered(bool)), acc, SLOT(showOnlineStatusesEditor()));
 }
 
@@ -74,20 +74,12 @@ QAction* StatusMenu::createStatusAction(OnlineStatus status)
 void StatusMenu::slotActionTriggered(QAction* action)
 {
 	OnlineStatus newStatus = action->data().value<OnlineStatus>();
-	if (newStatus != m_account->onlineStatus())
-	{
-		qint32 i = 0;
-		QList<QAction*>::iterator it;
-		for (it = extendedActions->actions().begin(); it != extendedActions->actions().end(); ++it)
-		{
-			if (action == (*it))
-				break;
-			i++;
-		}
-		if (it == extendedActions->actions().end() && action != (*it))
-			i = -1;
-		Q_EMIT statusChanged(newStatus, i);
-	}
+	if (m_account->onlineStatus() == newStatus)
+		return;
+
+	qint32 i = extendedActions->actions().indexOf(action);
+
+	Q_EMIT statusChanged(newStatus, i);
 }
 
 void StatusMenu::updateExtendedStatuses()
