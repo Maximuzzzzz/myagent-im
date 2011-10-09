@@ -19,12 +19,43 @@ const OnlineStatus OnlineStatus::dndOnline = OnlineStatus("status_dnd");
 const OnlineStatus OnlineStatus::otherOnline = OnlineStatus("");
 const OnlineStatus OnlineStatus::wrongData = OnlineStatus("wrong_data");
 
+QList<QByteArray> OnlineStatus::m_defaultIdStatuses;
+QStringList OnlineStatus::m_defaultDescrStatuses;
+
+class DefaultStatusesInitializer
+{
+public:
+	DefaultStatusesInitializer()
+	{
+		OnlineStatus::m_defaultIdStatuses << "status_22"
+						  << "status_17"
+						  << "status_21"
+						  << "status_14"
+						  << "status_27"
+						  << "status_23"
+						  << "status_5"
+						  << "status_6"
+						  << "status_4"
+						  << "status_52";
+
+		OnlineStatus::m_defaultDescrStatuses << OnlineStatus::tr("Working")
+						     << OnlineStatus::tr("Smoking")
+						     << OnlineStatus::tr("Coffee")
+						     << OnlineStatus::tr("In love")
+						     << OnlineStatus::tr("Education")
+						     << OnlineStatus::tr("Dreaming")
+						     << OnlineStatus::tr("Home")
+						     << OnlineStatus::tr("Breakfast")
+						     << OnlineStatus::tr("Sick")
+						     << OnlineStatus::tr("All people are alike, only I'm a star");
+	}
+};
+
+static DefaultStatusesInitializer defaultStatusesInitializer;
+
 OnlineStatus::OnlineStatus(QByteArray idStatus, QString statusDescr)
 	: m_idStatus(idStatus), m_statusDescr(statusDescr)
 {
-	m_defaultIdStatuses << "status_22" << "status_17" << "status_21" << "status_14" << "status_27" << "status_23" << "status_5" << "status_6" << "status_4" << "status_52";
-	m_defaultDescrStatuses << tr("Working") << tr("Smoking") << tr("Coffee") << tr("In love") << tr("Education") << tr("Dreaming") << tr("Home") << tr("Breakfast") << tr("Sick") << tr("All people are alike, only I'm a star");
-	m_onlineStatuses = theRM.onlineStatuses();
 	setMType();
 	setDescr(statusDescr);
 }
@@ -52,24 +83,25 @@ QString OnlineStatus::description() const
 
 QIcon OnlineStatus::statusIcon() const
 {
+	const OnlineStatuses* onlineStatuses = theRM.onlineStatuses();
 	switch (m_type)
 	{
 		case Unknown:
-			return QIcon(theRM.statusesResourcePrefix() + ":" + m_onlineStatuses->getOnlineStatusInfo("status_gray")->icon());
+			return QIcon(theRM.statusesResourcePrefix() + ":" + onlineStatuses->getOnlineStatusInfo("status_gray")->icon());
 		case Offline:
-			return QIcon(theRM.statusesResourcePrefix() + ":" + m_onlineStatuses->getOnlineStatusInfo("status_0")->icon());
+			return QIcon(theRM.statusesResourcePrefix() + ":" + onlineStatuses->getOnlineStatusInfo("status_0")->icon());
 		case Invisible:
-			return QIcon(theRM.statusesResourcePrefix() + ":" + m_onlineStatuses->getOnlineStatusInfo("status_3")->icon());
+			return QIcon(theRM.statusesResourcePrefix() + ":" + onlineStatuses->getOnlineStatusInfo("status_3")->icon());
 		case Away:
-			return QIcon(theRM.statusesResourcePrefix() + ":" + m_onlineStatuses->getOnlineStatusInfo("status_2")->icon());
+			return QIcon(theRM.statusesResourcePrefix() + ":" + onlineStatuses->getOnlineStatusInfo("status_2")->icon());
 		case Online:
-			return QIcon(theRM.statusesResourcePrefix() + ":" + m_onlineStatuses->getOnlineStatusInfo("status_1")->icon());
+			return QIcon(theRM.statusesResourcePrefix() + ":" + onlineStatuses->getOnlineStatusInfo("status_1")->icon());
 		case OtherOnline:
-			return QIcon(theRM.statusesResourcePrefix() + ":" + m_onlineStatuses->getOnlineStatusInfo(m_idStatus)->icon());
+			return QIcon(theRM.statusesResourcePrefix() + ":" + onlineStatuses->getOnlineStatusInfo(m_idStatus)->icon());
 		case Connecting:
-			return QIcon(theRM.statusesResourcePrefix() + ":" + m_onlineStatuses->getOnlineStatusInfo("status_connecting")->icon());
+			return QIcon(theRM.statusesResourcePrefix() + ":" + onlineStatuses->getOnlineStatusInfo("status_connecting")->icon());
 		case Unauthorized:
-			return QIcon(theRM.statusesResourcePrefix() + ":" + m_onlineStatuses->getOnlineStatusInfo("wrong_data")->icon());
+			return QIcon(theRM.statusesResourcePrefix() + ":" + onlineStatuses->getOnlineStatusInfo("wrong_data")->icon());
 		default:
 			return QIcon();
 	}
@@ -142,7 +174,7 @@ void OnlineStatus::setMType()
 {
 	if (m_idStatus == "")
 		m_type = OtherOnline;
-	else if (m_onlineStatuses->getOnlineStatusInfo(m_idStatus) == NULL)
+	else if (theRM.onlineStatuses()->getOnlineStatusInfo(m_idStatus) == NULL)
 	{
 		m_idStatus = "wrong_data";
 		m_statusDescr = tr("Wrong status data");
