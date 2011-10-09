@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>281</width>
-    <height>248</height>
+    <width>302</width>
+    <height>267</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -29,110 +29,82 @@
    <string>Login</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="res.qrc">
+   <iconset>
     <normaloff>:/icons/logindlg.png</normaloff>:/icons/logindlg.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
       <widget class="QLabel" name="emailLabel">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
        <property name="text">
         <string>E-mail:</string>
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QComboBox" name="loginBox">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="editable">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="domainBox">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <item>
-        <property name="text">
-         <string notr="true">@mail.ru</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string notr="true">@inbox.ru</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string notr="true">@bk.ru</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string notr="true">@list.ru</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
-     <item>
+     <item row="0" column="1">
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
-        <widget class="QLabel" name="passwordLabel">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>Password:</string>
+        <widget class="QComboBox" name="loginBox">
+         <property name="editable">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="passwordEdit">
-         <property name="echoMode">
-          <enum>QLineEdit::Password</enum>
-         </property>
+        <widget class="QComboBox" name="domainBox">
+         <item>
+          <property name="text">
+           <string notr="true">@mail.ru</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string notr="true">@inbox.ru</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string notr="true">@bk.ru</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string notr="true">@list.ru</string>
+          </property>
+         </item>
         </widget>
        </item>
       </layout>
      </item>
-     <item>
-      <widget class="QCheckBox" name="savePass">
-       <property name="toolTip">
-        <string/>
-       </property>
+     <item row="1" column="0">
+      <widget class="QLabel" name="passwordLabel">
        <property name="text">
-        <string>Remember password</string>
+        <string>Password:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="passwordEdit">
+       <property name="echoMode">
+        <enum>QLineEdit::Password</enum>
        </property>
       </widget>
      </item>
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout">
+    <widget class="QCheckBox" name="savePass">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="text">
+      <string>Remember password</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
       <widget class="QLabel" name="onlineStatusLabel">
        <property name="text">
@@ -141,26 +113,12 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="onlineStatusBox"/>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout">
-     <item>
-      <widget class="QPushButton" name="okButton">
-       <property name="text">
-        <string>Ok</string>
-       </property>
-       <property name="default">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="cancelButton">
-       <property name="text">
-        <string>Cancel</string>
+      <widget class="QComboBox" name="onlineStatusBox">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
       </widget>
      </item>
@@ -168,6 +126,13 @@
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="settingsButton">
+       <property name="text">
+        <string>Connection...</string>
+       </property>
+      </widget>
+     </item>
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
@@ -180,13 +145,6 @@
         </size>
        </property>
       </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="settingsButton">
-       <property name="text">
-        <string>Connection...</string>
-       </property>
-      </widget>
      </item>
     </layout>
    </item>
@@ -204,12 +162,17 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <tabstops>
   <tabstop>onlineStatusBox</tabstop>
-  <tabstop>okButton</tabstop>
-  <tabstop>cancelButton</tabstop>
  </tabstops>
  <resources>
   <include location="res.qrc"/>

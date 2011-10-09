@@ -24,6 +24,7 @@
 #define LOGINDIALOG_H
 
 #include <QDialog>
+#include <QWeakPointer>
 
 #include "ui_logindialog.h"
 #include "onlinestatus.h"
@@ -34,12 +35,13 @@ class LoginDialog : public QDialog, private Ui::LoginDialog
 Q_OBJECT
 public:
 	LoginDialog(QWidget* parent = 0);
+
 	OnlineStatus status() const;
 	QByteArray email() const;
-	QByteArray password() const { return passwordEdit->text().toLatin1(); }
 	void setEmail(const QString& email);
+	QByteArray password() const { return passwordEdit->text().toLatin1(); }
 
-	bool savePassword() { return savePass->isChecked(); }
+	bool savePassword() const { return savePass->isChecked(); }
 
 private Q_SLOTS:
 	void checkEmail();
@@ -49,17 +51,14 @@ private Q_SLOTS:
 	void slotSavePassChecked();
 
 private:
-	bool extendedStatus;
-	bool isSavePass;
-	QByteArray statusId;
-	QByteArray currPass;
-	QString statusDescr;
+	bool isExtendedStatus;
+	bool isSavePassword;
+	QByteArray currentPassword;
 
 	QSize sizeWithoutHint;
 	QSize sizeWithHint;
 
-	QPointer<SettingsWindow> settingsWindow;
-	QList<QByteArray> statusList;
+	QWeakPointer<SettingsWindow> settingsWindow;
 };
 
 #endif

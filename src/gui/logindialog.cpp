@@ -29,15 +29,10 @@
 #include "gui/centerwindow.h"
 
 LoginDialog::LoginDialog(QWidget* parent)
- : QDialog(parent)
+	: QDialog(parent), isExtendedStatus(false), isSavePassword(false)
 {
-	extendedStatus = false;
-
 	setWindowFlags(Qt::Dialog & !Qt::WindowContextHelpButtonHint);
 	setupUi(this);
-
-	currPass = "";
-	isSavePass = false;
 
 	QDir dir(theRM.basePath());
 	QStringList filters;
@@ -49,19 +44,19 @@ LoginDialog::LoginDialog(QWidget* parent)
 	loginBox->lineEdit()->setValidator(new QRegExpValidator(QRegExp("([a-z]|[A-Z]|[0-9]|[_])+([a-z]|[A-Z]|[0-9]|[_\\-\\.])*@(mail.ru|list.ru|inbox.ru|bk.ru|corp.mail.ru)"), loginBox));
 	passwordEdit->setValidator(new QRegExpValidator(QRegExp(".+"), passwordEdit));
 
-	OnlineStatus onlineStatus;
 	QList<QByteArray> statuses;
 	statuses << "status_1" << "status_dating" << "status_chat" << "status_2" << "status_3" << "status_dnd";
-	QList<QByteArray>::const_iterator it;
-	for (it = statuses.begin(); it != statuses.end(); ++it)
+
+	Q_FOREACH (const QByteArray& status, statuses)
 	{
-		QIcon currStatusIcon;
-		onlineStatus.setIdStatus(*it);
+		OnlineStatus onlineStatus;
+		onlineStatus.setIdStatus(status);
 		if (theRM.onlineStatuses()->getOnlineStatusInfo(onlineStatus.id())->available() == "1")
 		{
+			QIcon currStatusIcon;
 			currStatusIcon.addFile(theRM.statusesResourcePrefix() + ":" + theRM.onlineStatuses()->getOnlineStatusInfo(onlineStatus.id())->icon(), QSize(), QIcon::Normal, QIcon::Off);
 			onlineStatusBox->addItem(currStatusIcon, onlineStatus.statusDescr());
-			statusList << (*it);
+			onlineStatusBox->setItemData(onlineStatusBox->count() - 1, status, Qt::UserRole + 1);
 		}
 	}
 
@@ -70,7 +65,7 @@ LoginDialog::LoginDialog(QWidget* parent)
 	connect(domainBox, SIGNAL(currentIndexChanged(QString)), SLOT(slotEmailChanged()));
 	connect(passwordEdit, SIGNAL(textEdited(const QString&)), SLOT(checkPassword()));
 
-	okButton->setDisabled(true);
+	buttonBox->button(QDialogButtonBox::Ok)->setDisabled(true);
 
 	sizeWithHint = sizeHint();
 	passwordHint->setVisible(false);
@@ -78,13 +73,8 @@ LoginDialog::LoginDialog(QWidget* parent)
 	sizeWithoutHint = sizeHint();
 	setFixedSize(sizeWithoutHint);
 
-	if (emailLabel->geometry().width() > passwordLabel->geometry().width())
-		passwordLabel->setMinimumWidth(emailLabel->sizeHint().width());
-	else
-		emailLabel->setMinimumWidth(passwordLabel->sizeHint().width());
-
-	connect(okButton, SIGNAL(clicked()), this, SLOT(accept()));
-	connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
+	connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+	connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
 	connect(settingsButton, SIGNAL(clicked()), this, SLOT(showSettingsWindow()));
 	connect(savePass, SIGNAL(clicked()), this, SLOT(slotSavePassChecked()));
 
@@ -93,14 +83,9 @@ LoginDialog::LoginDialog(QWidget* parent)
 
 OnlineStatus LoginDialog::status() const
 {
-	if (onlineStatusBox->currentIndex() >= statusList.size())
-		return OnlineStatus(statusId, statusDescr);
-	else
-	{
-		OnlineStatus res;
-		res.setIdStatus(statusList.at(onlineStatusBox->currentIndex()));
-		return res;
-	}
+	OnlineStatus res;
+	res.setIdStatus(onlineStatusBox->itemData(onlineStatusBox->currentIndex(), Qt::UserRole + 1).toByteArray());
+	return res;
 }
 
 void LoginDialog::setEmail(const QString & email)
@@ -111,100 +96,105 @@ void LoginDialog::setEmail(const QString & email)
 
 void LoginDialog::checkEmail()
 {
-	if (loginBox->lineEdit()->text().contains("@"))
+	if (loginBox->lineEdit()->text().contains('@'))
 		domainBox->setVisible(false);
 	else
 		domainBox->setVisible(true);
-	okButton->setEnabled(loginBox->lineEdit()->hasAcceptableInput());
+	buttonBox->button(QDialogButtonBox::Ok)->setEnabled(loginBox->lineEdit()->hasAcceptableInput());
 }
 
 void LoginDialog::checkPassword()
 {
-	okButton->setEnabled(passwordEdit->hasAcceptableInput());
-	currPass = passwordEdit->text().toLatin1();
+	buttonBox->button(QDialogButtonBox::Ok)->setEnabled(passwordEdit->hasAcceptableInput());
+	currentPassword = passwordEdit->text().toLatin1();
 }
 
 void LoginDialog::slotEmailChanged()
 {
-	if (domainBox->isVisible() && loginBox->currentText().contains("@"))
+	if (domainBox->isVisible() && loginBox->currentText().contains('@'))
 	{
-		int i;
-		QString domain = QString("@").append(loginBox->currentText().section("@", 1));
-		for (i = 0; i < loginBox->count(); i++)
+		QString domain = "@" + loginBox->currentText().section('@', 1);
+		int i = domainBox->findText(domain);
+		if (i != -1)
 		{
-			if (domainBox->itemText(i) == domain)
-			{
-				domainBox->setCurrentIndex(i);
-				loginBox->setEditText(loginBox->currentText().left(loginBox->currentText().indexOf("@")));
-				break;
-			}
+			domainBox->blockSignals(true);
+			domainBox->setCurrentIndex(i);
+			domainBox->blockSignals(false);
+
+			loginBox->blockSignals(true);
+			loginBox->setEditText(loginBox->currentText().section('@', 0, 0));
+			loginBox->blockSignals(false);
 		}
-		if (loginBox->currentText().contains("@"))
+
+		if (loginBox->currentText().contains('@'))
 			domainBox->setVisible(false);
 	}
 
-	OnlineStatus st = theRM.loadOnlineStatus(email());
-	QByteArray pass = theRM.loadPass(email());
-	if (!pass.isEmpty())
+	QByteArray savedPassword = theRM.loadPass(email());
+	if (!savedPassword.isEmpty())
 	{
+		passwordEdit->setText(savedPassword);
+		buttonBox->button(QDialogButtonBox::Ok)->setEnabled(passwordEdit->hasAcceptableInput());
 		savePass->setChecked(true);
-		passwordEdit->setText(pass);
-		okButton->setEnabled(passwordEdit->hasAcceptableInput());
 		slotSavePassChecked();
 	}
 	else
 	{
-		passwordEdit->setText(currPass);
-		okButton->setEnabled(passwordEdit->hasAcceptableInput());
-		savePass->setChecked(isSavePass);
+		passwordEdit->setText(currentPassword);
+		buttonBox->button(QDialogButtonBox::Ok)->setEnabled(passwordEdit->hasAcceptableInput());
+		savePass->setChecked(isSavePassword);
 		slotSavePassChecked();
 	}
-	if (st.id() == "" || st == OnlineStatus::wrongData || st == OnlineStatus::unknown || st == OnlineStatus::offline || st == OnlineStatus::connecting)
+
+	onlineStatusBox->setUpdatesEnabled(false);
+	if (isExtendedStatus)
+	{
+		onlineStatusBox->removeItem(onlineStatusBox->count() - 1);
+		isExtendedStatus = false;
+	}
+
+	OnlineStatus lastStatus = theRM.loadOnlineStatus(email());
+	if (lastStatus.id().isEmpty()
+	    || lastStatus == OnlineStatus::wrongData
+	    || lastStatus == OnlineStatus::unknown
+	    || lastStatus == OnlineStatus::offline
+	    || lastStatus == OnlineStatus::connecting)
 	{
 		onlineStatusBox->setCurrentIndex(0);
+		onlineStatusBox->setUpdatesEnabled(true);
 		return;
 	}
 
-	if (extendedStatus)
+	int i = onlineStatusBox->findData(lastStatus.id(), Qt::UserRole + 1);
+	if (i != -1)
 	{
-		onlineStatusBox->removeItem(statusList.size() - 1);
-		extendedStatus = false;
+		onlineStatusBox->setCurrentIndex(i);
+		onlineStatusBox->setUpdatesEnabled(true);
+		return;
 	}
 
-	int i;
-	for (i = 0; i < statusList.size(); i++)
-	{
-		OnlineStatus status;
-		status.setIdStatus(statusList.at(i));
-		if (st == status)
-		{
-			onlineStatusBox->setCurrentIndex(i);
-			return;
-		}
-	}
 	QIcon onlineStatusIcon;
-	onlineStatusIcon.addFile(theRM.statusesResourcePrefix() + ":" + theRM.onlineStatuses()->getOnlineStatusInfo(st.id())->icon(), QSize(), QIcon::Normal, QIcon::Off);
-	onlineStatusBox->addItem(onlineStatusIcon, st.statusDescr());
-	onlineStatusBox->setCurrentIndex(statusList.size());
-	extendedStatus = true;
-	statusId = st.id();
-	statusDescr = st.statusDescr();
+	onlineStatusIcon.addFile(theRM.statusesResourcePrefix() + ":" + theRM.onlineStatuses()->getOnlineStatusInfo(lastStatus.id())->icon(), QSize(), QIcon::Normal, QIcon::Off);
+	onlineStatusBox->addItem(onlineStatusIcon, lastStatus.statusDescr());
+	onlineStatusBox->setCurrentIndex(onlineStatusBox->count() - 1);
+	onlineStatusBox->setUpdatesEnabled(true);
+	isExtendedStatus = true;
 }
 
 void LoginDialog::showSettingsWindow()
 {
-	if (settingsWindow)
+	if (!settingsWindow.isNull())
 		return;
 
 	settingsWindow = new SettingsWindow(SHOW_CONNECTION_PAGE);
-	centerWindow(settingsWindow);
-	settingsWindow->show();
+	centerWindow(settingsWindow.data());
+	settingsWindow.data()->show();
 }
 
 void LoginDialog::slotSavePassChecked()
 {
 	passwordHint->setVisible(savePass->isChecked());
-	isSavePass = savePass->isChecked();
+	isSavePassword = savePass->isChecked();
 
 	if (savePass->isChecked())
 		setFixedSize(sizeWithHint);
