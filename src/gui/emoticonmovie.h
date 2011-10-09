@@ -31,11 +31,11 @@ Q_OBJECT
 public:
 	EmoticonMovie(QObject *parent = 0);
 	~EmoticonMovie();
-	
+
 	static bool isAnimated(const QString& fileName);
-	void load(const QString& id, int from = 0);
+	void load(const QString& id);
 	QString id() const { return id_; }
-	
+
 public Q_SLOTS:
 	void start();
 	void setPaused(bool paused);

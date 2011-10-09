@@ -25,9 +25,10 @@
 #include <QDebug>
 #include <QBoxLayout>
 #include <QPixmap>
+#include <QPushButton>
+#include <QSignalMapper>
 
 #include "resourcemanager.h"
-#include "gui/emoticonwidget.h"
 
 MultSelector::MultSelector(QWidget* parent)
 	: QFrame(parent)
@@ -63,13 +64,28 @@ QWidget* MultSelector::createMultIconsWidget()
 	int row = 0;
 	int col = 0;
 
+	QSignalMapper* signalMapper = new QSignalMapper(this);
+
 	Q_FOREACH (QString multId, theRM.mults()->multList())
 	{
 		const MultInfo* info = theRM.mults()->getMultInfo(multId);
 
-		EmoticonWidget* w = new EmoticonWidget(info->id(), this, 2);
-		connect(w, SIGNAL(clicked(QString)), this, SLOT(slotClicked(QString)));
-		setLayout->addWidget(w, row, col);
+		if (!info)
+			continue;
+
+		QString filename = theRM.flashResourcePrefix().append(":").append(info->fileName()).append(".png");
+
+		QPixmap pm(filename);
+
+		QPushButton* pb = new QPushButton;
+		pb->setFlat(true);
+		pb->setIcon(pm);
+		pb->setIconSize(pm.size());
+
+		connect(pb, SIGNAL(clicked()), signalMapper, SLOT(map()));
+		signalMapper->setMapping(pb, multId);
+
+		setLayout->addWidget(pb, row, col);
 		if (col == 4)
 		{
 			col = 0;
@@ -78,6 +94,8 @@ QWidget* MultSelector::createMultIconsWidget()
 		else
 			col++;
 	}
+
+	connect(signalMapper, SIGNAL(mapped(QString)), this, SLOT(slotClicked(QString)));
 
 	layout->addLayout(setLayout);
 

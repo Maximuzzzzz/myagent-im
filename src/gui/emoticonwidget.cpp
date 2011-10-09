@@ -30,13 +30,13 @@
 
 #include "emoticonmovie.h"
 
-EmoticonWidget::EmoticonWidget(const QString& emoticonId, QWidget* parent, int from)
+EmoticonWidget::EmoticonWidget(const QString& emoticonId, QWidget* parent)
 	: QWidget(parent), movie(NULL), draggable(false)
 {
 	init();
-	
+
 	EmoticonMovie* m = new EmoticonMovie(this);
-	m->load(emoticonId, from);
+	m->load(emoticonId);
 	setMovie(m);
 }
 
@@ -44,7 +44,7 @@ EmoticonWidget::EmoticonWidget(EmoticonMovie* m, QWidget* parent)
 	: QWidget(parent), movie(NULL), draggable(false)
 {
 	init();
-	
+
 	setMovie(m);
 }
 
@@ -64,7 +64,7 @@ void EmoticonWidget::setMovie(EmoticonMovie* m)
 	if (movie)
 		movie->disconnect(this);
 	movie = m;
-	
+
 	setFixedSize(movie->currentPixmap().size());
 	connect(movie, SIGNAL(frameChanged(int)), this, SLOT(update()));
 }
@@ -73,11 +73,11 @@ void EmoticonWidget::paintEvent(QPaintEvent* event)
 {
 	if (!movie)
 		return;
-	
+
 	QPainter p(this);
 	p.eraseRect(movie->currentPixmap().rect());
 	p.drawPixmap(0, 0, movie->currentPixmap());
-	
+
 	event->accept();
 }
 
@@ -111,16 +111,16 @@ void EmoticonWidget::mouseMoveEvent(QMouseEvent * event)
 {
 	if (!draggable)
 		return;
-	
+
 	if (!(event->buttons() & Qt::LeftButton))
 		return;
-	
+
 	if ((event->pos() - dragStartPos).manhattanLength() < QApplication::startDragDistance())
 		return;
 
 	QDrag* drag = new QDrag(this);
 	QMimeData* mimeData = new QMimeData;
-	
+
 	mimeData->setData("Myagent-IM/emoticon", movie->id().toLatin1());
 	drag->setMimeData(mimeData);
 	QPixmap pm = movie->currentPixmap();

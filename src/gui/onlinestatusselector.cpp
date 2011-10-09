@@ -27,9 +27,9 @@
 #include <cmath>
 #include <QLabel>
 #include <QGridLayout>
+#include <QPushButton>
+#include <QSignalMapper>
 
-#include "gui/emoticonmovie.h"
-#include "gui/emoticonwidget.h"
 #include "resourcemanager.h"
 
 OnlineStatusSelector::OnlineStatusSelector(QWidget *parent)
@@ -61,13 +61,28 @@ QWidget* OnlineStatusSelector::createStatusIconsWidget(int emoticonsPerRow)
 	int row = 0;
 	int col = 0;
 
+	QSignalMapper* signalMapper = new QSignalMapper(this);
+
 	Q_FOREACH (QString statusId, theRM.onlineStatuses()->statusesList())
 	{
 		const OnlineStatusInfo* info = theRM.onlineStatuses()->getOnlineStatusInfo(statusId);
 
-		EmoticonWidget* w = new EmoticonWidget(info->id(), this, 1);
-		connect(w, SIGNAL(clicked(QString)), this, SLOT(slotClicked(QString)));
-		setLayout->addWidget(w, row, col);
+		if (!info)
+			continue;
+
+		QString filename = theRM.statusesResourcePrefix().append(":").append(info->icon());
+		QPixmap pm(filename);
+
+		QPushButton* pb = new QPushButton;
+		pb->setStyleSheet("QPushButton { border: 0px; }");
+		pb->setIcon(pm);
+		pb->setIconSize(pm.size());
+		pb->setFixedSize(pm.size() + QSize(2, 2));
+
+		connect(pb, SIGNAL(clicked()), signalMapper, SLOT(map()));
+		signalMapper->setMapping(pb, statusId);
+
+		setLayout->addWidget(pb, row, col);
 		if (col == emoticonsPerRow - 1)
 		{
 			col = 0;
@@ -76,6 +91,8 @@ QWidget* OnlineStatusSelector::createStatusIconsWidget(int emoticonsPerRow)
 		else
 			col++;
 	}
+
+	connect(signalMapper, SIGNAL(mapped(QString)), this, SLOT(slotClicked(QString)));
 
 	layout->addLayout(setLayout);
 
