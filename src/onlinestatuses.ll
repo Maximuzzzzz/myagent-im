@@ -175,6 +175,8 @@ void OnlineStatuses::load(QString filename)
 
 	for (const_iterator i = begin(); i != end(); ++i)
 		(*i)->addStatusesSet(m_onlineStatusIds);
+
+	qDebug() << Q_FUNC_INFO << idToOnlineStatusMap;
 }
 
 int OnlineStatuses::statusesCount()

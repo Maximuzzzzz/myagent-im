@@ -176,7 +176,9 @@ void LoginDialog::slotEmailChanged()
 	QIcon onlineStatusIcon;
 	onlineStatusIcon.addFile(theRM.statusesResourcePrefix() + ":" + theRM.onlineStatuses()->getOnlineStatusInfo(lastStatus.id())->icon(), QSize(), QIcon::Normal, QIcon::Off);
 	onlineStatusBox->addItem(onlineStatusIcon, lastStatus.statusDescr());
-	onlineStatusBox->setCurrentIndex(onlineStatusBox->count() - 1);
+	int statusIndex = onlineStatusBox->count() - 1;
+	onlineStatusBox->setItemData(statusIndex, lastStatus.id(), Qt::UserRole + 1);
+	onlineStatusBox->setCurrentIndex(statusIndex);
 	onlineStatusBox->setUpdatesEnabled(true);
 	isExtendedStatus = true;
 }

@@ -57,10 +57,10 @@ int main(int argc, char *argv[])
 	qtTranslator.load("locale/qt_" + QLocale::system().name());
 #endif
 	app.installTranslator(&qtTranslator);
-	
+
 	QTranslator myappTranslator;
 #ifdef DATADIR
-        myappTranslator.load("myagent-im_" + QLocale::system().name(), QLatin1String(DATADIR));
+	myappTranslator.load("myagent-im_" + QLocale::system().name(), QLatin1String(DATADIR));
 #else
 	myappTranslator.load("locale/myagent-im_" + QLocale::system().name());
 #endif
@@ -70,22 +70,23 @@ int main(int argc, char *argv[])
 	theRM.setAudio(audio);
 
 	QScopedPointer<LoginDialog> ld(new LoginDialog);
-	
+
 	if (ld->exec() == QDialog::Rejected)
 		return 0;
 
 	AccountManager am;
 	Account* account = am.getAccount(ld->email(), ld->password());
 	theRM.setAccount(account);
+	qDebug() << Q_FUNC_INFO << "status id from login dialog:" << ld->status().id();
 	account->saveOnlineStatus(ld->status());
 	account->savePassword(ld->savePassword());
 	audio->setAccount(account);
 	ContactListWindow clw(account);
 	clw.show();
-	
+
 	account->setOnlineStatus(ld->status());
 
 	ld.reset();
-	
+
 	return app.exec();
 }
