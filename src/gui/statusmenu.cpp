@@ -87,13 +87,11 @@ void StatusMenu::updateExtendedStatuses()
 	qDebug() << "StatusMenu::updateExtendedStatuses()";
 	qDeleteAll(extendedActions->actions());
 
-	OnlineStatus tmp;
-	int i;
-	for (i = 0; i < m_account->settings()->value("Statuses/count", theRM.minDefaultStatuses).toInt(); i++)
+	for (int i = 0; i < m_account->settings()->value("Statuses/count", theRM.minDefaultStatuses).toInt(); i++)
 	{
 		if (!m_account->settings()->value("Statuses/statuschecked" + QByteArray::number(i), true).toBool())
 			continue;
-		extendedActions->addAction(createStatusAction(OnlineStatus(m_account->settings()->value("Statuses/statusid" + QByteArray::number(i), tmp.getDefIdStatus(i)).toByteArray(), m_account->settings()->value("Statuses/statusdescr" + QByteArray::number(i), tmp.getDefDescrStatus(i)).toString())));
+		extendedActions->addAction(createStatusAction(OnlineStatus(m_account->settings()->value("Statuses/statusid" + QByteArray::number(i), OnlineStatus::getDefIdStatus(i)).toByteArray(), m_account->settings()->value("Statuses/statusdescr" + QByteArray::number(i), OnlineStatus::getDefDescrStatus(i)).toString())));
 	}
 	insertActions(mainSeparator, extendedActions->actions());
 }

@@ -33,16 +33,15 @@
 StatusRow::StatusRow(OnlineStatusesEditor* parent, qint32 id)
 	: m_parent(parent), m_id(id)
 {
-	OnlineStatus tmp;
 	m_changed = false;
 
-	m_statusId = OnlineStatus(parent->m_account->settings()->value("Statuses/statusid" + QByteArray::number(id), tmp.getDefIdStatus(id)).toByteArray(), "").id();
+	m_statusId = OnlineStatus(parent->m_account->settings()->value("Statuses/statusid" + QByteArray::number(id), OnlineStatus::getDefIdStatus(id)).toByteArray(), "").id();
 	m_checkBox = new QCheckBox;
 	m_buttonIcon = new QPushButton;
 	m_selector = new OnlineStatusSelector(parent);
 	m_checkBox->setChecked(parent->m_account->settings()->value("Statuses/statuschecked" + QByteArray::number(id), true).toBool());
-	m_buttonIcon->setIcon(OnlineStatus(parent->m_account->settings()->value("Statuses/statusid" + QByteArray::number(id), tmp.getDefIdStatus(id)).toByteArray(), "").statusIcon());
-	m_statusDescr = new QLineEdit(parent->m_account->settings()->value("Statuses/statusdescr" + QByteArray::number(id), tmp.getDefDescrStatus(id)).toString());
+	m_buttonIcon->setIcon(OnlineStatus(parent->m_account->settings()->value("Statuses/statusid" + QByteArray::number(id), OnlineStatus::getDefIdStatus(id)).toByteArray(), "").statusIcon());
+	m_statusDescr = new QLineEdit(parent->m_account->settings()->value("Statuses/statusdescr" + QByteArray::number(id), OnlineStatus::getDefDescrStatus(id)).toString());
 
 	connect(m_buttonIcon, SIGNAL(clicked(bool)), this, SLOT(showStatusSelector()));
 	connect(m_selector, SIGNAL(selected(QString)), this, SLOT(statusSelected(QString)));
@@ -129,9 +128,7 @@ void OnlineStatusesEditor::saveStatuses()
 		m_account->settings()->remove("Statuses/count");
 	m_account->settings()->setValue("Statuses/count", statusRows.size());
 
-	int i;
-	OnlineStatus tmp;
-	for (i = 0; i < statusRows.size(); i++)
+	for (int i = 0; i < statusRows.size(); i++)
 	{
 		StatusRow* statusRow = statusRows[i];
 

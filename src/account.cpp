@@ -65,7 +65,7 @@ Account::Account(QByteArray email, QByteArray password, QObject* parent)
 	connect(m_client, SIGNAL(loginAcknowledged(OnlineStatus)), this, SLOT(slotLoggedIn(OnlineStatus)));
 	connect(m_client, SIGNAL(loginRejected(QString)), this, SLOT(slotLoginRejected(QString)));
 	connect(m_client, SIGNAL(disconnectedFromServer()), this, SLOT(slotDisconnectedFromServer()));
-	
+
 	connect(m_client, SIGNAL(contactStatusChanged(OnlineStatus, QByteArray)), m_contactList, SLOT(changeContactStatus(OnlineStatus, QByteArray)));
 	connect(m_client, SIGNAL(contactTyping(QByteArray)), m_contactList, SLOT(contactTyping(QByteArray)));
 	connect(m_client, SIGNAL(contactAuthorizedMe(const QByteArray&)), m_contactList, SLOT(slotContactAuthorized(const QByteArray&)));
@@ -78,13 +78,13 @@ Account::Account(QByteArray email, QByteArray password, QObject* parent)
 void Account::reset(QByteArray email, QByteArray password)
 {
 	m_password = password;
-	
+
 	if (m_email != email)
 	{
 		m_email = email;
-		
+
 		m_contactList->clear();
-		
+
 		delete m_settings;
 		m_settings = new QSettings(path() + "/settings.txt", QSettings::IniFormat, this);
 	}
@@ -120,12 +120,12 @@ QString Account::path() const
 QString Account::avatarsPath() const
 {
 	static const QString avatarsDirname = "avatars";
-	
+
 	QString basePath = path();
 	if (basePath.isEmpty()) return "";
-	
+
 	QDir dir(basePath);
-	
+
 	if (!dir.exists(avatarsDirname))
 		if (!dir.mkdir(avatarsDirname))
 		{
@@ -133,7 +133,7 @@ QString Account::avatarsPath() const
 			return "";
 		}
 	dir.cd(avatarsDirname);
-	
+
 	return dir.absolutePath();
 }
 
@@ -146,7 +146,7 @@ void Account::setOnlineStatus(OnlineStatus newStatus, qint32 id)
 
 	if ((m_onlineStatus == newStatus && m_onlineStatus.statusDescr() == newStatus.statusDescr()) || newStatus == OnlineStatus::connecting)
 		return;
-	
+
 	if (newStatus == OnlineStatus::offline)
 	{
 		qDebug() << "newStatus = offline";
@@ -183,7 +183,7 @@ void Account::slotDisconnectedFromServer()
 	qDebug() << "Account.slotDisconnectedFromServer";
 	if (m_onlineStatus == OnlineStatus::offline)
 		return;
-	
+
 	m_onlineStatus = OnlineStatus::offline;
 	m_isInAutoAway = false;
 	Q_EMIT onlineStatusChanged(m_onlineStatus);
@@ -195,7 +195,7 @@ void Account::slotLoggedIn(OnlineStatus status)
 	if (!basePath.isEmpty())
 	{
 		QDir dir(basePath);
-	
+
 		if (!dir.exists(email()))
 		{
 			if (!dir.mkdir(email()))
@@ -237,7 +237,7 @@ void Account::setAutoAway(bool on)
 	{
 		if (m_isInAutoAway || m_onlineStatus != OnlineStatus::online)
 			return;
-		
+
 		m_statusBeforeAutoAway = m_onlineStatus;
 		setOnlineStatus(OnlineStatus::away);
 		m_isInAutoAway = true;
@@ -294,7 +294,6 @@ void Account::saveOnlineStatus(OnlineStatus st)
 	{
 		if (m_pointerOnlineStatus == -1)
 		{
-			OnlineStatus tmp;
 			int i;
 			for (i = 0; i <= m_settings->value("Statuses/count", theRM.maxDefaultStatuses - 1).toInt(); i++)
 			{
@@ -305,8 +304,8 @@ void Account::saveOnlineStatus(OnlineStatus st)
 					i++;
 					break;
 				}
-				if (m_settings->value("Statuses/statusid" + QByteArray::number(i), tmp.getDefIdStatus(i)).toByteArray() == st.id() &&
-				 m_settings->value("Statuses/statusdescr" + QByteArray::number(i), tmp.getDefDescrStatus(i)).toString() == st.statusDescr())
+				if (m_settings->value("Statuses/statusid" + QByteArray::number(i), OnlineStatus::getDefIdStatus(i)).toByteArray() == st.id() &&
+				 m_settings->value("Statuses/statusdescr" + QByteArray::number(i), OnlineStatus::getDefDescrStatus(i)).toString() == st.statusDescr())
 				{
 					m_settings->setValue("Statuses/lastOnlineStatus", st.id());
 					i++;
