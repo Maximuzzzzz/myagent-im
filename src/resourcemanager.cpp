@@ -36,6 +36,9 @@ const int ResourceManager::popupWindowHeight = 63;
 ResourceManager::ResourceManager(QObject *parent)
 	: QObject(parent)
 {
+	Q_INIT_RESOURCE(res);
+	m_locations.load(":/region.txt");
+
 	m_settings = new QSettings(basePath() + "/settings.txt", QSettings::IniFormat, this);
 #ifdef DATADIR
 	QString emoticonsPath = QLatin1String(DATADIR) + "/emoticons";
@@ -67,7 +70,6 @@ ResourceManager::ResourceManager(QObject *parent)
 	for (it = userSkinFiles.begin(); it != userSkinFiles.end(); ++it)
 		m_emoticons.load(emoticonsPath + "/skin/" + m_locale + "/user/" + (*it), m_settings);
 	m_mults.load();
-	m_locations.load(":/region.txt");
 }
 
 ResourceManager::~ResourceManager()

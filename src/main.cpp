@@ -43,6 +43,7 @@ Q_IMPORT_PLUGIN(qgif)
 int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
+	qDebug() << Q_FUNC_INFO;
 	app.setQuitOnLastWindowClosed(false);
 	app.setApplicationName("MyMailAgentRu");
 
