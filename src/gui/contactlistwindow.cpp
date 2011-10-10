@@ -428,7 +428,7 @@ void ContactListWindow::slotMicroblogChanged(QByteArray email, QString microText
 
 void ContactListWindow::slotSetOnlineStatus(OnlineStatus status)
 {
-	qDebug() << "ContactListWindow::slotSetOnlineStatus" << status.id() << status.statusDescr();
+	qDebug() << "ContactListWindow::slotSetOnlineStatus" << status.id() << status.description();
 	if (status == OnlineStatus::offline || status == OnlineStatus::connecting || status == OnlineStatus::unknown)
 	{
 		statusBar->setActive(false);

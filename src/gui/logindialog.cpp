@@ -49,13 +49,11 @@ LoginDialog::LoginDialog(QWidget* parent)
 
 	Q_FOREACH (const QByteArray& status, statuses)
 	{
-		OnlineStatus onlineStatus;
-		onlineStatus.setIdStatus(status);
-		if (theRM.onlineStatuses()->getOnlineStatusInfo(onlineStatus.id())->available() == "1")
+		OnlineStatus onlineStatus(status);
+
+		if (onlineStatus.available())
 		{
-			QIcon currStatusIcon;
-			currStatusIcon.addFile(theRM.statusesResourcePrefix() + ":" + theRM.onlineStatuses()->getOnlineStatusInfo(onlineStatus.id())->icon(), QSize(), QIcon::Normal, QIcon::Off);
-			onlineStatusBox->addItem(currStatusIcon, onlineStatus.statusDescr(), QVariant::fromValue(onlineStatus));
+			onlineStatusBox->addItem(onlineStatus.statusIcon(), onlineStatus.description(), QVariant::fromValue(onlineStatus));
 		}
 	}
 
@@ -170,9 +168,7 @@ void LoginDialog::slotEmailChanged()
 		return;
 	}
 
-	QIcon onlineStatusIcon;
-	onlineStatusIcon.addFile(theRM.statusesResourcePrefix() + ":" + theRM.onlineStatuses()->getOnlineStatusInfo(lastStatus.id())->icon(), QSize(), QIcon::Normal, QIcon::Off);
-	onlineStatusBox->addItem(onlineStatusIcon, lastStatus.statusDescr(), QVariant::fromValue(lastStatus));
+	onlineStatusBox->addItem(lastStatus.statusIcon(), lastStatus.description(), QVariant::fromValue(lastStatus));
 	onlineStatusBox->setCurrentIndex(onlineStatusBox->count() - 1);
 	onlineStatusBox->setUpdatesEnabled(true);
 	isExtendedStatus = true;

@@ -36,15 +36,15 @@ class OnlineStatus
 public:
 	enum StatusType
 	{
-		Online = 1,			//Don't rearrange these strings!!!
-		Away = 2,			//
+		Online = 1,		// Don't rearrange these strings!!!
+		Away = 2,		//
 		Invisible = 3,		//
 		OtherOnline = 4,	//
 		Offline = 5,		//
 		Unauthorized = 6,	//
 		Connecting = 7,		//
 		Unknown = 8,		//
-		Null = 9			//
+		Null = 9		//
 	};
 
 	static const OnlineStatus unknown;
@@ -54,47 +54,35 @@ public:
 	static const OnlineStatus online;
 	static const OnlineStatus connecting;
 	static const OnlineStatus unauthorized;
-	static const OnlineStatus chatOnline;
-	static const OnlineStatus seekFriends;
-	static const OnlineStatus dndOnline;
 	static const OnlineStatus otherOnline;
 	static const OnlineStatus wrongData;
 
-	void setExtendedStatus(QString status);
+	OnlineStatus();
+	explicit OnlineStatus(QByteArray id, QString description = QString());
+	static OnlineStatus fromProtocolStatus(quint32 st);
 
 	StatusType type() const { return m_type; }
-	QByteArray id() const { return m_idStatus; }
-	QString statusDescr() { return m_statusDescr; }
+	QByteArray id() const;
 	QString description() const;
 	quint32 protocolStatus() const;
-	static OnlineStatus fromProtocolStatus(quint32 st);
+
 	QIcon statusIcon() const;
 	bool connected() const;
 
-	static QByteArray getDefIdStatus(int at) { return (m_defaultIdStatuses.size() > at) ? m_defaultIdStatuses.at(at) : ""; }
-	static QString getDefDescrStatus(int at) { return (m_defaultDescrStatuses.size() > at) ? m_defaultDescrStatuses.at(at) : ""; }
+	bool builtIn() const;
+	bool available() const;
 
-	void setIdStatus(QByteArray status);
-	void setDescr(QString descr);
+	bool operator== (OnlineStatus another) const;
+	bool operator!= (OnlineStatus another) const;
+	bool operator< (OnlineStatus another) const;
 
-	explicit OnlineStatus(QByteArray idStatus = "", QString statusDescr = "");
-
-	bool operator==(OnlineStatus another) { return (m_idStatus == another.m_idStatus); }
-	bool operator!=(OnlineStatus another) { return (m_idStatus != another.m_idStatus && m_statusDescr != another.m_statusDescr); }
-	bool operator<=(OnlineStatus another) { return (m_type <= another.m_type);  }
-	bool operator<(OnlineStatus another) { return (m_type < another.m_type); }
-
-private Q_SLOTS:
-	void setMType();
+	static QByteArray getDefIdStatus(int at);
+	static QString getDefDescrStatus(int at);
 
 private:
 	StatusType m_type;
-	QByteArray m_idStatus;
+	QByteArray m_id;
 	QString m_statusDescr;
-
-	friend class DefaultStatusesInitializer;
-	static QList<QByteArray> m_defaultIdStatuses;
-	static QStringList m_defaultDescrStatuses;
 };
 
 Q_DECLARE_METATYPE(OnlineStatus)

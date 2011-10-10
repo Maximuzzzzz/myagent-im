@@ -29,7 +29,7 @@ StatusButton::StatusButton(StatusMenu* sm, QWidget* parent)
 	: ButtonWithMenu(parent)
 {
 	setStyleSheet("QPushButton { text-align: left; }");
-	
+
 	setMenu(sm);
 }
 
@@ -41,5 +41,5 @@ void StatusButton::slotStatusChanged(OnlineStatus status)
 {
 	qDebug() << "StatusButton::slotStatusChanged";
 	setIcon(status.statusIcon());
-	setText(status.statusDescr());
+	setText(status.description());
 }

@@ -110,7 +110,7 @@ mrim_packet_header_t;
 	#define STATUS_ONLINE		0x00000001
 	#define STATUS_AWAY		0x00000002
 	#define STATUS_UNDETERMINATED	0x00000003
-	#define STATUS_OTHER_ONLINE		0x00000004
+	#define STATUS_OTHER_ONLINE	0x00000004
 	#define STATUS_FLAG_INVISIBLE	0x80000000
 	// LPS status_text (NULL if status == 0)
 	// LPS status_descr
@@ -118,7 +118,7 @@ mrim_packet_header_t;
 	// LPS user
 	// ??? //TODO (almost always == 0xffffff)
 	// client version
-	
+
 
 #define MRIM_CS_LOGOUT			0x1013	// S -> C
 	// UL reason

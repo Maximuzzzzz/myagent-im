@@ -566,9 +566,9 @@ void ChatWindow::checkContactStatus(OnlineStatus status)
 		setWindowTitle(contact->nickname());
 	else
 		if (session->contact()->client() != "")
-			setWindowTitle(contact->nickname().append(" - ").append(status.statusDescr()).append(" - ").append(session->contact()->client()));
+			setWindowTitle(contact->nickname().append(" - ").append(status.description()).append(" - ").append(session->contact()->client()));
 		else
-			setWindowTitle(contact->nickname().append(" - ").append(status.statusDescr()));
+			setWindowTitle(contact->nickname().append(" - ").append(status.description()));
 	setContactStatusIcon();
 }
 
@@ -581,13 +581,13 @@ void ChatWindow::appendSmsToView(QByteArray phoneNumber, QString text)
 {
 	show();
 	smsEditor->unblockInput();
-	
+
 	QTextCursor cursor = chatView->textCursor();
 	cursor.movePosition(QTextCursor::End);
-	
+
 	QString prompt = QTime::currentTime().toString() + " <b>" + phoneNumber + "</b>: ";
 	cursor.insertHtml(prompt);
-	
+
 	cursor.insertText(text);
 	cursor.insertText("\n");
 
@@ -609,7 +609,7 @@ void ChatWindow::shake()
 {
 	if (shakeTimeLine.isNull())
 		return;
-	
+
 	savedX = x();
 	savedY = y();
 
@@ -898,7 +898,7 @@ void ChatWindow::contactUpdated()
 	if (session->contact()->isConference())
 		setWindowTitle(session->contact()->nickname());
 	else
-		setWindowTitle(session->contact()->nickname() + " - " + session->contact()->status().statusDescr());
+		setWindowTitle(session->contact()->nickname() + " - " + session->contact()->status().description());
 	sendButtonEnabledProcess();
 	Q_EMIT setMainWindowIconAndTitle(windowIcon(), this);
 }

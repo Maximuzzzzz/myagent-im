@@ -504,7 +504,7 @@ void MRIMClientPrivate::processHelloAck(QByteArray data)
 
 	out << QByteArray(account->email());
 	out << QByteArray(account->password());
-	qDebug() << "MRIMClientPrivate: processHelloAck, status = " << currentStatus.id() << "(" << currentStatus.statusDescr() << ")";
+	qDebug() << "MRIMClientPrivate: processHelloAck, status = " << currentStatus.id() << "(" << currentStatus.description() << ")";
 
 	out << /*quint32(newStatus);*/quint32(0xffffffff);
 	out << QByteArray("client=\"myagent-im\" version=\"").append(VERSION).append("\"");
@@ -757,7 +757,11 @@ void MRIMClientPrivate::processAnketaInfo(QByteArray data, quint32 msgseq)
 		for (uint i = 0; i < numFields; i++)
 		{
 			in >> str;
-			if (fields[i] == "Nickname" || fields[i] == "FirstName" || fields[i] == "LastName" || fields[i] == "Location")
+			if (fields[i] == "Nickname"
+			    || fields[i] == "FirstName"
+			    || fields[i] == "LastName"
+			    || fields[i] == "Location"
+			    || fields[i] == "status_title")
 			{
 				qDebug() << codecUTF16->toUnicode(str);
 				info[fields[i]] << codecUTF16->toUnicode(str);
@@ -867,10 +871,13 @@ void MRIMClientPrivate::processUserStatus(QByteArray data)
 	qDebug() << "unks:" << unk2 << unk3;
 	qDebug() << "email = " << email;
 
-	OnlineStatus userStatus = OnlineStatus::fromProtocolStatus(status);
-	userStatus.setDescr(statusDescr);
-	if (statusId != "")
-		userStatus.setIdStatus(statusId);
+	OnlineStatus userStatus;
+
+	if (!statusId.isEmpty())
+		userStatus = OnlineStatus(statusId, statusDescr);
+	else
+		userStatus = OnlineStatus::fromProtocolStatus(status);
+
 	Q_EMIT q->contactStatusChanged(userStatus, email);
 }
 

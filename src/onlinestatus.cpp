@@ -8,56 +8,128 @@
 
 const OnlineStatus OnlineStatus::unknown = OnlineStatus("status_gray");
 const OnlineStatus OnlineStatus::offline = OnlineStatus("status_0");
-const OnlineStatus OnlineStatus::invisible = OnlineStatus("status_3");
-const OnlineStatus OnlineStatus::away = OnlineStatus("status_2");
 const OnlineStatus OnlineStatus::online = OnlineStatus("status_1");
+const OnlineStatus OnlineStatus::away = OnlineStatus("status_2");
+const OnlineStatus OnlineStatus::invisible = OnlineStatus("status_3");
 const OnlineStatus OnlineStatus::connecting = OnlineStatus("status_connecting");
 const OnlineStatus OnlineStatus::unauthorized = OnlineStatus("status_gray");
-const OnlineStatus OnlineStatus::chatOnline = OnlineStatus("status_chat");
-const OnlineStatus OnlineStatus::seekFriends = OnlineStatus("status_dating");
-const OnlineStatus OnlineStatus::dndOnline = OnlineStatus("status_dnd");
+
 const OnlineStatus OnlineStatus::otherOnline = OnlineStatus("");
 const OnlineStatus OnlineStatus::wrongData = OnlineStatus("wrong_data");
 
-QList<QByteArray> OnlineStatus::m_defaultIdStatuses;
-QStringList OnlineStatus::m_defaultDescrStatuses;
-
-class DefaultStatusesInitializer
+static QList<QByteArray> getDefIdStatuses()
 {
-public:
-	DefaultStatusesInitializer()
+	static QList<QByteArray> defaultIdStatuses;
+	if (defaultIdStatuses.isEmpty())
 	{
-		OnlineStatus::m_defaultIdStatuses << "status_22"
-						  << "status_17"
-						  << "status_21"
-						  << "status_14"
-						  << "status_27"
-						  << "status_23"
-						  << "status_5"
-						  << "status_6"
-						  << "status_4"
-						  << "status_52";
-
-		OnlineStatus::m_defaultDescrStatuses << OnlineStatus::tr("Working")
-						     << OnlineStatus::tr("Smoking")
-						     << OnlineStatus::tr("Coffee")
-						     << OnlineStatus::tr("In love")
-						     << OnlineStatus::tr("Education")
-						     << OnlineStatus::tr("Dreaming")
-						     << OnlineStatus::tr("Home")
-						     << OnlineStatus::tr("Breakfast")
-						     << OnlineStatus::tr("Sick")
-						     << OnlineStatus::tr("All people are alike, only I'm a star");
+		defaultIdStatuses << "status_22"
+				  << "status_17"
+				  << "status_21"
+				  << "status_14"
+				  << "status_27"
+				  << "status_23"
+				  << "status_5"
+				  << "status_6"
+				  << "status_4"
+				  << "status_52";
 	}
-};
 
-static DefaultStatusesInitializer defaultStatusesInitializer;
+	return defaultIdStatuses;
+}
 
-OnlineStatus::OnlineStatus(QByteArray idStatus, QString statusDescr)
-	: m_idStatus(idStatus), m_statusDescr(statusDescr)
+
+QByteArray OnlineStatus::getDefIdStatus(int at)
 {
-	setMType();
-	setDescr(statusDescr);
+	QList<QByteArray> defaultIdStatuses = getDefIdStatuses();
+
+	return (defaultIdStatuses.size() > at) ? defaultIdStatuses.at(at) : "";
+}
+
+QString OnlineStatus::getDefDescrStatus(int at)
+{
+	static QStringList defaultDescrStatuses;
+	if (defaultDescrStatuses.isEmpty())
+	{
+		defaultDescrStatuses << OnlineStatus::tr("Working")
+				     << OnlineStatus::tr("Smoking")
+				     << OnlineStatus::tr("Coffee")
+				     << OnlineStatus::tr("In love")
+				     << OnlineStatus::tr("Education")
+				     << OnlineStatus::tr("Dreaming")
+				     << OnlineStatus::tr("Home")
+				     << OnlineStatus::tr("Breakfast")
+				     << OnlineStatus::tr("Sick")
+				     << OnlineStatus::tr("All people are alike, only I'm a star");
+	}
+
+	return (defaultDescrStatuses.size() > at) ? defaultDescrStatuses.at(at) : "";
+}
+
+OnlineStatus::OnlineStatus()
+	: m_type(Null)
+{
+}
+
+OnlineStatus::OnlineStatus(QByteArray id, QString description)
+	: m_id(id), m_statusDescr(description)
+{
+	if (m_id.isEmpty())
+		m_type = Null;
+	else if (m_id == "status_0" || m_id == "STATUS_OFFLINE")
+		m_type = Offline;
+	else if (m_id == "status_1" || m_id == "STATUS_ONLINE")
+		m_type = Online;
+	else if (m_id == "status_2" || m_id == "STATUS_AWAY")
+		m_type = Away;
+	else if (m_id == "status_3" || m_id == "STATUS_INVISIBLE")
+		m_type = Invisible;
+	else if (m_id == "status_connecting")
+		m_type = Connecting;
+	else if (m_id == "status_gray")
+		m_type = Unknown;
+	else if (theRM.onlineStatuses()->getOnlineStatusInfo(m_id) == 0)
+	{
+		m_id = "wrong_data";
+		m_statusDescr = tr("Wrong status data");
+		m_type = OtherOnline;
+	}
+	else
+		m_type = OtherOnline;
+
+	if (m_type == OtherOnline && m_statusDescr.isEmpty())
+	{
+		if (m_id == "status_chat")
+			m_statusDescr = tr("Free for chat");
+		else if (m_id == "status_dnd")
+			m_statusDescr = tr("Do not disturb");
+		else if (m_id == "status_dating")
+			m_statusDescr = tr("Get acquainted");
+		else
+		{
+			int i = getDefIdStatuses().indexOf(m_id);
+			if (i != -1)
+				m_statusDescr = getDefDescrStatus(i);
+			else
+				m_statusDescr = tr("Extended");
+		}
+	}
+}
+
+QByteArray OnlineStatus::id() const
+{
+	if (m_type == OtherOnline)
+		return m_id;
+	else switch (m_type)
+	{
+	case Unknown:      return "status_gray";
+	case Offline:      return "status_0";
+	case Online:       return "status_1";
+	case Away:         return "status_2";
+	case Invisible:    return "status_3";
+	case Connecting:   return "status_connecting";
+	case Unauthorized: return "wrong_data";
+	default: return QByteArray();
+	}
 }
 
 QString OnlineStatus::description() const
@@ -73,7 +145,7 @@ QString OnlineStatus::description() const
 		case Online:
 			return tr("Online");
 		case OtherOnline:
-			return tr("Extended");
+			return m_statusDescr;
 		case Connecting:
 			return tr("Connecting");
 		default:
@@ -83,37 +155,16 @@ QString OnlineStatus::description() const
 
 QIcon OnlineStatus::statusIcon() const
 {
-	const OnlineStatuses* onlineStatuses = theRM.onlineStatuses();
-	switch (m_type)
-	{
-		case Unknown:
-			return QIcon(theRM.statusesResourcePrefix() + ":" + onlineStatuses->getOnlineStatusInfo("status_gray")->icon());
-		case Offline:
-			return QIcon(theRM.statusesResourcePrefix() + ":" + onlineStatuses->getOnlineStatusInfo("status_0")->icon());
-		case Invisible:
-			return QIcon(theRM.statusesResourcePrefix() + ":" + onlineStatuses->getOnlineStatusInfo("status_3")->icon());
-		case Away:
-			return QIcon(theRM.statusesResourcePrefix() + ":" + onlineStatuses->getOnlineStatusInfo("status_2")->icon());
-		case Online:
-			return QIcon(theRM.statusesResourcePrefix() + ":" + onlineStatuses->getOnlineStatusInfo("status_1")->icon());
-		case OtherOnline:
-			return QIcon(theRM.statusesResourcePrefix() + ":" + onlineStatuses->getOnlineStatusInfo(m_idStatus)->icon());
-		case Connecting:
-			return QIcon(theRM.statusesResourcePrefix() + ":" + onlineStatuses->getOnlineStatusInfo("status_connecting")->icon());
-		case Unauthorized:
-			return QIcon(theRM.statusesResourcePrefix() + ":" + onlineStatuses->getOnlineStatusInfo("wrong_data")->icon());
-		default:
-			return QIcon();
-	}
-}
+	const OnlineStatusInfo* statusInfo = theRM.onlineStatuses()->getOnlineStatusInfo(id());
 
-void OnlineStatus::setIdStatus(QByteArray status)
-{
-	m_idStatus = status;
-	setMType();
-	setDescr(m_statusDescr);
-	if (m_type != OtherOnline)
-		m_statusDescr = description();
+	if (statusInfo)
+		return QIcon(theRM.statusesResourcePrefix() + ":" + statusInfo->icon());
+	else
+	{
+		qDebug() << Q_FUNC_INFO << "can't find status info for status:"
+			 << QString("(%1, %2, %3)").arg(m_type).arg(QString::fromLatin1(m_id)).arg(m_statusDescr);
+		return QIcon();
+	}
 }
 
 quint32 OnlineStatus::protocolStatus() const
@@ -170,43 +221,44 @@ bool OnlineStatus::connected() const
 	}
 }
 
-void OnlineStatus::setMType()
+bool OnlineStatus::operator ==(OnlineStatus another) const
 {
-	if (m_idStatus == "")
-		m_type = OtherOnline;
-	else if (theRM.onlineStatuses()->getOnlineStatusInfo(m_idStatus) == NULL)
-	{
-		m_idStatus = "wrong_data";
-		m_statusDescr = tr("Wrong status data");
-		m_type = OtherOnline;
-	}
-	else if (m_idStatus == "status_0" || m_idStatus == "STATUS_OFFLINE")
-		m_type = Offline;
-	else if (m_idStatus == "status_1" || m_idStatus == "STATUS_ONLINE")
-		m_type = Online;
-	else if (m_idStatus == "status_2" || m_idStatus == "STATUS_AWAY")
-		m_type = Away;
-	else if (m_idStatus == "status_3" || m_idStatus == "STATUS_INVISIBLE")
-		m_type = Invisible;
-	else if (m_idStatus == "status_connecting")
-		m_type = Connecting;
-	else if (m_idStatus == "status_gray")
-		m_type = Unknown;
-	else
-		m_type = OtherOnline;
+	return (m_type == another.m_type) && (m_id == another.m_id) && (m_statusDescr == another.m_statusDescr);
 }
 
-void OnlineStatus::setDescr(QString descr)
+bool OnlineStatus::operator !=(OnlineStatus another) const
 {
-	if (descr != "" || m_type == OtherOnline)
-		if (m_idStatus == "status_chat")
-			m_statusDescr = tr("Free for chat");
-		else if (m_idStatus == "status_dnd")
-			m_statusDescr = tr("Do not disturb");
-		else if (m_idStatus == "status_dating")
-			m_statusDescr = tr("Get acquainted");
-		else
-			m_statusDescr = descr;
+	return !(*this == another);
+}
+
+bool OnlineStatus::operator<(OnlineStatus another) const
+{
+	if (m_type < another.m_type)
+		return true;
+	else if (m_type > another.m_type)
+		return false;
+	else if (m_id < another.m_id)
+		return true;
+	else if (m_id > another.m_id)
+		return false;
 	else
-		m_statusDescr = description();
+		return m_statusDescr < another.m_statusDescr;
+}
+
+bool OnlineStatus::builtIn() const
+{
+	const OnlineStatusInfo* statusInfo = theRM.onlineStatuses()->getOnlineStatusInfo(id());
+	if (statusInfo)
+		return statusInfo->builtIn() == "1";
+	else
+		return false;
+}
+
+bool OnlineStatus::available() const
+{
+	const OnlineStatusInfo* statusInfo = theRM.onlineStatuses()->getOnlineStatusInfo(id());
+	if (statusInfo)
+		return statusInfo->available() == "1";
+	else
+		return false;
 }

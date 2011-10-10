@@ -144,7 +144,7 @@ OnlineStatus ResourceManager::loadOnlineStatus(QByteArray email)
 	QByteArray stId = m_settings->value(email + "/lastOnlineStatus", "").toByteArray();
 	QString stDescr = m_settings->value(email + "/lastOnlineStatusDescr", "").toString();
 
-	if (stId != "")
+	if (!stId.isEmpty())
 	{
 		m_settings->remove(email + "/lastOnlineStatus"); //compatible with old version
 		m_settings->remove(email + "/lastOnlineStatusDescr"); //for deleting garbage
@@ -154,7 +154,8 @@ OnlineStatus ResourceManager::loadOnlineStatus(QByteArray email)
 		if (userSettings->value("Statuses/lastOnlineStatusDescr", "").toString() == "")
 			userSettings->setValue("Statuses/lastOnlineStatusDescr", stDescr);
 
-		if (m_onlineStatuses.getOnlineStatusInfo(stId)->builtIn() == "1")
+		const OnlineStatusInfo* statusInfo = m_onlineStatuses.getOnlineStatusInfo(stId);
+		if (statusInfo && statusInfo->builtIn() == "1")
 		{
 			userSettings->remove("Statuses/statusPointer");
 			return OnlineStatus(stId);

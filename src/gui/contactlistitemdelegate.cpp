@@ -108,7 +108,7 @@ void ContactListItemDelegate::paint(QPainter *painter, const QStyleOptionViewIte
 		else if (contact->isPhone())
 			painter->drawText(x, y + 26, contact->phones().first());
 		else
-			painter->drawText(x, y + 26, contact->status().statusDescr());
+			painter->drawText(x, y + 26, contact->status().description());
 	}
 	else
 	{

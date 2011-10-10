@@ -68,7 +68,7 @@ ContactInfoDialog::ContactInfoDialog(Account* account, const QByteArray& email)
 	: m_account(account), m_email(email)
 {
 	initWindow();
-	
+
 	QWidget* helperWidget = new QWidget;
 	helperWidget->setWindowIcon(QIcon(":icons/anketa.png"));
 	helperWidget->setWindowTitle(tr("User info"));
@@ -100,7 +100,7 @@ QIcon ContactInfoDialog::linkIcon(const QString &linkType)
 	icon.addPixmap(QPixmap(":icons/projects/main_top_" + linkType + "_d.png"), QIcon::Normal, QIcon::Off);
 	icon.addPixmap(QPixmap(":icons/projects/main_top_" + linkType + "_h.png"), QIcon::Active, QIcon::Off);
 	icon.addPixmap(QPixmap(":icons/projects/main_top_" + linkType + "_p.png"), QIcon::Active, QIcon::On);
-	
+
 	return icon;
 }
 
@@ -113,7 +113,7 @@ ContactInfoDialog::~ContactInfoDialog()
 void ContactInfoDialog::showContactInfo(quint32 status, bool timeout)
 {
 	qDebug() << "ContactInfoDialog::showContactInfo";
-	
+
 	if (timeout)
 	{
 		CenteredMessageBox::warning(tr("User info"), tr("Time is out"));
@@ -124,7 +124,7 @@ void ContactInfoDialog::showContactInfo(quint32 status, bool timeout)
 		CenteredMessageBox::warning(tr("User info"), ContactInfo::errorDescription(status));
 		return;
 	}
-	
+
 	Tasks::RequestContactInfo* task = qobject_cast<Tasks::RequestContactInfo*>(sender());
 
 	createContent(task->getContactInfo());
@@ -136,19 +136,19 @@ void ContactInfoDialog::createContent(const ContactInfo & info)
 {
 	QString domain = info.domain().section('.', 0, 0);
 	QString username = info.username();
-	
+
 	QVBoxLayout* layout = new QVBoxLayout;
-	QHBoxLayout* topLayout = new QHBoxLayout;	
-	
+	QHBoxLayout* topLayout = new QHBoxLayout;
+
 	QVBoxLayout* avatarBoxLayout = new QVBoxLayout;
 	AvatarBox* avatarBox = new AvatarBox(m_account->avatarsPath(), info.email());
 	avatarBoxLayout->addWidget(avatarBox);
 	avatarBoxLayout->addStretch();
-	
+
 	QFormLayout* infoLayout = new QFormLayout;
 	infoLayout->setVerticalSpacing(1);
 	infoLayout->setHorizontalSpacing(30);
-	
+
 	QLabel* emailLabel = new QLabel("<a href=\"mailto:" + m_email + "\">" + m_email + "</a>");
 	emailLabel->setOpenExternalLinks(true);
 	infoLayout->addRow(tr("E-mail"), emailLabel);
@@ -165,20 +165,20 @@ void ContactInfoDialog::createContent(const ContactInfo & info)
 	else
 	{
 		statusIconLabel->setPixmap(contact->status().statusIcon().pixmap(16));
-		statusLayout->addWidget(new QLabel(contact->status().statusDescr()));
+		statusLayout->addWidget(new QLabel(contact->status().description()));
 	}
 	statusLayout->addSpacing(4);
 	statusLayout->addWidget(statusIconLabel);
 	statusLayout->addStretch();
 	infoLayout->addRow(tr("Status"), statusLayout);
-	
+
 	infoLayout->addRow(tr("Nickname"), new QLabel(info.nickname()));
 	infoLayout->addRow(tr("LastName"), new QLabel(info.lastname()));
 	infoLayout->addRow(tr("FirstName"), new QLabel(info.firstname()));
 	infoLayout->addRow(tr("Sex"), new QLabel(info.sex()));
 	infoLayout->addRow(tr("Age"), new QLabel(info.age()));
 	infoLayout->addRow(tr("Birthday"), new QLabel(info.birthday().toString("d MMMM yyyy")));
-	
+
 	Zodiac zodiac = info.zodiac();
 	QHBoxLayout* zodiacLayout = new QHBoxLayout;
 	zodiacLayout->addWidget(new QLabel(zodiac.name()));
@@ -188,54 +188,16 @@ void ContactInfoDialog::createContent(const ContactInfo & info)
 	zodiacLayout->addWidget(zodiacSign);
 	zodiacLayout->addStretch();
 	infoLayout->addRow(tr("Zodiac"), zodiacLayout);
-	
+
 	infoLayout->addRow(tr("Location"), new QLabel(info.location()));
 
-	infoLayout->addRow(tr("Client"), new QLabel(contact->client()));
+	if (contact)
+		infoLayout->addRow(tr("Client"), new QLabel(contact->client()));
 
 	topLayout->addLayout(avatarBoxLayout);
 	topLayout->addLayout(infoLayout);
 
 	QHBoxLayout* phonesLayout = new QHBoxLayout;
-
-	QGroupBox* additionalPhonesBox = new QGroupBox(tr("Editable phones"));
-	QFormLayout* additionalPhonesLayout = new QFormLayout;
-	phoneEdit1 = new QLineEdit;
-	phoneEdit2 = new QLineEdit;
-	phoneEdit3 = new QLineEdit;
-	
-	int phoneWidth = phoneEdit1->fontMetrics().width("+000000000000") + 4*phoneEdit1->style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
-
-	phoneEdit1->setFixedWidth(phoneWidth);
-	phoneEdit2->setFixedWidth(phoneWidth);
-	phoneEdit3->setFixedWidth(phoneWidth);
-
-	phoneEdit1->setValidator(new QRegExpValidator(QRegExp("|\\+(\\d){11,12}"), phoneEdit1));
-	phoneEdit2->setValidator(new QRegExpValidator(QRegExp("|\\+(\\d){11,12}"), phoneEdit2));
-	phoneEdit3->setValidator(new QRegExpValidator(QRegExp("|\\+(\\d){11,12}"), phoneEdit3));
-
-	connect(phoneEdit1, SIGNAL(textEdited(const QString&)), SLOT(checkPhones()));
-	connect(phoneEdit2, SIGNAL(textEdited(const QString&)), SLOT(checkPhones()));
-	connect(phoneEdit3, SIGNAL(textEdited(const QString&)), SLOT(checkPhones()));
-
-	if (contact)
-	{
-		QStringList phones = contact->phones();
-		phoneEdit1->setText(phones.value(0));
-		phoneEdit2->setText(phones.value(1));
-		phoneEdit3->setText(phones.value(2));
-	}
-	else
-	{
-		phoneEdit1->setDisabled(true);
-		phoneEdit2->setDisabled(true);
-		phoneEdit3->setDisabled(true);
-	}
-	additionalPhonesLayout->addRow(tr("Primary phone"), phoneEdit1);
-	additionalPhonesLayout->addRow(tr("Additional phone 1"), phoneEdit2);
-	additionalPhonesLayout->addRow(tr("Additional phone 2"), phoneEdit3);
-
-	additionalPhonesBox->setLayout(additionalPhonesLayout);
 
 	QStringList formPhones = info.formPhones();
 	QGroupBox* formPhonesBox = new QGroupBox(tr("Form phones"));
@@ -243,16 +205,51 @@ void ContactInfoDialog::createContent(const ContactInfo & info)
 	QLabel* label1 = new QLabel(formPhones.value(0));
 	QLabel* label2 = new QLabel(formPhones.value(1));
 	QLabel* label3 = new QLabel(formPhones.value(2));
-	label1->setFixedSize(phoneEdit1->sizeHint());
+	/*label1->setFixedSize(phoneEdit1->sizeHint());
 	label2->setMinimumHeight(phoneEdit2->sizeHint().height());
-	label3->setMinimumHeight(phoneEdit3->sizeHint().height());
+	label3->setMinimumHeight(phoneEdit3->sizeHint().height());*/
 	formPhonesLayout->addRow(tr("Primary phone"), label1);
 	formPhonesLayout->addRow(tr("Additional phone 1"), label2);
 	formPhonesLayout->addRow(tr("Additional phone 2"), label3);
 	formPhonesBox->setLayout(formPhonesLayout);
 
 	phonesLayout->addWidget(formPhonesBox);
-	phonesLayout->addWidget(additionalPhonesBox);
+
+	if (contact)
+	{
+		QGroupBox* additionalPhonesBox = new QGroupBox(tr("Editable phones"));
+		QFormLayout* additionalPhonesLayout = new QFormLayout;
+		phoneEdit1 = new QLineEdit;
+		phoneEdit2 = new QLineEdit;
+		phoneEdit3 = new QLineEdit;
+
+		int phoneWidth = phoneEdit1->fontMetrics().width("+000000000000") + 4*phoneEdit1->style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
+
+		phoneEdit1->setFixedWidth(phoneWidth);
+		phoneEdit2->setFixedWidth(phoneWidth);
+		phoneEdit3->setFixedWidth(phoneWidth);
+
+		phoneEdit1->setValidator(new QRegExpValidator(QRegExp("|\\+(\\d){11,12}"), phoneEdit1));
+		phoneEdit2->setValidator(new QRegExpValidator(QRegExp("|\\+(\\d){11,12}"), phoneEdit2));
+		phoneEdit3->setValidator(new QRegExpValidator(QRegExp("|\\+(\\d){11,12}"), phoneEdit3));
+
+		connect(phoneEdit1, SIGNAL(textEdited(const QString&)), SLOT(checkPhones()));
+		connect(phoneEdit2, SIGNAL(textEdited(const QString&)), SLOT(checkPhones()));
+		connect(phoneEdit3, SIGNAL(textEdited(const QString&)), SLOT(checkPhones()));
+
+		QStringList phones = contact->phones();
+		phoneEdit1->setText(phones.value(0));
+		phoneEdit2->setText(phones.value(1));
+		phoneEdit3->setText(phones.value(2));
+
+		additionalPhonesLayout->addRow(tr("Primary phone"), phoneEdit1);
+		additionalPhonesLayout->addRow(tr("Additional phone 1"), phoneEdit2);
+		additionalPhonesLayout->addRow(tr("Additional phone 2"), phoneEdit3);
+
+		additionalPhonesBox->setLayout(additionalPhonesLayout);
+
+		phonesLayout->addWidget(additionalPhonesBox);
+	}
 
 	buttonBox = new QDialogButtonBox(QDialogButtonBox::Save | QDialogButtonBox::Close);
 	connect(buttonBox, SIGNAL(rejected()), this, SLOT(close()));
@@ -282,7 +279,7 @@ ContactInfoDialog* ContactInfoDialog::create(Account * account, const ContactInf
 		wnd->activateWindow();
 		wnd->raise();
 	}
-	
+
 	return wnd;
 }
 
@@ -299,7 +296,7 @@ ContactInfoDialog* ContactInfoDialog::create(Account * account, const QByteArray
 		wnd->activateWindow();
 		wnd->raise();
 	}
-	
+
 	return wnd;
 }
 
@@ -312,7 +309,7 @@ ContactInfoDialog* ContactInfoDialog::searchWindow(const QByteArray & email)
 		if (wnd->m_email == email)
 			return wnd;
 	}
-	
+
 	return 0;
 }
 
@@ -325,13 +322,13 @@ void ContactInfoDialog::show()
 void ContactInfoDialog::checkPhones()
 {
 	QPushButton* saveButton = buttonBox->button(QDialogButtonBox::Save);
-	
+
 	if (!phoneEdit1->hasAcceptableInput())
 	{
 		saveButton->setDisabled(true);
 		return;
 	}
-	
+
 	if (phoneEdit2->text().isEmpty() && !phoneEdit3->text().isEmpty())
 	{
 		saveButton->setDisabled(true);
@@ -351,11 +348,11 @@ QStringList ContactInfoDialog::editablePhones() const
 {
 	QStringList result;
 	QString phone;
-	
+
 	phone = phoneEdit1->text();
 	if (!phone.isEmpty())
 		result.append(phone);
-	
+
 	phone = phoneEdit2->text();
 	if (!phone.isEmpty())
 		result.append(phone);

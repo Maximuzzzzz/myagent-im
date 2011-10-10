@@ -37,7 +37,7 @@ void ContactInfo::setSex(const QString & sex)
 void ContactInfo::setBirthday(const QString& birthday)
 {
 	m_birthday = QDate::fromString(birthday, "yyyy-MM-dd");
-	
+
 	if (m_serverTime.isValid() && m_birthday.isValid())
 	{
 		int age = m_serverTime.date().year() - m_birthday.year();
@@ -45,10 +45,10 @@ void ContactInfo::setBirthday(const QString& birthday)
 		(
 			QDate(m_serverTime.date().year(), m_birthday.month(), m_birthday.day())
 		);
-		
+
 		if (m_serverTime < birthdayDT)
 			--age;
-		
+
 		m_age = QString::number(age);
 	}
 }
@@ -61,21 +61,10 @@ void ContactInfo::setZodiac(const QString& zodiac)
 		m_zodiac = Zodiac(z);
 }
 
-void ContactInfo::setOnlineStatus(const QString& status)
+void ContactInfo::setOnlineStatus(const OnlineStatus& status)
 {
-	qDebug() << "ContactInfo::setOnlineStatus status = " << status << ", status.size = " << status.size();
-	if (status.isEmpty())
-	{
-		m_onlineStatus = OnlineStatus::unknown;
-		return;
-	}
-	
-	bool ok;
-	quint32 protocolStatus = status.toUInt(&ok, 16);
-	if (ok)
-		m_onlineStatus = OnlineStatus::fromProtocolStatus(protocolStatus);
-	else
-		m_onlineStatus = OnlineStatus::unknown;
+	qDebug() << "ContactInfo::setOnlineStatus status = " << status.description();
+	m_onlineStatus = status;
 }
 
 QString ContactInfo::errorDescription(quint32 status)
@@ -92,7 +81,7 @@ QString ContactInfo::errorDescription(quint32 status)
 void ContactInfo::setPhones(const QString & phones)
 {
 	m_formPhones = phones.split(',', QString::SkipEmptyParts);
-	
+
 	for (int i = 0; i < m_formPhones.size(); i++)
 	{
 		if (!m_formPhones.at(i).startsWith('+'))

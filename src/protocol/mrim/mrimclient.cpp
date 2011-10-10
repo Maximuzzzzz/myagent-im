@@ -56,7 +56,7 @@ void MRIMClient::connectToServer(OnlineStatus status)
 		return;
 
 	p->newStatus = status;
-	qDebug() << "p->newStatus" << p->newStatus.id() << "(" << p->newStatus.statusDescr() << ")";
+	qDebug() << "p->newStatus" << p->newStatus.id() << "(" << p->newStatus.description() << ")";
 	p->manualDisconnect = false;
 
 	p->checkProxy();
@@ -81,18 +81,18 @@ void MRIMClient::disconnectFromServer()
 quint32 MRIMClient::requestContactInfo(QByteArray email)
 {
 	qDebug() << "requesting info";
-	
+
 	QByteArray user = p->getLogin(email);
 	QByteArray domain = p->getDomain(email);
-	
+
 	QByteArray data;
 	MRIMDataStream out(&data, QIODevice::WriteOnly);
-	
+
 	out << quint32(MRIM_CS_WP_REQUEST_PARAM_USER);
 	out << user;
 	out << quint32(MRIM_CS_WP_REQUEST_PARAM_DOMAIN);
 	out << domain;
-	
+
 	return p->sendPacket(MRIM_CS_WP_REQUEST, data);
 }
 
@@ -100,14 +100,14 @@ quint32 MRIMClient::requestContactInfo(QByteArray email)
 quint32 MRIMClient::searchContacts(const SearchParams& params)
 {
 	QList<quint32> keys = params.keys();
-	
+
 	if (keys.contains(MRIM_CS_WP_REQUEST_PARAM_USER) ||
 		keys.contains(MRIM_CS_WP_REQUEST_PARAM_DOMAIN))
 		return 0;
-	
+
 	QByteArray data;
 	MRIMDataStream out(&data, QIODevice::WriteOnly);
-	
+
 	QList<quint32>::const_iterator it = keys.begin();
 	for (; it != keys.end(); ++it)
 	{
@@ -122,21 +122,21 @@ quint32 MRIMClient::searchContacts(const SearchParams& params)
 		out << quint32(MRIM_CS_WP_REQUEST_PARAM_ONLINE);
 		out << params.value(MRIM_CS_WP_REQUEST_PARAM_ONLINE);
 	}
-	
+
 	return p->sendPacket(MRIM_CS_WP_REQUEST, data);
 }
 
 void MRIMClient::changeStatus(OnlineStatus newStatus)
 {
-	qDebug() << "MRIMClient::changeStatus, status = " << newStatus.id() << "(" << newStatus.statusDescr() << ")";
+	qDebug() << "MRIMClient::changeStatus, status = " << newStatus.id() << "(" << newStatus.description() << ")";
 
 	if (newStatus.protocolStatus() == STATUS_OFFLINE || newStatus.protocolStatus() == STATUS_UNDETERMINATED)
 		return;
-	
+
 	QByteArray data;
 	MRIMDataStream out(&data, QIODevice::WriteOnly);
 
-	QString stDescr = newStatus.statusDescr().setUtf16(0, newStatus.statusDescr().size());
+	QString stDescr = newStatus.description().setUtf16(0, newStatus.description().size());
 
 	out << quint32(newStatus.protocolStatus()) << newStatus.id() << stDescr << quint32(0) << quint32(0xffffff);
 
@@ -221,30 +221,30 @@ quint32 MRIMClient::broadcastMessage(const Message* message, QList<QByteArray> r
 quint32 MRIMClient::askAuthorization(const QByteArray& email, const QString& message)
 {
 	qDebug() << "MRIMClient askAuthorization for " << email;
-	
+
 	QByteArray data;
 	MRIMDataStream out(&data, QIODevice::WriteOnly);
-	
+
 	QByteArray packedMessage64 = p->packAuthorizationMessage(message);
-	
+
 	out << quint32(MESSAGE_FLAG_NORECV | MESSAGE_FLAG_AUTHORIZE);
 	out << email;
 	out << packedMessage64;
 	out << quint32(0);
-	
+
 	qDebug() << data.toHex();
-	
+
 	return p->sendPacket(MRIM_CS_MESSAGE, data);
 }
 
 quint32 MRIMClient::sendRtfMessage(QByteArray email, QString text, QByteArray rtf)
 {
 	//QByteArray baText = p->codec->fromUnicode(text);
-	
+
 	qDebug() << "MRIMClient send message: " << QString::fromAscii(rtf);
-	
+
 	QByteArray packedRtf = p->packRtf(rtf);
-	
+
 	QByteArray data;
 	MRIMDataStream out(&data, QIODevice::WriteOnly);
 
@@ -254,7 +254,7 @@ quint32 MRIMClient::sendRtfMessage(QByteArray email, QString text, QByteArray rt
 	out << packedRtf;
 
 	qDebug() << "MRIMClient::sendRtfMessage" << data.toHex();
-	
+
 	return p->sendPacket(MRIM_CS_MESSAGE, data/*, 20*/);
 }
 
@@ -263,12 +263,12 @@ void MRIMClient::sendTyping(QByteArray email)
 	qDebug() << "send typing " << email;
 	QByteArray data;
 	MRIMDataStream out(&data, QIODevice::WriteOnly);
-	
+
 	out << quint32(MESSAGE_FLAG_NORECV | MESSAGE_FLAG_NOTIFY);
 	out << email;
 	out << QByteArray(" ");
 	out << QByteArray(" ");
-	
+
 	p->sendPacket(MRIM_CS_MESSAGE, data);
 }
 
@@ -276,26 +276,26 @@ quint32 MRIMClient::changeContactGroup(quint32 groupID, Contact* c)
 {
 	qDebug() << "changeContactGroup" << c->nickname() << ", " << groupID;
 	qDebug() << c->email() << " " << QString::number(groupID, 16) << "id = " << c->id();
-	
+
 	QByteArray data;
 	MRIMDataStream out(&data, QIODevice::WriteOnly);
 	ContactData contactData = c->contactData();
 	contactData.group = groupID;
 	contactData.prepareForSending(out);
-	
+
 	return p->sendPacket(MRIM_CS_MODIFY_CONTACT, data);
 }
 
 quint32 MRIMClient::changeContactPhones(Contact* contact, const QStringList & phones)
 {
 	qDebug() << "changeContactPhones" << contact->nickname() << ", " << phones;
-	
+
 	QByteArray data;
 	MRIMDataStream out(&data, QIODevice::WriteOnly);
 	ContactData contactData = contact->contactData();
 	contactData.phones = phones;
 	contactData.prepareForSending(out);
-	
+
 	return p->sendPacket(MRIM_CS_MODIFY_CONTACT, data);
 }
 
@@ -311,7 +311,7 @@ quint32 MRIMClient::renameContact(const QString& nickname, Contact * contact)
 	contactData.prepareForSending(out);
 
 	qDebug() << data.toHex();
-	
+
 	return p->sendPacket(MRIM_CS_MODIFY_CONTACT, data);
 }
 
@@ -332,39 +332,39 @@ quint32 MRIMClient::ignoreContact(const quint32 flags, Contact * contact)
 quint32 MRIMClient::setVisibility(bool alwaysVisible, bool alwaysInvisible, Contact* contact)
 {
 	quint32 newFlags = contact->flags();
-	
+
 	if (alwaysVisible)
 		newFlags |= CONTACT_FLAG_VISIBLE;
 	else
 		newFlags &= ~CONTACT_FLAG_VISIBLE;
-	
+
 	if (alwaysInvisible)
 		newFlags |= CONTACT_FLAG_INVISIBLE;
 	else
 		newFlags &= ~CONTACT_FLAG_INVISIBLE;
-	
+
 	if (newFlags == contact->flags())
 		return 0;
-	
+
 	QByteArray data;
 	MRIMDataStream out(&data, QIODevice::WriteOnly);
 	ContactData contactData = contact->contactData();
 	contactData.flags = newFlags;
 	contactData.prepareForSending(out);
-	
+
 	return p->sendPacket(MRIM_CS_MODIFY_CONTACT, data);
 }
 
 quint32 MRIMClient::addContact(quint32 group, const QString& nickname, const QByteArray& email, const QString& authorizationMessage)
 {
 	qDebug() << "addContact" << group << ", " << nickname << ", " << email;
-	
+
 	QByteArray baNick = p->codec1251->fromUnicode(nickname);
-	
+
 	QByteArray baAuthorizationMessage("");
 	if (!authorizationMessage.isEmpty())
 		baAuthorizationMessage = p->packAuthorizationMessage(authorizationMessage);
-	
+
 	QByteArray data;
 	MRIMDataStream out(&data, QIODevice::WriteOnly);
 
@@ -375,7 +375,7 @@ quint32 MRIMClient::addContact(quint32 group, const QString& nickname, const QBy
 	out << QByteArray(""); //must be empty
 	out << baAuthorizationMessage; // packed authorization message
 	out << quint32(0); // 0?
-	
+
 	return p->sendPacket(MRIM_CS_ADD_CONTACT, data);
 }
 
@@ -419,18 +419,18 @@ quint32 MRIMClient::addConference(QString confName, QByteArray owner, QList<QByt
 quint32 MRIMClient::addSmsContact(const QString & nickname, const QStringList & phones)
 {
 	qDebug() << "addSmsContact" << nickname << ", " << phones;
-	
+
 	QByteArray baNick = p->codecUTF16->fromUnicode(nickname);
-	
+
 	QByteArray baAuthorizationMessage("");
-	
+
 	QStringList tmpPhones = phones;
 	tmpPhones.replaceInStrings("+", "");
 	QByteArray baPhones = p->codec1251->fromUnicode(tmpPhones.join(","));
 
 	QByteArray data;
 	MRIMDataStream out(&data, QIODevice::WriteOnly);
-	
+
 	out << quint32(CONTACT_FLAG_PHONE);
 	out << quint32(SMS_CONTACT_GROUP);
 	out << QByteArray("phone");
@@ -438,17 +438,17 @@ quint32 MRIMClient::addSmsContact(const QString & nickname, const QStringList & 
 	out << baPhones;
 	out << baAuthorizationMessage; // packed authorization message
 	out << quint32(0); // 0?
-	
+
 	return p->sendPacket(MRIM_CS_ADD_CONTACT, data);
 }
 
 quint32 MRIMClient::addGroup(const QString& name)
 {
 	qDebug() << "addGroup" << name;
-	
+
 	quint32 nGroups = p->account->contactList()->nGroups();
 	nGroups <<= 24;
-	
+
 	qDebug() << "nGroups = " << QString::number(nGroups, 16);
 
 	QByteArray baName = p->codecUTF16->fromUnicode(name);
@@ -470,7 +470,7 @@ quint32 MRIMClient::addGroup(const QString& name)
 
 	out << data2.toBase64();
 	out << quint32(0);
-	
+
 	return p->sendPacket(MRIM_CS_ADD_CONTACT, data);
 }
 
@@ -478,13 +478,13 @@ quint32 MRIMClient::removeContact(Contact* c)
 {
 	qDebug() << "removeContact" << c->email();
 	qDebug() << c->email() << " id = " << c->id();
-	
+
 	QByteArray data;
 	MRIMDataStream out(&data, QIODevice::WriteOnly);
 	ContactData contactData = c->contactData();
 	contactData.flags |= CONTACT_FLAG_REMOVED;
 	contactData.prepareForSending(out);
-	
+
 	qDebug() << data.toHex();
 
 	return p->sendPacket(MRIM_CS_MODIFY_CONTACT, data);
@@ -493,12 +493,12 @@ quint32 MRIMClient::removeContact(Contact* c)
 quint32 MRIMClient::removeGroup(ContactGroup * group)
 {
 	qDebug() << "removeGroup" << group->name();
-	
+
 	QByteArray baName = p->codecUTF16->fromUnicode(group->name());
 
 	QByteArray data;
 	MRIMDataStream out(&data, QIODevice::WriteOnly);
-	
+
 	out << quint32(group->id());
 	out << quint32(group->flags() | CONTACT_FLAG_REMOVED);
 	out << quint32(0);
@@ -532,12 +532,12 @@ quint32 MRIMClient::sendSms(QByteArray number, const QString & text)
 
 	QByteArray data;
 	MRIMDataStream out(&data, QIODevice::WriteOnly);
-	
+
 	if (!number.startsWith('+'))
 		number.prepend('+');
 	QByteArray smsText = p->codecUTF16->fromUnicode(text);
 	smsText = smsText.right(smsText.length() - 2);
-	
+
 	qDebug() << "number =" << number;
 	qDebug() << "text =" << smsText;
 
@@ -563,7 +563,7 @@ quint32 MRIMClient::renameGroup(ContactGroup* group, QString name)
 	out << quint32(0);
 	out << baName.right(baName.length() - 2);
 	out << quint32(0);
-	
+
 	qDebug() << data.toHex();
 
 	return p->sendPacket(MRIM_CS_MODIFY_CONTACT, data);

@@ -82,11 +82,10 @@ ContactData::ContactData(quint32 contactId, MRIMDataStream& stream, const QByteA
 	stream >> statusId;
 	stream >> statusDescr;
 
-	if (statusId != "")
+	if (!statusId.isEmpty())
 	{
 		qDebug() << "statusId" << statusId;
-		status.setIdStatus(statusId);
-		status.setDescr(statusDescr);
+		status = OnlineStatus(statusId, statusDescr);
 	}
 
 	QByteArray unk1;
@@ -98,7 +97,7 @@ ContactData::ContactData(quint32 contactId, MRIMDataStream& stream, const QByteA
 	int nFlags = tailMask.size();
 	quint32 uData;
 	QByteArray sData;
-	
+
 	for (int i = 0; i < nFlags; i++)
 	{
 		if (tailMask.at(i) == 'u')
@@ -185,6 +184,7 @@ bool ContactData::isConference() const
 
 QByteArray ContactData::getClient() const
 {
+	qDebug() << Q_FUNC_INFO << "client =" << client;
 	int clientNamePos = client.indexOf("\"", client.indexOf("client")) + 1;
 	QByteArray result = client.mid(clientNamePos, client.indexOf("\"", clientNamePos) - clientNamePos);
 	if (result == "magent")

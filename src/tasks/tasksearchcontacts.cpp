@@ -39,11 +39,11 @@ bool Tasks::SearchContacts::exec()
 	qDebug() << "SearchContacts::exec()";
 	if (!block())
 		return false;
-	
+
 	connect(mc, SIGNAL(contactInfoReceived(quint32, quint32, MRIMClient::ContactsInfo, quint32, quint32)), this, SLOT(checkResult(quint32, quint32, MRIMClient::ContactsInfo, quint32, quint32)));
-	
+
 	setTimer(mc->getPingTime());
-	
+
 	if (!m_email.isEmpty())
 		return checkCall(mc->requestContactInfo(m_email));
 	else
@@ -56,19 +56,19 @@ void Tasks::SearchContacts::checkResult(quint32 msgseq, quint32 status, MRIMClie
 	if (isMyResponse(msgseq))
 	{
 		qDebug() << "contactinfos received";
-		
+
 		if (status == MRIM_ANKETA_INFO_STATUS_OK)
 		{
 			m_maxRows = maxRows;
-			
+
 			int n = info[info.keys().first()].size();
-			
+
 			qDebug() << "n = " << n;
-			
+
 			for (int i = 0; i < n; i++)
 			{
 				ContactInfo contactInfo;
-				
+
 				contactInfo.setServerTime(serverTime);
 				contactInfo.m_username = info["Username"].at(i);
 				contactInfo.m_domain = info["Domain"].at(i);
@@ -79,12 +79,37 @@ void Tasks::SearchContacts::checkResult(quint32 msgseq, quint32 status, MRIMClie
 				contactInfo.setSex(info["Sex"].at(i));
 				contactInfo.setBirthday(info["Birthday"].at(i));
 				contactInfo.setZodiac(info["Zodiac"].at(i));
-				contactInfo.setOnlineStatus(info["mrim_status"].at(i));
-				
+
+				OnlineStatus onlineStatus;
+				QString status = info["mrim_status"].at(i);
+				if (status.isEmpty())
+					onlineStatus = OnlineStatus::unknown;
+				else
+				{
+					if (info.contains("status_uri") && !info["status_uri"].at(i).isEmpty())
+					{
+						QByteArray statusId = info["status_uri"].at(i).toAscii();
+						QString statusDescr = info.value("status_title").value(i);
+						qDebug() << Q_FUNC_INFO << "statusId =" << statusId << ", statusDescr =" << statusDescr;
+						onlineStatus = OnlineStatus(statusId, statusDescr);
+					}
+					else
+					{
+						bool ok;
+						quint32 protocolStatus = status.toUInt(&ok, 16);
+						if (ok)
+							onlineStatus = OnlineStatus::fromProtocolStatus(protocolStatus);
+						else
+							onlineStatus = OnlineStatus::unknown;
+					}
+				}
+
+				contactInfo.setOnlineStatus(onlineStatus);
+
 				contactsInfo.append(contactInfo);
 			}
 		}
-		
+
 		Q_EMIT done(status, false);
 		delete this;
 	}

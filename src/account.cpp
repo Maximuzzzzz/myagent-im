@@ -139,12 +139,12 @@ QString Account::avatarsPath() const
 
 void Account::setOnlineStatus(OnlineStatus newStatus, qint32 id)
 {
-	qDebug() << "Account::setOnlineStatus: onlineStatus = " << m_onlineStatus.statusDescr() << ", newStatus = " << newStatus.statusDescr();
+	qDebug() << "Account::setOnlineStatus: onlineStatus = " << m_onlineStatus.description() << ", newStatus = " << newStatus.description();
 
 	if (m_onlineStatus.connected())
 		m_pointerOnlineStatus = id;
 
-	if ((m_onlineStatus == newStatus && m_onlineStatus.statusDescr() == newStatus.statusDescr()) || newStatus == OnlineStatus::connecting)
+	if (m_onlineStatus == newStatus || newStatus == OnlineStatus::connecting)
 		return;
 
 	if (newStatus == OnlineStatus::offline)
@@ -205,7 +205,7 @@ void Account::slotLoggedIn(OnlineStatus status)
 		}
 	}
 
-	qDebug() << "status" << status.id() << "(" << status.statusDescr() << ")";
+	qDebug() << "status" << status.id() << "(" << status.description() << ")";
 	if (m_onlineStatus != status)
 	{
 		m_onlineStatus = status;
@@ -286,9 +286,9 @@ void Account::setStatusText(QString statusText)
 void Account::saveOnlineStatus(OnlineStatus st)
 {
 	m_settings->setValue("Statuses/lastOnlineStatus", st.id());
-	m_settings->setValue("Statuses/lastOnlineStatusDescr", st.statusDescr());
+	m_settings->setValue("Statuses/lastOnlineStatusDescr", st.description());
 
-	if (theRM.onlineStatuses()->getOnlineStatusInfo(st.id())->builtIn() == "1")
+	if (st.builtIn())
 		m_settings->remove("Statuses/statusPointer");
 	else
 	{
@@ -305,7 +305,7 @@ void Account::saveOnlineStatus(OnlineStatus st)
 					break;
 				}
 				if (m_settings->value("Statuses/statusid" + QByteArray::number(i), OnlineStatus::getDefIdStatus(i)).toByteArray() == st.id() &&
-				 m_settings->value("Statuses/statusdescr" + QByteArray::number(i), OnlineStatus::getDefDescrStatus(i)).toString() == st.statusDescr())
+				 m_settings->value("Statuses/statusdescr" + QByteArray::number(i), OnlineStatus::getDefDescrStatus(i)).toString() == st.description())
 				{
 					m_settings->setValue("Statuses/lastOnlineStatus", st.id());
 					i++;
@@ -319,7 +319,7 @@ void Account::saveOnlineStatus(OnlineStatus st)
 
 		m_settings->setValue("Statuses/statuschecked" + QByteArray::number(m_pointerOnlineStatus), true);
 		m_settings->setValue("Statuses/statusid" + QByteArray::number(m_pointerOnlineStatus), st.id());
-		m_settings->setValue("Statuses/statusdescr" + QByteArray::number(m_pointerOnlineStatus), st.statusDescr());
+		m_settings->setValue("Statuses/statusdescr" + QByteArray::number(m_pointerOnlineStatus), st.description());
 
 		m_settings->setValue("Statuses/statusPointer", m_pointerOnlineStatus);
 	}

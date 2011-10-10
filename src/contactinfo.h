@@ -52,17 +52,17 @@ public:
 	QString age() const { return m_age; }
 	OnlineStatus onlineStatus() const { return m_onlineStatus; }
 	QStringList formPhones() const { return m_formPhones; }
-	
+
 	static QString errorDescription(quint32 status);
-	
+
 private:
 	void setServerTime(quint32 serverTime) { m_serverTime.setTime_t(serverTime); }
 	void setSex(const QString& sex);
 	void setBirthday(const QString& birthday);
 	void setZodiac(const QString& zodiac);
-	void setOnlineStatus(const QString& status);
+	void setOnlineStatus(const OnlineStatus& status);
 	void setPhones(const QString& phones);
-	
+
 	QString m_username;
 	QString m_domain;
 	QString m_nickname;
