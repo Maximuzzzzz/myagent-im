@@ -38,6 +38,8 @@
 
 class ContactInfoItemDelegate : public QItemDelegate
 {
+public:
+	ContactInfoItemDelegate(QObject* parent = 0) : QItemDelegate(parent) {}
 	virtual void paint(QPainter* painter, const QStyleOptionViewItem & option, const QModelIndex& index) const;
 };
 
@@ -49,16 +51,16 @@ void ContactInfoItemDelegate::paint(QPainter* painter, const QStyleOptionViewIte
 		if (value.isValid() && value.canConvert(QVariant::Pixmap))
 		{
 			QPixmap pixmap = index.data(Qt::DecorationRole).value<QPixmap>();
-			
+
 			int dx = (option.rect.width() - pixmap.rect().width()) / 2;
 			int dy = (option.rect.height() - pixmap.rect().height()) / 2;
 			dx = (dx < 0) ? 0 : dx;
 			dy = (dy < 0) ? 0 : dy;
-			
+
 			QRect rect(option.rect);
 			rect.setSize(pixmap.size());
 			rect.translate(dx, dy);
-			
+
 			drawBackground(painter, option, index);
 			drawDecoration(painter, option, rect, pixmap);
 		}
@@ -74,12 +76,12 @@ public:
 	{
 		setEditable(false);
 	}
-	
+
 	ContactInfoItem(const QString& text) : QStandardItem(text)
 	{
 		setEditable(false);
 	}
-	
+
 	ContactInfoItem(const QIcon& icon, const QString& text)
 		: QStandardItem(icon, text)
 	{
@@ -91,10 +93,10 @@ ContactInfoListWidget::ContactInfoListWidget(Account* account, QWidget* parent)
 	: QTreeView(parent), m_account(account)
 {
 	photosNotShowedBefore = true;
-	
+
 	infoListModel = new QStandardItemModel(this);
 	//infoListModel->setSortRole(Qt::UserRole + 1);
-	
+
 	proxyModel = new QSortFilterProxyModel(this);
 	proxyModel->setSortCaseSensitivity(Qt::CaseInsensitive);
 	proxyModel->setSortLocaleAware(true);
@@ -103,9 +105,9 @@ ContactInfoListWidget::ContactInfoListWidget(Account* account, QWidget* parent)
 	setRootIsDecorated(false);
 	setSortingEnabled(true);
 	setUniformRowHeights(true);
-	setItemDelegateForColumn(0, new ContactInfoItemDelegate);
+	setItemDelegateForColumn(0, new ContactInfoItemDelegate(this));
 	header()->setResizeMode(QHeaderView::ResizeToContents);
-	
+
 	connect(this, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(slotDoubleClicked(const QModelIndex &)));
 }
 
@@ -113,9 +115,9 @@ void ContactInfoListWidget::setInfo(const QList<ContactInfo>& info)
 {
 	infoListModel->clear();
 	m_info = info;
-	
+
 	QStringList headerLabels;
-	
+
 	headerLabels << "";
 	headerLabels << tr("Nickname");
 	headerLabels << tr("E-mail");
@@ -123,9 +125,9 @@ void ContactInfoListWidget::setInfo(const QList<ContactInfo>& info)
 	headerLabels << tr("Last name");
 	headerLabels << tr("Sex");
 	headerLabels << tr("Age");
-	
+
 	infoListModel->setHorizontalHeaderLabels(headerLabels);
-	
+
 	for (int i = 0; i < info.size(); i++)
 	{
 		int j = 1;
@@ -137,7 +139,7 @@ void ContactInfoListWidget::setInfo(const QList<ContactInfo>& info)
 		infoListModel->setItem(i, j++, new ContactInfoItem(info.at(i).firstname()));
 		infoListModel->setItem(i, j++, new ContactInfoItem(info.at(i).lastname()));
 		infoListModel->setItem(i, j++, new ContactInfoItem(info.at(i).sex()));
-		
+
 		ContactInfoItem* ageItem = new ContactInfoItem;
 		QString strAge = info.at(i).age();
 		if (strAge.isEmpty())
@@ -147,9 +149,9 @@ void ContactInfoListWidget::setInfo(const QList<ContactInfo>& info)
 		ageItem->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
 		infoListModel->setItem(i, j++, ageItem);
 	}
-	
+
 	setColumnHidden(0, true);
-	
+
 	qDebug() << "ContactInfoListWidget: info setted";
 }
 
@@ -160,16 +162,16 @@ QSize ContactInfoListWidget::sizeHint() const
 	int cols = header()->count();
 	for (int i = 0; i < cols; i++)
 		w += header()->sectionSize(i);
-	
+
 	int h = header()->height();
 	int rows = infoListModel->rowCount();
 	int rowheight = itemDelegate()->sizeHint(viewOptions(), infoListModel->index(0, 1)).height();
-	
+
 	h += rowheight*rows;
 	h += frameWidth()*2;
-	
+
 	qDebug() << "ContactInfoListWidget sizeHint = " << QSize(w, h);
-	
+
 	return QSize(w, h);
 }
 
@@ -178,15 +180,15 @@ void ContactInfoListWidget::updateAvatar()
 	Avatar* avatar = qobject_cast<Avatar*>(sender());
 	QList<QStandardItem*> itemList =
 		infoListModel->findItems(avatar->email(), Qt::MatchExactly, 2);
-	
+
 	if (itemList.isEmpty())
 	{
 		qDebug("ContactInfoListWidget cant't find item by email");
 		return;
 	}
-	
+
 	QStandardItem* item = itemList.first();
-	
+
 	infoListModel->item(item->row())->setData(*avatar, Qt::DecorationRole);
 	infoListModel->item(item->row())->setText(QString::number(avatar->state()));
 }
@@ -198,7 +200,7 @@ void ContactInfoListWidget::showPhotos(bool b)
 		addPhotosColumn();
 		photosNotShowedBefore = false;
 	}
-	
+
 	setColumnHidden(0, !b);
 	expandAll();
 }

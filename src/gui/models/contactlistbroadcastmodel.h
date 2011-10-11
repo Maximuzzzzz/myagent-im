@@ -11,7 +11,7 @@ class ContactListBroadcastModel : public QStandardItemModel
 {
 Q_OBJECT
 public:
-	ContactListBroadcastModel(QByteArray contactEmail, ContactList* contactList = NULL);
+	ContactListBroadcastModel(QByteArray contactEmail, ContactList* contactList = 0, QObject* parent = 0);
 	~ContactListBroadcastModel();
 
 	Contact* contactFromIndex(const QModelIndex& index);
