@@ -39,7 +39,6 @@
 ChatSession::ChatSession(Account* account, Contact* contact)
 	: m_account(account), m_contact(contact)
 {
-	numering = 0;
 }
 
 ChatSession::~ChatSession()
@@ -49,18 +48,17 @@ ChatSession::~ChatSession()
 	messages.clear();
 }
 
-void ChatSession::appendMessage(Message* msg, bool addInHash)
+void ChatSession::appendMessage(Message* msg, bool enqueue)
 {
 	qDebug() << Q_FUNC_INFO;
-	if (addInHash)
+	if (enqueue)
 	{
-		while (messages.value(++numering, 0) != 0) {}
-		messages.insert(numering, msg);
+		messages.append(msg);
 	}
 
 	Q_EMIT messageAppended(msg);
 
-	if (!addInHash)
+	if (!enqueue)
 		delete msg;
 }
 /*
@@ -73,8 +71,7 @@ void ChatSession::appendBroadcastMessage(Message* msg, ReceiversList rec, bool a
 {
 	if (addInHash)
 	{
-		while (messages.value(++numering, 0) != 0) {}
-		messages.insert(numering, msg);
+		messages.append(msg);
 		broadcastMessages.insert(msg, rec);
 	}
 	Q_EMIT messageAppended(msg);
@@ -130,12 +127,12 @@ bool ChatSession::sendMult(const MultInfo* info)
 }
 
 void ChatSession::slotMessageStatus(quint32 status, bool timeout)
-{	
+{
 	Tasks::SendMessage* task = qobject_cast<Tasks::SendMessage*>(sender());
 	if (!timeout && status == MESSAGE_DELIVERED)
 	{
 		qDebug() << "Message delivered";
-		messages.remove(messages.key(task->getMessage()));
+		messages.removeAll(task->getMessage());
 		Q_EMIT messageDelivered(true, task->getMessage());
 	}
 	else
@@ -151,7 +148,7 @@ void ChatSession::slotBroadcastMessageStatus(quint32 status, bool timeout)
 /*	if (!timeout && status == MESSAGE_DELIVERED)
 	{*/
 		qDebug() << "Message delivered";
-		messages.remove(messages.key(task->getMessage()));
+		messages.removeAll(task->getMessage());
 		broadcastMessages.remove(broadcastMessages.key(task->getReceivers()));
 		Q_EMIT messageDelivered(true, task->getMessage());
 /*	}
@@ -167,7 +164,7 @@ void ChatSession::sendTyping()
 	int msec = typingTime.elapsed();
 	if (0 <= msec && msec < 10000)
 		return;
-	
+
 	m_account->client()->sendTyping(m_contact->email());
 	typingTime.start();
 }
@@ -202,7 +199,7 @@ bool ChatSession::wakeupContact()
 		QTextDocument doc(plainText);
 		RtfExporter rtfExporter(&doc);
 		QByteArray rtf = rtfExporter.toRtf();
-		
+
 		Message* msg = new Message(Message::Error, MESSAGE_FLAG_RTF | MESSAGE_FLAG_ALARM, plainText, rtf, 0x00FFFFFF);
 		appendMessage(msg, false);
 		return false;
@@ -212,11 +209,11 @@ bool ChatSession::wakeupContact()
 	QTextDocument doc(plainText);
 	RtfExporter rtfExporter(&doc);
 	QByteArray rtf = rtfExporter.toRtf();
-	
+
 	Message* msg = new Message(Message::Outgoing, MESSAGE_FLAG_RTF | MESSAGE_FLAG_ALARM, plainText, rtf, 0x00FFFFFF);
 	Task* task = new Tasks::SendMessage(m_contact, msg, m_account->client());
 	connect(task, SIGNAL(done(quint32, bool)), this, SLOT(slotMessageStatus(quint32, bool)));
-	
+
 	if (task->exec())
 	{
 		awakeDelay.start();

@@ -45,7 +45,7 @@ public:
 	Contact* contact() { return m_contact; }
 
 	typedef QList<QByteArray> ReceiversList;
-	typedef QHash<quint32, Message*>::const_iterator MessageIterator;
+	typedef QList<Message*>::const_iterator MessageIterator;
 	typedef QHash<Message*, ReceiversList>::const_iterator BroadcastMessageIterator;
 	MessageIterator messagesBegin() const { return messages.begin(); }
 	MessageIterator messagesEnd() const { return messages.end(); }
@@ -61,8 +61,8 @@ Q_SIGNALS:
 	void signalFileReceived(quint32 totalSize, quint32 sessionId, QByteArray filesAnsi, QString filesUtf, QByteArray ips);
 	void microblogChanged(QString text, QDateTime mbDateTime);
 
-public Q_SLOTS:	
-	void appendMessage(Message* msg, bool addInHash = true);
+public Q_SLOTS:
+	void appendMessage(Message* msg, bool enqueue = true);
 	/*void appendMult(QString multId);*/
 	void appendBroadcastMessage(Message* msg, ReceiversList rec, bool addInHash = true);
 	void slotMicroblogChanged(QString text, QDateTime mbDateTime);
@@ -83,14 +83,13 @@ private Q_SLOTS:
 	void slotMessageStatus(quint32 status, bool timeout);
 	void slotBroadcastMessageStatus(quint32 status, bool timeout);
 	void slotSmsStatus(quint32 status, bool timeout);
-	
+
 private:
 	Account* m_account;
 	Contact* m_contact;
-	QHash<quint32, Message*> messages;
+	QList<Message*> messages;
 	QHash<Message*, ReceiversList> broadcastMessages;
-	quint32 numering;
-	
+
 	QTime typingTime;
 	QTime awakeDelay;
 };
