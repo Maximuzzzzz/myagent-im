@@ -30,6 +30,7 @@
 #include "account.h"
 
 HistoryViewer::HistoryViewer(Contact* contact)
+	: QTabWidget(0)
 {
 	qDebug() << "HistoryViewer::HistoryViewer";
 	

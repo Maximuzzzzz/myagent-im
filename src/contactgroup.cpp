@@ -65,7 +65,7 @@ quint32 ContactGroup::typeToInt(GroupType t)
 	}
 }
 
-ContactGroup::GroupType ContactGroup::intToType(quint32 n)
+ContactGroup::GroupType ContactGroup::intToType(quint32 n) const
 {
 	switch (n)
 	{

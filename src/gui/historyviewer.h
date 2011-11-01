@@ -44,8 +44,6 @@ private:
 	QString incomingNickname;
 	QString outgoingNickname;
 
-	QTabWidget* tabWidget;
-
 	HistoryViewTab* viewPage;
 	HistorySearchTab* searchPage;
 };

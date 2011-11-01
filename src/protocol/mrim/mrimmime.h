@@ -28,26 +28,26 @@
 
 #include "datetime.h"
 
-class MrimMIME : public QObject
+class MrimMIME
 {
 public:
 	MrimMIME();
 	MrimMIME(const QByteArray & data);
 
-	QByteArray from() { return m_from; }
-	QByteArray sender() { return m_sender; }
-	QString subject() { return m_subject; }
-	QDateTime dateTime() { return m_dateTime; }
-	QByteArray mimeVersion() { return m_mimeVersion; }
-	QByteArray plainText() { return m_plainText; }
-	QByteArray plainTextCharset() { return m_plainTextCharset; }
-	QByteArray rtfBase64() { return m_rtfBase64; }
-	QByteArray xMrimVersion() { return m_xMrimVersion; }
-	quint32 xMrimFlags() { return m_xMrimFlags; }
-	quint32 xMrimMultichatType() { return m_xMrimMultichatType; }
-	bool hasPlainText() { return m_hasPlainText; }
-	bool hasRtfText() { return m_hasRtfText; }
-	bool isMultipart() { return m_isMultipart; }
+	QByteArray from() const { return m_from; }
+	QByteArray sender() const { return m_sender; }
+	QString subject() const { return m_subject; }
+	QDateTime dateTime() const { return m_dateTime; }
+	QByteArray mimeVersion() const { return m_mimeVersion; }
+	QByteArray plainText() const { return m_plainText; }
+	QByteArray plainTextCharset() const { return m_plainTextCharset; }
+	QByteArray rtfBase64() const { return m_rtfBase64; }
+	QByteArray xMrimVersion() const { return m_xMrimVersion; }
+	quint32 xMrimFlags() const { return m_xMrimFlags; }
+	quint32 xMrimMultichatType() const { return m_xMrimMultichatType; }
+	bool hasPlainText() const { return m_hasPlainText; }
+	bool hasRtfText() const { return m_hasRtfText; }
+	bool isMultipart() const { return m_isMultipart; }
 
 private:
 	void initData(const QByteArray & data);

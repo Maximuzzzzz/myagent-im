@@ -241,7 +241,7 @@ bool ChatWindowsManager::isAnyWindowVisible()
 			ChatWindow* wnd = it.value();
 			if (wnd->isVisible())
 				return true;
-			it++;
+			++it;
 		}
 		return false;
 	}
@@ -265,7 +265,7 @@ void ChatWindowsManager::reloadStatus(bool doUseTabs)
 		{
 			ChatWindow* wnd = it.value();
 			delete wnd;
-			it++;
+			++it;
 		}
 		windows.clear();
 		loadMainWindow();

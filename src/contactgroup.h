@@ -59,7 +59,7 @@ public:
 
 private:
 	quint32 typeToInt(GroupType t);
-	GroupType intToType(quint32 n);
+	GroupType intToType(quint32 n) const;
 
 	quint32 m_id;
 	quint32 m_flags;

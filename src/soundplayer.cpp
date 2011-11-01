@@ -3,7 +3,8 @@
 #include "resourcemanager.h"
 #include "soundplayer.h"
 
-SoundPlayer::SoundPlayer()
+SoundPlayer::SoundPlayer(QObject *parent)
+	: QObject(parent), media(0), currentSound(STAuth)
 {
 }
 

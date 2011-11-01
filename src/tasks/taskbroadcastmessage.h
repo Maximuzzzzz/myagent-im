@@ -44,14 +44,16 @@ public:
 	bool exec();
 	Message* getMessage() { return message; }
 	QList<QByteArray> getReceivers() { return m_receivers; }
+
 protected Q_SLOTS:
 	virtual void timeout();
+
 private Q_SLOTS:
 	void checkResult(quint32 msgseq, quint32 status);
+
 private:
 	QList<QByteArray> m_receivers;
 	Message* message;
-	QTimer* tim;
 };
 
 }

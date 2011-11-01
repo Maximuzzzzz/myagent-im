@@ -6,10 +6,11 @@
 
 #include <QSet>
 
-class Audio: QObject
+class Audio : public QObject
 {
 Q_OBJECT
 public:
+	Audio(QObject* parent = 0);
 	void play(SoundType soundType);
 
 public Q_SLOTS:

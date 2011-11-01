@@ -26,6 +26,7 @@
 #include <QTextCodec>
 
 MrimMIME::MrimMIME()
+	: m_hasPlainText(false), m_hasRtfText(false), m_isMultipart(false)
 {
 }
 

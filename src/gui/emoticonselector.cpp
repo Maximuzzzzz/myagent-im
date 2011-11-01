@@ -133,7 +133,7 @@ void EmoticonSelectorPage::setCurrentLayout()
 //------------------------------------------*/
 
 EmoticonSelector::EmoticonSelector(QWidget* parent)
-	: QFrame(parent)
+	: QFrame(parent), m_selectorSender(0)
 {
 	qDebug() << Q_FUNC_INFO << "{";
 

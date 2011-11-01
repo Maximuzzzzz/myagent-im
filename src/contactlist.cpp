@@ -342,12 +342,13 @@ void ContactList::endUpdating()
 
 bool ContactList::removeContactOnServer(Contact* contact)
 {
-	qDebug() << "ContactList::removeContact " << contact->email();
 	if (!contact)
 	{
 		qDebug() << "removeContact: contact doesn't exist";
 		return false;
 	}
+	
+	qDebug() << "ContactList::removeContact " << contact->email();
 	
 	if (contact->isTemporary() && !contact->isConference())
 	{
@@ -884,7 +885,7 @@ bool ContactList::removeGroupOnServer(ContactGroup* group)
 	
 	qDebug() << "searching for group" << group->name() << (void*)group;
 	ContactsIterator it = contactsBegin();
-	for (; it != contactsEnd(); it++)
+	for (; it != contactsEnd(); ++it)
 	{
 		qDebug() << "current group = " << (*it)->group()->name() << (void*)((*it)->group());
 		if ((*it)->group() == group)

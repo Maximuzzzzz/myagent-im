@@ -147,7 +147,7 @@ void FileMessage::receiveFiles(quint32 sessId)
 
 	qDebug() << fm_fileListUtf.size();
 	QList<QString>::iterator it = fm_fileListUtf.begin();
-	for (; it != fm_fileListUtf.end(); it++)
+	for (; it != fm_fileListUtf.end(); ++it)
 	{
 		QString currFN = getReceivingDir() /*fm_defaultDir*/ + "/" + (*it);
 		QFile file(currFN);
@@ -832,7 +832,7 @@ void FileMessage::setFileList(QList<QFileInfo> & files)
 	fm_filePaths.clear();
 	fm_totalSize = 0;
 	QList<QFileInfo>::iterator it = files.begin();
-	for (; it != files.end(); it++)
+	for (; it != files.end(); ++it)
 	{
 		QTextCodec* codec = QTextCodec::codecForName("cp1251");
 		if (codec->canEncode(it->fileName()))

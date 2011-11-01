@@ -26,7 +26,7 @@
 #include "resourcemanager.h"
 
 PopupWindowsStack::PopupWindowsStack(SystemTrayIcon* sysTray)
- : QObject(sysTray), m_sysTray(sysTray)
+	: QObject(sysTray), m_sysTray(sysTray), direction(Up)
 {
 }
 

@@ -37,7 +37,7 @@
 #include "contactlist.h"
 
 Contact::Contact(const ContactData& contactData, ContactGroup* group, Account* account)
-	: data(contactData), m_group(group), m_account(account)
+	: data(contactData), m_group(group), m_account(account), m_activeConference(false)
 {
 	qDebug() << Q_FUNC_INFO << "email =" << email();
 
@@ -45,7 +45,7 @@ Contact::Contact(const ContactData& contactData, ContactGroup* group, Account* a
 }
 
 Contact::Contact(Account* account)
-	: m_account(account)
+	: m_group(0), m_account(account), m_activeConference(false)
 {
 	m_showMicroblogText = false;
 }

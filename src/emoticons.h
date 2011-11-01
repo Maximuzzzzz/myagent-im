@@ -69,13 +69,13 @@ public:
 	const_iterator end() const { return emoticonInfos.end(); }
 	int size() const { return emoticonInfos.size(); }
 
-	QStringList list() { return m_list; }
+	QStringList list() const { return m_list; }
 };
 
 class Emoticons
 {
 public:
-	Emoticons() {};
+	Emoticons() : m_maxSetSize(0) {};
 	~Emoticons() { qDeleteAll(emoticonSets); }
 
 	void load(QString filename, QSettings* settings);

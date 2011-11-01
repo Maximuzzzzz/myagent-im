@@ -30,7 +30,7 @@
 #include "emoticonformat.h"
 
 RtfExporter::RtfExporter(const QTextDocument* _doc)
-	: doc(_doc)
+	: doc(_doc), currentFont(-1), firstParsing(true), controlCodeApplied(true)
 {
 }
 

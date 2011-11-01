@@ -43,14 +43,16 @@ public:
 	
 	bool exec();
 	Message* getMessage() { return message; }
+
 protected Q_SLOTS:
 	virtual void timeout();
+
 private Q_SLOTS:
 	void checkResult(quint32 msgseq, quint32 status);
+
 private:
 	Contact* contact;
 	Message* message;
-	QTimer* tim; //if to delete this string, Task::timeout() will not work properly. Why? I don't know! o_O
 };
 
 }
