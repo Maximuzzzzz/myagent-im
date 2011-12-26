@@ -123,17 +123,22 @@
      <widget class="QListWidget" name="listWidget_2">
       <item>
        <property name="text">
-        <string>Alexander Volkov &lt;volkov0aa@gmail.com&gt; Russian</string>
+        <string>Russian: Alexander Volkov &lt;volkov0aa@gmail.com&gt;</string>
        </property>
       </item>
       <item>
        <property name="text">
-        <string>Dmitry Malakhov &lt;abr_mail@mail.ru&gt; Russian</string>
+        <string>Russian: Dmitry Malakhov &lt;abr_mail@mail.ru&gt;</string>
        </property>
       </item>
       <item>
        <property name="text">
-        <string>Romek Marszcziwski &lt;marszcziwski@gmail.com&gt; Ukrainian</string>
+        <string>Turkish: Muhammet Yuksel &lt;bulutyg@gmail.com&gt;</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Ukrainian: Romek Marszcziwski &lt;marszcziwski@gmail.com&gt;</string>
        </property>
       </item>
      </widget>

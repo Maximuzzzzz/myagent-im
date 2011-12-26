@@ -21,31 +21,31 @@
     </message>
     <message>
         <source>All contacts (%1)</source>
-        <translation>T?m ileti?im (%1)</translation>
+        <translation>Tüm iletişim (%1)</translation>
     </message>
     <message>
         <source>me and other members</source>
-        <translation>ben ve di?er ?yeler</translation>
+        <translation>ben ve diğer üyeler</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>?ptal</translation>
+        <translation>Iptal</translation>
     </message>
     <message>
         <source>Type conference name and add members from list</source>
-        <translation>Konferans t?r?n? ve t?m ?yeleri listeden ekleyin</translation>
+        <translation>Konferans türünü ve tüm üyeleri listeden ekleyin</translation>
     </message>
     <message>
         <source>only me</source>
-        <translation>yaln?zca bana</translation>
+        <translation>yalnızca bana</translation>
     </message>
     <message>
         <source>Choose the conference type. The members of conference could be added by</source>
-        <translation>Konferans t?r? se?in. Konferans ?yeleri taraf?ndan eklenebilir</translation>
+        <translation>Konferans türü seçin. Konferans üyeleri tarafından eklenebilir</translation>
     </message>
     <message>
         <source>Conference name:</source>
-        <translation>Konferans ad?:</translation>
+        <translation>Konferans adı:</translation>
     </message>
     <message>
         <source>Conference 1</source>
@@ -53,15 +53,15 @@
     </message>
     <message>
         <source>Add members into conference</source>
-        <translation>Konferans ?yeleri ekle</translation>
+        <translation>Konferans üyeleri ekle</translation>
     </message>
     <message>
         <source>Conference type</source>
-        <translation>Konferans t?r?</translation>
+        <translation>Konferans türü</translation>
     </message>
     <message>
         <source>Conference members</source>
-        <translation>Konferans ?yeleri</translation>
+        <translation>Konferans üyeleri</translation>
     </message>
 </context>
 <context>
@@ -72,11 +72,11 @@
     </message>
     <message>
         <source>Ask authorization from user</source>
-        <translation>Kullan?c? izini isteyin</translation>
+        <translation>Kullanıcı izini isteyin</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>?ptal</translation>
+        <translation>Iptal</translation>
     </message>
     <message>
         <source>Ask authorization</source>
@@ -95,7 +95,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation>?ptal</translation>
+        <translation>Iptal</translation>
     </message>
     <message>
         <source>Add to group</source>
@@ -103,7 +103,7 @@
     </message>
     <message>
         <source>User %1 (%2) asks authorization:</source>
-        <translation>Kullan?c? %1 (%2) yetkisi sor:</translation>
+        <translation>Kullanıcı %1 (%2) yetkisi sor:</translation>
     </message>
     <message>
         <source>Authorization</source>
@@ -118,7 +118,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation>?ptal</translation>
+        <translation>Iptal</translation>
     </message>
 </context>
 <context>
@@ -129,11 +129,11 @@
     </message>
     <message>
         <source>Login</source>
-        <translation>Giri?</translation>
+        <translation>Giriş</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>?ptal</translation>
+        <translation>Iptal</translation>
     </message>
     <message>
         <source>E-mail:</source>
@@ -141,7 +141,7 @@
     </message>
     <message>
         <source>Password:</source>
-        <translation>?ifre:</translation>
+        <translation>Şifre:</translation>
     </message>
     <message>
         <source>Online status:</source>
@@ -168,7 +168,7 @@
     </message>
     <message>
         <source>Name:</source>
-        <translation>?sim:</translation>
+        <translation>Isim:</translation>
     </message>
     <message>
         <source>E-Mail</source>
@@ -184,43 +184,43 @@
     </message>
     <message>
         <source>Last name:</source>
-        <translation>Soyad?:</translation>
+        <translation>Soyadı:</translation>
     </message>
     <message>
         <source>Country:</source>
-        <translation>?lke:</translation>
+        <translation>Ülke:</translation>
     </message>
     <message>
         <source>Region:</source>
-        <translation>B?lge:</translation>
+        <translation>Bölge:</translation>
     </message>
     <message>
         <source>Wrong date!</source>
-        <translation>Yanl?? tarih!</translation>
+        <translation>Yanlış tarih!</translation>
     </message>
     <message>
         <source>Nickname:</source>
-        <translation>Kullan?c? ad?:</translation>
+        <translation>Kullanıcı adı:</translation>
     </message>
     <message>
         <source>Search only online contacts</source>
-        <translation>Sadece online ki?ileri ara</translation>
+        <translation>Sadece online kişileri ara</translation>
     </message>
     <message>
         <source>Zodiacal sign:</source>
-        <translation>Bur?:</translation>
+        <translation>Burç:</translation>
     </message>
     <message>
         <source>Age from</source>
-        <translation>Ya?</translation>
+        <translation>Yaş</translation>
     </message>
     <message>
         <source>Date of birth:</source>
-        <translation>Do?um tarihi:</translation>
+        <translation>Doğum tarihi:</translation>
     </message>
     <message>
         <source>Search contacts</source>
-        <translation>Ki?ileri ara</translation>
+        <translation>Kişileri ara</translation>
     </message>
 </context>
 <context>
@@ -235,42 +235,42 @@
     </message>
     <message>
         <source>+[country code][operator code][phone number]</source>
-        <translation>+[?lke kodu][operat?r kodu][telefon numaras?]</translation>
+        <translation>+[ülke kodu][operatör kodu][telefon numarası]</translation>
     </message>
     <message>
         <source>Primary phone number:</source>
-        <translation>Ana Telefon Numaras?:</translation>
+        <translation>Ana Telefon Numarası:</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>?ptal</translation>
+        <translation>Iptal</translation>
     </message>
     <message>
         <source>Secondary phone number 1:</source>
-        <translation>?kincil telefon numaras? 1:</translation>
+        <translation>Ikincil telefon numarası 1:</translation>
     </message>
     <message>
         <source>Secondary phone number 2:</source>
-        <translation>?kincil telefon numaras? 2:</translation>
+        <translation>Ikincil telefon numarası 2:</translation>
     </message>
     <message>
         <source>Edit phones</source>
-        <translation>Telefonlar? d?zenle</translation>
+        <translation>Telefonlar düzenle</translation>
     </message>
     <message>
         <source>Phone number format:</source>
-        <translation>Telefon numaras? bi?imi:</translation>
+        <translation>Telefon numarası biçimi:</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation>Kullan?c? ad?:</translation>
+        <translation>Kullanıcı adı:</translation>
     </message>
 </context>
 <context>
     <name>ContactInfoDialog</name>
     <message>
         <source>Age</source>
-        <translation>Ya?</translation>
+        <translation>Yaş</translation>
     </message>
     <message>
         <source>Sex</source>
@@ -278,7 +278,7 @@
     </message>
     <message>
         <source>Birthday</source>
-        <translation>Do?um g?n?</translation>
+        <translation>Doğum günü</translation>
     </message>
     <message>
         <source>E-mail</source>
@@ -286,7 +286,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation>?ptal</translation>
+        <translation>Iptal</translation>
     </message>
     <message>
         <source>Location</source>
@@ -298,7 +298,7 @@
     </message>
     <message>
         <source>Zodiac</source>
-        <translation>Bur?</translation>
+        <translation>Burç</translation>
     </message>
     <message>
         <source>Form phones</source>
@@ -306,11 +306,11 @@
     </message>
     <message>
         <source>Time is out</source>
-        <translation>Zaman a??m?</translation>
+        <translation>Zaman aşımı</translation>
     </message>
     <message>
         <source>Editable phones</source>
-        <translation>Telefonlar? d?zenleyin</translation>
+        <translation>Telefonları düzenleyin</translation>
     </message>
     <message>
         <source>LastName</source>
@@ -334,22 +334,22 @@
     </message>
     <message>
         <source>User info</source>
-        <translation>Kullan?c? bilgisi</translation>
+        <translation>Kullanıcı bilgisi</translation>
     </message>
     <message>
         <source>Primary phone</source>
-        <translation>?lk telefon</translation>
+        <translation>Ilk telefon</translation>
     </message>
     <message>
         <source>Nickname</source>
-        <translation>Kullan?c? ad?</translation>
+        <translation>Kullanıcı adı</translation>
     </message>
 </context>
 <context>
     <name>ContactInfoListWidget</name>
     <message>
         <source>Age</source>
-        <translation>Ya?</translation>
+        <translation>Yaş</translation>
     </message>
     <message>
         <source>Sex</source>
@@ -369,7 +369,7 @@
     </message>
     <message>
         <source>Nickname</source>
-        <translation>Kullan?c? ad?</translation>
+        <translation>Kullanıcı adı</translation>
     </message>
 </context>
 <context>
@@ -380,7 +380,7 @@
     </message>
     <message>
         <source>Aries</source>
-        <translation>Ko?</translation>
+        <translation>Koc</translation>
     </message>
     <message>
         <source>Libra</source>
@@ -388,27 +388,27 @@
     </message>
     <message>
         <source>Virgo</source>
-        <translation>Ba?ak</translation>
+        <translation>Başak</translation>
     </message>
     <message>
         <source>Cancer</source>
-        <translation>Yenge?</translation>
+        <translation>Yengeç</translation>
     </message>
     <message>
         <source>Gemini</source>
-        <translation>?kizler</translation>
+        <translation>Ikizler</translation>
     </message>
     <message>
         <source>Pisces</source>
-        <translation>Bal?k</translation>
+        <translation>Balık</translation>
     </message>
     <message>
         <source>Taurus</source>
-        <translation>Bo?a</translation>
+        <translation>Boğa</translation>
     </message>
     <message>
         <source>Capricorn</source>
-        <translation>O?lak</translation>
+        <translation>Oğlak</translation>
     </message>
     <message>
         <source>Aquarius</source>
@@ -431,7 +431,7 @@
     </message>
     <message>
         <source>Send</source>
-        <translation>G?nder</translation>
+        <translation>Gönder</translation>
     </message>
     <message>
         <source>Text</source>
@@ -439,15 +439,15 @@
     </message>
     <message>
         <source>Break</source>
-        <translation>?ptal et</translation>
+        <translation>Iptal et</translation>
     </message>
     <message>
         <source>Contact is typing</source>
-        <translation>?leti?im yaz?n</translation>
+        <translation>Iletişim yazın</translation>
     </message>
     <message>
         <source>Sms status for number</source>
-        <translation>Sms numaras? durumu</translation>
+        <translation>Sms numarası durumu</translation>
     </message>
     <message>
         <source>Alarm clock:</source>
@@ -455,7 +455,7 @@
     </message>
     <message>
         <source>File transferring began</source>
-        <translation>Dosya aktar?m? ba?lad?</translation>
+        <translation>Dosya aktarımı başladı</translation>
     </message>
     <message>
         <source>Cancel transferring</source>
@@ -467,27 +467,27 @@
     </message>
     <message>
         <source>Error occured while file transfering</source>
-        <translation>Dosya aktar?m? s?ras?nda hata olu?tu</translation>
+        <translation>Dosya aktarımı sırasında hata oluştu</translation>
     </message>
     <message>
         <source>Sms from number</source>
-        <translation>Mesaj numaras?</translation>
+        <translation>Mesaj numarası</translation>
     </message>
     <message>
         <source>You offered to your interlocutor to get files.</source>
-        <translation>Dosyalar? almak i?in kabul edin.</translation>
+        <translation>Dosyaları almak için kabul edin.</translation>
     </message>
     <message>
         <source>Resend</source>
-        <translation>Yeniden g?nder</translation>
+        <translation>Yeniden gönder</translation>
     </message>
     <message>
         <source>Open folder</source>
-        <translation>Klas?r? a??n</translation>
+        <translation>Klasörü açın</translation>
     </message>
     <message>
         <source>Save as...</source>
-        <translation>Farkl? kaydet...</translation>
+        <translation>Farklı kaydet...</translation>
     </message>
     <message>
         <source>Receive</source>
@@ -495,19 +495,19 @@
     </message>
     <message>
         <source>Transferring canceled</source>
-        <translation>Aktarmay? iptal et</translation>
+        <translation>Aktarmayı iptal et</translation>
     </message>
     <message>
         <source>Decline</source>
-        <translation>??p</translation>
+        <translation>Çop</translation>
     </message>
     <message>
         <source>File transferring successful complete</source>
-        <translation>T?m dosya transferi ba?ar?l?</translation>
+        <translation>Tüm dosya transferi başarılı</translation>
     </message>
     <message>
         <source>Your interlocutor offered to you to get files.</source>
-        <translation>Dosyalar? almak i?in kabul edin.</translation>
+        <translation>Dosyaları almak için kabul edin.</translation>
     </message>
     <message>
         <source>Message not delivered</source>
@@ -522,11 +522,11 @@
     <name>StatusEditor</name>
     <message>
         <source>Say</source>
-        <translation>S?yle</translation>
+        <translation>Söyle</translation>
     </message>
     <message>
         <source>Checkout news from friends</source>
-        <translation>Arkada?lar?n?zdan yeni haberler</translation>
+        <translation>Arkadaşlarınızdan yeni haberler</translation>
     </message>
     <message numerus="yes">
         <source>%n symbol(s) left</source>
@@ -570,7 +570,7 @@
     </message>
     <message>
         <source>Myagent-im files</source>
-        <translation>Myagent-im dosyalar?</translation>
+        <translation>Myagent-im dosyaları</translation>
     </message>
 </context>
 <context>
@@ -589,11 +589,11 @@
     </message>
     <message>
         <source>In love</source>
-        <translation>A??k</translation>
+        <translation>Aşık</translation>
     </message>
     <message>
         <source>All people are alike, only I&apos;m a star</source>
-        <translation>T?m insanlar ayn?, sadece ben y?ld?z de?ilim</translation>
+        <translation>Tüm insanlar aynı, sadece ben yıldız değilim</translation>
     </message>
     <message>
         <source>Coffee</source>
@@ -601,23 +601,23 @@
     </message>
     <message>
         <source>Connecting</source>
-        <translation>Ba?lant?</translation>
+        <translation>Bağlantı</translation>
     </message>
     <message>
         <source>Online</source>
-        <translation>?evrimi?i</translation>
+        <translation>Çevrimiçi</translation>
     </message>
     <message>
         <source>Wrong status data</source>
-        <translation>Veri hatas?</translation>
+        <translation>Veri hatası</translation>
     </message>
     <message>
         <source>Offline</source>
-        <translation>?evrimd???</translation>
+        <translation>Çevrimdışı</translation>
     </message>
     <message>
         <source>Get acquainted</source>
-        <translation>Tan?y?n</translation>
+        <translation>Tanıyın</translation>
     </message>
     <message>
         <source>Dreaming</source>
@@ -625,19 +625,19 @@
     </message>
     <message>
         <source>Smoking</source>
-        <translation>Sigara i?me</translation>
+        <translation>Sigara içme</translation>
     </message>
     <message>
         <source>Breakfast</source>
-        <translation>Kahvalt?</translation>
+        <translation>Kahvaltı</translation>
     </message>
     <message>
         <source>Education</source>
-        <translation>E?itim</translation>
+        <translation>Eğitim</translation>
     </message>
     <message>
         <source>Free for chat</source>
-        <translation>Sohbet ?cretsiz</translation>
+        <translation>Sohbet Ücretsiz</translation>
     </message>
     <message>
         <source>Unknown</source>
@@ -645,19 +645,19 @@
     </message>
     <message>
         <source>Do not disturb</source>
-        <translation>Rahats?z etmeyin</translation>
+        <translation>Rahatsız etmeyin</translation>
     </message>
     <message>
         <source>Invisible</source>
-        <translation>G?r?nmez</translation>
+        <translation>Görünmez</translation>
     </message>
     <message>
         <source>Working</source>
-        <translation>?al???yor</translation>
+        <translation>Çalışıyor</translation>
     </message>
     <message>
         <source>Extended</source>
-        <translation>Geni?</translation>
+        <translation>Geniş</translation>
     </message>
 </context>
 <context>
@@ -668,15 +668,15 @@
     </message>
     <message>
         <source>I&apos;m always visible for...</source>
-        <translation>Her zaman g?r?n?r...</translation>
+        <translation>Her zaman görünür...</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation>Kald?r</translation>
+        <translation>Kaldır</translation>
     </message>
     <message>
         <source>Rename</source>
-        <translation>Yeniden adland?r</translation>
+        <translation>Yeniden adlandır</translation>
     </message>
     <message>
         <source>Remove contact</source>
@@ -684,15 +684,15 @@
     </message>
     <message>
         <source>Rename contact</source>
-        <translation>Ki?iyi yeniden adland?r</translation>
+        <translation>Kişiyi yeniden adlandır</translation>
     </message>
     <message>
         <source>Are you sure you want to remove contact %1?</source>
-        <translation>%1 Ki?iyi kald?rmak istedi?inizden eminmisiniz?</translation>
+        <translation>%1 Kişiyi kaldırmak istediğinizden eminmisiniz?</translation>
     </message>
     <message>
         <source>I&apos;m always invisible for...</source>
-        <translation>Ben her zaman g?r?nmez...</translation>
+        <translation>Ben her zaman görünmez...</translation>
     </message>
     <message>
         <source>Ask authorization</source>
@@ -700,11 +700,11 @@
     </message>
     <message>
         <source>Enter new name for user %1:</source>
-        <translation>%1 i?in yeni bir kullan?c? ad? girin:</translation>
+        <translation>%1 için yeni bir kullanıcı adı girin:</translation>
     </message>
     <message>
         <source>History</source>
-        <translation>Ge?mi?</translation>
+        <translation>Geçmiş</translation>
     </message>
 </context>
 <context>
@@ -719,11 +719,11 @@
     </message>
     <message>
         <source>No contacts were found</source>
-        <translation>Hi?bir kartvizit bulunamad?</translation>
+        <translation>Hiçbir kartvizit bulunamadı</translation>
     </message>
     <message>
         <source>Search is temporarily unavailable</source>
-        <translation>Arama ge?ici olarak kullan?lam?yor</translation>
+        <translation>Arama geçici olarak kullanılamıyor</translation>
     </message>
     <message>
         <source>Unknown error</source>
@@ -734,15 +734,15 @@
     <name>MainMenuButton</name>
     <message>
         <source>Menu</source>
-        <translation>Men?</translation>
+        <translation>Menü</translation>
     </message>
     <message>
         <source>Quit</source>
-        <translation>??k??</translation>
+        <translation>Çıkış</translation>
     </message>
     <message>
         <source>About</source>
-        <translation>Hakk?nda</translation>
+        <translation>Hakkında</translation>
     </message>
     <message>
         <source>New conference</source>
@@ -750,23 +750,23 @@
     </message>
     <message>
         <source>Search results</source>
-        <translation>Arama sonu?lar?</translation>
+        <translation>Arama sonuçları</translation>
     </message>
     <message>
         <source>Add group error</source>
-        <translation>Grup ekleme hatas?</translation>
+        <translation>Grup ekleme hatası</translation>
     </message>
     <message>
         <source>Contact is already in contact list</source>
-        <translation>Bu ki?i ki?ler listesinde var</translation>
+        <translation>Bu kişi kişıler listesinde var</translation>
     </message>
     <message>
         <source>Add sms contact error</source>
-        <translation>Ki?iye sms ekleme hatas?</translation>
+        <translation>Kişiye sms ekleme hatası</translation>
     </message>
     <message>
         <source>Enter group name:</source>
-        <translation>Grup ad? girin:</translation>
+        <translation>Grup adı girin:</translation>
     </message>
     <message>
         <source>Add group</source>
@@ -774,11 +774,11 @@
     </message>
     <message>
         <source>Time is out</source>
-        <translation>Zaman a??m?</translation>
+        <translation>Zaman aşımı</translation>
     </message>
     <message>
         <source>Add contact</source>
-        <translation>Ki?i ekle</translation>
+        <translation>Kişi ekle</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -786,14 +786,14 @@
     </message>
     <message>
         <source>Add contact for SMS</source>
-        <translation>Mesajla?ma kartvizit&apos;i ekle</translation>
+        <translation>Mesajlaşma kartvizit&apos;i ekle</translation>
     </message>
 </context>
 <context>
     <name>SystemTrayIcon</name>
     <message>
         <source>Quit</source>
-        <translation>??k??</translation>
+        <translation>Çıkış</translation>
     </message>
     <message>
         <source>New letter</source>
@@ -801,11 +801,11 @@
     </message>
     <message>
         <source>Hide contact list</source>
-        <translation>Ki?i listesini gizle</translation>
+        <translation>Kişi listesini gizle</translation>
     </message>
     <message>
         <source>Show contact list</source>
-        <translation>Ki?i listesini g?ster</translation>
+        <translation>Kişi listesini göster</translation>
     </message>
 </context>
 <context>
@@ -816,18 +816,18 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation>?ptal</translation>
+        <translation>Iptal</translation>
     </message>
     <message>
         <source>Statuses editor</source>
-        <translation>Durum d?zenleyicisi</translation>
+        <translation>Durum düzenleyicisi</translation>
     </message>
 </context>
 <context>
     <name>HistoryViewer</name>
     <message>
         <source>View</source>
-        <translation>G?r?n?m</translation>
+        <translation>Görünüm</translation>
     </message>
     <message>
         <source>Search</source>
@@ -835,30 +835,30 @@
     </message>
     <message>
         <source>History</source>
-        <translation>Ge?mi?</translation>
+        <translation>Geçmiş</translation>
     </message>
 </context>
 <context>
     <name>SettingsWindow</name>
     <message>
         <source>View</source>
-        <translation>G?r?n?m</translation>
+        <translation>Görünüm</translation>
     </message>
     <message>
         <source>minutes of idle</source>
-        <translation>dakika bo?ta</translation>
+        <translation>dakika boşta</translation>
     </message>
     <message>
         <source>Closing chats</source>
-        <translation>Sohbetler kapan???</translation>
+        <translation>Sohbetler kapanışı</translation>
     </message>
     <message>
         <source>Enable microblog</source>
-        <translation>Microblog&apos;u etkinle?tir</translation>
+        <translation>Microblog&apos;u etkinleştir</translation>
     </message>
     <message>
         <source>Tabs in dialog window</source>
-        <translation>?leti?im penceresindeki sekmeler</translation>
+        <translation>Iletişim penceresindeki sekmeler</translation>
     </message>
     <message>
         <source>Set away status after</source>
@@ -874,27 +874,27 @@
     </message>
     <message>
         <source>Send message on Enter pressed</source>
-        <translation>Enter&apos;a bas?ld?ktan sonra mesaj? g?nder</translation>
+        <translation>Enter&apos;a basıldıktan sonra mesajı gönder</translation>
     </message>
     <message>
         <source>Sending messages</source>
-        <translation>Mesaj? g?nder</translation>
+        <translation>Mesajı gönder</translation>
     </message>
     <message>
         <source>Send message on Ctrl+Enter pressed</source>
-        <translation>Ctrl + Enter bas?ld???nda mesaj? g?nder</translation>
+        <translation>Ctrl + Enter basıldığında mesajı gönder</translation>
     </message>
     <message>
         <source>Send message on Alt+S pressed</source>
-        <translation>Alt + S bas?ld???nda mesaj g?nder</translation>
+        <translation>Alt + S basıldığında mesaj gönder</translation>
     </message>
     <message>
         <source>Send message on double Enter pressed</source>
-        <translation>Enter&apos;a ?ift bas?ld???nda mesaj g?nder</translation>
+        <translation>Enter&apos;a çift basıldığında mesaj gönder</translation>
     </message>
     <message>
         <source>Enable sounds</source>
-        <translation>Sesleri etkinle?tir</translation>
+        <translation>Sesleri etkinleştir</translation>
     </message>
     <message>
         <source>Messages</source>
@@ -906,7 +906,7 @@
     </message>
     <message>
         <source>All chats will be closed. Continue?</source>
-        <translation>T?m sohbetler kapal? olacakt?r. Devam etmek istiyor musunuz?</translation>
+        <translation>Tüm sohbetler kapalı olacaktır. Devam etmek istiyor musunuz?</translation>
     </message>
     <message>
         <source>Windows</source>
@@ -914,7 +914,7 @@
     </message>
     <message>
         <source>Type extended online statuses count (5-10):</source>
-        <translation>Geni?letilmi? ?evrimi?i say?s? t?r? (5-10):</translation>
+        <translation>Genişletilmiş çevrimiçi sayısı türü (5-10):</translation>
     </message>
 </context>
 <context>
@@ -925,15 +925,15 @@
     </message>
     <message>
         <source>Copyright:</source>
-        <translation>Telif hakk?:</translation>
+        <translation>Telif hakkı:</translation>
     </message>
     <message>
         <source>Copyright (C) 2009-2010 Dmitry Malakhov</source>
-        <translation>Telif hakk? (C) 2009-2010 Dmitry Malakhov</translation>
+        <translation>Telif hakkı (C) 2009-2010 Dmitry Malakhov</translation>
     </message>
     <message>
         <source>About MyAgent-im</source>
-        <translation>MyAgent-im Hakk?nda</translation>
+        <translation>MyAgent-im Hakkında</translation>
     </message>
     <message>
         <source>Romek Marszcziwski &lt;marszcziwski@gmail.com&gt; Ukrainian</source>
@@ -941,11 +941,11 @@
     </message>
     <message>
         <source>Translating:</source>
-        <translation>?eviri:</translation>
+        <translation>Çeviri:</translation>
     </message>
     <message>
         <source>Alexander Volkov &lt;volkov0aa@gmail.com&gt; Russian</source>
-        <translation>Muhammet y?ksel &lt;bulutyg@gmail.com&gt; Turkish</translation>
+        <translation>Muhammet yuksel &lt;bulutyg@gmail.com&gt; Turkish</translation>
     </message>
     <message>
         <source>Home Page: &lt;a href=x&gt;http://code.google.com/p/myagent-im&lt;/a&gt;</source>
@@ -965,7 +965,7 @@
     </message>
     <message>
         <source>Copyright (C) 2008-2010 Alexander Volkov</source>
-        <translation>Telif hakk? (C) 2008-2010 Alexander Volkov</translation>
+        <translation>Telif hakkı (C) 2008-2010 Alexander Volkov</translation>
     </message>
     <message>
         <source>Dmitry Malakhov &lt;abr_mail@mail.ru&gt;</source>
@@ -988,31 +988,31 @@
     </message>
     <message>
         <source>Group is not empty</source>
-        <translation>Grup bo? de?il</translation>
+        <translation>Grup boş değil</translation>
     </message>
     <message>
         <source>Adding group is currently impossible</source>
-        <translation>Grup ekleme ?u anda imkans?z</translation>
+        <translation>Grup ekleme şu anda imkansız</translation>
     </message>
     <message>
         <source>Invalid group name</source>
-        <translation>Grup ad? ge?ersiz</translation>
+        <translation>Grup adı geçersiz</translation>
     </message>
     <message>
         <source>Time is out</source>
-        <translation>Zaman a??m?</translation>
+        <translation>Zaman aşımı</translation>
     </message>
     <message>
         <source>Contact %1 already exists</source>
-        <translation>Bu ki?i %1 zaten var</translation>
+        <translation>Bu kişi %1 zaten var</translation>
     </message>
     <message>
         <source>Internal error</source>
-        <translation>??sel hata</translation>
+        <translation>Içsel hata</translation>
     </message>
     <message>
         <source>Removing contact failed</source>
-        <translation>Ki?iyi silme ba?ar?s?z</translation>
+        <translation>Kişiyi silme başarısız</translation>
     </message>
     <message>
         <source>Unknown group</source>
@@ -1024,30 +1024,30 @@
     </message>
     <message>
         <source>Number of groups exceeded</source>
-        <translation>Grup say?s? a??ld?</translation>
+        <translation>Grup sayısı aşıldı</translation>
     </message>
     <message>
         <source>Incorrect data</source>
-        <translation>Yanl?? veri</translation>
+        <translation>Yanlış veri</translation>
     </message>
     <message>
         <source>Renaming group is currently impossible</source>
-        <translation>Grubu ?uanda adland?rma m?nk?n de?il</translation>
+        <translation>Grubu şuanda adlandırma münkün değil</translation>
     </message>
     <message>
         <source>Removing group is currently impossible</source>
-        <translation>Grubu silmek ?uanda m?mk?n de?il</translation>
+        <translation>Grubu silmek şuanda mümkün değil</translation>
     </message>
     <message>
         <source>No such group</source>
-        <translation>Grup mevcut de?il</translation>
+        <translation>Grup mevcut değil</translation>
     </message>
 </context>
 <context>
     <name>SmsEditor</name>
     <message>
         <source>Auto transliteration</source>
-        <translation>Otomatik ?eviri</translation>
+        <translation>Otomatik çeviri</translation>
     </message>
     <message>
         <source> symbols remaining: </source>
@@ -1055,7 +1055,7 @@
     </message>
     <message>
         <source>Edit...</source>
-        <translation>D?zenle...</translation>
+        <translation>Düzenle...</translation>
     </message>
 </context>
 <context>
@@ -1074,22 +1074,22 @@
     </message>
     <message>
         <source>Add contact</source>
-        <translation>Ki?i ekle</translation>
+        <translation>Kişi ekle</translation>
     </message>
     <message>
         <source>Add user</source>
-        <translation>Kullan?c? ekle</translation>
+        <translation>Kullanıcı ekle</translation>
     </message>
     <message>
         <source>Hello. Add me to your contact list, please.</source>
-        <translation>Merhaba. L?tfen beni ki?i listenize, ekleyin.</translation>
+        <translation>Merhaba. Lütfen beni kişi listenize, ekleyin.</translation>
     </message>
 </context>
 <context>
     <name>ContactGroupContextMenu</name>
     <message>
         <source>Are you sure you want to remove group</source>
-        <translation>Grubu kald?rmak istedi?inize emin misniz</translation>
+        <translation>Grubu kaldırmak istediğinize emin misniz</translation>
     </message>
     <message>
         <source>Remove group</source>
@@ -1105,11 +1105,11 @@
     </message>
     <message>
         <source>Renaming group error</source>
-        <translation>Hata grub yeniden adland?r?lam?yor</translation>
+        <translation>Hata grub yeniden adlandırılamıyor</translation>
     </message>
     <message>
         <source>Enter new name for group %1:</source>
-        <translation>%1 i?in yeni bir grup ad? girin:</translation>
+        <translation>%1 için yeni bir grup adı girin:</translation>
     </message>
 </context>
 <context>
@@ -1120,7 +1120,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation>?ptal</translation>
+        <translation>Iptal</translation>
     </message>
     <message>
         <source>&lt;small&gt;Status...&lt;/small&gt;</source>
@@ -1128,18 +1128,18 @@
     </message>
     <message>
         <source>Ignore interlocutor style</source>
-        <translation>Kar??ndakini yoksay</translation>
+        <translation>Karşındakini yoksay</translation>
     </message>
     <message>
         <source>Select files to transfer</source>
-        <translation>Dosya aktar?m? i?in se?in</translation>
+        <translation>Dosya aktarımı için seçin</translation>
     </message>
 </context>
 <context>
     <name>ContactListWindow</name>
     <message>
         <source>Someone else entered with your login</source>
-        <translation>?uanda hesab?n?z? ba?ka biri a?m??t?r</translation>
+        <translation>Şuanda hesabınızı başka biri açmıştır</translation>
     </message>
     <message>
         <source>My blog</source>
@@ -1147,11 +1147,11 @@
     </message>
     <message>
         <source>Logout</source>
-        <translation>??k??</translation>
+        <translation>Çıkış</translation>
     </message>
     <message>
         <source>My photos</source>
-        <translation>Foto?raflar?m</translation>
+        <translation>Fotoğraflarım</translation>
     </message>
     <message>
         <source>My status</source>
@@ -1159,29 +1159,29 @@
     </message>
     <message>
         <source>My videos</source>
-        <translation>Videolar?m</translation>
+        <translation>Videolarım</translation>
     </message>
     <message>
         <source>My world</source>
-        <translation>Benim d?nyam</translation>
+        <translation>Benim dünyam</translation>
     </message>
     <message>
         <source>Login rejected</source>
-        <translation>Giri? reddetildi</translation>
+        <translation>Giriş reddetildi</translation>
     </message>
 </context>
 <context>
     <name>MessageEdit</name>
     <message>
         <source>Add to dictionary</source>
-        <translation>S?zl??e ekle</translation>
+        <translation>Sözlüğe ekle</translation>
     </message>
 </context>
 <context>
     <name>HistorySearchTab</name>
     <message>
         <source>*** Nothing was found ***</source>
-        <translation>*** Herhangi bir ?ey ??kmad? ***</translation>
+        <translation>*** Herhangi bir şey çıkmadı ***</translation>
     </message>
     <message>
         <source>Search</source>
@@ -1192,11 +1192,11 @@
     <name>ContactInfoListWindow</name>
     <message>
         <source>Contacts found</source>
-        <translation>Ki?iler bulundu</translation>
+        <translation>Kişiler bulundu</translation>
     </message>
     <message>
         <source>Show photos</source>
-        <translation>Foto?raflar? g?ster</translation>
+        <translation>Fotoğrafları göster</translation>
     </message>
     <message>
         <source>New search</source>
@@ -1204,108 +1204,108 @@
     </message>
     <message>
         <source>Add contact</source>
-        <translation>Ki?i ekle</translation>
+        <translation>Kişi ekle</translation>
     </message>
     <message>
         <source>Another %1 contacts</source>
-        <translation>Ba?ka bir %1 ki?iler</translation>
+        <translation>Başka bir %1 kişiler</translation>
     </message>
 </context>
 <context>
     <name>FavouriteEmoticonsDialog</name>
     <message>
         <source>Drag emoticons to add and rearrange them. To remove emoticon from favourites drag it outside the box.</source>
-        <translation>?fadeleri yeniden eklemek ve d?zenlemek i?in s?r?kle. ?fadeleri kald?rmak i?in favori kutusu du??na s?r?kleyin.</translation>
+        <translation>Ifadeleri yeniden eklemek ve düzenlemek için sürükle. Ifadeleri kaldırmak için favori kutusu dışına sürükleyin.</translation>
     </message>
     <message>
         <source>Select favourite emoticons</source>
-        <translation>Favori ifadeleri se?in</translation>
+        <translation>Favori ifadeleri seçin</translation>
     </message>
 </context>
 <context>
     <name>Message</name>
     <message>
         <source>You has tried to awake interlocutor</source>
-        <translation>Bu ki?iyi uyand?rmaya ?al??</translation>
+        <translation>Bu kişiyi uyandırmaya çalış</translation>
     </message>
     <message>
         <source>Interlocutor has tried to awake you</source>
-        <translation>Bu ki?i sizi uyand?rmaya ?al??t?</translation>
+        <translation>Bu kişi sizi uyandırmaya çalıştı</translation>
     </message>
 </context>
 <context>
     <name>ContactListItem</name>
     <message>
         <source>Temporary</source>
-        <translation>Ge?ici</translation>
+        <translation>Geçici</translation>
     </message>
 </context>
 <context>
     <name>SubmenuMoveToGroup</name>
     <message>
         <source>Move to group</source>
-        <translation>Grubu ta??</translation>
+        <translation>Grubu taşı</translation>
     </message>
 </context>
 <context>
     <name>EmoticonSelectorPage</name>
     <message>
         <source>Select</source>
-        <translation>Se?</translation>
+        <translation>Seç</translation>
     </message>
 </context>
 <context>
     <name>FilterContactsLineEdit</name>
     <message>
         <source>Filter contacts</source>
-        <translation>Ki?ileri filtrele</translation>
+        <translation>Kişileri filtrele</translation>
     </message>
 </context>
 <context>
     <name>ChatSession</name>
     <message>
         <source>Wake up!</source>
-        <translation>Uyan?n!</translation>
+        <translation>Uyanın!</translation>
     </message>
     <message>
         <source>You can&apos;t use alarm clock so often!</source>
-        <translation>?ok fazla bir ?alar saat kullanamazs?n?z!</translation>
+        <translation>Çok fazla bir çalar saat kullanamazsınız!</translation>
     </message>
 </context>
 <context>
     <name>HistoryViewTab</name>
     <message>
         <source>HTML file %1</source>
-        <translation>HTML dosyas? %1</translation>
+        <translation>HTML dosyası %1</translation>
     </message>
     <message>
         <source>Save all log...</source>
-        <translation>T?m g?nl??? kaydet...</translation>
+        <translation>Tüm günlüğü kaydet...</translation>
     </message>
     <message>
         <source>File to save</source>
-        <translation>Dosyay? kaydet</translation>
+        <translation>Dosyayı kaydet</translation>
     </message>
 </context>
 <context>
     <name>StatusBarWidget</name>
     <message>
         <source>Say to your friends, what are you doing</source>
-        <translation>?imdi ne yap?yorsun, arkada?lar?n?za s?yleyin</translation>
+        <translation>Şimdi ne yapıyorsun, arkadaşlarınıza söyleyin</translation>
     </message>
 </context>
 <context>
     <name>StatusMenu</name>
     <message>
         <source>Edit statuses...</source>
-        <translation>Durumlar? D?zenle...</translation>
+        <translation>Durumları Düzenle...</translation>
     </message>
 </context>
 <context>
     <name>ContactListModel</name>
     <message>
         <source>Phone contacts</source>
-        <translation>Telefon kay?tlar?</translation>
+        <translation>Telefon kayıtları</translation>
     </message>
     <message>
         <source>Conferences</source>
@@ -1316,29 +1316,29 @@
     <name>MRIMClientPrivate</name>
     <message>
         <source>User %1 left the conference</source>
-        <translation>Sol kullan?c? %1 konferans?</translation>
+        <translation>Sol kullanıcı %1 konferansı</translation>
     </message>
 </context>
 <context>
     <name>ConferenceContextMenu</name>
     <message>
         <source>Exit conference</source>
-        <translation>Konferanstan ??k??</translation>
+        <translation>Konferanstan çıkış</translation>
     </message>
     <message>
         <source>History</source>
-        <translation>Ge?mi?</translation>
+        <translation>Geçmiş</translation>
     </message>
     <message>
         <source>Are you sure you want to exit conference &apos;%1?&apos;</source>
-        <translation>%1 konferanstan ??kmak istedi?inize emin misiniz?&apos;</translation>
+        <translation>%1 konferanstan çıkmak istediğinize emin misiniz?&apos;</translation>
     </message>
 </context>
 <context>
     <name>LinkButton</name>
     <message>
         <source>Copy &amp;Link Location</source>
-        <translation>Ba?lant? konumunu &amp;kopyala</translation>
+        <translation>Bağlantı konumunu &amp;kopyala</translation>
     </message>
 </context>
 <context>
