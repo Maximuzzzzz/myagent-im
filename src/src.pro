@@ -7,7 +7,7 @@ INCLUDEPATH += /usr/include
 TRANSLATIONS = locale/myagent-im_ru.ts \
     locale/myagent-im_uk.ts
 LIBS += -laspell
-win32 { 
+win32 {
     QTPLUGIN += qjpeg \
         qgif
     LIBS += -llibapi \
@@ -30,12 +30,8 @@ unix {
     LIBS += $$system(xapian-config --libs)
     CONFIG += link_pkgconfig
     PKGCONFIG += xscrnsaver zlib x11
-    exists(/usr/include/swfdec/swfdec.h) {
-        HAVE_SWFDEC = yes
-        DEFINES += HAVE_SWFDEC
-    }
 }
-unix { 
+unix {
     isEmpty(PREFIX):PREFIX = /usr/local
     BINDIR = $$PREFIX/bin
     DATADIR = $$PREFIX/share/myagent-im
@@ -398,25 +394,6 @@ LEXSOURCES += onlinestatuses.ll \
     emoticons.ll \
     rtf.ll \
     plaintextparser.ll
-
-!isEmpty(HAVE_SWFDEC) {
-    CLEBS += swfdec-0.6
-    include (libswf/clebs.pri)
-
-    SOURCES += libswf/swfdecqtwidget.cpp \
-        libswf/swfdecqtplayer.cpp \
-        libswf/swfdecqtloader.cpp \
-	libswf/swfdecqtkeys.cpp \
-	gui/swfdecflashplayer.cpp
-
-    HEADERS += libswf/swfdecqtwidget.h \
-        libswf/swfdecqtplayer.h \
-        libswf/swfdecqtloader.h \
-        libswf/swfdecqtkeys.h \
-        libswf/swfdecqtglobal.h \
-	libswf/swfdecqtexception.h \
-	gui/swfdecflashplayer.h
-}
 
 DESTDIR = ../bin
 OBJECTS_DIR = ../build/obj

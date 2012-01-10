@@ -57,11 +57,7 @@
 #include "audio.h"
 #include "iflashplayer.h"
 
-#ifdef HAVE_SWFDEC
-#include "swfdecflashplayer.h"
-#else
 #include "gnashplayer.h"
-#endif
 
 ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoticonSelector, MultSelector* multSelector)
 	: QWidget(),
@@ -266,11 +262,7 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoti
 
 	setLayout(layout);
 
-#ifdef HAVE_SWFDEC
-	flashPlayer = new SwfdecFlashPlayer(this);
-#else
 	flashPlayer = new GnashPlayer(this);
-#endif
 
 	qDebug() << Q_FUNC_INFO << "}";
 }
