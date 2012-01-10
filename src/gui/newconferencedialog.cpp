@@ -55,14 +55,12 @@ NewConferenceDialog::~NewConferenceDialog()
 
 void NewConferenceDialog::accept()
 {
-	if (conferenceName->text() == "")
+	if (conferenceName->text().isEmpty())
 	{
-		
 		return;
 	}
 	if (membersList->count() == 0)
 	{
-
 		return;
 	}
 

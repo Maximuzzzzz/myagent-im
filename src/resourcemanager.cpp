@@ -151,9 +151,9 @@ OnlineStatus ResourceManager::loadOnlineStatus(QByteArray email)
 		m_settings->remove(email + "/lastOnlineStatus"); //compatible with old version
 		m_settings->remove(email + "/lastOnlineStatusDescr"); //for deleting garbage
 
-		if (userSettings->value("Statuses/lastOnlineStatus", "").toByteArray() == "")
+		if (userSettings->value("Statuses/lastOnlineStatus", "").toByteArray().isEmpty())
 			userSettings->setValue("Statuses/lastOnlineStatus", stId);
-		if (userSettings->value("Statuses/lastOnlineStatusDescr", "").toString() == "")
+		if (userSettings->value("Statuses/lastOnlineStatusDescr", "").toString().isEmpty())
 			userSettings->setValue("Statuses/lastOnlineStatusDescr", stDescr);
 
 		const OnlineStatusInfo* statusInfo = m_onlineStatuses.getOnlineStatusInfo(stId);

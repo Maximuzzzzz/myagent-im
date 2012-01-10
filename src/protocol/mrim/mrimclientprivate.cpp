@@ -919,7 +919,7 @@ void MRIMClientPrivate::processMessageAck(QByteArray data)
 	quint32 backgroundColor = 0x00FFFFFF;*/
 	UnpackedRTF uRtf;
 
-	if (rtf != "")
+	if (!rtf.isEmpty())
 		if (flags & MESSAGE_FLAG_RTF)
 //		{
 			uRtf = unpackRtf(rtf);
@@ -1076,7 +1076,7 @@ void MRIMClientPrivate::processAddContactAck(QByteArray data, quint32 msgseq)
 
 	qDebug() << "seq = " << msgseq << ", status = " << status << ", id = " << contactId << ", chatAgent = " << chatAgent;
 
-	if (chatAgent != "")
+	if (!chatAgent.isEmpty())
 		if (chatAgent.contains("@chat.agent"))
 			Q_EMIT q->conferenceBegan(msgseq, status, contactId, chatAgent);
 		else
@@ -1112,7 +1112,7 @@ void MRIMClientPrivate::processOfflineMessageAck(QByteArray data)
 	if (mimeMsg.hasPlainText())
 	{
 		QTextCodec* codec;
-		if (mimeMsg.plainTextCharset() == "" || mimeMsg.xMrimFlags() & MESSAGE_FLAG_CP1251)
+		if (mimeMsg.plainTextCharset().isEmpty() || mimeMsg.xMrimFlags() & MESSAGE_FLAG_CP1251)
 			codec = QTextCodec::codecForName("cp1251");
 		else
 			codec = QTextCodec::codecForName(mimeMsg.plainTextCharset());

@@ -138,7 +138,7 @@ void MrimMIME::initData(const QByteArray & data)
 			qDebug() << "starts with boundary";
 			isHeader = true;
 		}
-		else if (strings[i] != "")
+		else if (!strings[i].isEmpty())
 		{
 			qDebug() << "Seems isn't header";
 			if (currType == "text/plain")

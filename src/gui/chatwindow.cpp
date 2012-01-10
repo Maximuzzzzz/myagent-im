@@ -344,12 +344,12 @@ void ChatWindow::sendMult(const QString& id)
 void ChatWindow::putHeader(const QString& nick, Msg currMessage, QString* prompt)
 {
 	QByteArray tmpBA = m_account->settings()->value("Messages/mergeMessages", "").toByteArray();
-	if (tmpBA != "" && tmpBA != "contact" && tmpBA != "minute" && tmpBA != "hour")
+	if (!tmpBA.isEmpty() && tmpBA != "contact" && tmpBA != "minute" && tmpBA != "hour")
 	{
 		session->account()->settings()->remove("Messages/mergeMessages");
 		tmpBA = "";
 	}
-	if (currMessage.from != lastMessage.from || (tmpBA == "") || (tmpBA == "contact" && currMessage.from != lastMessage.from) ||
+	if (currMessage.from != lastMessage.from || tmpBA.isEmpty() || (tmpBA == "contact" && currMessage.from != lastMessage.from) ||
 	 ((tmpBA == "minute" && currMessage.dateTime > lastMessage.dateTime.addSecs(60)) || (currMessage.dateTime < lastMessage.dateTime.addSecs(60) && currMessage.dateTime.time().minute() != lastMessage.dateTime.time().minute())) ||
 	 ((tmpBA == "hour" && currMessage.dateTime > lastMessage.dateTime.addSecs(3600)) || (currMessage.dateTime < lastMessage.dateTime.addSecs(3600) && currMessage.dateTime.time().hour() != lastMessage.dateTime.time().hour())))
 		*prompt = nick + " (" + currMessage.dateTime.toString(m_account->settings()->value("Messages/DateMask", theRM.defDateFormat).toString()) + ") :</font><br>";
@@ -557,7 +557,7 @@ void ChatWindow::checkContactStatus(OnlineStatus status)
 	if (contact->isConference())
 		setWindowTitle(contact->nickname());
 	else
-		if (session->contact()->client() != "")
+		if (!session->contact()->client().isEmpty())
 			setWindowTitle(contact->nickname().append(" - ").append(status.description()).append(" - ").append(session->contact()->client()));
 		else
 			setWindowTitle(contact->nickname().append(" - ").append(status.description()));

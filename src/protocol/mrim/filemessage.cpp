@@ -589,7 +589,7 @@ void FileMessage::getIpArraysFromString()
 
 	ipsCheck = fm_ips.split(';');
 	qDebug() << fm_ips;
-	if (ipsCheck.last() == "")
+	if (ipsCheck.last().isEmpty())
 		ipsCheck.takeLast();
 
 	int i;
@@ -600,7 +600,7 @@ void FileMessage::getIpArraysFromString()
 		if (!ok)
 			fm_error = 1;
 		ipsCheck[i] = ipsCheck.at(i).left(ipsCheck.at(i).indexOf(":"));
-		if (ipsCheck[i] == "")
+		if (ipsCheck[i].isEmpty())
 			fm_error = 1;
 
 		qDebug() << ipsCheck[i];

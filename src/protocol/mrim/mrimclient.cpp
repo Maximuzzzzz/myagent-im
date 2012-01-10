@@ -406,7 +406,7 @@ quint32 MRIMClient::addConference(QString confName, QByteArray owner, QList<QByt
 			out3 << members.at(i);
 
 		out2 << data3;
-		if (owner != "")
+		if (!owner.isEmpty())
 			out2 << owner;
 		out << data2;
 	}

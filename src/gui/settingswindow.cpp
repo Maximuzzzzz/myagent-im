@@ -209,7 +209,7 @@ void SettingsWindow::createMessagesPage()
 	mergeMessagesEveryMinuteRadio = new QRadioButton(tr("Split every minute from one contact"));
 	mergeMessagesEveryHourRadio = new QRadioButton(tr("Split every hour from one contact"));
 	QByteArray tmpBA = m_account->settings()->value("Messages/mergeMessages", "").toByteArray();
-	if (tmpBA != "" && tmpBA != "contact" && tmpBA != "minute" && tmpBA != "hour")
+	if (!tmpBA.isEmpty() && tmpBA != "contact" && tmpBA != "minute" && tmpBA != "hour")
 		m_account->settings()->remove("Messages/mergeMessages");
 	notToMergeMessagesRadio->setChecked(m_account->settings()->value("Messages/mergeMessages", "").toByteArray() == "");
 	mergeInterlocutorMessagesRadio->setChecked(m_account->settings()->value("Messages/mergeMessages", "").toByteArray() == "contact");
@@ -279,7 +279,7 @@ bool SettingsWindow::saveMessagesSettings()
 	else
 		enterVariant = "Ctrl+Enter";
 
-	if (QDateTime::currentDateTime().toString(dateTimeFormat->text()) == "")
+	if (QDateTime::currentDateTime().toString(dateTimeFormat->text()).isEmpty())
 	{
 		QMessageBox::critical(this, tr("Error saving settings"), tr("Error date time format! Check format string or use default \"%1\"!").arg(theRM.defDateFormat), QMessageBox::Ok);
 		return false;

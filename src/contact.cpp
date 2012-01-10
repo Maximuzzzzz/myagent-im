@@ -362,7 +362,7 @@ void Contact::changePhonesEnd(quint32 status, bool timeout)
 QIcon Contact::chatWindowIcon(QString type)
 {
 	qDebug() << "Contact" << nickname() << isPhone() << isConference();
-	if (type == "")
+	if (type.isEmpty())
 	{
 		if (isIgnored())
 			return QIcon(":icons/cl_ignore_contact.png");
