@@ -20,6 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "filemessage.h"
+
 #include <QDir>
 #include <QNetworkInterface>
 #include <QTextCodec>
@@ -27,7 +29,6 @@
 
 #include <limits>
 
-#include "filemessage.h"
 #include "protocol/mrim/proto.h"
 #include "protocol/mrim/mrimdatastream.h"
 #include "resourcemanager.h"

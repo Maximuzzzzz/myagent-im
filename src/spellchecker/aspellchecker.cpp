@@ -25,11 +25,12 @@
  *
  */
 
+#include "aspellchecker.h"
+
 #include <QDir>
 #include <QCoreApplication>
 
 #include "aspell.h"
-#include "aspellchecker.h"
 
 ASpellChecker::ASpellChecker()
 {

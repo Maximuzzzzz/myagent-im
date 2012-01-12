@@ -20,9 +20,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QDebug>
-
 #include "contactgroup.h"
+
+#include <QDebug>
 
 ContactGroup::ContactGroup(quint32 id, quint32 flags, QString name, GroupType t)
 	: m_id(id), m_flags(flags), m_name(name), m_type(t)

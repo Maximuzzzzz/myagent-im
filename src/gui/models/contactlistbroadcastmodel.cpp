@@ -22,11 +22,10 @@
 
 #include "contactlistbroadcastmodel.h"
 
-#include <QIcon>
 #include <QDebug>
+#include <QIcon>
 #include <QPixmap>
 #include <QDir>
-#include <QDebug>
 
 #include "contact.h"
 #include "contactlist.h"

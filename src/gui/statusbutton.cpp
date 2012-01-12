@@ -20,10 +20,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "statusbutton.h"
+
 #include <QAction>
 #include <QDebug>
-
-#include "statusbutton.h"
 
 StatusButton::StatusButton(StatusMenu* sm, QWidget* parent)
 	: ButtonWithMenu(parent)

@@ -20,6 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "mrimclient.h"
+
 #include <QDebug>
 
 #include <QTextCodec>
@@ -27,7 +29,6 @@
 #include <QHostAddress>
 #include <QNetworkInterface>
 
-#include "mrimclient.h"
 #include "mrimclientprivate.h"
 
 #include "protocol/mrim/mrimdatastream.h"

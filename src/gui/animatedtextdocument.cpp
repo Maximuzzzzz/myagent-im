@@ -20,6 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "animatedtextdocument.h"
+
 #include <QDebug>
 
 #include <QScrollBar>
@@ -27,7 +29,6 @@
 #include <QAbstractTextDocumentLayout>
 
 #include "gui/animation.h"
-#include "gui/animatedtextdocument.h"
 #include "emoticonformat.h"
 
 class EmoticonFormatHandler : public QObject, public QTextObjectInterface

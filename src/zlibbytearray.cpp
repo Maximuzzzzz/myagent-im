@@ -61,10 +61,11 @@
  * \brief Wrapper around QByteArray that adds compression capabilities
  */
 
+#include "zlibbytearray.h"
+
 #include <QString>
 
 #include "zlib.h"
-#include "zlibbytearray.h"
 #include <limits.h>
 
 /** Constructor */

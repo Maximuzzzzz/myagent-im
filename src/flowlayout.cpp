@@ -34,9 +34,9 @@
 **
 ****************************************************************************/
 
-#include <QtGui>
-
 #include "flowlayout.h"
+
+#include <QDebug>
 
 FlowLayout::FlowLayout ( QWidget *parent, int margin, int spacing )
 		: QLayout ( parent )
