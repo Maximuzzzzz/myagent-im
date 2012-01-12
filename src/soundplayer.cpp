@@ -20,11 +20,11 @@ void SoundPlayer::playSound(SoundType soundType)
 	media = new Phonon::MediaObject(this);
 	QString mediaFile = soundDescription(soundType);
 
-	qDebug() << "File: " << (theRM.soundsResourcePrefix() + ":" + mediaFile + ".ogg");
+	qDebug() << "File: " << (theRM.soundsResourcePrefix() + ':' + mediaFile + ".ogg");
 	if (mediaFile.isEmpty())
 		qDebug() << "Error: Media file not found";
 	else
-		media->setCurrentSource(Phonon::MediaSource(theRM.soundsResourcePrefix() + ":" + mediaFile + ".ogg"));
+		media->setCurrentSource(Phonon::MediaSource(theRM.soundsResourcePrefix() + ':' + mediaFile + ".ogg"));
 	Phonon::createPath(media, &output);
 	connect(media, SIGNAL(finished()), this, SLOT(finish()));
 	media->play();

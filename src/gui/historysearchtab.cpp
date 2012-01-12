@@ -117,7 +117,7 @@ void HistorySearchTab::showMessage(const Xapian::Document & doc)
 	else
 		nick = incomingNickname;
 	
-	QString prompt = "<a href=" + msg->dateTime().toString("dd/MM/yyyy") + ">" +  msg->dateTime().toString("yyyy-MM-dd") + "</a> ";
+	QString prompt = "<a href=" + msg->dateTime().toString("dd/MM/yyyy") + '>' +  msg->dateTime().toString("yyyy-MM-dd") + "</a> ";
 	prompt += msg->dateTime().toString("hh:mm:ss") + " <b>" + nick + "</b>: ";
 	QTextCursor cursor = resultsBrowser->textCursor();
 	cursor.movePosition(QTextCursor::End);

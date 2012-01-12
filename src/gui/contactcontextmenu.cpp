@@ -231,7 +231,7 @@ void ContactContextMenu::checkOnlineStatus(OnlineStatus status)
 
 void ContactContextMenu::renameContact()
 {
-	InputLineDialog dialog(tr("Rename contact"), QIcon(":icons/cl_rename_contact.png"), tr("Enter new name for user %1:").arg(m_contact->nickname() + "(" + m_contact->email() + ")"), ".+", m_contact->nickname());
+	InputLineDialog dialog(tr("Rename contact"), QIcon(":icons/cl_rename_contact.png"), tr("Enter new name for user %1:").arg(m_contact->nickname() + '(' + m_contact->email() + ')'), ".+", m_contact->nickname());
 	
 	if (dialog.exec() == QDialog::Accepted)
 	{

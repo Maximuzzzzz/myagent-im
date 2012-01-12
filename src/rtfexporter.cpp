@@ -57,20 +57,20 @@ QByteArray RtfExporter::toRtf()
 	{
 		head += "{\\f" + QByteArray::number(i) + "\\fnil\\fcharset" + fonts.at(i) + ";}";
 	}
-	head += "}";
+	head += '}';
 
 	head += "{\\colortbl ;";
 	for (int i = 0; i < colors.size(); i++)
 	{
 		head += "\\red" + QByteArray::number(qRed(colors.at(i)));
 		head += "\\green" + QByteArray::number(qGreen(colors.at(i)));
-		head += "\\blue" + QByteArray::number(qBlue(colors.at(i))) + ";";
+		head += "\\blue" + QByteArray::number(qBlue(colors.at(i))) + ';';
 	}
-	head += "}";
+	head += '}';
 
 	head += "\\viewkind4\\uc1\\pard";
 
-	return head + rtf + "}";
+	return head + rtf + '}';
 }
 
 void RtfExporter::processBlock(const QTextBlock& block)
@@ -100,7 +100,7 @@ void RtfExporter::processFragment(const QTextFragment& fragment)
 		
 		if (controlCodeApplied)
 		{
-			rtf += " ";
+			rtf += ' ';
 			controlCodeApplied = false;
 		}
 		
@@ -211,7 +211,7 @@ void RtfExporter::checkChar(QChar ch)
 	currCharset = "204";
 
 	int fontIndex;
-	fontIndex = indexOfFont(currCharset + " " + currentCharFormat.fontFamily());
+	fontIndex = indexOfFont(currCharset + ' ' + currentCharFormat.fontFamily());
 	if (currentFont != fontIndex)
 	{
 		rtf += "\\f" + QByteArray::number(fontIndex);

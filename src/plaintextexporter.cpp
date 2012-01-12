@@ -82,7 +82,7 @@ void PlainTextExporter::processFragment(const QTextFragment& fragment)
 		else if (!info->tip().isEmpty())
 		{
 			if (info->tip().at(0).isLetter())
-				text += ":" + info->tip() + ":";
+				text += ':' + info->tip() + ':';
 			else
 				text += info->tip();
 		}

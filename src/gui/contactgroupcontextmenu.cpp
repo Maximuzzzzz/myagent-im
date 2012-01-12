@@ -49,7 +49,7 @@ void ContactGroupContextMenu::removeGroup()
 {
 	qDebug() << "ContactGroupContextMenu::removeGroup";
 
-	if (CenteredMessageBox::question(tr("Remove group"), tr("Are you sure you want to remove group") + " " + m_group->name() + "?", QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel) == QMessageBox::Ok)
+	if (CenteredMessageBox::question(tr("Remove group"), tr("Are you sure you want to remove group") + ' ' + m_group->name() + '?', QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel) == QMessageBox::Ok)
 	{
 		qDebug() << "real removing";
 		m_account->contactList()->removeGroupOnServer(m_group);

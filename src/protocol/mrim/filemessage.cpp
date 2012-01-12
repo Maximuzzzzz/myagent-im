@@ -73,7 +73,7 @@ FileMessage::FileMessage(Type type/*, QList<QFileInfo> & files, QByteArray accEm
 		{
 			if (!ip.isNull() && !ip.toString().contains(':') && ip != QHostAddress::LocalHost)
 				for (i = 0; i < listeningPorts.count(); i++)
-					fm_ips += ip.toString() + ":" + listeningPorts[i] + ";";
+					fm_ips += ip.toString() + ':' + listeningPorts[i] + ';';
 		}
 	}
 	fm_error = 0;
@@ -150,7 +150,7 @@ void FileMessage::receiveFiles(quint32 sessId)
 	QList<QString>::iterator it = fm_fileListUtf.begin();
 	for (; it != fm_fileListUtf.end(); ++it)
 	{
-		QString currFN = getReceivingDir() /*fm_defaultDir*/ + "/" + (*it);
+		QString currFN = getReceivingDir() /*fm_defaultDir*/ + '/' + (*it);
 		QFile file(currFN);
 		qDebug() << file.fileName();
 		if (file.exists())
@@ -429,7 +429,7 @@ void FileMessage::sendFileAck(quint32 status)
 		{
 			for (i = 0; i < listeningPorts.count(); i++)
 				if (!ip.isNull() && !ip.toString().contains(':') && ip != QHostAddress::LocalHost)
-					ips += ip.toString() + ":" + listeningPorts[i] + ";";
+					ips += ip.toString() + ':' + listeningPorts[i] + ';';
 		}
 	}
 	theRM.account()->client()->sendFileAck(status, fm_contEmail, fm_sessionId, ips);
@@ -448,7 +448,7 @@ void FileMessage::getFile()
 	setTransferStatus(RECEIVING_FILE, percentage());
 	bytesTransferred = 0;
 
-	fm_currentFile.setFileName(getReceivingDir() + "/" + fm_fileListUtf[currFile]);
+	fm_currentFile.setFileName(getReceivingDir() + '/' + fm_fileListUtf[currFile]);
 	//qDebug() << fm_defaultDir + "/" + fm_fileListUtf[currFile];
 
 	fm_currentFile.open(QIODevice::WriteOnly);
@@ -839,14 +839,14 @@ void FileMessage::setFileList(QList<QFileInfo> & files)
 		if (codec->canEncode(it->fileName()))
 			asciiName = it->fileName().toAscii();
 		else
-			asciiName = "unicode_file_name_" + QByteArray::number(filesInUnicode++) + ".";
+			asciiName = "unicode_file_name_" + QByteArray::number(filesInUnicode++) + '.';
 
 		fm_fileListAnsi.append(asciiName);
 		fm_fileListUtf.append(it->fileName());
 
-		fm_filesAnsi += asciiName + ";" + QByteArray::number(it->size()) + ";";
-		fm_filesUtf += it->fileName() + ";" + QByteArray::number(it->size()) + ";";
-		fm_filesHtml += ((fm_filesHtml == "") ? "" : "<br>") + it->absoluteFilePath() + " (" + getSizeInString(it->size()) + ")";
+		fm_filesAnsi += asciiName + ';' + QByteArray::number(it->size()) + ';';
+		fm_filesUtf += it->fileName() + ';' + QByteArray::number(it->size()) + ';';
+		fm_filesHtml += ((fm_filesHtml == "") ? "" : "<br>") + it->absoluteFilePath() + " (" + getSizeInString(it->size()) + ')';
 
 		fm_sizes.append(it->size());
 		fm_filePaths.append(it->absoluteFilePath());

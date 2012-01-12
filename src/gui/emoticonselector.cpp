@@ -153,7 +153,7 @@ EmoticonSelector::EmoticonSelector(QWidget* parent)
 	{
 		EmoticonSelectorPage* page = new EmoticonSelectorPage(this, (*it)->list());
 		if (!(*it)->logo().isEmpty())
-			tabs->addTab(page, QIcon(theRM.statusesResourcePrefix() + ":" + (*it)->logo()), "");
+			tabs->addTab(page, QIcon(theRM.statusesResourcePrefix() + ':' + (*it)->logo()), "");
 		else
 			tabs->addTab(page, QIcon(""), tr("unk"));
 		pages.append(page);

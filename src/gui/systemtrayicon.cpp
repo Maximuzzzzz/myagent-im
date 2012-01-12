@@ -125,7 +125,7 @@ void SystemTrayIcon::updateTooltip()
 #ifdef Q_WS_X11
 		setToolTip("<b>" + account->nickname() + "</b><br>" + account->email());
 #else
-		setToolTip(account->nickname() + "\n" + account->email());
+		setToolTip(account->nickname() + '\n' + account->email());
 #endif
 }
 

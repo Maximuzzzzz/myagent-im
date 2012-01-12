@@ -108,7 +108,7 @@ void LoginDialog::slotEmailChanged()
 {
 	if (domainBox->isVisible() && loginBox->currentText().contains('@'))
 	{
-		QString domain = "@" + loginBox->currentText().section('@', 1);
+		QString domain = '@' + loginBox->currentText().section('@', 1);
 		int i = domainBox->findText(domain);
 		if (i != -1)
 		{

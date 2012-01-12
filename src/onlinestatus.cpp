@@ -158,7 +158,7 @@ QIcon OnlineStatus::statusIcon() const
 	const OnlineStatusInfo* statusInfo = theRM.onlineStatuses()->getOnlineStatusInfo(id());
 
 	if (statusInfo)
-		return QIcon(theRM.statusesResourcePrefix() + ":" + statusInfo->icon());
+		return QIcon(theRM.statusesResourcePrefix() + ':' + statusInfo->icon());
 	else
 	{
 		qDebug() << Q_FUNC_INFO << "can't find status info for status:"

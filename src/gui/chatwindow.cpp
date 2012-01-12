@@ -398,13 +398,13 @@ void ChatWindow::appendMessageToView(const Message* msg, bool newIncoming)
 	QString prompt;
 	if (msg->flags() & MESSAGE_FLAG_SMS)
 	{
-		prompt = "<font color=red>" + tr("Sms from number") + " " + msg->rtfText() + " (" + msg->dateTime().toString(m_account->settings()->value("Messages/DateMask", theRM.defDateFormat).toString()) + ") :</font><br>";
+		prompt = "<font color=red>" + tr("Sms from number") + ' ' + msg->rtfText() + " (" + msg->dateTime().toString(m_account->settings()->value("Messages/DateMask", theRM.defDateFormat).toString()) + ") :</font><br>";
 		lastMessage.from = "";
 		lastMessage.dateTime = QDateTime();
 	}
 	else if (msg->flags() & MESSAGE_SMS_DELIVERY_REPORT)
 	{
-		prompt = msg->dateTime().time().toString() + " <b>" + tr("Sms status for number") + " " + msg->rtfText() + "</b> :<br>";
+		prompt = msg->dateTime().time().toString() + " <b>" + tr("Sms status for number") + ' ' + msg->rtfText() + "</b> :<br>";
 		lastMessage.from = "";
 		lastMessage.dateTime = QDateTime();
 	}

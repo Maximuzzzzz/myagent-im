@@ -138,7 +138,7 @@ void ResourceManager::setAccount(Account* acc)
 
 OnlineStatus ResourceManager::loadOnlineStatus(QByteArray email)
 {
-	QDir dir = basePath() + "/" + email;
+	QDir dir = basePath() + '/' + email;
 	if (!dir.exists())
 		return OnlineStatus("", "");
 
@@ -176,7 +176,7 @@ OnlineStatus ResourceManager::loadOnlineStatus(QByteArray email)
 
 QByteArray ResourceManager::loadPass(QByteArray email)
 {
-	QDir dir = basePath() + "/" + email;
+	QDir dir = basePath() + '/' + email;
 	if (!dir.exists())
 		return QByteArray("");
 
@@ -194,13 +194,13 @@ int ResourceManager::removeFolder(QString path)
 
 	Q_FOREACH (QString entry, lstFiles)
 	{
-		QString entryAbsPath = dir.absolutePath() + "/" + entry;
+		QString entryAbsPath = dir.absolutePath() + '/' + entry;
 		QFile::remove(entryAbsPath);
 	}
 
 	Q_FOREACH (QString entry, lstDirs)
 	{
-		QString entryAbsPath = dir.absolutePath() + "/" + entry;
+		QString entryAbsPath = dir.absolutePath() + '/' + entry;
 		removeFolder(entryAbsPath);
 	}
 

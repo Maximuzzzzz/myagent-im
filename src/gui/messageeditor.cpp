@@ -380,7 +380,7 @@ void MessageEditor::readSettings()
 	bool checkSpelling = m_account->settings()->value("MessageEditor/checkSpelling", false).toBool();
 	setCheckSpelling(checkSpelling);
 	
-	QString settingsPrefix = "MessageEditor_" + m_contact->email() + "/";
+	QString settingsPrefix = "MessageEditor_" + m_contact->email() + '/';
 	defaultFont.fromString(m_account->settings()->value(settingsPrefix + "font").toString());
 	defaultFontColor = QColor(m_account->settings()->value(settingsPrefix + "textColor", "#000000").toString());
 	defaultBkColor = QColor(m_account->settings()->value(settingsPrefix + "backgroundColor", "#ffffff").toString());
@@ -403,7 +403,7 @@ void MessageEditor::writeSettings()
 		return;
 	}
 
-	QString settingsPrefix = "MessageEditor_" + m_contact->email() + "/";
+	QString settingsPrefix = "MessageEditor_" + m_contact->email() + '/';
 	
 	m_account->settings()->setValue(settingsPrefix + "font", lastUserFormat.font().toString());
 	m_account->settings()->setValue(settingsPrefix + "textColor", lastUserFormat.foreground().color().name());
