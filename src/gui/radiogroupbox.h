@@ -31,8 +31,8 @@ class RadioGroupBox : public QGroupBox
 {
 	Q_OBJECT
 public:
-	RadioGroupBox(const QString& title, QWidget* parent = 0);
-	RadioGroupBox(QWidget* parent = 0);
+	explicit RadioGroupBox(const QString& title, QWidget* parent = 0);
+	explicit RadioGroupBox(QWidget* parent = 0);
 	~RadioGroupBox();
 
 	void setChecked(bool b);

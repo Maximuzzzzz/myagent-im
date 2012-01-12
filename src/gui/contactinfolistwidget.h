@@ -36,7 +36,7 @@ class ContactInfoListWidget : public QTreeView
 {
 Q_OBJECT
 public:
-	ContactInfoListWidget(Account* account, QWidget* parent = 0);
+	explicit ContactInfoListWidget(Account* account, QWidget* parent = 0);
 
 	void setInfo(const QList<ContactInfo>& info);
 	virtual QSize sizeHint() const;

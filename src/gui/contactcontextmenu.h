@@ -37,7 +37,7 @@ class SubmenuMoveToGroup : public QMenu
 {
 Q_OBJECT
 public:
-	SubmenuMoveToGroup(Contact* c, QWidget* parent = 0);
+	explicit SubmenuMoveToGroup(Contact* c, QWidget* parent = 0);
 	~SubmenuMoveToGroup();
 
 	quint32 groupsCount() { return m_groups.count(); };
@@ -65,7 +65,7 @@ class ContactContextMenu : public QMenu
 {
 Q_OBJECT
 public:
-	ContactContextMenu(Account* account, QWidget* parent = 0);
+	explicit ContactContextMenu(Account* account, QWidget* parent = 0);
 	~ContactContextMenu();
 
 	void setContact(Contact* c);

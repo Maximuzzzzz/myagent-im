@@ -37,7 +37,7 @@ class ConferenceContextMenu : public QMenu
 {
 Q_OBJECT
 public:
-	ConferenceContextMenu(Account* account, QWidget* parent = 0);
+	explicit ConferenceContextMenu(Account* account, QWidget* parent = 0);
 	~ConferenceContextMenu();
 
 	void setContact(Contact* c);

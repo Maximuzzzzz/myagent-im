@@ -41,8 +41,9 @@ public:
 		NewMessage
 	};
 
-	PopupWindow(QRect position, QWidget *parent = 0);
+	explicit PopupWindow(QRect position, QWidget *parent = 0);
 	~PopupWindow();
+
 	void setUnreadLettersText(const quint32 letters);
 	void setLetterReceived(const QString & from, const QString & subject, const QDateTime dateTime);
 	void setMessageReceived(const QByteArray& fromEmail, const QString& fromNick, const QString& to, const QDateTime& dateTime);

@@ -29,8 +29,8 @@ class ToolButton : public QToolButton
 {
 Q_OBJECT
 public:
-	ToolButton(QAction* action, QWidget* parent = 0);
-	ToolButton(const QIcon& icon, QWidget* parent = 0);
+	explicit ToolButton(QAction* action, QWidget* parent = 0);
+	explicit ToolButton(const QIcon& icon, QWidget* parent = 0);
 	
 protected:
 	virtual void mousePressEvent(QMouseEvent* event);

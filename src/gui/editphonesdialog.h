@@ -31,7 +31,7 @@ class EditPhonesDialog : public QDialog, private Ui::EditPhonesDialog
 {
 Q_OBJECT
 public:
-	EditPhonesDialog(const QString& nickname = QString(), const QStringList& phones = QStringList(), QWidget* parent = 0);
+	explicit EditPhonesDialog(const QString& nickname = QString(), const QStringList& phones = QStringList(), QWidget* parent = 0);
 	~EditPhonesDialog();
 
 	QString nickname() const;

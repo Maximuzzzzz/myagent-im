@@ -31,7 +31,7 @@ class LinkButton : public ToolButton
 Q_OBJECT
 public:
 	LinkButton(const QString& url, const QIcon& icon, QWidget* parent = 0);
-	LinkButton(QAction* action, QWidget* parent = 0);
+	explicit LinkButton(QAction* action, QWidget* parent = 0);
 	
 protected:
 	virtual void mouseReleaseEvent(QMouseEvent* event);

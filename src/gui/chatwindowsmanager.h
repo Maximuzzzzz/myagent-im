@@ -40,7 +40,7 @@ class ChatWindowsManager : public QObject
 {
 Q_OBJECT
 public:
-	ChatWindowsManager(Account* account, QObject *parent = 0);
+	explicit ChatWindowsManager(Account* account, QObject *parent = 0);
 	~ChatWindowsManager();
 
 	ChatWindow* getWindow(ChatSession* session);

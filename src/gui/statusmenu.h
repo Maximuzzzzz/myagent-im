@@ -32,7 +32,7 @@ class StatusMenu : public QMenu
 {
 Q_OBJECT
 public:
-	StatusMenu(Account* acc, QWidget* parent = 0);
+	explicit StatusMenu(Account* acc, QWidget* parent = 0);
 
 	~StatusMenu();
 

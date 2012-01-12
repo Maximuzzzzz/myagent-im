@@ -59,7 +59,7 @@ public:
 		TRANSFER_CANCEL
 	};
 
-	FileMessage(Type type, QObject* parent = 0);
+	explicit FileMessage(Type type, QObject* parent = 0);
 	~FileMessage();
 	
 	Type type() const { return fm_type; }
@@ -194,7 +194,7 @@ class FileExistsDialog : public QDialog
 {
 Q_OBJECT
 public:
-	FileExistsDialog(QString fileName, QWidget* parent = 0, Qt::WindowFlags f = 0);
+	explicit FileExistsDialog(QString fileName, QWidget* parent = 0, Qt::WindowFlags f = 0);
 	QString fileName() const { return m_newFileName; }
 
 private Q_SLOTS:

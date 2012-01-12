@@ -36,8 +36,7 @@ class StatusButton : public ButtonWithMenu
 {
 Q_OBJECT
 public:
-	StatusButton(StatusMenu* sm, QWidget* parent = 0);
-
+	explicit StatusButton(StatusMenu* sm, QWidget* parent = 0);
 	~StatusButton();
 
 private Q_SLOTS:

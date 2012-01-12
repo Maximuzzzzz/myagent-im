@@ -29,7 +29,7 @@ class SmsEdit : public QPlainTextEdit
 {
 Q_OBJECT
 public:
-	SmsEdit(int reservedSymbols, QWidget* parent = 0);
+	explicit SmsEdit(int reservedSymbols, QWidget* parent = 0);
 	~SmsEdit();
 
 	// number of remaining symbols

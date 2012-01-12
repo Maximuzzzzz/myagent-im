@@ -32,7 +32,7 @@ class NewLettersLabel : public QWidget
 {
 Q_OBJECT
 public:
-	NewLettersLabel(Account* account, QWidget* parent = 0);
+	explicit NewLettersLabel(Account* account, QWidget* parent = 0);
 	~NewLettersLabel();
 Q_SIGNALS:
 	void clicked();

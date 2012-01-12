@@ -44,28 +44,28 @@
 class FlowLayout : public QLayout
 {
 public:
-    FlowLayout(QWidget *parent, int margin = 0, int spacing = -1);
-    FlowLayout(int spacing = -1);
-    ~FlowLayout();
+	explicit FlowLayout(QWidget *parent, int margin = 0, int spacing = -1);
+	explicit FlowLayout(int spacing = -1);
+	~FlowLayout();
 
 	void insertWidget(int i, QWidget* w);
 	int indexOfItemAtPos(const QPoint& pos);
 
-    void addItem(QLayoutItem *item);
-    Qt::Orientations expandingDirections() const;
-    bool hasHeightForWidth() const;
-    int heightForWidth(int) const;
-    int count() const;
-    QLayoutItem *itemAt(int index) const;
-    QSize minimumSize() const;
-    void setGeometry(const QRect &rect);
-    QSize sizeHint() const;
-    QLayoutItem *takeAt(int index);
+	void addItem(QLayoutItem *item);
+	Qt::Orientations expandingDirections() const;
+	bool hasHeightForWidth() const;
+	int heightForWidth(int) const;
+	int count() const;
+	QLayoutItem *itemAt(int index) const;
+	QSize minimumSize() const;
+	void setGeometry(const QRect &rect);
+	QSize sizeHint() const;
+	QLayoutItem *takeAt(int index);
 
 private:
-    int doLayout(const QRect &rect, bool testOnly) const;
+	int doLayout(const QRect &rect, bool testOnly) const;
 
-    QList<QLayoutItem *> itemList;
+	QList<QLayoutItem *> itemList;
 };
 
 #endif

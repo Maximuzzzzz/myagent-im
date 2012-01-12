@@ -34,8 +34,9 @@ class ContactListModel : public QStandardItemModel
 {
 Q_OBJECT
 public:
-	ContactListModel(ContactList* contactList = NULL, bool showGroups = true);
+	explicit ContactListModel(ContactList* contactList = NULL, bool showGroups = true);
 	~ContactListModel();
+
 	virtual Qt::DropActions supportedDropActions() const;
 	virtual QMimeData* mimeData(const QModelIndexList& indexes) const;
 	virtual bool dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex & parent);

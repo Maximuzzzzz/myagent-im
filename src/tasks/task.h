@@ -32,7 +32,7 @@ class Task : public QObject
 {
 Q_OBJECT
 public:
-    Task(MRIMClient* client, QObject* parent = 0);
+	explicit Task(MRIMClient* client, QObject* parent = 0);
 	virtual ~Task() {}
 	virtual bool exec() = 0;
 	void setTimer();

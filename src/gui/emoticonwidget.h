@@ -32,8 +32,8 @@ class EmoticonWidget : public QWidget
 {
 Q_OBJECT
 public:
-	EmoticonWidget(const QString& emoticonId, QWidget* parent = 0);
-	EmoticonWidget(EmoticonMovie* m, QWidget* parent = 0);
+	explicit EmoticonWidget(const QString& emoticonId, QWidget* parent = 0);
+	explicit EmoticonWidget(EmoticonMovie* m, QWidget* parent = 0);
 	~EmoticonWidget();
 
 	void setDragEnabled(bool on);

@@ -13,7 +13,7 @@ class ContactGroupContextMenu : public QMenu
 {
 Q_OBJECT
 public:
-	ContactGroupContextMenu(Account* account, QWidget* parent = 0);
+	explicit ContactGroupContextMenu(Account* account, QWidget* parent = 0);
 	
 	void setGroup(ContactGroup* group);
 

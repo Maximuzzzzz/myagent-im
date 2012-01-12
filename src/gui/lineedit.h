@@ -55,8 +55,8 @@ public:
         RightSide
     };
 
-    LineEdit(QWidget *parent = 0);
-    LineEdit(const QString &contents, QWidget *parent = 0);
+    explicit LineEdit(QWidget *parent = 0);
+    explicit LineEdit(const QString &contents, QWidget *parent = 0);
 
     void addWidget(QWidget *widget, WidgetPosition position);
     void removeWidget(QWidget *widget);
