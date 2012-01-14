@@ -24,7 +24,6 @@
 #define CONTACTGROUP_H
 
 #include <QString>
-#include <QDataStream>
 
 class ContactGroup
 {

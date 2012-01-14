@@ -22,6 +22,10 @@
 
 #include "contactlistbroadcast.h"
 
+#include "models/contactlistmodel.h"
+#include "models/contactlistbroadcastmodel.h"
+#include "contactlist.h"
+
 ContactListBroadcast::ContactListBroadcast(QByteArray contactEmail, ContactList* cl, QWidget* parent)
  : QListView(parent)
 {
@@ -33,4 +37,9 @@ ContactListBroadcast::ContactListBroadcast(QByteArray contactEmail, ContactList*
 
 ContactListBroadcast::~ContactListBroadcast()
 {
+}
+
+QList<QByteArray> &ContactListBroadcast::receivers()
+{
+	return broadcastModel->broadcastList();
 }

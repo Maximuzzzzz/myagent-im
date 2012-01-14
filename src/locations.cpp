@@ -26,7 +26,6 @@
 
 #include <QFile>
 #include <QTextStream>
-#include <QTextCodec>
 
 Locations::Locations()
 {

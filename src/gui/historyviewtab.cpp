@@ -28,6 +28,13 @@
 #include <QHBoxLayout>
 #include <QFileDialog>
 #include <QTextCodec>
+#include <QPushButton>
+#include <QProgressBar>
+
+#include <xapian/matchspy.h>
+#include <xapian/document.h>
+#include <xapian/query.h>
+#include <xapian/database.h>
 
 #include "gui/animatedtextbrowser.h"
 #include "message.h"

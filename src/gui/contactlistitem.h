@@ -26,8 +26,6 @@
 #include <QStandardItem>
 #include <QObject>
 
-#include "onlinestatus.h"
-
 class Contact;
 class ContactGroup;
 

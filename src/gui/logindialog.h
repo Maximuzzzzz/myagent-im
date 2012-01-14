@@ -28,7 +28,8 @@
 
 #include "ui_logindialog.h"
 #include "onlinestatus.h"
-#include "gui/settingswindow.h"
+
+class SettingsWindow;
 
 class LoginDialog : public QDialog, private Ui::LoginDialog
 {

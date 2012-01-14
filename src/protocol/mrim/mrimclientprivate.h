@@ -24,11 +24,12 @@
 #define MRIMCLIENTPRIVATE_H
 
 #include <QObject>
-#include <QSslSocket>
-#include <QTimer>
+#include <QAbstractSocket>
 
 #include "protocol/mrim/proto.h"
 #include "onlinestatus.h"
+
+class QSslSocket;
 
 class MRIMClient;
 class Account;

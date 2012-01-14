@@ -24,7 +24,6 @@
 #define CONTACTINFOLISTWIDGET_H
 
 #include <QTreeView>
-#include <QStyleOptionViewItem>
 
 #include "contactinfo.h"
 

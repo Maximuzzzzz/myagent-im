@@ -23,11 +23,12 @@
 #include "onlinestatuseseditor.h"
 
 #include <QDebug>
+#include <QSettings>
+#include <QPushButton>
 
 #include "account.h"
-#include "onlinestatuses.h"
 #include "resourcemanager.h"
-
+#include "onlinestatusselector.h"
 
 //-------StatusRow------------//
 StatusRow::StatusRow(OnlineStatusesEditor* parent, qint32 id)

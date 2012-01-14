@@ -23,7 +23,6 @@
 #ifndef CONTACTDATA_H
 #define CONTACTDATA_H
 
-#include "protocol/mrim/mrimdatastream.h"
 #include "onlinestatus.h"
 
 #include <QStringList>
@@ -31,9 +30,7 @@
 
 class QTextCodec;
 
-class Contact;
-class ContactList;
-class MRIMClient;
+class MRIMDataStream;
 
 class ContactData
 {

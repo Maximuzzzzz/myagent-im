@@ -28,9 +28,7 @@
 #include <QFormLayout>
 #include <QPushButton>
 #include <QGroupBox>
-#include <QFocusFrame>
 #include <QLabel>
-#include <QIcon>
 #include <QDialogButtonBox>
 #include <QLineEdit>
 #include <QRegExpValidator>
@@ -38,8 +36,8 @@
 
 #include "account.h"
 #include "contact.h"
+#include "contactlist.h"
 #include "gui/avatarbox.h"
-#include "gui/linkbutton.h"
 #include "zodiac.h"
 #include "contactinfo.h"
 #include "tasks/taskrequestcontactinfo.h"

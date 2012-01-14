@@ -22,8 +22,6 @@
 
 #include "tasksetvisibility.h"
 
-#include <QDebug>
-
 #include "protocol/mrim/proto.h"
 #include "contact.h"
 #include "protocol/mrim/mrimclient.h"

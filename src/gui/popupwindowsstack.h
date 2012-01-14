@@ -2,12 +2,11 @@
 #define POPUPWINDOWSSTACK_H
 
 #include <QObject>
-#include <QDateTime>
 
 #include "gui/popupwindow.h"
-#include "contact.h"
 
 class SystemTrayIcon;
+class Contact;
 
 class PopupWindowsStack : public QObject
 {
@@ -23,8 +22,8 @@ public:
 	~PopupWindowsStack();
 
 public Q_SLOTS:
-	void showNewMessage(Contact * from, const QString & to, const QDateTime dateTime);
-	void showNewLetter(const QString & from, const QString & subject, const QDateTime dateTime);
+	void showNewMessage(Contact * from, const QString & to, const QDateTime& dateTime);
+	void showNewLetter(const QString & from, const QString & subject, const QDateTime& dateTime);
 	void showLettersUnread(const quint32 cnt);
 
 	void deleteAllWindows();

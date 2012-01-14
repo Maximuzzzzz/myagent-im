@@ -22,8 +22,6 @@
 
 #include "settingswindow.h"
 
-#include <QDebug>
-
 #include <QIcon>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -35,12 +33,17 @@
 #include <QLabel>
 #include <QGroupBox>
 #include <QRadioButton>
-#include <QScrollBar>
+#include <QPushButton>
 #include <QMessageBox>
 #include <QProcess>
+#include <QSettings>
 
 #include "resourcemanager.h"
 #include "contact.h"
+#include "contactlist.h"
+#include "account.h"
+#include "chatwindowsmanager.h"
+#include "contactlistwindow.h"
 
 SettingsWindow::SettingsWindow(Account* account, ContactListWindow* clw)
 	: m_account(account), m_clw(clw)

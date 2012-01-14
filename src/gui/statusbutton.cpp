@@ -22,8 +22,9 @@
 
 #include "statusbutton.h"
 
-#include <QAction>
 #include <QDebug>
+
+#include "statusmenu.h"
 
 StatusButton::StatusButton(StatusMenu* sm, QWidget* parent)
 	: ButtonWithMenu(parent)

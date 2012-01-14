@@ -26,6 +26,7 @@
 
 #include "gui/contactinfodialog.h"
 #include "account.h"
+#include "contactgroup.h"
 #include "contactlist.h"
 #include "gui/centerwindow.h"
 

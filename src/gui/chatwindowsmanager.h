@@ -26,15 +26,17 @@
 #include <QObject>
 #include <QHash>
 
-#include "gui/emoticonselector.h"
-#include "gui/multselector.h"
-
 class QIcon;
 class QTabWidget;
+class QDateTime;
 
 class ChatSession;
 class ChatWindow;
 class Account;
+class Message;
+class EmoticonSelector;
+class MultSelector;
+class Contact;
 
 class ChatWindowsManager : public QObject
 {
@@ -57,7 +59,7 @@ public Q_SLOTS:
 Q_SIGNALS:
 	void ignoreSet(bool ignore);
 	void signalCheckSpellingSet(bool b);
-	void messageReceived(Contact * from, const QString & to, const QDateTime dateTime);
+	void messageReceived(Contact * from, const QString & to, const QDateTime& dateTime);
 
 private Q_SLOTS:
 	void mainWindowActivate(ChatWindow* wnd);

@@ -22,8 +22,6 @@
 
 #include "taskremovecontact.h"
 
-#include <QDebug>
-
 #include "protocol/mrim/mrimclient.h"
 
 Tasks::RemoveContact::RemoveContact(Contact* c, MRIMClient* client, QObject *parent)

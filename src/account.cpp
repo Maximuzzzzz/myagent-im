@@ -21,20 +21,19 @@
  ***************************************************************************/
 
 #include "account.h"
-#include "contactlist.h"
 
-#include <QDir>
 #include <QDebug>
-#include <QApplication>
-#include <QTextCodec>
+#include <QDir>
+#include <QSettings>
+#include <QDateTime>
 
-#include "protocol/mrim/proto.h"
+#include "contactlist.h"
 #include "protocol/mrim/mrimclient.h"
 #include "resourcemanager.h"
 #include "chatsmanager.h"
 #include "historymanager.h"
-#include "audio.h"
 #include "gui/centerwindow.h"
+#include "gui/onlinestatuseseditor.h"
 
 Account::Account(QByteArray email, QByteArray password, QObject* parent)
 	: QObject(parent)
@@ -90,6 +89,11 @@ void Account::reset(QByteArray email, QByteArray password)
 	}
 }
 
+ContactList *Account::contactList()
+{
+	return m_contactList;
+}
+
 Account::~Account()
 {
 	qDebug() << Q_FUNC_INFO;
@@ -135,6 +139,16 @@ QString Account::avatarsPath() const
 	dir.cd(avatarsDirname);
 
 	return dir.absolutePath();
+}
+
+QSettings *Account::settings()
+{
+	return m_settings;
+}
+
+OnlineStatusesEditor *Account::onlineStatusesEditor()
+{
+	return m_onlineStatusesEditor;
 }
 
 void Account::setOnlineStatus(OnlineStatus newStatus, qint32 id)

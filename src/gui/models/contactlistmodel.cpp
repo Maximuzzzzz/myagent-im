@@ -23,15 +23,12 @@
 #include "contactlistmodel.h"
 
 #include <QDebug>
-#include <QIcon>
-#include <QPixmap>
-#include <QDir>
 
 #include "contact.h"
+#include "contactgroup.h"
 #include "contactlist.h"
 #include "gui/contactlistitem.h"
 #include "contactmimedata.h"
-#include "protocol/mrim/proto.h"
 
 ContactListModel::ContactListModel(ContactList* contactList, bool showGroups)
  : QStandardItemModel(contactList), m_showGroups(showGroups)

@@ -22,8 +22,6 @@
 
 #include "taskrenamecontact.h"
 
-#include <QDebug>
-
 #include "protocol/mrim/mrimclient.h"
 
 Tasks::RenameContact::RenameContact(Contact* c, const QString& newNick, MRIMClient* client, QObject* parent)

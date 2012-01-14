@@ -1,5 +1,7 @@
 #include "triggeroptionbutton.h"
 
+#include <QSettings>
+
 #include "resourcemanager.h"
 
 TriggerOptionButton::TriggerOptionButton(const QString& iconPrefix, const QString& optionName, QWidget* parent)

@@ -22,12 +22,7 @@
 
 #include "taskignorecontact.h"
 
-#include <QDebug>
-
 #include "protocol/mrim/mrimclient.h"
-#include "contactdata.h"
-#include "protocol/mrim/proto.h"
-#include "contact.h"
 
 Tasks::IgnoreContact::IgnoreContact(Contact* c, const quint32 flags, MRIMClient* client, QObject* parent)
 	: Tasks::SimpleBlockingTask<Tasks::IgnoreContact>(client, parent), m_contact(c), m_flags(flags)

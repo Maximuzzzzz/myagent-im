@@ -22,9 +22,6 @@
 
 #include "tasknewconference.h"
 
-#include <QDebug>
-
-#include "protocol/mrim/proto.h"
 #include "protocol/mrim/mrimclient.h"
 
 Tasks::NewConference::NewConference(QString confName, QByteArray owner, MRIMClient* client, QList<QByteArray> members, QObject* parent)

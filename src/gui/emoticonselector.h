@@ -24,14 +24,13 @@
 #define EMOTICONSELECTOR_H
 
 #include <QFrame>
-#include <QTabWidget>
-#include <QGridLayout>
 
-#include "gui/messageeditor.h"
+class QTabWidget;
+class QGridLayout;
 
-class QToolBox;
 class EmoticonMovie;
 class EmoticonSelector;
+class MessageEditor;
 
 class EmoticonSelectorPage : public QWidget
 {

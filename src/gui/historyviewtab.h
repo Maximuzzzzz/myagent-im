@@ -24,14 +24,20 @@
 #define HISTORYVIEWTAB_H
 
 #include <QWidget>
-#include <QDate>
-#include <QPushButton>
-#include <QProgressBar>
-#include <xapian.h>
 
-class AnimatedTextBrowser;
+namespace Xapian
+{
+class Database;
+class Document;
+}
+
+class QDate;
+class QPushButton;
+class QProgressBar;
 class QCalendarWidget;
 class QListWidget;
+
+class AnimatedTextBrowser;
 
 class HistoryViewTab : public QWidget
 {

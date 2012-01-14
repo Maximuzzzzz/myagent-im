@@ -25,11 +25,9 @@
 #include <QDebug>
 #include <QMenu>
 #include <QApplication>
-#include <QTreeWidget>
 
 #include "gui/searchcontactsdialog.h"
 #include "tasks/tasksearchcontacts.h"
-#include "tasks/taskaddcontact.h"
 #include "protocol/mrim/proto.h"
 #include "contactinfo.h"
 #include "gui/contactinfolistwindow.h"
@@ -37,12 +35,13 @@
 #include "contact.h"
 #include "gui/addcontactdialog.h"
 #include "contactlist.h"
-#include "gui/contactlistwindow.h"
 #include "editphonesdialog.h"
 #include "gui/inputlinedialog.h"
 #include "gui/centerwindow.h"
 #include "gui/centeredmessagebox.h"
 #include "gui/aboutdialog.h"
+#include "settingswindow.h"
+#include "newconferencedialog.h"
 
 class MRIMClient;
 
@@ -265,6 +264,11 @@ void MainMenuButton::showAboutDialog()
 void MainMenuButton::setChatWindowsManager(ChatWindowsManager* cwm)
 {
 	chatWindowsManager = cwm;
+}
+
+SettingsWindow *MainMenuButton::getSettingsWindow()
+{
+	return settingsWindow;
 }
 
 void MainMenuButton::createNewConference()

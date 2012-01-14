@@ -22,12 +22,13 @@
 
 #include "contactlistsortfilterproxymodel.h"
 
-#include <QDebug>
+#include <QSettings>
 
 #include "contactlistmodel.h"
 #include "contact.h"
-#include "protocol/mrim/proto.h"
 #include "resourcemanager.h"
+#include "account.h"
+#include "contactgroup.h"
 
 ContactListSortFilterProxyModel::ContactListSortFilterProxyModel(QObject * parent)
 	: QSortFilterProxyModel(parent), contactListModel(0)

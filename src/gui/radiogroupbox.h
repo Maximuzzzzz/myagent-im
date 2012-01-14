@@ -25,8 +25,6 @@
 
 #include <QGroupBox>
 
-class QRadioButton;
-
 class RadioGroupBox : public QGroupBox
 {
 	Q_OBJECT

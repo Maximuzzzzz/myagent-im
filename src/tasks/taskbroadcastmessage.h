@@ -25,10 +25,6 @@
 
 #include "tasks/task.h"
 
-#include <QSet>
-#include <QTimer>
-
-class Contact;
 class Message;
 
 namespace Tasks

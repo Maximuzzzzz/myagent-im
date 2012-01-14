@@ -27,7 +27,9 @@
 #include <QFont>
 #include <QDateTime>
 #include <QDebug>
-#include <QTextCodec>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
 
 StatusEditor::StatusEditor(QWidget *parent)
 	: QWidget(parent)

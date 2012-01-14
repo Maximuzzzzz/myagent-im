@@ -22,8 +22,6 @@
 
 #include "taskgetmpopsession.h"
 
-#include <QDebug>
-
 #include "protocol/mrim/mrimclient.h"
 #include "protocol/mrim/proto.h"
 

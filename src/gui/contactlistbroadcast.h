@@ -1,11 +1,10 @@
 #ifndef CONTACTLISTBROADCAST_H
 #define CONTACTLISTBROADCAST_H
 
-#include <QWidget>
-#include <QStandardItemModel>
 #include <QListView>
 
-#include "contactlist.h"
+class ContactList;
+class ContactListBroadcastModel;
 
 class ContactListBroadcast : public QListView
 {
@@ -14,7 +13,7 @@ public:
 	ContactListBroadcast(QByteArray contactEmail, ContactList* cl, QWidget* parent = 0);
 	~ContactListBroadcast();
 
-	QList<QByteArray> & receivers() { return broadcastModel->broadcastList(); }
+	QList<QByteArray> & receivers();
 
 private:
 	ContactList* m_contactList;

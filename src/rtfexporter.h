@@ -23,10 +23,10 @@
 #ifndef RTFEXPORTER_H
 #define RTFEXPORTER_H
 
-#include <QTextDocument>
 #include <QTextCharFormat>
-#include <QTextFragment>
-#include <QColor>
+
+class QTextBlock;
+class QTextFragment;
 
 class RtfExporter
 {

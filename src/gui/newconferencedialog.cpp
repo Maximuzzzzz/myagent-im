@@ -22,10 +22,9 @@
 
 #include "newconferencedialog.h"
 
-#include <QDebug>
-
 #include "account.h"
 #include "contact.h"
+#include "contactlist.h"
 
 NewConferenceDialog::NewConferenceDialog(Account* account)
 	: m_account(account)

@@ -24,13 +24,12 @@
 #define CONTACTINFOLISTWINDOW_H
 
 #include <QWidget>
-#include <QList>
 
-#include "contactinfo.h"
+class QPushButton;
 
 class ContactInfoListWidget;
+class ContactInfo;
 class Account;
-class QPushButton;
 
 class ContactInfoListWindow : public QWidget
 {

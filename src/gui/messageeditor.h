@@ -26,25 +26,22 @@
 #include <QWidget>
 #include <QTextCharFormat>
 #include <QPointer>
-#include <QFileInfo>
-#include <QProgressBar>
-#include <QTcpServer>
-#include <QTcpSocket>
-#include <QPushButton>
 
 #include "onlinestatus.h"
 #include "protocol/mrim/filemessage.h"
 
 class QToolBar;
-class MessageEdit;
 class QAction;
 class QToolButton;
+class QComboBox;
+class QLabel;
+class QProgressBar;
+class QPushButton;
+
+class MessageEdit;
 class EmoticonSelector;
 class MultSelector;
 class ToolButton;
-class QComboBox;
-class QLabel;
-
 class Account;
 class Contact;
 

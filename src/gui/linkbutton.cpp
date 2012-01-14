@@ -26,7 +26,6 @@
 
 #include <QMouseEvent>
 #include <QDesktopServices>
-#include <QUrl>
 #include <QApplication>
 #include <QMenu>
 #include <QClipboard>

@@ -28,7 +28,6 @@
 
 #include "ui_addcontact.h"
 #include "contactinfo.h"
-#include "contactgroup.h"
 
 class Account;
 

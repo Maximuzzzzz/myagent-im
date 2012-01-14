@@ -24,14 +24,14 @@
 #define CONTACTCONTEXTMENU_H
 
 #include <QMenu>
-#include <QDateTime>
 
 #include "onlinestatus.h"
-#include "contactgroup.h"
 
 class QAction;
+
 class Account;
 class Contact;
+class ContactGroup;
 
 class SubmenuMoveToGroup : public QMenu
 {

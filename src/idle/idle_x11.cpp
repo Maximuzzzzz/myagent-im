@@ -24,12 +24,8 @@
 
 #include"idle.h"
 
-#include <QApplication>
-#include <QDesktopWidget>
 #include <QX11Info>
 
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
 #include <X11/extensions/scrnsaver.h>
 
 static XErrorHandler old_handler = 0;

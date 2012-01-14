@@ -25,7 +25,7 @@
 
 #include <QObject>
 
-#include "account.h"
+class Account;
 
 class AccountManager : public QObject
 {

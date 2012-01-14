@@ -22,8 +22,6 @@
 
 #include "contactinfolistwindow.h"
 
-#include <QDebug>
-
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QPushButton>

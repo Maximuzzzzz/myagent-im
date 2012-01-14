@@ -27,6 +27,7 @@
 #include <QDebug>
 #include <QTextCodec>
 #include <QMouseEvent>
+#include <QLabel>
 
 StatusBarWidget::StatusBarWidget()
 {

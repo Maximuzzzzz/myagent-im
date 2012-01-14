@@ -51,9 +51,6 @@ enum
 #include <QDebug>
 #include <QTextCodec>
 
-#include "protocol/mrim/proto.h"
-#include "resourcemanager.h"
-
 void OnlineStatuses::load(QString filename)
 {
 	qDebug() << "OnlineStatuses::load" << filename;

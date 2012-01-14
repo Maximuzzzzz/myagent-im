@@ -21,13 +21,11 @@
  ***************************************************************************/
 
 #include "contact.h"
-#include "account.h"
 
-#include <QDir>
 #include <QDebug>
-#include <QUrl>
+#include <QDir>
 
-#include "protocol/mrim/mrimclient.h"
+#include "account.h"
 #include "protocol/mrim/proto.h"
 #include "tasks/taskchangegroup.h"
 #include "tasks/tasksetvisibility.h"
@@ -35,6 +33,7 @@
 #include "tasks/taskrequestcontactinfo.h"
 #include "tasks/taskchangephones.h"
 #include "contactlist.h"
+#include "contactgroup.h"
 
 Contact::Contact(const ContactData& contactData, ContactGroup* group, Account* account)
 	: data(contactData), m_group(group), m_account(account), m_activeConference(false)

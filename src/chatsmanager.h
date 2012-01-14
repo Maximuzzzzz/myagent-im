@@ -25,12 +25,12 @@
 
 #include <QObject>
 #include <QHash>
-#include <QDateTime>
+
+class QDateTime;
 
 class Contact;
 class ChatSession;
 class Message;
-class FileMessage;
 class Account;
 
 class ChatsManager : public QObject
@@ -52,7 +52,7 @@ private Q_SLOTS:
 	void processMessage(QByteArray from, Message* msg);
 	//void processMult(QByteArray from, QString multId);
 	void processFileMessage(QByteArray from, quint32 totalSize, quint32 sessionId, QByteArray filesAnsi, QString filesUtf, QByteArray ips);
-	void processMicroblogChanged(QByteArray from, QString text, QDateTime mbDateTime);
+	void processMicroblogChanged(QByteArray from, QString text, const QDateTime& mbDateTime);
 	void removeSession(Contact* contact);
 	
 private:

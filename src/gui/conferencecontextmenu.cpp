@@ -28,6 +28,7 @@
 
 #include "account.h"
 #include "contact.h"
+#include "contactlist.h"
 #include "historyviewer.h"
 #include "gui/centeredmessagebox.h"
 

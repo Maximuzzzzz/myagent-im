@@ -29,12 +29,12 @@
 #include <QLabel>
 #include <QCheckBox>
 #include <QComboBox>
+#include <QSettings>
 
 #include "gui/smsedit.h"
 #include "contact.h"
 #include "account.h"
 #include "gui/contactinfodialog.h"
-#include "resourcemanager.h"
 
 SmsEditor::SmsEditor(Account* account, Contact* contact, QWidget* parent)
 	: QWidget(parent), m_contact(contact), m_account(account)

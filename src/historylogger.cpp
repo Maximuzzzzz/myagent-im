@@ -24,6 +24,10 @@
 
 #include <QDebug>
 
+#include <xapian/database.h>
+#include <xapian/termgenerator.h>
+#include <xapian/stem.h>
+
 #include "chatsession.h"
 #include "contact.h"
 #include "message.h"

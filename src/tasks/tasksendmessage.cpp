@@ -22,8 +22,6 @@
 
 #include "tasksendmessage.h"
 
-#include <QDebug>
-
 #include "protocol/mrim/mrimclient.h"
 #include "contact.h"
 #include "message.h"

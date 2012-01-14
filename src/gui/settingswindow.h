@@ -24,11 +24,6 @@
 #define SETTINGSWINDOW_H
 
 #include <QWidget>
-#include <QSettings>
-
-#include "gui/chatwindowsmanager.h"
-#include "account.h"
-#include "gui/contactlistwindow.h"
 
 #define SHOW_COMMON_PAGE		0x01
 #define SHOW_MESSAGES_PAGE		0x02
@@ -38,14 +33,17 @@
 #define SHOW_CONNECTION_PAGE	0x20
 #define SHOW_NOTIFICATION_PAGE	0x40
 
-class Account;
-
 class QListWidget;
 class QStackedWidget;
 
+class QPushButton;
 class QCheckBox;
 class QRadioButton;
 class QLineEdit;
+
+class Account;
+class ContactListWindow;
+class ChatWindowsManager;
 
 class SettingsWindow : public QWidget
 {

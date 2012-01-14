@@ -24,8 +24,11 @@
 #define HISTORYVIEWER_H
 
 #include <QTabWidget>
-#include <QDate>
-#include <xapian.h>
+
+namespace Xapian
+{
+class Database;
+}
 
 class Contact;
 class HistoryViewTab;

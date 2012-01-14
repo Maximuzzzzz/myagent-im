@@ -3,9 +3,9 @@
 #include <QDebug>
 
 #include <QTextCodec>
-#include <QVariant>
 
 #include "protocol/mrim/proto.h"
+#include "protocol/mrim/mrimdatastream.h"
 
 QTextCodec* ContactData::codec = QTextCodec::codecForName("cp1251");
 

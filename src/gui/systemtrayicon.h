@@ -24,16 +24,17 @@
 #define SYSTEMTRAYICON_H
 
 #include <QSystemTrayIcon>
-#include <QMenu>
-#include <QDateTime>
 
 #include "onlinestatus.h"
-#include "gui/statusmenu.h"
-#include "gui/popupwindowsstack.h"
+
+class QDateTime;
+class QAction;
 
 class ContactListWindow;
 class Account;
 class Contact;
+class StatusMenu;
+class PopupWindowsStack;
 
 class SystemTrayIcon : public QSystemTrayIcon
 {
@@ -55,13 +56,13 @@ Q_SIGNALS:
 	void messageActivated(const QByteArray& email);
 
 public Q_SLOTS:
-	void newMessage(Contact * from, const QString & to, const QDateTime dateTime);
+	void newMessage(Contact * from, const QString & to, const QDateTime& dateTime);
 	void notificationTypeChange();
 
 private Q_SLOTS:
 	void processActivation(QSystemTrayIcon::ActivationReason reason);
 	void updateTooltip();
-	void newLetter(QString sender, QString subject, QDateTime dateTime);
+	void newLetter(QString sender, QString subject, const QDateTime& dateTime);
 	void newLetters(quint32 unreadMessages);
 	void toggleMainWindowVisibility();
 	void slotContextMenuAboutToShow();

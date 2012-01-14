@@ -26,15 +26,15 @@
 #include <QPointer>
 
 #include "gui/buttonwithmenu.h"
-#include "contactinfo.h"
 #include "onlinestatus.h"
-#include "gui/chatwindowsmanager.h"
-#include "gui/newconferencedialog.h"
-#include "gui/settingswindow.h"
 
 class Account;
 class SearchContactsForm;
 class ContactListWindow;
+class SettingsWindow;
+class ChatWindowsManager;
+class ContactInfo;
+class NewConferenceDialog;
 
 class MainMenuButton : public ButtonWithMenu
 {
@@ -42,7 +42,7 @@ Q_OBJECT
 public:
 	MainMenuButton(Account* account, ContactListWindow* w);
 	void setChatWindowsManager(ChatWindowsManager* cwm);
-	SettingsWindow* getSettingsWindow() { return settingsWindow; }
+	SettingsWindow* getSettingsWindow();
 
 Q_SIGNALS:
 	void statusesCountChanged();

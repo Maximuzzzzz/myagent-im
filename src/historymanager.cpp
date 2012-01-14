@@ -25,7 +25,6 @@
 #include <QDebug>
 #include "chatsession.h"
 #include "contact.h"
-#include "account.h"
 #include "historylogger.h"
 
 HistoryManager::HistoryManager(QObject* parent)

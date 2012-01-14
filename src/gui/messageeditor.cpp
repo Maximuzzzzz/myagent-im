@@ -25,7 +25,6 @@
 #include <qdesktopwidget.h>
 #include <QToolBar>
 #include <QAction>
-#include <QIcon>
 #include <QColorDialog>
 #include <QFontDialog>
 #include <QFileDialog>
@@ -34,14 +33,15 @@
 #include <QLabel>
 #include <QComboBox>
 #include <QKeyEvent>
-#include <QTextCodec>
+#include <QSettings>
+#include <QPushButton>
+#include <QProgressBar>
+#include <QTextBlock>
 
 #include "messageedit.h"
 #include "toolbutton.h"
 #include "account.h"
 #include "contact.h"
-#include "protocol/mrim/proto.h"
-#include "protocol/mrim/mrimdatastream.h"
 #include "gui/emoticonselector.h"
 #include "gui/multselector.h"
 

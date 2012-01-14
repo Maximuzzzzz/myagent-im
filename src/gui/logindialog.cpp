@@ -27,6 +27,7 @@
 
 #include "resourcemanager.h"
 #include "gui/centerwindow.h"
+#include "gui/settingswindow.h"
 
 LoginDialog::LoginDialog(QWidget* parent)
 	: QDialog(parent), isExtendedStatus(false), isSavePassword(false)

@@ -25,7 +25,7 @@
 
 #include <QFrame>
 
-#include "gui/messageeditor.h"
+class MessageEditor;
 
 class MultSelector : public QFrame
 {

@@ -21,9 +21,6 @@
  */
 
 #include <QObject>
-#include <QCursor>
-#include <QDateTime>
-#include <QTimer>
 
 class Idle : public QObject
 {

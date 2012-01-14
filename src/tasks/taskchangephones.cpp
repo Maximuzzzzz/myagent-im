@@ -22,8 +22,6 @@
 
 #include "taskchangephones.h"
 
-#include <QDebug>
-
 #include "protocol/mrim/mrimclient.h"
 
 namespace Tasks

@@ -25,9 +25,6 @@
 
 #include <QFrame>
 
-class QToolBox;
-class EmoticonMovie;
-
 class OnlineStatusSelector : public QFrame
 {
 Q_OBJECT

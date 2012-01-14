@@ -24,14 +24,16 @@
 #define ACCOUNT_H
 
 #include <QObject>
-#include <QSettings>
 #include <QPointer>
 
 #include "onlinestatus.h"
-#include "gui/onlinestatuseseditor.h"
 #include "chatsmanager.h"
 #include "protocol/mrim/mrimclient.h"
-#include "contactlist.h"
+
+class QSettings;
+
+class OnlineStatusesEditor;
+class ContactList;
 
 class Account : public QObject
 {
@@ -42,7 +44,7 @@ public:
 	~Account();
 	
 	void reset(QByteArray email, QByteArray password);
-	ContactList* contactList() { return m_contactList; }
+	ContactList* contactList();
 	QByteArray email() const { return m_email; }
 	QByteArray password() const { return m_password; }
 
@@ -60,8 +62,8 @@ public:
 	ChatsManager* chatsManager() const { return m_chatsManager; }
 	uint unreadLetters() const { return m_unreadMessages; }
 
-	QSettings* settings() { return m_settings; }
-	OnlineStatusesEditor* onlineStatusesEditor() { return m_onlineStatusesEditor; }
+	QSettings* settings();
+	OnlineStatusesEditor* onlineStatusesEditor();
 
 	void setAutoAway(bool on);
 public Q_SLOTS:
@@ -76,7 +78,7 @@ Q_SIGNALS:
 	void nicknameChanged();
 	void totalMessagesChanged(const QString& totalMessages);
 	void unreadLettersChanged(uint n);
-	void statusChanged(QByteArray email, QString text, QDateTime dt);
+	void statusChanged(QByteArray email, QString text, const QDateTime& dt);
 	void extendedStatusesChanged();
 	
 private Q_SLOTS:

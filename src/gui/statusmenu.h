@@ -26,7 +26,8 @@
 #include <QMenu>
 
 #include "onlinestatus.h"
-#include "account.h"
+
+class Account;
 
 class StatusMenu : public QMenu
 {

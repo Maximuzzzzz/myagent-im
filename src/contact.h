@@ -29,10 +29,10 @@
 
 #include "onlinestatus.h"
 #include "contactdata.h"
-#include "contactgroup.h"
 
-class Account;
 class QDataStream;
+class Account;
+class ContactGroup;
 
 class Contact : public QObject
 {

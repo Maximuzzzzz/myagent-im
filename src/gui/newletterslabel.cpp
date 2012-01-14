@@ -22,8 +22,6 @@
 
 #include "newletterslabel.h"
 
-#include <QDebug>
-
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QFont>

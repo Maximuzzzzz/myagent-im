@@ -24,9 +24,8 @@
 #define CONTACTLISTITEMDELEGATE_H
 
 #include <QStyledItemDelegate>
-#include <QPainter>
 
-#include "gui/models/contactlistsortfilterproxymodel.h"
+class ContactListSortFilterProxyModel;
 
 class ContactListItemDelegate : public QStyledItemDelegate
 {

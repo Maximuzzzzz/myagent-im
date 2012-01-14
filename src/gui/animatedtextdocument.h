@@ -23,15 +23,12 @@
 #ifndef ANIMATEDTEXTDOCUMENT_H
 #define ANIMATEDTEXTDOCUMENT_H
 
-#include <QMap>
 #include <QPointer>
 #include <QTextEdit>
 #include <QTextDocument>
 
-#include "igetanimation.h"
-
 class Animation;
-class EmoticonFormatHandler;
+class IGetAnimation;
 
 class AnimatedTextDocument : public QTextDocument
 {
@@ -48,7 +45,6 @@ public:
 private:
 	Animation* getAnimation(QString name);
 	Animation* getAnimation(int posInDoc, const QString& name);
-	
 	
 	QPointer<QTextEdit> editor;
 	IGetAnimation* animGetter;

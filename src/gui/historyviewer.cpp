@@ -24,6 +24,8 @@
 
 #include <QDebug>
 
+#include <xapian/database.h>
+
 #include "historyviewtab.h"
 #include "historysearchtab.h"
 #include "contact.h"

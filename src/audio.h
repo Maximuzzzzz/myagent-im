@@ -2,9 +2,10 @@
 #define AUDIO_H
 
 #include "soundplayer.h"
-#include "account.h"
 
 #include <QSet>
+
+class Account;
 
 class Audio : public QObject
 {

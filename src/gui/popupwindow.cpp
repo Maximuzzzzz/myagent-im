@@ -25,6 +25,7 @@
 #include <QBoxLayout>
 #include <QDebug>
 #include <QMouseEvent>
+#include <QDateTime>
 
 NotifyTextBrowser::NotifyTextBrowser(QWidget* parent)
  : QTextBrowser(parent)
@@ -124,7 +125,7 @@ void PopupWindow::setUnreadLettersText(const quint32 letters)
 	textBrowser->setHtml(html);
 }
 
-void PopupWindow::setLetterReceived(const QString & from, const QString & subject, const QDateTime dateTime)
+void PopupWindow::setLetterReceived(const QString & from, const QString & subject, const QDateTime &dateTime)
 {
 	qDebug() << Q_FUNC_INFO;
 	m_type = NewLetter;

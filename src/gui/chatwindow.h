@@ -23,31 +23,32 @@
 #ifndef CHATWINDOW_H
 #define CHATWINDOW_H
 
-#include <QTextCharFormat>
+#include <QWidget>
 #include <QPointer>
-#include <QFileInfo>
+#include <QTextDocument>
+#include <QDateTime>
 
-#include "animatedtextedit.h"
-#include "animatedtextbrowser.h"
-#include "animatedtextdocument.h"
 #include "protocol/mrim/filemessage.h"
 #include "onlinestatus.h"
-#include "emoticonselector.h"
-#include "contactlistbroadcast.h"
-#include "contactlistconferencewithhandle.h"
 
 class QSplitter;
 class QTimeLine;
 class QTabWidget;
 class QStatusBar;
+class QUrl;
+class QPushButton;
 
 class ChatSession;
 class Message;
 class MessageEditor;
 class SmsEditor;
-
+class MultSelector;
+class MultInfo;
+class AnimatedTextBrowser;
+class ContactListBroadcast;
+class ContactListConferenceWithHandle;
+class EmoticonSelector;
 class Account;
-
 class IFlashPlayer;
 
 class ChatWindow : public QWidget
@@ -124,7 +125,7 @@ private Q_SLOTS:
 	void fileReceiving(quint32 totalSize, quint32 sessionId, QByteArray filesAnsi, QString filesUtf, QByteArray ips);
 	void transferringCancelled();
 
-	void slotAnchorClicked(QUrl url);
+	void slotAnchorClicked(const QUrl& url);
 	void cleanupCommandUrls(/*QString str = ""*/);
 
 	void transferStarted(quint32 sessId);

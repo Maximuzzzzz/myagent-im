@@ -30,6 +30,7 @@
 #include "protocol/mrim/proto.h"
 #include "account.h"
 #include "contact.h"
+#include "contactgroup.h"
 #include "tasks/taskremovecontact.h"
 #include "tasks/taskaddcontact.h"
 #include "tasks/taskaddsmscontact.h"
@@ -38,6 +39,7 @@
 #include "tasks/taskrenamegroup.h"
 #include "tasks/taskignorecontact.h"
 #include "tasks/tasknewconference.h"
+#include "gui/models/contactlistmodel.h"
 
 ContactList::ContactList(Account* account)
 	: m_account(account), m_updatingFromServer(false)

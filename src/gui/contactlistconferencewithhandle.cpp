@@ -22,9 +22,12 @@
 
 #include "contactlistconferencewithhandle.h"
 
+#include <QDebug>
 #include <QBoxLayout>
 #include <QToolButton>
-#include <QDebug>
+#include <QLabel>
+
+#include "contactlistconference.h"
 
 ContactListConferenceWithHandle::ContactListConferenceWithHandle(Contact* conference, Account* acc, QWidget* parent)
  : QWidget(parent)

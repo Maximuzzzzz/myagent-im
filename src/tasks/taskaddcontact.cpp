@@ -24,7 +24,6 @@
 
 #include <QDebug>
 
-#include "protocol/mrim/proto.h"
 #include "protocol/mrim/mrimclient.h"
 
 Tasks::AddContact::AddContact(quint32 group, const QByteArray& email, const QString& nickname, const QString& authorizationMessage, MRIMClient* client, QObject* parent)

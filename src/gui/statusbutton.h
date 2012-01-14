@@ -23,14 +23,10 @@
 #ifndef STATUSBUTTON_H
 #define STATUSBUTTON_H
 
-//#include <QPushButton>
-#include <QMenu>
-
 #include "buttonwithmenu.h"
 #include "onlinestatus.h"
-#include "statusmenu.h"
 
-class QAction;
+class StatusMenu;
 
 class StatusButton : public ButtonWithMenu
 {

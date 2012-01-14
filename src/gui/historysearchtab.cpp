@@ -31,6 +31,10 @@
 #include <QAction>
 #include <QMenu>
 
+#include <xapian/stem.h>
+#include <xapian/enquire.h>
+#include <xapian/document.h>
+
 #include "animatedtextbrowser.h"
 #include "message.h"
 #include "historylogger.h"

@@ -25,6 +25,8 @@
 #include <QDebug>
 #include <QTextCodec>
 
+#include "datetime.h"
+
 MrimMIME::MrimMIME()
 	: m_hasPlainText(false), m_hasRtfText(false), m_isMultipart(false)
 {

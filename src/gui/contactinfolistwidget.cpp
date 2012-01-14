@@ -28,9 +28,6 @@
 #include <QStandardItemModel>
 #include <QSortFilterProxyModel>
 #include <QItemDelegate>
-#include <QPainter>
-
-#include <QPushButton>
 
 #include "account.h"
 #include "gui/smallavatar.h"

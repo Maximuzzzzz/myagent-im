@@ -24,7 +24,8 @@
 #define STATUSBARWIDGET_H
 
 #include <QWidget>
-#include <QLabel>
+
+class QLabel;
 
 class StatusBarWidget : public QWidget
 {

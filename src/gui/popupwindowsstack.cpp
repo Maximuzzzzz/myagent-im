@@ -22,8 +22,13 @@
 
 #include "popupwindowsstack.h"
 
+#include <QDebug>
+#include <QApplication>
+#include <QDesktopWidget>
+
 #include "gui/systemtrayicon.h"
 #include "resourcemanager.h"
+#include "contact.h"
 
 PopupWindowsStack::PopupWindowsStack(SystemTrayIcon* sysTray)
 	: QObject(sysTray), m_sysTray(sysTray), direction(Up)
@@ -35,7 +40,7 @@ PopupWindowsStack::~PopupWindowsStack()
 	deleteAllWindows();
 }
 
-void PopupWindowsStack::showNewMessage(Contact * from, const QString & to, const QDateTime dateTime)
+void PopupWindowsStack::showNewMessage(Contact * from, const QString & to, const QDateTime &dateTime)
 {
 	qDebug() << Q_FUNC_INFO;
 	PopupWindow* p = newWindow();
@@ -44,7 +49,7 @@ void PopupWindowsStack::showNewMessage(Contact * from, const QString & to, const
 	p->show();
 }
 
-void PopupWindowsStack::showNewLetter(const QString & from, const QString & subject, const QDateTime dateTime)
+void PopupWindowsStack::showNewLetter(const QString & from, const QString & subject, const QDateTime &dateTime)
 {
 	qDebug() << Q_FUNC_INFO;
 	PopupWindow* p = newWindow();

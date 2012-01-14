@@ -24,7 +24,6 @@
 #define EMOTICONWIDGET_H
 
 #include <QWidget>
-#include <QBrush>
 
 class EmoticonMovie;
 

@@ -22,10 +22,6 @@
 
 #include "onlinestatusselector.h"
 
-#include <QDebug>
-
-#include <cmath>
-#include <QLabel>
 #include <QGridLayout>
 #include <QPushButton>
 #include <QSignalMapper>

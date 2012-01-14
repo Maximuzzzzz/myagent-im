@@ -22,6 +22,9 @@
 
 #include "plaintextexporter.h"
 
+#include <QTextBlock>
+#include <QTextDocument>
+
 #include "emoticonformat.h"
 #include "resourcemanager.h"
 

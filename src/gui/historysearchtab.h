@@ -25,7 +25,14 @@
 
 #include <QWidget>
 #include <QUrl>
-#include <xapian.h>
+
+#include <xapian/queryparser.h>
+
+namespace Xapian
+{
+class Database;
+class Document;
+}
 
 class QMenu;
 class QLineEdit;

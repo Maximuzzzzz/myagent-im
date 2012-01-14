@@ -24,10 +24,8 @@
 #define CONFERENCECONTEXTMENU_H
 
 #include <QMenu>
-//#include <QDateTime>
 
 #include "onlinestatus.h"
-//#include "contactgroup.h"
 
 class QAction;
 class Account;

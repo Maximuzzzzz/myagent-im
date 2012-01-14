@@ -1,7 +1,6 @@
 #include "onlinestatus.h"
 
 #include <QDebug>
-#include <QTextCodec>
 
 #include "protocol/mrim/proto.h"
 #include "resourcemanager.h"

@@ -27,9 +27,6 @@
 
 #include "aspellchecker.h"
 
-#include <QDir>
-#include <QCoreApplication>
-
 #include "aspell.h"
 
 ASpellChecker::ASpellChecker()

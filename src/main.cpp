@@ -22,7 +22,6 @@
 
 #include <QApplication>
 #include <QDebug>
-#include <QDir>
 #include <QTranslator>
 #include <QLocale>
 
@@ -32,6 +31,7 @@
 
 #include "audio.h"
 #include "resourcemanager.h"
+#include "account.h"
 
 #ifdef Q_WS_WIN
 #include <QtPlugin>

@@ -24,10 +24,10 @@
 
 #include <QDebug>
 
-#include <cmath>
 #include <QLabel>
+#include <QGridLayout>
+#include <QTabWidget>
 
-#include "gui/emoticonmovie.h"
 #include "gui/emoticonwidget.h"
 #include "resourcemanager.h"
 #include "favouriteemoticonsdialog.h"

@@ -25,17 +25,18 @@
 #include <QDebug>
 
 #include <QApplication>
+#include <QMessageBox>
 
 #include "protocol/mrim/proto.h"
 #include "contactinfodialog.h"
 #include "editphonesdialog.h"
 #include "account.h"
 #include "contact.h"
+#include "contactgroup.h"
 #include "contactlist.h"
 #include "historyviewer.h"
 #include "ui_askauthorization.h"
 #include "inputlinedialog.h"
-#include "centeredmessagebox.h"
 #include "removecontactdialog.h"
 #include "resourcemanager.h"
 

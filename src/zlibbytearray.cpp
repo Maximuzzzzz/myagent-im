@@ -63,9 +63,7 @@
 
 #include "zlibbytearray.h"
 
-#include <QString>
-
-#include "zlib.h"
+#include <zlib.h>
 #include <limits.h>
 
 /** Constructor */

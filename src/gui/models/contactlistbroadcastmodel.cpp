@@ -23,14 +23,10 @@
 #include "contactlistbroadcastmodel.h"
 
 #include <QDebug>
-#include <QIcon>
-#include <QPixmap>
-#include <QDir>
 
 #include "contact.h"
 #include "contactlist.h"
 #include "gui/contactlistitem.h"
-#include "protocol/mrim/proto.h"
 
 ContactListBroadcastModel::ContactListBroadcastModel(QByteArray contactEmail, ContactList* contactList, QObject* parent)
  : QStandardItemModel(parent), m_contactEmail(contactEmail)

@@ -25,7 +25,11 @@
 
 #include <QObject>
 
-#include <xapian.h>
+namespace Xapian
+{
+class Document;
+class WritableDatabase;
+}
 
 class ChatSession;
 class Message;

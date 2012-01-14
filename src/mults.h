@@ -23,10 +23,9 @@
 #ifndef MULTS_H
 #define MULTS_H
 
-#include <QCoreApplication>
-#include <QIcon>
-#include <QVariant>
-#include <QMetaType>
+#include <QString>
+#include <QStringList>
+#include <QMap>
 
 class MultInfo
 {

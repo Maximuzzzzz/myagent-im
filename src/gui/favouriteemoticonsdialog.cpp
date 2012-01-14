@@ -30,7 +30,6 @@
 #include <QToolBox>
 #include <QLabel>
 #include <QDialogButtonBox>
-#include <QStyle>
 #include <QDragEnterEvent>
 #include <QPainter>
 

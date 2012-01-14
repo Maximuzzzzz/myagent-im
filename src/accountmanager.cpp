@@ -22,6 +22,8 @@
 
 #include "accountmanager.h"
 
+#include "account.h"
+
 AccountManager::AccountManager()
 {
 }

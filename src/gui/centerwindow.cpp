@@ -22,7 +22,6 @@
 
 #include "centerwindow.h"
 
-#include <QDebug>
 #include <QWidget>
 #include <QApplication>
 #include <QDesktopWidget>

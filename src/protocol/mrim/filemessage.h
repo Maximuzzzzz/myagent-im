@@ -26,16 +26,11 @@
 #ifndef FILEMESSAGE_H
 #define FILEMESSAGE_H
 
-#include <QDateTime>
 #include <QFileInfo>
-#include <QTcpSocket>
-#include <QTcpServer>
-#include <QPushButton>
-#include <QLineEdit>
-#include <QDialog>
-#include <QLabel>
+#include <QAbstractSocket>
 
-#include "protocol/mrim/mrimclient.h"
+class QTcpServer;
+class QTcpSocket;
 
 class FileMessage : public QObject
 {
@@ -188,27 +183,6 @@ private:
 
 	quint32 fm_proxySessId;
 	quint32 fm_unk[3]; /*TODO: this is the SessionId. Have to make array of 4 elements*/
-};
-
-class FileExistsDialog : public QDialog
-{
-Q_OBJECT
-public:
-	explicit FileExistsDialog(QString fileName, QWidget* parent = 0, Qt::WindowFlags f = 0);
-	QString fileName() const { return m_newFileName; }
-
-private Q_SLOTS:
-	void rewriteFile();
-
-private:
-	QLabel* label;
-	QLineEdit* lineEdit;
-	QPushButton* rewriteButton;
-	QPushButton* renameButton;
-	QPushButton* cancelButton;
-
-	QString m_newFileName;
-	QString m_oldFileName;
 };
 
 #endif

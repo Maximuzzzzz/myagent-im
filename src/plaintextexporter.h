@@ -23,8 +23,11 @@
 #ifndef PLAINTEXTEXPORTER_H
 #define PLAINTEXTEXPORTER_H
 
-#include <QTextDocument>
-#include <QTextFragment>
+#include <QString>
+
+class QTextDocument;
+class QTextBlock;
+class QTextFragment;
 
 class PlainTextExporter
 {

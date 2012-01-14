@@ -24,6 +24,10 @@
 
 #include <QDebug>
 
+#include "account.h"
+#include "contact.h"
+#include "models/conferencelistmodel.h"
+
 ContactListConference::ContactListConference(Contact* conference, Account* acc, QWidget* parent)
  : m_account(acc), m_conf(conference)
 {

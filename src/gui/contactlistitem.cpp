@@ -22,11 +22,10 @@
 
 #include "contactlistitem.h"
 
-#include <QTextDocument>
 #include <QDebug>
 
 #include "contact.h"
-//#include "protocol/mrim/proto.h"
+#include "contactgroup.h"
 
 ContactListItem::ContactListItem(Contact* contact)
 {

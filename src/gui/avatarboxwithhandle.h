@@ -2,7 +2,6 @@
 #define AVATARBOXWITHHANDLE_H
 
 #include <QWidget>
-#include <QIcon>
 
 class AvatarBox;
 class QToolButton;

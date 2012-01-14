@@ -24,18 +24,21 @@
 
 #include <QDebug>
 
-#include <QUrl>
 #include <QTextCodec>
 #include <QNetworkProxy>
+#include <QSettings>
+#include <QSslSocket>
+#include <QTimer>
 
 #include "account.h"
 #include "message.h"
-#include "protocol/mrim/filemessage.h"
 #include "zlibbytearray.h"
 #include "protocol/mrim/mrimclient.h"
-#include "datetime.h"
 #include "protocol/mrim/mrimmime.h"
 #include "resourcemanager.h"
+#include "mrimdatastream.h"
+#include "contactdata.h"
+#include "contactlist.h"
 
 MRIMClientPrivate::MRIMClientPrivate(Account* a, MRIMClient* parent)
 	: QObject(parent), account(a)

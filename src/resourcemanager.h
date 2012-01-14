@@ -24,15 +24,15 @@
 #define RESOURCEMANAGER_H
 
 #include <QObject>
-#include <QIcon>
-#include <QSettings>
-#include <QDir>
 
 #include "emoticons.h"
 #include "locations.h"
 #include "onlinestatus.h"
+#include "onlinestatuses.h"
 #include "mults.h"
-#include "audio.h"
+
+class Audio;
+class Account;
 
 class ResourceManager : public QObject
 {

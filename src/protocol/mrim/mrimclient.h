@@ -26,18 +26,14 @@
 #include <QObject>
 #include <QStringList>
 #include <QMap>
-#include <QDateTime>
 
 #include "onlinestatus.h"
-#include "mults.h"
 
 class Account;
 class Contact;
 class ContactGroup;
-class ContactList;
 class Message;
 class FileMessage;
-class QTextCodec;
 
 class MRIMClientPrivate;
 
@@ -76,12 +72,12 @@ Q_SIGNALS:
 	void newNumberOfUnreadLetters(quint32 nLetters);
 	void contactAsksAuthorization(const QByteArray& email, const QString& nickname, const QString& message);
 	void receivedMPOPSession(quint32 seq, quint32 status, QByteArray session);
-	void newLetter(QString sender, QString subject, QDateTime dateTime);
+	void newLetter(QString sender, QString subject, const QDateTime& dateTime);
 	void smsAck(quint32 seq, quint32 status);
 	void fileTransferAck(quint32 status, QByteArray email, quint32 sessionId, QByteArray mirrorIps);
 	void proxy(QByteArray email, quint32 idRequest, quint32 dataType, QByteArray filesAnsi, QByteArray proxyIps, quint32 sessionId, quint32 unk1, quint32 unk2, quint32 unk3);
 	void proxyAck(quint32 status, QByteArray email, quint32 id_request, quint32 dataType, QByteArray filesAnsi, QByteArray ips, quint32 sessionId, quint32 unk1, quint32 unk2, quint32 unk3);
-	void microblogChanged(QByteArray, QString, QDateTime);
+	void microblogChanged(QByteArray, QString, const QDateTime&);
 	void conferenceAsked(const QByteArray& confChat, const QString& confName);
 	void connectError(QString errorMessage);
 	void conferenceClAddContact(const QByteArray& contact);

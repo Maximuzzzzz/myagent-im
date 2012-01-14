@@ -25,6 +25,7 @@
 #include <QLabel>
 #include <QBoxLayout>
 #include <QPushButton>
+#include <QCheckBox>
 
 RemoveContactDialog::RemoveContactDialog(const QString &title, const QString &text,	QWidget *parent, Qt::WindowFlags flags)
  : QDialog(parent, flags)
@@ -50,4 +51,9 @@ RemoveContactDialog::RemoveContactDialog(const QString &title, const QString &te
 
 RemoveContactDialog::~RemoveContactDialog()
 {
+}
+
+bool RemoveContactDialog::removeHistory()
+{
+	return removeHistoryCheckBox->isChecked();
 }

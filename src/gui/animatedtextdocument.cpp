@@ -25,11 +25,11 @@
 #include <QDebug>
 
 #include <QScrollBar>
-#include <QPainter>
 #include <QAbstractTextDocumentLayout>
 
 #include "gui/animation.h"
 #include "emoticonformat.h"
+#include "igetanimation.h"
 
 class EmoticonFormatHandler : public QObject, public QTextObjectInterface
 {

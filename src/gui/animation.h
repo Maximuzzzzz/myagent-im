@@ -24,8 +24,6 @@
 #define ANIMATION_H
 
 #include <QMap>
-#include <QRect>
-#include <QBrush>
 
 #include "gui/emoticonmovie.h"
 

@@ -1,9 +1,9 @@
 #ifndef REMOVECONTACTDIALOG_H
 #define REMOVECONTACTDIALOG_H
 
-#include <QObject>
 #include <QDialog>
-#include <QCheckBox>
+
+class QCheckBox;
 
 class RemoveContactDialog : public QDialog
 {
@@ -12,7 +12,7 @@ public:
 	explicit RemoveContactDialog(const QString &title, const QString &text,	QWidget *parent = 0, Qt::WindowFlags flags = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
 	~RemoveContactDialog();
 
-	bool removeHistory() { return removeHistoryCheckBox->isChecked(); }
+	bool removeHistory();
 
 private:
 	QCheckBox* removeHistoryCheckBox;

@@ -242,7 +242,8 @@ SOURCES += main.cpp \
     gui/contactlistitemdelegate.cpp \
     mults.cpp \
     gui/multselector.cpp \
-    gui/gnashplayer.cpp
+    gui/gnashplayer.cpp \
+    protocol/mrim/fileexistsdialog.cpp
 
 HEADERS += accountmanager.h \
     account.h \
@@ -380,7 +381,8 @@ HEADERS += accountmanager.h \
     mults.h \
     gui/multselector.h \
     gui/iflashplayer.h \
-    gui/gnashplayer.h
+    gui/gnashplayer.h \
+    protocol/mrim/fileexistsdialog.h
 
 FORMS += gui/logindialog.ui \
     gui/authorize.ui \

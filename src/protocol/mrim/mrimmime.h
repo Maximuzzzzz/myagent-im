@@ -23,10 +23,8 @@
 #ifndef MRIMMIME_H
 #define MRIMMIME_H
 
-#include <QObject>
 #include <QHash>
-
-#include "datetime.h"
+#include <QDateTime>
 
 class MrimMIME
 {

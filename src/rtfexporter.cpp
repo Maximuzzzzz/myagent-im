@@ -25,6 +25,8 @@
 #include <QDebug>
 
 #include <QTextCodec>
+#include <QTextBlock>
+#include <QTextDocument>
 #include <QFontInfo>
 
 #include "emoticonformat.h"

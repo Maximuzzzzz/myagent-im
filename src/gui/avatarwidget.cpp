@@ -23,7 +23,6 @@
 #include "avatarwidget.h"
 
 #include <QPainter>
-#include <QDebug>
 
 AvatarWidget::AvatarWidget(QWidget* parent)
 	: QWidget(parent)

@@ -22,20 +22,17 @@
 
 #include "contactlisttreeview.h"
 
+#include <QDebug>
 #include <QHeaderView>
 #include <QDragMoveEvent>
-#include <QPainter>
-#include <QDebug>
-#include <QLabel>
 
 #include "contactmimedata.h"
 #include "contact.h"
-#include "contactlistitem.h"
+#include "contactgroup.h"
 #include "contactcontextmenu.h"
 #include "conferencecontextmenu.h"
 #include "contactgroupcontextmenu.h"
 #include "gui/models/contactlistsortfilterproxymodel.h"
-#include "account.h"
 
 ContactListTreeView::ContactListTreeView(Account* account, QWidget *parent)
 	: QTreeView(parent), account_(account), contactListModel(0)

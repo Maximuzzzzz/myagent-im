@@ -22,9 +22,6 @@
 
 #include "toolbutton.h"
 
-#include <QDebug>
-#include <QAction>
-
 ToolButton::ToolButton(QAction* action, QWidget* parent)
 	: QToolButton(parent)
 {

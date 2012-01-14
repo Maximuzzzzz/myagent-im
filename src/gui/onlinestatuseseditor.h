@@ -24,16 +24,16 @@
 #define ONLINESTATUSESEDITOR_H
 
 #include <QWidget>
-#include <QMap>
-#include <QPushButton>
 #include <QLineEdit>
 #include <QBoxLayout>
 #include <QCheckBox>
 
 #include "onlinestatus.h"
-#include "gui/onlinestatusselector.h"
+
+class QPushButton;
 
 class Account;
+class OnlineStatusSelector;
 class OnlineStatusesEditor;
 
 class StatusRow : public QHBoxLayout

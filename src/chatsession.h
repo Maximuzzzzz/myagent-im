@@ -25,14 +25,15 @@
 
 #include <QObject>
 #include <QList>
+#include <QHash>
+#include <QTime>
 
-#include "message.h"
-#include "protocol/mrim/filemessage.h"
-#include "tasks/tasksendmessage.h"
-#include "tasks/taskbroadcastmessage.h"
+class QDateTime;
 
 class Account;
 class Contact;
+class MultInfo;
+class Message;
 
 class ChatSession : public QObject
 {
@@ -59,13 +60,13 @@ Q_SIGNALS:
 	void smsDelivered(QByteArray phoneNumber, QString text);
 	void smsFailed();
 	void signalFileReceived(quint32 totalSize, quint32 sessionId, QByteArray filesAnsi, QString filesUtf, QByteArray ips);
-	void microblogChanged(QString text, QDateTime mbDateTime);
+	void microblogChanged(QString text, const QDateTime& mbDateTime);
 
 public Q_SLOTS:
 	void appendMessage(Message* msg, bool enqueue = true);
 	/*void appendMult(QString multId);*/
 	void appendBroadcastMessage(Message* msg, ReceiversList rec, bool addInHash = true);
-	void slotMicroblogChanged(QString text, QDateTime mbDateTime);
+	void slotMicroblogChanged(QString text, const QDateTime& mbDateTime);
 	bool sendMessage(QString plainText, QByteArray rtf);
 	bool sendMessage(Message* msg);
 	bool broadcastMessage(ReceiversList receivers, QString plainText, QByteArray rtf);

@@ -25,9 +25,7 @@
 #include <QDebug>
 
 #include <QTextCodec>
-#include <QFile>
-#include <QHostAddress>
-#include <QNetworkInterface>
+#include <QSslSocket>
 
 #include "mrimclientprivate.h"
 
@@ -35,6 +33,7 @@
 #include "protocol/mrim/proto.h"
 #include "account.h"
 #include "contact.h"
+#include "contactgroup.h"
 #include "contactlist.h"
 #include "message.h"
 #include "protocol/mrim/filemessage.h"

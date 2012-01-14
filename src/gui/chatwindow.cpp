@@ -25,21 +25,18 @@
 #include <QDebug>
 
 #include <QSplitter>
-#include <QTextEdit>
-#include <QTextDocumentFragment>
 #include <QStatusBar>
 #include <QPushButton>
 #include <QApplication>
 #include <QVBoxLayout>
-#include <QTime>
 #include <QTimer>
 #include <QScrollBar>
 #include <QTimeLine>
 #include <QTabWidget>
-#include <QStackedLayout>
-#include <QFont>
 #include <QToolBar>
 #include <QAction>
+#include <QSettings>
+#include <QTextBlock>
 
 #include "protocol/mrim/proto.h"
 #include "account.h"
@@ -50,14 +47,15 @@
 #include "gui/messageeditor.h"
 #include "gui/smseditor.h"
 #include "rtfexporter.h"
-#include "rtfparser.h"
 #include "plaintextexporter.h"
-#include "plaintextparser.h"
 #include "gui/avatarboxwithhandle.h"
 #include "audio.h"
+#include "animatedtextbrowser.h"
+#include "contactlistbroadcast.h"
+#include "contactlistconferencewithhandle.h"
 #include "iflashplayer.h"
-
 #include "gnashplayer.h"
+#include "contactlist.h"
 
 ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoticonSelector, MultSelector* multSelector)
 	: QWidget(),
@@ -749,7 +747,7 @@ void ChatWindow::fileReceiving(quint32 totalSize, quint32 sessionId, QByteArray 
 	Q_EMIT newMessage(this);
 }
 
-void ChatWindow::slotAnchorClicked(QUrl url)
+void ChatWindow::slotAnchorClicked(const QUrl &url)
 {
 	qDebug() << "ChatWindow::slotAnchorClicked" << url;
 

@@ -22,11 +22,12 @@
 
 #include "contactlistitemdelegate.h"
 
-#include <QDebug>
+#include <QPainter>
 
 #include "contactgroup.h"
 #include "contact.h"
 #include "protocol/mrim/proto.h"
+#include "gui/models/contactlistsortfilterproxymodel.h"
 
 ContactListItemDelegate::ContactListItemDelegate(ContactListSortFilterProxyModel* m, QObject *parent)
 	: QStyledItemDelegate(parent), m_model(m)

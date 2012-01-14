@@ -23,10 +23,9 @@
 #include "resourcemanager.h"
 
 #include <QDebug>
-#include <QCoreApplication>
 #include <QLocale>
-
-#include "protocol/mrim/proto.h"
+#include <QSettings>
+#include <QDir>
 
 const int ResourceManager::maxDefaultStatuses = 10;
 const int ResourceManager::minDefaultStatuses = 5;

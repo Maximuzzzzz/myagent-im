@@ -2,13 +2,8 @@
 #define POPUPWINDOW_H
 
 #include <QWidget>
-#include <QApplication>
-#include <QDesktopWidget>
-#include <QFile>
 #include <QTimer>
 #include <QTextBrowser>
-#include <QDateTime>
-#include <QEvent>
 
 class NotifyTextBrowser : public QTextBrowser
 {
@@ -45,7 +40,7 @@ public:
 	~PopupWindow();
 
 	void setUnreadLettersText(const quint32 letters);
-	void setLetterReceived(const QString & from, const QString & subject, const QDateTime dateTime);
+	void setLetterReceived(const QString & from, const QString & subject, const QDateTime& dateTime);
 	void setMessageReceived(const QByteArray& fromEmail, const QString& fromNick, const QString& to, const QDateTime& dateTime);
 
 	bool isClosed() { return m_closed; }

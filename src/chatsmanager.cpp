@@ -30,7 +30,6 @@
 #include "contactlist.h"
 #include "chatsession.h"
 #include "message.h"
-#include "protocol/mrim/filemessage.h"
 #include "protocol/mrim/proto.h"
 #include "audio.h"
 #include "resourcemanager.h"
@@ -129,7 +128,7 @@ void ChatsManager::removeSession(Contact* contact)
 	delete session;
 }
 
-void ChatsManager::processMicroblogChanged(QByteArray from, QString text, QDateTime mbDateTime)
+void ChatsManager::processMicroblogChanged(QByteArray from, QString text, const QDateTime &mbDateTime)
 {
 	Contact* contact = m_account->contactList()->getContact(from);
 

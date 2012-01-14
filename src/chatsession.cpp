@@ -24,14 +24,17 @@
 
 #include <QDebug>
 #include <QTextCursor>
+#include <QTextDocument>
 
 #include "account.h"
 #include "contact.h"
+#include "contactlist.h"
 #include "message.h"
-#include "protocol/mrim/filemessage.h"
 #include "protocol/mrim/mrimclient.h"
 #include "protocol/mrim/proto.h"
 #include "tasks/tasksendsms.h"
+#include "tasks/tasksendmessage.h"
+#include "tasks/taskbroadcastmessage.h"
 #include "rtfexporter.h"
 #include "audio.h"
 #include "resourcemanager.h"
@@ -274,7 +277,7 @@ void ChatSession::clearHash()
 	messages.clear();
 }
 
-void ChatSession::slotMicroblogChanged(QString text, QDateTime mbDateTime)
+void ChatSession::slotMicroblogChanged(QString text, const QDateTime &mbDateTime)
 {
 	Q_EMIT microblogChanged(text, mbDateTime);
 }

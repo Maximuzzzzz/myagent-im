@@ -25,10 +25,7 @@
 
 #include <QCoreApplication>
 #include <QIcon>
-#include <QVariant>
 #include <QMetaType>
-
-#include "onlinestatuses.h"
 
 class OnlineStatus
 {

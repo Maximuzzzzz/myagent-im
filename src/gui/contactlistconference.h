@@ -3,10 +3,11 @@
 
 #include <QListView>
 
-#include "contact.h"
-#include "account.h"
 #include "onlinestatus.h"
-#include "gui/models/conferencelistmodel.h"
+
+class Contact;
+class Account;
+class ConferenceListModel;
 
 class ContactListConference : public QListView
 {

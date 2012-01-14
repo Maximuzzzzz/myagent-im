@@ -3,7 +3,7 @@
 #include <QDebug>
 #include <QSettings>
 
-#include "resourcemanager.h"
+#include "account.h"
 
 Audio::Audio(QObject *parent)
 	: QObject(parent), audio(0), m_account(0)

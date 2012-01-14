@@ -2,12 +2,13 @@
 #define CONTACTLISTCONFERENCEWITHHANDLE_H
 
 #include <QWidget>
-#include <QLabel>
-
-#include "contact.h"
-#include "gui/contactlistconference.h"
 
 class QToolButton;
+class QLabel;
+
+class Contact;
+class Account;
+class ContactListConference;
 
 class ContactListConferenceWithHandle : public QWidget
 {

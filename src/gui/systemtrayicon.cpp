@@ -25,10 +25,13 @@
 #include <QDebug>
 
 #include <QApplication>
-#include <QActionGroup>
 #include <QWidgetAction>
 #include <QLabel>
 #include <QProcess>
+#include <QSettings>
+#include <QMenu>
+#include <QDateTime>
+#include <QDesktopWidget>
 
 #include "onlinestatus.h"
 #include "resourcemanager.h"
@@ -37,6 +40,8 @@
 #include "protocol/mrim/mrimclient.h"
 #include "audio.h"
 #include "contact.h"
+#include "popupwindowsstack.h"
+#include "statusmenu.h"
 
 SystemTrayIcon::SystemTrayIcon(Account* a, ContactListWindow* w, StatusMenu* sm)
  : QSystemTrayIcon(w), mainWindow(w), account(a)
@@ -142,7 +147,7 @@ bool SystemTrayIcon::event(QEvent* e)
 	return QSystemTrayIcon::event(e);
 }
 
-void SystemTrayIcon::newLetter(QString sender, QString subject, QDateTime dateTime)
+void SystemTrayIcon::newLetter(QString sender, QString subject, const QDateTime &dateTime)
 {
 	theRM.getAudio()->play(STLetter);
 
@@ -187,7 +192,7 @@ void SystemTrayIcon::newLetters(quint32 unreadMessages)
 	}
 }
 
-void SystemTrayIcon::newMessage(Contact * from, const QString & to, const QDateTime dateTime)
+void SystemTrayIcon::newMessage(Contact * from, const QString & to, const QDateTime &dateTime)
 {
 	qDebug() << Q_FUNC_INFO;
 

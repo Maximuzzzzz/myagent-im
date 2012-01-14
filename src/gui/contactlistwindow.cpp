@@ -23,20 +23,17 @@
 #include "contactlistwindow.h"
 
 #include <QVBoxLayout>
-#include <QTimer>
 #include <QApplication>
 #include <QDesktopServices>
+#include <QSettings>
 
 #include "account.h"
 #include "contactlist.h"
 #include "gui/models/contactlistmodel.h"
-#include "gui/models/contactlistbroadcastmodel.h"
 #include "gui/models/contactlistsortfilterproxymodel.h"
 #include "gui/contactlisttreeview.h"
-#include "gui/contactlistitem.h"
 #include "protocol/mrim/mrimclient.h"
 #include "protocol/mrim/proto.h"
-#include "gui/chatwindow.h"
 #include "chatwindowsmanager.h"
 #include "chatsmanager.h"
 #include "gui/systemtrayicon.h"
@@ -45,18 +42,18 @@
 #include "gui/mainmenubutton.h"
 #include "gui/logindialog.h"
 #include "gui/authorizedialog.h"
-#include "tasks/taskaddcontact.h"
 #include "tasks/taskgetmpopsession.h"
 #include "contact.h"
 #include "gui/newletterslabel.h"
 #include "linkbutton.h"
-#include "gui/centerwindow.h"
 #include "gui/centeredmessagebox.h"
 #include "filtercontactslineedit.h"
 #include "triggeroptionbutton.h"
 #include "audio.h"
 #include "statusmenu.h"
 #include "gui/contactlistitemdelegate.h"
+#include "statusbarwidget.h"
+#include "statuseditor.h"
 
 ContactListWindow::ContactListWindow(Account* account)
 	: m_account(account)
@@ -416,7 +413,7 @@ void ContactListWindow::sendMicrotext(const QString& microText)
 	statusBar->setStatus(microText);
 }
 
-void ContactListWindow::slotMicroblogChanged(QByteArray email, QString microText, QDateTime dt)
+void ContactListWindow::slotMicroblogChanged(QByteArray email, QString microText, const QDateTime &dt)
 {
 	qDebug() << "slotMicroblogChanged(" << email << microText << ")";
 	if (m_account->email() == email)

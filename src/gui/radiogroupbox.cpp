@@ -22,9 +22,6 @@
 
 #include "radiogroupbox.h"
 
-#include <QDebug>
-
-#include <QRadioButton>
 #include <QStylePainter>
 #include <QStyleOptionGroupBox>
 #include <QMouseEvent>

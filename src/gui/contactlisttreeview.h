@@ -28,7 +28,6 @@
 
 class Account;
 class Contact;
-class Action;
 class ContactContextMenu;
 class ConferenceContextMenu;
 class ContactGroupContextMenu;

@@ -2,7 +2,6 @@
 #define SOUNDPLAYER_H
 
 #include <QObject>
-#include <QTimer>
 #include <Phonon/AudioOutput>
 #include <Phonon/MediaObject>
 

@@ -23,24 +23,21 @@
 #ifndef CONTACTLISTWINDOW_H
 #define CONTACTLISTWINDOW_H
 
-#include <QLabel>
-
 #include <QWidget>
-#include <QModelIndex>
-#include <QEvent>
 
-#include "onlinestatus.h"
 #include "idle/idle.h"
-#include "gui/statusbarwidget.h"
-#include "gui/statuseditor.h"
+#include "onlinestatus.h"
+
+class QTreeView;
 
 class Account;
 class Contact;
-class QTreeView;
 class StatusButton;
 class ChatWindowsManager;
 class SystemTrayIcon;
 class MainMenuButton;
+class StatusBarWidget;
+class StatusEditor;
 
 class ContactListWindow : public QWidget
 {
@@ -82,7 +79,7 @@ private Q_SLOTS:
 	void checkAutoAwayTime(int seconds);
 	void openStatusEditor();
 	void sendMicrotext(const QString& microText);
-	void slotMicroblogChanged(QByteArray email, QString microText, QDateTime dt);
+	void slotMicroblogChanged(QByteArray email, QString microText, const QDateTime& dt);
 	void slotSetOnlineStatus(OnlineStatus status);
 	void slotConnectionError(QString mess);
 	void slotAccountNicknameChanged();

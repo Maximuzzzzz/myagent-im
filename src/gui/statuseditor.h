@@ -26,9 +26,10 @@
 #define maxSize 500
 
 #include <QWidget>
-#include <QLabel>
-#include <QLineEdit>
-#include <QPushButton>
+
+class QLabel;
+class QLineEdit;
+class QPushButton;
 
 class StatusEditor : public QWidget
 {

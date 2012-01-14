@@ -22,8 +22,6 @@
 
 #include "emoticonwidget.h"
 
-#include <QDebug>
-
 #include <QPainter>
 #include <QPaintEvent>
 #include <QApplication>

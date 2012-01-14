@@ -22,8 +22,6 @@
 
 #include "contactmimedata.h"
 
-#include <QDebug>
-
 ContactMimeData::ContactMimeData(Contact* contact)
  : QMimeData(), m_contact(contact)
 {

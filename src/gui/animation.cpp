@@ -22,7 +22,6 @@
 
 #include "animation.h"
 
-#include <QDebug>
 #include <QTextEdit>
 
 #include "gui/emoticonwidget.h"
