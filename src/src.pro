@@ -5,7 +5,8 @@ QT += network \
     phonon
 INCLUDEPATH += /usr/include
 TRANSLATIONS = locale/myagent-im_ru.ts \
-    locale/myagent-im_uk.ts
+    locale/myagent-im_uk.ts \
+    locale/myagent-im_tr_TR.ts
 LIBS += -laspell
 win32 {
     QTPLUGIN += qjpeg \
