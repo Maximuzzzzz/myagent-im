@@ -1,0 +1,8 @@
+[main]
+host = https://www.transifex.net
+
+[myagent-im.main]
+file_filter = src/locale/myagent-im_<lang>.ts
+source_file = src/locale/myagent-im_en.ts
+source_lang = en
+type = QT

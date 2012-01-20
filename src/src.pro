@@ -4,7 +4,8 @@ CONFIG += qt no_keywords warn_on debug
 QT += network \
     phonon
 INCLUDEPATH += /usr/include
-TRANSLATIONS = locale/myagent-im_ru.ts \
+TRANSLATIONS = locale/myagent-im_en.ts \
+    locale/myagent-im_ru.ts \
     locale/myagent-im_uk.ts \
     locale/myagent-im_tr_TR.ts
 LIBS += -laspell
