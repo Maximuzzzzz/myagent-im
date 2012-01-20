@@ -304,6 +304,7 @@ void ContactList::endUpdating()
 
 	qDeleteAll(m_groups);
 	m_groups = m_receivedGroups;
+	m_receivedGroups.clear();
 
 	QList<Contact*>::iterator it = m_contacts.begin();
 	for (; it != m_contacts.end(); ++it)
