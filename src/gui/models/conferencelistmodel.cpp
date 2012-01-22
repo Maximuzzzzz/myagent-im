@@ -1,7 +1,5 @@
-
 /***************************************************************************
- *   Copyright (C) 2008 by Alexander Volkov                                *
- *   volkov0aa@gmail.com                                                   *
+ *   Copyright (C) 2011 by Dmitry Malakhov <abr_mail@mail.ru>              *
  *                                                                         *
  *   This file is part of instant messenger MyAgent-IM                     *
  *                                                                         *
