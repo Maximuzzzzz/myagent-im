@@ -24,7 +24,7 @@
 #include <QList>
 
 #include "simpleblockingtask.h"
-#include "protocol/mrim/mrimclient.h"
+#include "mrim/mrimclient.h"
 #include "contactinfo.h"
 
 namespace Tasks

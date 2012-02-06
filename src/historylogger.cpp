@@ -29,7 +29,7 @@
 #include "chatsession.h"
 #include "contact.h"
 #include "message.h"
-#include "protocol/mrim/proto.h"
+#include "mrim/proto.h"
 
 #include <iostream>
 

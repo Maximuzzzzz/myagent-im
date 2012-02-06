@@ -20,7 +20,7 @@
 
 #include "tasksendmessage.h"
 
-#include "protocol/mrim/mrimclient.h"
+#include "mrim/mrimclient.h"
 #include "contact.h"
 #include "message.h"
 

@@ -26,7 +26,7 @@
 
 #include "onlinestatus.h"
 #include "chatsmanager.h"
-#include "protocol/mrim/mrimclient.h"
+#include "mrim/mrimclient.h"
 
 class QSettings;
 

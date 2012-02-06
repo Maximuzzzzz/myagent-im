@@ -29,8 +29,8 @@
 
 #include <limits>
 
-#include "protocol/mrim/proto.h"
-#include "protocol/mrim/mrimdatastream.h"
+#include "mrim/proto.h"
+#include "mrim/mrimdatastream.h"
 #include "fileexistsdialog.h"
 #include "resourcemanager.h"
 #include "account.h"

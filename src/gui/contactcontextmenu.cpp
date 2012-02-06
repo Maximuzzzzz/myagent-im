@@ -25,7 +25,7 @@
 #include <QApplication>
 #include <QMessageBox>
 
-#include "protocol/mrim/proto.h"
+#include "mrim/proto.h"
 #include "contactinfodialog.h"
 #include "editphonesdialog.h"
 #include "account.h"

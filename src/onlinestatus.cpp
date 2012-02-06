@@ -22,7 +22,7 @@
 
 #include <QDebug>
 
-#include "protocol/mrim/proto.h"
+#include "mrim/proto.h"
 #include "resourcemanager.h"
 
 const OnlineStatus OnlineStatus::unknown = OnlineStatus("status_gray");

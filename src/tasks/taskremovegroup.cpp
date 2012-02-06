@@ -20,7 +20,7 @@
 
 #include "taskremovegroup.h"
 
-#include "protocol/mrim/mrimclient.h"
+#include "mrim/mrimclient.h"
 
 Tasks::RemoveGroup::RemoveGroup(ContactGroup * group, MRIMClient * client, QObject * parent)
 	: SimpleBlockingTask<Tasks::RemoveGroup>(client, parent), m_group(group)

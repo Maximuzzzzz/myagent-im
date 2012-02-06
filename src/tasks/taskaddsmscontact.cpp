@@ -20,8 +20,8 @@
 
 #include "taskaddsmscontact.h"
 
-#include "protocol/mrim/mrimclient.h"
-#include "protocol/mrim/proto.h"
+#include "mrim/mrimclient.h"
+#include "mrim/proto.h"
 
 Tasks::AddSmsContact::AddSmsContact(const QString & nickname, const QStringList& phones, MRIMClient * client, QObject * parent)
 	: SimpleBlockingTask<Tasks::AddSmsContact>(client, parent), m_nickname(nickname), m_phones(phones)

@@ -26,7 +26,7 @@
 #include <QTextDocument>
 #include <QDateTime>
 
-#include "protocol/mrim/filemessage.h"
+#include "mrim/filemessage.h"
 #include "onlinestatus.h"
 
 class QSplitter;

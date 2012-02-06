@@ -23,7 +23,7 @@
 #include <QTimer>
 #include <QDebug>
 
-#include "protocol/mrim/mrimclient.h"
+#include "mrim/mrimclient.h"
 
 Task::Task(MRIMClient* client, QObject *parent)
  : QObject(parent), mc(client)

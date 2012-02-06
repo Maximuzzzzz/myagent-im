@@ -20,7 +20,7 @@
 
 #include "tasksearchcontacts.h"
 
-#include "protocol/mrim/proto.h"
+#include "mrim/proto.h"
 
 Tasks::SearchContacts::SearchContacts(const QByteArray& email, MRIMClient* client, QObject* parent)
 	: SimpleBlockingTask<Tasks::SearchContacts>(client, parent), m_email(email)

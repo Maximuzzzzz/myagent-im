@@ -36,10 +36,10 @@
 #include <QSettings>
 #include <QTextBlock>
 
-#include "protocol/mrim/proto.h"
+#include "mrim/proto.h"
 #include "account.h"
 #include "contact.h"
-#include "protocol/mrim/mrimclient.h"
+#include "mrim/mrimclient.h"
 #include "message.h"
 #include "chatsession.h"
 #include "gui/messageeditor.h"

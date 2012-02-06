@@ -20,7 +20,7 @@
 
 #include "taskrequestcontactinfo.h"
 
-#include "protocol/mrim/proto.h"
+#include "mrim/proto.h"
 
 namespace Tasks
 {

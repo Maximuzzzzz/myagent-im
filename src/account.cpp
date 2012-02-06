@@ -26,7 +26,7 @@
 #include <QDateTime>
 
 #include "contactlist.h"
-#include "protocol/mrim/mrimclient.h"
+#include "mrim/mrimclient.h"
 #include "resourcemanager.h"
 #include "chatsmanager.h"
 #include "historymanager.h"

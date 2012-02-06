@@ -22,7 +22,7 @@
 
 #include <QDebug>
 
-#include "protocol/mrim/mrimclient.h"
+#include "mrim/mrimclient.h"
 #include "message.h"
 
 namespace Tasks

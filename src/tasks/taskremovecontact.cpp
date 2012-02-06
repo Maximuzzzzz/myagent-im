@@ -20,7 +20,7 @@
 
 #include "taskremovecontact.h"
 
-#include "protocol/mrim/mrimclient.h"
+#include "mrim/mrimclient.h"
 
 Tasks::RemoveContact::RemoveContact(Contact* c, MRIMClient* client, QObject *parent)
 	: SimpleBlockingTask<Tasks::RemoveContact>(client, parent), m_contact(c)

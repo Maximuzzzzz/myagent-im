@@ -26,7 +26,7 @@
 
 #include "gui/searchcontactsdialog.h"
 #include "tasks/tasksearchcontacts.h"
-#include "protocol/mrim/proto.h"
+#include "mrim/proto.h"
 #include "contactinfo.h"
 #include "gui/contactinfolistwindow.h"
 #include "account.h"

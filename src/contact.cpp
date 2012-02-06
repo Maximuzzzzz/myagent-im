@@ -24,7 +24,7 @@
 #include <QDir>
 
 #include "account.h"
-#include "protocol/mrim/proto.h"
+#include "mrim/proto.h"
 #include "tasks/taskchangegroup.h"
 #include "tasks/tasksetvisibility.h"
 #include "tasks/taskrenamecontact.h"

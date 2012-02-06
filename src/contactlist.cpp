@@ -25,7 +25,7 @@
 #include <QFile>
 #include <QDataStream>
 
-#include "protocol/mrim/proto.h"
+#include "mrim/proto.h"
 #include "account.h"
 #include "contact.h"
 #include "contactgroup.h"

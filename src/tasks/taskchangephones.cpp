@@ -20,7 +20,7 @@
 
 #include "taskchangephones.h"
 
-#include "protocol/mrim/mrimclient.h"
+#include "mrim/mrimclient.h"
 
 namespace Tasks
 {

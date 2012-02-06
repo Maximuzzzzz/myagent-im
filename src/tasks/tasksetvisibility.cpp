@@ -20,9 +20,9 @@
 
 #include "tasksetvisibility.h"
 
-#include "protocol/mrim/proto.h"
+#include "mrim/proto.h"
 #include "contact.h"
-#include "protocol/mrim/mrimclient.h"
+#include "mrim/mrimclient.h"
 
 Tasks::SetVisibility::SetVisibility(Contact* c, bool alwaysVisible, bool alwaysInvisible, MRIMClient* client, QObject* parent)
 	: SimpleBlockingTask<SetVisibility>(client, parent), m_contact(c),

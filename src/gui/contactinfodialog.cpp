@@ -39,7 +39,7 @@
 #include "zodiac.h"
 #include "contactinfo.h"
 #include "tasks/taskrequestcontactinfo.h"
-#include "protocol/mrim/proto.h"
+#include "mrim/proto.h"
 #include "gui/centerwindow.h"
 #include "gui/centeredmessagebox.h"
 

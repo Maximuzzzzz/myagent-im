@@ -133,11 +133,11 @@ SOURCES += main.cpp \
     idle/idle_mac.cpp \
     idle/idle.cpp \
     contactlist.cpp \
-    protocol/mrim/mrimmime.cpp \
-    protocol/mrim/mrimdatastream.cpp \
-    protocol/mrim/mrimclientprivate.cpp \
-    protocol/mrim/mrimclient.cpp \
-    protocol/mrim/filemessage.cpp \
+    mrim/mrimmime.cpp \
+    mrim/mrimdatastream.cpp \
+    mrim/mrimclientprivate.cpp \
+    mrim/mrimclient.cpp \
+    mrim/filemessage.cpp \
     zlibbytearray.cpp \
     datetime.cpp \
     gui/onlinestatuseseditor.cpp \
@@ -245,7 +245,7 @@ SOURCES += main.cpp \
     mults.cpp \
     gui/multselector.cpp \
     gui/gnashplayer.cpp \
-    protocol/mrim/fileexistsdialog.cpp
+    mrim/fileexistsdialog.cpp
 
 HEADERS += accountmanager.h \
     account.h \
@@ -253,7 +253,7 @@ HEADERS += accountmanager.h \
     resourcemanager.h \
     gui/settingswindow.h \
     onlinestatus.h \
-    protocol/mrim/proto.h \
+    mrim/proto.h \
     audio.h \
     soundplayer.h \
     emoticons.h \
@@ -262,11 +262,11 @@ HEADERS += accountmanager.h \
     gui/contactlistwindow.h \
     idle/idle.h \
     contactlist.h \
-    protocol/mrim/mrimmime.h \
-    protocol/mrim/mrimdatastream.h \
-    protocol/mrim/mrimclientprivate.h \
-    protocol/mrim/mrimclient.h \
-    protocol/mrim/filemessage.h \
+    mrim/mrimmime.h \
+    mrim/mrimdatastream.h \
+    mrim/mrimclientprivate.h \
+    mrim/mrimclient.h \
+    mrim/filemessage.h \
     zlibbytearray.h \
     datetime.h \
     gui/onlinestatuseseditor.h \
@@ -384,7 +384,7 @@ HEADERS += accountmanager.h \
     gui/multselector.h \
     gui/iflashplayer.h \
     gui/gnashplayer.h \
-    protocol/mrim/fileexistsdialog.h
+    mrim/fileexistsdialog.h
 
 FORMS += gui/logindialog.ui \
     gui/authorize.ui \

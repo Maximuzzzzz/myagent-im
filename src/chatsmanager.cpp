@@ -22,13 +22,13 @@
 
 #include <QDebug>
 
-#include "protocol/mrim/mrimclient.h"
+#include "mrim/mrimclient.h"
 #include "account.h"
 #include "contact.h"
 #include "contactlist.h"
 #include "chatsession.h"
 #include "message.h"
-#include "protocol/mrim/proto.h"
+#include "mrim/proto.h"
 #include "audio.h"
 #include "resourcemanager.h"
 

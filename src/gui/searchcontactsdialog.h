@@ -24,7 +24,7 @@
 #include <QDialog>
 #include <ui_searchcontacts.h>
 
-#include "protocol/mrim/mrimclient.h"
+#include "mrim/mrimclient.h"
 
 class SearchContactsForm : public QDialog, private Ui::SearchContactsForm
 {

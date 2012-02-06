@@ -20,7 +20,7 @@
 
 #include "taskaddgroup.h"
 
-#include "protocol/mrim/mrimclient.h"
+#include "mrim/mrimclient.h"
 
 Tasks::AddGroup::AddGroup(const QString& groupName, MRIMClient* client, QObject* parent)
 	: SimpleBlockingTask<Tasks::AddGroup>(client, parent), m_groupName(groupName)

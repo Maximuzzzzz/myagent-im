@@ -20,7 +20,7 @@
 
 #include "taskrenamegroup.h"
 
-#include "protocol/mrim/mrimclient.h"
+#include "mrim/mrimclient.h"
 
 Tasks::RenameGroup::RenameGroup(ContactGroup * group, QString name, MRIMClient * client, QObject * parent)
 	: SimpleBlockingTask<Tasks::RenameGroup>(client, parent), m_group(group), m_name(name)

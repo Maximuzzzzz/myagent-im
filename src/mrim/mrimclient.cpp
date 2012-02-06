@@ -27,14 +27,14 @@
 
 #include "mrimclientprivate.h"
 
-#include "protocol/mrim/mrimdatastream.h"
-#include "protocol/mrim/proto.h"
+#include "mrim/mrimdatastream.h"
+#include "mrim/proto.h"
 #include "account.h"
 #include "contact.h"
 #include "contactgroup.h"
 #include "contactlist.h"
 #include "message.h"
-#include "protocol/mrim/filemessage.h"
+#include "mrim/filemessage.h"
 #include "contactdata.h"
 
 MRIMClient::MRIMClient(Account* a)

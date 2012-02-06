@@ -26,7 +26,7 @@
 #include <QPointer>
 
 #include "onlinestatus.h"
-#include "protocol/mrim/filemessage.h"
+#include "mrim/filemessage.h"
 
 class QToolBar;
 class QAction;

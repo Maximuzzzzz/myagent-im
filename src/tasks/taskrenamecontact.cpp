@@ -20,7 +20,7 @@
 
 #include "taskrenamecontact.h"
 
-#include "protocol/mrim/mrimclient.h"
+#include "mrim/mrimclient.h"
 
 Tasks::RenameContact::RenameContact(Contact* c, const QString& newNick, MRIMClient* client, QObject* parent)
 	: Tasks::SimpleBlockingTask<Tasks::RenameContact>(client, parent), contact(c), nickname(newNick)

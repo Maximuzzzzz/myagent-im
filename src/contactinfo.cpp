@@ -22,7 +22,7 @@
 
 #include <QDebug>
 
-#include "protocol/mrim/proto.h"
+#include "mrim/proto.h"
 
 void ContactInfo::setSex(const QString & sex)
 {

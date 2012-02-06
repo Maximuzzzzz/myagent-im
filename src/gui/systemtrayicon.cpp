@@ -35,7 +35,7 @@
 #include "resourcemanager.h"
 #include "contactlistwindow.h"
 #include "account.h"
-#include "protocol/mrim/mrimclient.h"
+#include "mrim/mrimclient.h"
 #include "audio.h"
 #include "contact.h"
 #include "popupwindowsstack.h"

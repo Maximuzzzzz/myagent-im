@@ -22,7 +22,7 @@
 #include <QDebug>
 #include <QTextCodec>
 
-/*#include "protocol/mrim/proto.h"
+/*#include "mrim/proto.h"
 #include "resourcemanager.h"*/
 
 void Mults::load(/*QString filename*/)

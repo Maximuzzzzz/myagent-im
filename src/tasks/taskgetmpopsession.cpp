@@ -20,8 +20,8 @@
 
 #include "taskgetmpopsession.h"
 
-#include "protocol/mrim/mrimclient.h"
-#include "protocol/mrim/proto.h"
+#include "mrim/mrimclient.h"
+#include "mrim/proto.h"
 
 namespace Tasks
 {

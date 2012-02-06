@@ -22,7 +22,7 @@
 
 #include <QDebug>
 
-#include "protocol/mrim/mrimclient.h"
+#include "mrim/mrimclient.h"
 
 Tasks::AddContact::AddContact(quint32 group, const QByteArray& email, const QString& nickname, const QString& authorizationMessage, MRIMClient* client, QObject* parent)
 	: SimpleBlockingTask<Tasks::AddContact>(client, parent), m_group(group), m_nickname(nickname), m_email(email), m_authorizationMessage(authorizationMessage)

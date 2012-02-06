@@ -28,7 +28,7 @@
 
 #include "zodiac.h"
 #include "resourcemanager.h"
-#include "protocol/mrim/proto.h"
+#include "mrim/proto.h"
 #include "gui/centerwindow.h"
 
 //using namespace Proto;

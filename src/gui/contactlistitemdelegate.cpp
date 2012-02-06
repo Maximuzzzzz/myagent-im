@@ -24,7 +24,7 @@
 
 #include "contactgroup.h"
 #include "contact.h"
-#include "protocol/mrim/proto.h"
+#include "mrim/proto.h"
 #include "gui/models/contactlistsortfilterproxymodel.h"
 
 ContactListItemDelegate::ContactListItemDelegate(ContactListSortFilterProxyModel* m, QObject *parent)

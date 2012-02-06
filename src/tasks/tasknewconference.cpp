@@ -20,7 +20,7 @@
 
 #include "tasknewconference.h"
 
-#include "protocol/mrim/mrimclient.h"
+#include "mrim/mrimclient.h"
 
 Tasks::NewConference::NewConference(QString confName, QByteArray owner, MRIMClient* client, QList<QByteArray> members, QObject* parent)
 	: SimpleBlockingTask<Tasks::NewConference>(client, parent), m_conferenceName(confName), m_members(members), m_owner(owner)
