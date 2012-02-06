@@ -23,7 +23,7 @@
 
 #include <QDebug>
 
-#include "tasks/task.h"
+#include "task.h"
 
 namespace Tasks
 {

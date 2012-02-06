@@ -40,7 +40,7 @@
 #include "gui/mainmenubutton.h"
 #include "gui/logindialog.h"
 #include "gui/authorizedialog.h"
-#include "tasks/taskgetmpopsession.h"
+#include "mrim/tasks/taskgetmpopsession.h"
 #include "contact.h"
 #include "gui/newletterslabel.h"
 #include "linkbutton.h"

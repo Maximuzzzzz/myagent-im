@@ -25,11 +25,11 @@
 
 #include "account.h"
 #include "mrim/proto.h"
-#include "tasks/taskchangegroup.h"
-#include "tasks/tasksetvisibility.h"
-#include "tasks/taskrenamecontact.h"
-#include "tasks/taskrequestcontactinfo.h"
-#include "tasks/taskchangephones.h"
+#include "mrim/tasks/taskchangegroup.h"
+#include "mrim/tasks/tasksetvisibility.h"
+#include "mrim/tasks/taskrenamecontact.h"
+#include "mrim/tasks/taskrequestcontactinfo.h"
+#include "mrim/tasks/taskchangephones.h"
 #include "contactlist.h"
 #include "contactgroup.h"
 

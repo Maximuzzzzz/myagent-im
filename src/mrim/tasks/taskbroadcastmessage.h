@@ -18,26 +18,26 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef TASKSENDMESSAGE_H
-#define TASKSENDMESSAGE_H
+#ifndef TASKBROADCASTMESSAGE_H
+#define TASKBROADCASTMESSAGE_H
 
-#include "tasks/task.h"
+#include "task.h"
 
-class Contact;
 class Message;
 
 namespace Tasks
 {
 
-class SendMessage : public Task
+class BroadcastMessage : public Task
 {
 Q_OBJECT
 public:
-	SendMessage(Contact* c, Message* m, MRIMClient* client, QObject *parent = 0);
-	~SendMessage();
-	
+	BroadcastMessage(QList<QByteArray> receivers, Message* m, MRIMClient* client, QObject *parent = 0);
+	~BroadcastMessage();
+
 	bool exec();
 	Message* getMessage() { return message; }
+	QList<QByteArray> getReceivers() { return m_receivers; }
 
 protected Q_SLOTS:
 	virtual void timeout();
@@ -46,10 +46,10 @@ private Q_SLOTS:
 	void checkResult(quint32 msgseq, quint32 status);
 
 private:
-	Contact* contact;
+	QList<QByteArray> m_receivers;
 	Message* message;
 };
 
 }
 
-#endif
+#endif // TASKBROADCASTMESSAGE_H

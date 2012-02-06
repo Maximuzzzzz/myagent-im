@@ -25,7 +25,7 @@
 #include <QApplication>
 
 #include "gui/searchcontactsdialog.h"
-#include "tasks/tasksearchcontacts.h"
+#include "mrim/tasks/tasksearchcontacts.h"
 #include "mrim/proto.h"
 #include "contactinfo.h"
 #include "gui/contactinfolistwindow.h"

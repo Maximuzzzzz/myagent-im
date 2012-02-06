@@ -38,7 +38,7 @@
 #include "gui/avatarbox.h"
 #include "zodiac.h"
 #include "contactinfo.h"
-#include "tasks/taskrequestcontactinfo.h"
+#include "mrim/tasks/taskrequestcontactinfo.h"
 #include "mrim/proto.h"
 #include "gui/centerwindow.h"
 #include "gui/centeredmessagebox.h"

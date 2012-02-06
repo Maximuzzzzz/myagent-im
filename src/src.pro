@@ -138,6 +138,25 @@ SOURCES += main.cpp \
     mrim/mrimclientprivate.cpp \
     mrim/mrimclient.cpp \
     mrim/filemessage.cpp \
+    mrim/tasks/tasksetvisibility.cpp \
+    mrim/tasks/tasksendsms.cpp \
+    mrim/tasks/tasksendmessage.cpp \
+    mrim/tasks/tasksearchcontacts.cpp \
+    mrim/tasks/taskrequestcontactinfo.cpp \
+    mrim/tasks/taskrenamegroup.cpp \
+    mrim/tasks/taskrenamecontact.cpp \
+    mrim/tasks/taskremovegroup.cpp \
+    mrim/tasks/taskremovecontact.cpp \
+    mrim/tasks/tasknewconference.cpp \
+    mrim/tasks/taskignorecontact.cpp \
+    mrim/tasks/taskgetmpopsession.cpp \
+    mrim/tasks/taskchangephones.cpp \
+    mrim/tasks/taskchangegroup.cpp \
+    mrim/tasks/taskbroadcastmessage.cpp \
+    mrim/tasks/taskaddsmscontact.cpp \
+    mrim/tasks/taskaddgroup.cpp \
+    mrim/tasks/taskaddcontact.cpp \
+    mrim/tasks/task.cpp \
     zlibbytearray.cpp \
     datetime.cpp \
     gui/onlinestatuseseditor.cpp \
@@ -222,25 +241,6 @@ SOURCES += main.cpp \
     gui/smseditor.cpp \
     gui/smsedit.cpp \
     qgsmcodec.cpp \
-    tasks/tasksetvisibility.cpp \
-    tasks/tasksendsms.cpp \
-    tasks/tasksendmessage.cpp \
-    tasks/tasksearchcontacts.cpp \
-    tasks/taskrequestcontactinfo.cpp \
-    tasks/taskrenamegroup.cpp \
-    tasks/taskrenamecontact.cpp \
-    tasks/taskremovegroup.cpp \
-    tasks/taskremovecontact.cpp \
-    tasks/tasknewconference.cpp \
-    tasks/taskignorecontact.cpp \
-    tasks/taskgetmpopsession.cpp \
-    tasks/taskchangephones.cpp \
-    tasks/taskchangegroup.cpp \
-    tasks/taskbroadcastmessage.cpp \
-    tasks/taskaddsmscontact.cpp \
-    tasks/taskaddgroup.cpp \
-    tasks/taskaddcontact.cpp \
-    tasks/task.cpp \
     gui/contactlistitemdelegate.cpp \
     mults.cpp \
     gui/multselector.cpp \
@@ -267,6 +267,26 @@ HEADERS += accountmanager.h \
     mrim/mrimclientprivate.h \
     mrim/mrimclient.h \
     mrim/filemessage.h \
+    mrim/tasks/tasksetvisibility.h \
+    mrim/tasks/tasksendsms.h \
+    mrim/tasks/tasksendmessage.h \
+    mrim/tasks/tasksearchcontacts.h \
+    mrim/tasks/taskrequestcontactinfo.h \
+    mrim/tasks/taskrenamegroup.h \
+    mrim/tasks/taskrenamecontact.h \
+    mrim/tasks/taskremovegroup.h \
+    mrim/tasks/taskremovecontact.h \
+    mrim/tasks/tasknewconference.h \
+    mrim/tasks/taskignorecontact.h \
+    mrim/tasks/taskgetmpopsession.h \
+    mrim/tasks/taskchangephones.h \
+    mrim/tasks/taskchangegroup.h \
+    mrim/tasks/taskbroadcastmessage.h \
+    mrim/tasks/taskaddsmscontact.h \
+    mrim/tasks/taskaddgroup.h \
+    mrim/tasks/taskaddcontact.h \
+    mrim/tasks/task.h \
+    mrim/tasks/simpleblockingtask.h \
     zlibbytearray.h \
     datetime.h \
     gui/onlinestatuseseditor.h \
@@ -359,26 +379,6 @@ HEADERS += accountmanager.h \
     gui/smseditor.h \
     gui/smsedit.h \
     qgsmcodec.h \
-    tasks/tasksetvisibility.h \
-    tasks/tasksendsms.h \
-    tasks/tasksendmessage.h \
-    tasks/tasksearchcontacts.h \
-    tasks/taskrequestcontactinfo.h \
-    tasks/taskrenamegroup.h \
-    tasks/taskrenamecontact.h \
-    tasks/taskremovegroup.h \
-    tasks/taskremovecontact.h \
-    tasks/tasknewconference.h \
-    tasks/taskignorecontact.h \
-    tasks/taskgetmpopsession.h \
-    tasks/taskchangephones.h \
-    tasks/taskchangegroup.h \
-    tasks/taskbroadcastmessage.h \
-    tasks/taskaddsmscontact.h \
-    tasks/taskaddgroup.h \
-    tasks/taskaddcontact.h \
-    tasks/task.h \
-    tasks/simpleblockingtask.h \
     gui/contactlistitemdelegate.h \
     mults.h \
     gui/multselector.h \
