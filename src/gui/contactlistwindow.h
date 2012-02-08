@@ -24,7 +24,7 @@
 #include <QWidget>
 
 #include "idle/idle.h"
-#include "onlinestatus.h"
+#include "core/onlinestatus.h"
 
 class QTreeView;
 

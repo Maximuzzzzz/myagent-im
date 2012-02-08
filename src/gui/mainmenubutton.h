@@ -24,7 +24,7 @@
 #include <QPointer>
 
 #include "gui/buttonwithmenu.h"
-#include "onlinestatus.h"
+#include "core/onlinestatus.h"
 
 class Account;
 class SearchContactsForm;

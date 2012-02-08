@@ -25,7 +25,7 @@
 #include <QDir>
 #include <QFile>
 
-#include "datetime.h"
+#include "core/datetime.h"
 
 Avatar::Avatar(QObject* parent)
 	: QObject(parent)

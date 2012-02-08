@@ -29,13 +29,13 @@
 
 #include "mrim/mrimdatastream.h"
 #include "mrim/proto.h"
-#include "account.h"
-#include "contact.h"
-#include "contactgroup.h"
-#include "contactlist.h"
-#include "message.h"
+#include "core/account.h"
+#include "core/contact.h"
+#include "core/contactgroup.h"
+#include "core/contactlist.h"
+#include "core/message.h"
 #include "mrim/filemessage.h"
-#include "contactdata.h"
+#include "core/contactdata.h"
 
 MRIMClient::MRIMClient(Account* a)
 	: QObject(a)

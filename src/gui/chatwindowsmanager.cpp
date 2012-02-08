@@ -25,14 +25,14 @@
 #include <QVBoxLayout>
 #include <QSettings>
 
-#include "account.h"
-#include "contact.h"
+#include "core/account.h"
+#include "core/contact.h"
 #include "chatwindow.h"
-#include "chatsession.h"
+#include "core/chatsession.h"
 #include "multselector.h"
-#include "message.h"
+#include "core/message.h"
 #include "emoticonselector.h"
-#include "contactlist.h"
+#include "core/contactlist.h"
 
 ChatWindowsManager::ChatWindowsManager(Account* account, QObject *parent)
 	: QObject(parent), m_account(account)

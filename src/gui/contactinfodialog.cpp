@@ -32,12 +32,12 @@
 #include <QRegExpValidator>
 #include <QStyle>
 
-#include "account.h"
-#include "contact.h"
-#include "contactlist.h"
+#include "core/account.h"
+#include "core/contact.h"
+#include "core/contactlist.h"
 #include "gui/avatarbox.h"
-#include "zodiac.h"
-#include "contactinfo.h"
+#include "core/zodiac.h"
+#include "core/contactinfo.h"
 #include "mrim/tasks/taskrequestcontactinfo.h"
 #include "mrim/proto.h"
 #include "gui/centerwindow.h"

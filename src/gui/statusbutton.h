@@ -22,7 +22,7 @@
 #define STATUSBUTTON_H
 
 #include "buttonwithmenu.h"
-#include "onlinestatus.h"
+#include "core/onlinestatus.h"
 
 class StatusMenu;
 

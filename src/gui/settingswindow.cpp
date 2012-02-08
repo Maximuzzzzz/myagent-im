@@ -37,9 +37,9 @@
 #include <QSettings>
 
 #include "resourcemanager.h"
-#include "contact.h"
-#include "contactlist.h"
-#include "account.h"
+#include "core/contact.h"
+#include "core/contactlist.h"
+#include "core/account.h"
 #include "chatwindowsmanager.h"
 #include "contactlistwindow.h"
 

@@ -23,13 +23,13 @@
 #include <QTranslator>
 #include <QLocale>
 
-#include "accountmanager.h"
+#include "core/accountmanager.h"
 #include "gui/logindialog.h"
 #include "gui/contactlistwindow.h"
 
 #include "audio.h"
 #include "resourcemanager.h"
-#include "account.h"
+#include "core/account.h"
 
 #ifdef Q_WS_WIN
 #include <QtPlugin>

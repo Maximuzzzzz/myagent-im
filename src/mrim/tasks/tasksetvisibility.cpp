@@ -21,7 +21,7 @@
 #include "tasksetvisibility.h"
 
 #include "mrim/proto.h"
-#include "contact.h"
+#include "core/contact.h"
 #include "mrim/mrimclient.h"
 
 Tasks::SetVisibility::SetVisibility(Contact* c, bool alwaysVisible, bool alwaysInvisible, MRIMClient* client, QObject* parent)

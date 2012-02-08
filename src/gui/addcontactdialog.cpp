@@ -23,9 +23,9 @@
 #include <QDebug>
 
 #include "gui/contactinfodialog.h"
-#include "account.h"
-#include "contactgroup.h"
-#include "contactlist.h"
+#include "core/account.h"
+#include "core/contactgroup.h"
+#include "core/contactlist.h"
 #include "gui/centerwindow.h"
 
 QList<AddContactDialog*> AddContactDialog::windows = QList<AddContactDialog*>();

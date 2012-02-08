@@ -25,7 +25,7 @@
 
 #include "gui/systemtrayicon.h"
 #include "resourcemanager.h"
-#include "contact.h"
+#include "core/contact.h"
 
 PopupWindowsStack::PopupWindowsStack(SystemTrayIcon* sysTray)
 	: QObject(sysTray), m_sysTray(sysTray), direction(Up)

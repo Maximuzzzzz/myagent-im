@@ -22,7 +22,7 @@
 
 #include <QListView>
 
-#include "onlinestatus.h"
+#include "core/onlinestatus.h"
 
 class Contact;
 class Account;

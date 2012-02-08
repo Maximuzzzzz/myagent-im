@@ -30,8 +30,8 @@
 #include <QSettings>
 
 #include "gui/smsedit.h"
-#include "contact.h"
-#include "account.h"
+#include "core/contact.h"
+#include "core/account.h"
 #include "gui/contactinfodialog.h"
 
 SmsEditor::SmsEditor(Account* account, Contact* contact, QWidget* parent)

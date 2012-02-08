@@ -20,9 +20,9 @@
 
 #include "newconferencedialog.h"
 
-#include "account.h"
-#include "contact.h"
-#include "contactlist.h"
+#include "core/account.h"
+#include "core/contact.h"
+#include "core/contactlist.h"
 
 NewConferenceDialog::NewConferenceDialog(Account* account)
 	: m_account(account)

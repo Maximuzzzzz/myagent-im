@@ -25,7 +25,7 @@
 #include <QList>
 
 #include "ui_addcontact.h"
-#include "contactinfo.h"
+#include "core/contactinfo.h"
 
 class Account;
 

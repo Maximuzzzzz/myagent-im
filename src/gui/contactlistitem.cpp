@@ -22,8 +22,8 @@
 
 #include <QDebug>
 
-#include "contact.h"
-#include "contactgroup.h"
+#include "core/contact.h"
+#include "core/contactgroup.h"
 
 ContactListItem::ContactListItem(Contact* contact)
 {

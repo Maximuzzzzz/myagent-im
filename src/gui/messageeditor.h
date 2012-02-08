@@ -25,7 +25,7 @@
 #include <QTextCharFormat>
 #include <QPointer>
 
-#include "onlinestatus.h"
+#include "core/onlinestatus.h"
 #include "mrim/filemessage.h"
 
 class QToolBar;

@@ -24,9 +24,9 @@
 
 #include <QApplication>
 
-#include "account.h"
-#include "contact.h"
-#include "contactlist.h"
+#include "core/account.h"
+#include "core/contact.h"
+#include "core/contactlist.h"
 #include "historyviewer.h"
 #include "gui/centeredmessagebox.h"
 

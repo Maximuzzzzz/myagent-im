@@ -23,7 +23,7 @@
 
 #include <QWidget>
 
-#include "onlinestatus.h"
+#include "core/onlinestatus.h"
 
 class QToolBar;
 class SmsEdit;

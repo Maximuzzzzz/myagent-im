@@ -25,7 +25,7 @@
 #include <QStringList>
 #include <QMap>
 
-#include "onlinestatus.h"
+#include "core/onlinestatus.h"
 
 class Account;
 class Contact;

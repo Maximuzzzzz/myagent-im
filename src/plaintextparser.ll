@@ -33,7 +33,7 @@
 #include <QUrl>
 
 #include "resourcemanager.h"
-#include "emoticons.h"
+#include "core/emoticons.h"
 #include "emoticonformat.h"
 
 PlainTextParser::PlainTextParser()

@@ -26,7 +26,7 @@
 #include <QTextCharFormat>
 #include <QTextCursor>
 #include <QPointer>
-#include "emoticons.h"
+#include "core/emoticons.h"
 
 class QTextDocument;
 class QTextCodec;

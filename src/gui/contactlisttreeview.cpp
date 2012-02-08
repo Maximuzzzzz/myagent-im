@@ -24,9 +24,9 @@
 #include <QHeaderView>
 #include <QDragMoveEvent>
 
-#include "contactmimedata.h"
-#include "contact.h"
-#include "contactgroup.h"
+#include "core/contactmimedata.h"
+#include "core/contact.h"
+#include "core/contactgroup.h"
 #include "contactcontextmenu.h"
 #include "conferencecontextmenu.h"
 #include "contactgroupcontextmenu.h"

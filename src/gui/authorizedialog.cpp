@@ -23,10 +23,10 @@
 #include <QDebug>
 
 #include "contactinfodialog.h"
-#include "contactgroup.h"
-#include "account.h"
-#include "contactlist.h"
-#include "contact.h"
+#include "core/contactgroup.h"
+#include "core/account.h"
+#include "core/contactlist.h"
+#include "core/contact.h"
 #include "gui/centerwindow.h"
 
 AuthorizeDialog::AuthorizeDialog(Account* account, const QByteArray& email, const QString& nickname, const QString& message)

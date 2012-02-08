@@ -24,7 +24,7 @@
 #include <QSettings>
 
 #include "resourcemanager.h"
-#include "account.h"
+#include "core/account.h"
 
 StatusMenu::StatusMenu(Account* acc, QWidget* parent)
 	: QMenu(parent), m_account(acc)

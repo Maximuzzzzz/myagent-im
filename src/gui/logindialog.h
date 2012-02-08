@@ -25,7 +25,7 @@
 #include <QWeakPointer>
 
 #include "ui_logindialog.h"
-#include "onlinestatus.h"
+#include "core/onlinestatus.h"
 
 class SettingsWindow;
 

@@ -23,7 +23,7 @@
 
 #include <QMenu>
 
-#include "onlinestatus.h"
+#include "core/onlinestatus.h"
 
 class QAction;
 

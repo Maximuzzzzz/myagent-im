@@ -24,7 +24,7 @@
 #include <QSettings>
 #include <QPushButton>
 
-#include "account.h"
+#include "core/account.h"
 #include "resourcemanager.h"
 #include "onlinestatusselector.h"
 

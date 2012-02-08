@@ -31,13 +31,13 @@
 #include <QDateTime>
 #include <QDesktopWidget>
 
-#include "onlinestatus.h"
+#include "core/onlinestatus.h"
 #include "resourcemanager.h"
 #include "contactlistwindow.h"
-#include "account.h"
+#include "core/account.h"
 #include "mrim/mrimclient.h"
 #include "audio.h"
-#include "contact.h"
+#include "core/contact.h"
 #include "popupwindowsstack.h"
 #include "statusmenu.h"
 

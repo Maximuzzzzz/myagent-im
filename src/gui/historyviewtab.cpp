@@ -35,8 +35,8 @@
 #include <xapian/database.h>
 
 #include "gui/animatedtextbrowser.h"
-#include "message.h"
-#include "historylogger.h"
+#include "core/message.h"
+#include "core/historylogger.h"
 #include "rtfparser.h"
 
 HistoryViewTab::HistoryViewTab(Xapian::Database* db, const QString& incomingName, const QString& outgoingName, QWidget *parent)

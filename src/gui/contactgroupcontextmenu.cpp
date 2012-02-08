@@ -22,9 +22,9 @@
 
 #include <QDebug>
 
-#include "account.h"
-#include "contactlist.h"
-#include "contactgroup.h"
+#include "core/account.h"
+#include "core/contactlist.h"
+#include "core/contactgroup.h"
 #include "inputlinedialog.h"
 #include "centeredmessagebox.h"
 

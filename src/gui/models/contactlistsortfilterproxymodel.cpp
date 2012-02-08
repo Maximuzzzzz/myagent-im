@@ -23,10 +23,10 @@
 #include <QSettings>
 
 #include "contactlistmodel.h"
-#include "contact.h"
+#include "core/contact.h"
 #include "resourcemanager.h"
-#include "account.h"
-#include "contactgroup.h"
+#include "core/account.h"
+#include "core/contactgroup.h"
 
 ContactListSortFilterProxyModel::ContactListSortFilterProxyModel(QObject * parent)
 	: QSortFilterProxyModel(parent), contactListModel(0)

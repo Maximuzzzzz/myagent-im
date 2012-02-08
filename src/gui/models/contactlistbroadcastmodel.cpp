@@ -21,8 +21,8 @@
 
 #include <QDebug>
 
-#include "contact.h"
-#include "contactlist.h"
+#include "core/contact.h"
+#include "core/contactlist.h"
 #include "gui/contactlistitem.h"
 
 ContactListBroadcastModel::ContactListBroadcastModel(QByteArray contactEmail, ContactList* contactList, QObject* parent)

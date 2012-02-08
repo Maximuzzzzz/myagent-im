@@ -28,15 +28,15 @@
 #include <QSslSocket>
 #include <QTimer>
 
-#include "account.h"
-#include "message.h"
-#include "zlibbytearray.h"
+#include "core/account.h"
+#include "core/message.h"
+#include "core/zlibbytearray.h"
 #include "mrim/mrimclient.h"
 #include "mrim/mrimmime.h"
 #include "resourcemanager.h"
 #include "mrimdatastream.h"
-#include "contactdata.h"
-#include "contactlist.h"
+#include "core/contactdata.h"
+#include "core/contactlist.h"
 
 MRIMClientPrivate::MRIMClientPrivate(Account* a, MRIMClient* parent)
 	: QObject(parent), account(a)

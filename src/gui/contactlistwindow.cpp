@@ -25,15 +25,15 @@
 #include <QDesktopServices>
 #include <QSettings>
 
-#include "account.h"
-#include "contactlist.h"
+#include "core/account.h"
+#include "core/contactlist.h"
 #include "gui/models/contactlistmodel.h"
 #include "gui/models/contactlistsortfilterproxymodel.h"
 #include "gui/contactlisttreeview.h"
 #include "mrim/mrimclient.h"
 #include "mrim/proto.h"
 #include "chatwindowsmanager.h"
-#include "chatsmanager.h"
+#include "core/chatsmanager.h"
 #include "gui/systemtrayicon.h"
 #include "resourcemanager.h"
 #include "gui/statusbutton.h"
@@ -41,7 +41,7 @@
 #include "gui/logindialog.h"
 #include "gui/authorizedialog.h"
 #include "mrim/tasks/taskgetmpopsession.h"
-#include "contact.h"
+#include "core/contact.h"
 #include "gui/newletterslabel.h"
 #include "linkbutton.h"
 #include "gui/centeredmessagebox.h"

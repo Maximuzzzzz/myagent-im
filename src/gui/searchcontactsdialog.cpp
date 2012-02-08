@@ -26,7 +26,7 @@
 #include <QIntValidator>
 #include <QTextCodec>
 
-#include "zodiac.h"
+#include "core/zodiac.h"
 #include "resourcemanager.h"
 #include "mrim/proto.h"
 #include "gui/centerwindow.h"

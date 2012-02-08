@@ -37,11 +37,11 @@
 #include <QTextBlock>
 
 #include "mrim/proto.h"
-#include "account.h"
-#include "contact.h"
+#include "core/account.h"
+#include "core/contact.h"
 #include "mrim/mrimclient.h"
-#include "message.h"
-#include "chatsession.h"
+#include "core/message.h"
+#include "core/chatsession.h"
 #include "gui/messageeditor.h"
 #include "gui/smseditor.h"
 #include "rtfexporter.h"
@@ -53,7 +53,7 @@
 #include "contactlistconferencewithhandle.h"
 #include "iflashplayer.h"
 #include "gnashplayer.h"
-#include "contactlist.h"
+#include "core/contactlist.h"
 
 ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoticonSelector, MultSelector* multSelector)
 	: QWidget(),

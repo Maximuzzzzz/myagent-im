@@ -22,11 +22,11 @@
 
 #include <QDebug>
 
-#include "contact.h"
-#include "contactgroup.h"
-#include "contactlist.h"
+#include "core/contact.h"
+#include "core/contactgroup.h"
+#include "core/contactlist.h"
 #include "gui/contactlistitem.h"
-#include "contactmimedata.h"
+#include "core/contactmimedata.h"
 
 ContactListModel::ContactListModel(ContactList* contactList, bool showGroups)
  : QStandardItemModel(contactList), m_showGroups(showGroups)

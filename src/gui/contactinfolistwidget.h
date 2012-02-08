@@ -23,7 +23,7 @@
 
 #include <QTreeView>
 
-#include "contactinfo.h"
+#include "core/contactinfo.h"
 
 class Account;
 class QStandardItemModel;

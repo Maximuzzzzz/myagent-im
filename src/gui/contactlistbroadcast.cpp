@@ -21,7 +21,7 @@
 
 #include "models/contactlistmodel.h"
 #include "models/contactlistbroadcastmodel.h"
-#include "contactlist.h"
+#include "core/contactlist.h"
 
 ContactListBroadcast::ContactListBroadcast(QByteArray contactEmail, ContactList* cl, QWidget* parent)
  : QListView(parent)

@@ -117,22 +117,36 @@ unix {
 }
 RESOURCES += res.qrc
 SOURCES += main.cpp \
-    accountmanager.cpp \
-    account.cpp \
+    core/account.cpp \
+    core/accountmanager.cpp \
+    core/chatsession.cpp \
+    core/contact.cpp \
+    core/contactdata.cpp \
+    core/contactgroup.cpp \
+    core/contactinfo.cpp \
+    core/contactlist.cpp \
+    core/contactmimedata.cpp \
+    core/chatsmanager.cpp \
+    core/historylogger.cpp \
+    core/historymanager.cpp \
+    core/datetime.cpp \
+    core/locations.cpp \
+    core/message.cpp \
+    core/mults.cpp \
+    core/onlinestatus.cpp \
+    core/zlibbytearray.cpp \
+    core/zodiac.cpp \
     gui/logindialog.cpp \
     resourcemanager.cpp \
     gui/settingswindow.cpp \
-    onlinestatus.cpp \
     audio.cpp \
     soundplayer.cpp \
-    locations.cpp \
     gui/centerwindow.cpp \
     gui/contactlistwindow.cpp \
     idle/idle_x11.cpp \
     idle/idle_win.cpp \
     idle/idle_mac.cpp \
     idle/idle.cpp \
-    contactlist.cpp \
     mrim/mrimmime.cpp \
     mrim/mrimdatastream.cpp \
     mrim/mrimclientprivate.cpp \
@@ -157,22 +171,12 @@ SOURCES += main.cpp \
     mrim/tasks/taskaddgroup.cpp \
     mrim/tasks/taskaddcontact.cpp \
     mrim/tasks/task.cpp \
-    zlibbytearray.cpp \
-    datetime.cpp \
     gui/onlinestatuseseditor.cpp \
     gui/onlinestatusselector.cpp \
-    chatsmanager.cpp \
-    historymanager.cpp \
-    contactdata.cpp \
-    contact.cpp \
     gui/emoticonwidget.cpp \
     gui/emoticonmovie.cpp \
-    message.cpp \
     gui/chatwindowsmanager.cpp \
     gui/emoticonselector.cpp \
-    chatsession.cpp \
-    contactgroup.cpp \
-    historylogger.cpp \
     gui/statuseditor.cpp \
     gui/statusbarwidget.cpp \
     gui/favouriteemoticonsdialog.cpp \
@@ -194,7 +198,6 @@ SOURCES += main.cpp \
     gui/models/conferencelistmodel.cpp \
     gui/models/contactlistbroadcastmodel.cpp \
     gui/contactlistitem.cpp \
-    contactmimedata.cpp \
     gui/models/contactlistsortfilterproxymodel.cpp \
     gui/models/contactlistmodel.cpp \
     plaintextexporter.cpp \
@@ -204,8 +207,6 @@ SOURCES += main.cpp \
     gui/avatar.cpp \
     gui/filtercontactslineedit.cpp \
     gui/triggeroptionbutton.cpp \
-    zodiac.cpp \
-    contactinfo.cpp \
     gui/contactlisttreeview.cpp \
     gui/contactcontextmenu.cpp \
     gui/contactgroupcontextmenu.cpp \
@@ -242,26 +243,41 @@ SOURCES += main.cpp \
     gui/smsedit.cpp \
     qgsmcodec.cpp \
     gui/contactlistitemdelegate.cpp \
-    mults.cpp \
     gui/multselector.cpp \
     gui/gnashplayer.cpp \
     mrim/fileexistsdialog.cpp
 
-HEADERS += accountmanager.h \
-    account.h \
+HEADERS += core/account.h \
+    core/accountmanager.h \
+    core/chatsmanager.h \
+    core/chatsession.h \
+    core/contact.h \
+    core/contactdata.h \
+    core/contactgroup.h \
+    core/contactinfo.h \
+    core/contactlist.h \
+    core/contactmimedata.h \
+    core/datetime.h \
+    core/emoticons.h \
+    core/historylogger.h \
+    core/historymanager.h \
+    core/locations.h \
+    core/message.h \
+    core/mults.h \
+    core/onlinestatus.h \
+    core/onlinestatuses.h \
+    core/zlibbytearray.h \
+    core/zodiac.h \
+    emoticonformat.h \
     gui/logindialog.h \
     resourcemanager.h \
     gui/settingswindow.h \
-    onlinestatus.h \
     mrim/proto.h \
     audio.h \
     soundplayer.h \
-    emoticons.h \
-    locations.h \
     gui/centerwindow.h \
     gui/contactlistwindow.h \
     idle/idle.h \
-    contactlist.h \
     mrim/mrimmime.h \
     mrim/mrimdatastream.h \
     mrim/mrimclientprivate.h \
@@ -287,25 +303,14 @@ HEADERS += accountmanager.h \
     mrim/tasks/taskaddcontact.h \
     mrim/tasks/task.h \
     mrim/tasks/simpleblockingtask.h \
-    zlibbytearray.h \
-    datetime.h \
     gui/onlinestatuseseditor.h \
-    onlinestatuses.h \
     gui/onlinestatusselector.h \
-    chatsmanager.h \
-    historymanager.h \
-    contactdata.h \
-    contact.h \
     gui/emoticonwidget.h \
     gui/emoticonmovie.h \
-    message.h \
     rtfparser.h \
     plaintextparser.h \
     gui/chatwindowsmanager.h \
     gui/emoticonselector.h \
-    chatsession.h \
-    contactgroup.h \
-    historylogger.h \
     gui/statuseditor.h \
     gui/statusbarwidget.h \
     gui/favouriteemoticonsdialog.h \
@@ -317,7 +322,6 @@ HEADERS += accountmanager.h \
     spellchecker/aspellchecker.h \
     gui/chatwindow.h \
     rtfexporter.h \
-    emoticonformat.h \
     gui/igetanimation.h \
     gui/animationsupport.h \
     gui/newletterslabel.h \
@@ -331,7 +335,6 @@ HEADERS += accountmanager.h \
     gui/models/conferencelistmodel.h \
     gui/models/contactlistbroadcastmodel.h \
     gui/contactlistitem.h \
-    contactmimedata.h \
     gui/models/contactlistsortfilterproxymodel.h \
     gui/models/contactlistmodel.h \
     plaintextexporter.h \
@@ -341,8 +344,6 @@ HEADERS += accountmanager.h \
     gui/avatar.h \
     gui/filtercontactslineedit.h \
     gui/triggeroptionbutton.h \
-    zodiac.h \
-    contactinfo.h \
     gui/contactlisttreeview.h \
     gui/contactcontextmenu.h \
     gui/contactgroupcontextmenu.h \
@@ -380,7 +381,6 @@ HEADERS += accountmanager.h \
     gui/smsedit.h \
     qgsmcodec.h \
     gui/contactlistitemdelegate.h \
-    mults.h \
     gui/multselector.h \
     gui/iflashplayer.h \
     gui/gnashplayer.h \
@@ -394,8 +394,8 @@ FORMS += gui/logindialog.ui \
     gui/searchcontacts.ui \
     gui/addcontact.ui \
     gui/aboutdialog.ui
-LEXSOURCES += onlinestatuses.ll \
-    emoticons.ll \
+LEXSOURCES += core/onlinestatuses.ll \
+    core/emoticons.ll \
     rtf.ll \
     plaintextparser.ll
 

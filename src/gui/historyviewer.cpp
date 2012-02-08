@@ -26,8 +26,8 @@
 
 #include "historyviewtab.h"
 #include "historysearchtab.h"
-#include "contact.h"
-#include "account.h"
+#include "core/contact.h"
+#include "core/account.h"
 
 HistoryViewer::HistoryViewer(Contact* contact)
 	: QTabWidget(0)

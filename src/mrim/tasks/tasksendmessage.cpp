@@ -21,8 +21,8 @@
 #include "tasksendmessage.h"
 
 #include "mrim/mrimclient.h"
-#include "contact.h"
-#include "message.h"
+#include "core/contact.h"
+#include "core/message.h"
 
 namespace Tasks
 {

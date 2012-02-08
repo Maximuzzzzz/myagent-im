@@ -33,7 +33,7 @@
 #include "mrim/mrimdatastream.h"
 #include "fileexistsdialog.h"
 #include "resourcemanager.h"
-#include "account.h"
+#include "core/account.h"
 
 /*Conception of transferring file:
 

@@ -23,7 +23,7 @@
 
 #include <QSystemTrayIcon>
 
-#include "onlinestatus.h"
+#include "core/onlinestatus.h"
 
 class QDateTime;
 class QAction;

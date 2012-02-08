@@ -34,8 +34,8 @@
 #include <xapian/document.h>
 
 #include "animatedtextbrowser.h"
-#include "message.h"
-#include "historylogger.h"
+#include "core/message.h"
+#include "core/historylogger.h"
 
 HistorySearchTab::HistorySearchTab(Xapian::Database* db, const QString & incomingName, const QString & outgoingName, QWidget * parent)
 	: QWidget(parent), database(db), incomingNickname(incomingName), outgoingNickname(outgoingName), date_proc(0)

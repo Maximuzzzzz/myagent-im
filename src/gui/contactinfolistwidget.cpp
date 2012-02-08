@@ -27,7 +27,7 @@
 #include <QSortFilterProxyModel>
 #include <QItemDelegate>
 
-#include "account.h"
+#include "core/account.h"
 #include "gui/smallavatar.h"
 #include "gui/contactinfodialog.h"
 

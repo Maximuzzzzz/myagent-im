@@ -23,7 +23,7 @@
 
 #include "simpleblockingtask.h"
 
-#include "contactdata.h"
+#include "core/contactdata.h"
 
 namespace Tasks
 {

@@ -22,8 +22,8 @@
 
 #include <QPainter>
 
-#include "contactgroup.h"
-#include "contact.h"
+#include "core/contactgroup.h"
+#include "core/contact.h"
 #include "mrim/proto.h"
 #include "gui/models/contactlistsortfilterproxymodel.h"
 

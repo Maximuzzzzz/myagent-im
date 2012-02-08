@@ -24,7 +24,7 @@
 #include <QLabel>
 #include <QFont>
 
-#include "account.h"
+#include "core/account.h"
 
 NewLettersLabel::NewLettersLabel(Account* account, QWidget* parent)
 	: QWidget(parent)

@@ -22,7 +22,7 @@
 #include <QDebug>
 #include <QSettings>
 
-#include "account.h"
+#include "core/account.h"
 
 Audio::Audio(QObject *parent)
 	: QObject(parent), audio(0), m_account(0)

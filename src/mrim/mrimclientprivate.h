@@ -25,7 +25,7 @@
 #include <QAbstractSocket>
 
 #include "mrim/proto.h"
-#include "onlinestatus.h"
+#include "core/onlinestatus.h"
 
 class QSslSocket;
 

@@ -26,7 +26,7 @@
 #include <QBoxLayout>
 #include <QCheckBox>
 
-#include "onlinestatus.h"
+#include "core/onlinestatus.h"
 
 class QPushButton;
 
