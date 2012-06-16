@@ -55,7 +55,7 @@ enum
 #include <QByteArray>
 #include <QSettings>
 
-#include "core/emoticons.h"
+#include "emoticons.h"
 #include "resourcemanager.h"
 
 void Emoticons::load(QString filename, QSettings* settings)

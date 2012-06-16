@@ -25,6 +25,8 @@
 
 #include "resourcemanager.h"
 #include "core/account.h"
+#include "centerwindow.h"
+#include "onlinestatuseseditor.h"
 
 StatusMenu::StatusMenu(Account* acc, QWidget* parent)
 	: QMenu(parent), m_account(acc)
@@ -79,6 +81,20 @@ void StatusMenu::slotActionTriggered(QAction* action)
 	qint32 i = extendedActions->actions().indexOf(action);
 
 	Q_EMIT statusChanged(newStatus, i);
+}
+
+void StatusMenu::showOnlineStatusesEditor()
+{
+	if (m_onlineStatusesEditor)
+		return;
+	qDebug() << "Statuses editor isn't exists";
+	m_onlineStatusesEditor = new OnlineStatusesEditor(m_account);
+	centerWindow(m_onlineStatusesEditor);
+
+	connect(m_onlineStatusesEditor, SIGNAL(statusesChanged()), this, SIGNAL(extendedStatusesChanged()));
+	connect(m_onlineStatusesEditor, SIGNAL(statusChanged(qint32, OnlineStatus)), this, SLOT(extendedStatusChanged(qint32, OnlineStatus)));
+
+	m_onlineStatusesEditor->show();
 }
 
 void StatusMenu::updateExtendedStatuses()

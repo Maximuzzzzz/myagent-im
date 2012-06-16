@@ -46,7 +46,7 @@ enum
 
 %%
 
-#include "core/onlinestatuses.h"
+#include "onlinestatuses.h"
 
 #include <QDebug>
 #include <QTextCodec>

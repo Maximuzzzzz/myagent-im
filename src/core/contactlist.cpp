@@ -37,7 +37,7 @@
 #include "mrim/tasks/taskrenamegroup.h"
 #include "mrim/tasks/taskignorecontact.h"
 #include "mrim/tasks/tasknewconference.h"
-#include "gui/models/contactlistmodel.h"
+#include "contactlistmodel.h"
 
 ContactList::ContactList(Account* account)
 	: m_account(account), m_updatingFromServer(false)

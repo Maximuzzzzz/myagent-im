@@ -22,7 +22,7 @@
 #define TASKSTASKADDSMSCONTACT_H
 
 #include "simpleblockingtask.h"
-#include "core/contactdata.h"
+#include "contactdata.h"
 
 namespace Tasks
 {

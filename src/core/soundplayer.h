@@ -17,41 +17,47 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "audio.h"
+#ifndef SOUNDPLAYER_H
+#define SOUNDPLAYER_H
 
-#include <QDebug>
-#include <QSettings>
+#include <QObject>
 
-#include "core/account.h"
-
-Audio::Audio(QObject *parent)
-	: QObject(parent), audio(0), m_account(0)
+namespace Phonon
 {
+class MediaObject;
+class AudioOutput;
 }
 
-void Audio::play(SoundType soundType)
+enum SoundType
 {
-	if (m_account && !m_account->settings()->value("Sounds/Enable", true).toBool())
-		return;
+	STAuth,
+	STLetter,
+	STMessage,
+	STOtprav,
+	STRing,
+	STConference
+};
 
-	if (!sounds.contains(soundType))
-	{
-		if (soundType != STOtprav)
-			sounds.insert(soundType);
-		audio = new SoundPlayer();
-		connect(audio, SIGNAL(finished(SoundType)), this, SLOT(stop(SoundType)));
-		qDebug() << "playing sound";
-		audio->playSound(soundType);
-	}
-}
-
-void Audio::stop(SoundType soundType)
+class SoundPlayer : public QObject
 {
-	qDebug() << "removing current sound type";
-	sounds.remove(soundType);
-}
+Q_OBJECT
+public:
+	SoundPlayer(QObject* parent = 0);
+	~SoundPlayer();
+	void playSound(SoundType soundType);
 
-void Audio::setAccount(Account* account)
-{
-	m_account = account;
-}
+Q_SIGNALS:
+	void finished(SoundType soundType);
+
+private:
+	QList<SoundType> sounds;
+	Phonon::MediaObject* media;
+	Phonon::AudioOutput* output;
+	QString soundDescription(SoundType soundType);
+	SoundType currentSound;
+
+private Q_SLOTS:
+	void finish();
+};
+
+#endif

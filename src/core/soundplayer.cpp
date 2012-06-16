@@ -17,43 +17,66 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef SOUNDPLAYER_H
-#define SOUNDPLAYER_H
+#include "soundplayer.h"
 
-#include <QObject>
+#include <QDebug>
+
 #include <Phonon/AudioOutput>
 #include <Phonon/MediaObject>
 
-enum SoundType
+#include "resourcemanager.h"
+
+SoundPlayer::SoundPlayer(QObject *parent)
+	: QObject(parent), media(0), currentSound(STAuth)
 {
-	STAuth,
-	STLetter,
-	STMessage,
-	STOtprav,
-	STRing,
-	STConference
-};
+	output = new Phonon::AudioOutput(this);
+}
 
-class SoundPlayer : public QObject
+SoundPlayer::~SoundPlayer()
 {
-Q_OBJECT
-public:
-	SoundPlayer(QObject* parent = 0);
-	~SoundPlayer();
-	void playSound(SoundType soundType);
+}
 
-Q_SIGNALS:
-	void finished(SoundType soundType);
+void SoundPlayer::playSound(SoundType soundType)
+{
+	qDebug() << "Audio::playSound(\"" + soundDescription(soundType) + ".ogg\")";
+	currentSound = soundType;
+	media = new Phonon::MediaObject(this);
+	QString mediaFile = soundDescription(soundType);
 
-private:
-	QList<SoundType> sounds;
-	Phonon::MediaObject* media;
-	Phonon::AudioOutput output;
-	QString soundDescription(SoundType soundType);
-	SoundType currentSound;
+	qDebug() << "File: " << (theRM.soundsResourcePrefix() + ':' + mediaFile + ".ogg");
+	if (mediaFile.isEmpty())
+		qDebug() << "Error: Media file not found";
+	else
+		media->setCurrentSource(Phonon::MediaSource(theRM.soundsResourcePrefix() + ':' + mediaFile + ".ogg"));
+	Phonon::createPath(media, output);
+	connect(media, SIGNAL(finished()), this, SLOT(finish()));
+	media->play();
+}
 
-private Q_SLOTS:
-	void finish();
-};
+void SoundPlayer::finish()
+{
+	qDebug() << "Emitting \"finished\"";
+	deleteLater();
+	Q_EMIT finished(currentSound);
+}
 
-#endif
+QString SoundPlayer::soundDescription(SoundType soundType)
+{
+	switch (soundType)
+	{
+		case STAuth:
+			return "auth";
+		case STLetter:
+			return "letter";
+		case STMessage:
+			return "message";
+		case STOtprav:
+			return "otprav";
+		case STRing:
+			return "ring";
+		case STConference:
+			return "conference";
+		default:
+			return "";
+	}
+}

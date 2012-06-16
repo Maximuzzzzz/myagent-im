@@ -23,7 +23,7 @@
 
 #include "simpleblockingtask.h"
 #include "mrim/mrimclient.h"
-#include "core/contactinfo.h"
+#include "contactinfo.h"
 
 namespace Tasks
 {

@@ -30,8 +30,6 @@
 #include "resourcemanager.h"
 #include "chatsmanager.h"
 #include "historymanager.h"
-#include "gui/centerwindow.h"
-#include "gui/onlinestatuseseditor.h"
 
 Account::Account(QByteArray email, QByteArray password, QObject* parent)
 	: QObject(parent)
@@ -142,11 +140,6 @@ QString Account::avatarsPath() const
 QSettings *Account::settings()
 {
 	return m_settings;
-}
-
-OnlineStatusesEditor *Account::onlineStatusesEditor()
-{
-	return m_onlineStatusesEditor;
 }
 
 void Account::setOnlineStatus(OnlineStatus newStatus, qint32 id)
@@ -335,20 +328,6 @@ void Account::saveOnlineStatus(OnlineStatus st)
 
 		m_settings->setValue("Statuses/statusPointer", m_pointerOnlineStatus);
 	}
-}
-
-void Account::showOnlineStatusesEditor()
-{
-	if (m_onlineStatusesEditor)
-		return;
-	qDebug() << "Statuses editor isn't exists";
-	m_onlineStatusesEditor = new OnlineStatusesEditor(this);
-	centerWindow(m_onlineStatusesEditor);
-
-	connect(m_onlineStatusesEditor, SIGNAL(statusesChanged()), this, SIGNAL(extendedStatusesChanged()));
-	connect(m_onlineStatusesEditor, SIGNAL(statusChanged(qint32, OnlineStatus)), this, SLOT(extendedStatusChanged(qint32, OnlineStatus)));
-
-	m_onlineStatusesEditor->show();
 }
 
 void Account::extendedStatusChanged(qint32 id, OnlineStatus status)

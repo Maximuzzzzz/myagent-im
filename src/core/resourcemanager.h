@@ -23,11 +23,11 @@
 
 #include <QObject>
 
-#include "core/emoticons.h"
-#include "core/locations.h"
-#include "core/onlinestatus.h"
-#include "core/onlinestatuses.h"
-#include "core/mults.h"
+#include "emoticons.h"
+#include "locations.h"
+#include "onlinestatus.h"
+#include "onlinestatuses.h"
+#include "mults.h"
 
 class Audio;
 class Account;

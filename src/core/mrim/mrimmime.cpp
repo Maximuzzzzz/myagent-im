@@ -23,7 +23,7 @@
 #include <QDebug>
 #include <QTextCodec>
 
-#include "core/datetime.h"
+#include "datetime.h"
 
 MrimMIME::MrimMIME()
 	: m_hasPlainText(false), m_hasRtfText(false), m_isMultipart(false)

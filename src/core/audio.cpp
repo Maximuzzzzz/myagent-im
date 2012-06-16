@@ -17,62 +17,41 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#include "soundplayer.h"
+#include "audio.h"
 
 #include <QDebug>
+#include <QSettings>
 
-#include "resourcemanager.h"
+#include "account.h"
 
-SoundPlayer::SoundPlayer(QObject *parent)
-	: QObject(parent), media(0), currentSound(STAuth)
+Audio::Audio(QObject *parent)
+	: QObject(parent), audio(0), m_account(0)
 {
 }
 
-SoundPlayer::~SoundPlayer()
+void Audio::play(SoundType soundType)
 {
-}
+	if (m_account && !m_account->settings()->value("Sounds/Enable", true).toBool())
+		return;
 
-void SoundPlayer::playSound(SoundType soundType)
-{
-	qDebug() << "Audio::playSound(\"" + soundDescription(soundType) + ".ogg\")";
-	currentSound = soundType;
-	media = new Phonon::MediaObject(this);
-	QString mediaFile = soundDescription(soundType);
-
-	qDebug() << "File: " << (theRM.soundsResourcePrefix() + ':' + mediaFile + ".ogg");
-	if (mediaFile.isEmpty())
-		qDebug() << "Error: Media file not found";
-	else
-		media->setCurrentSource(Phonon::MediaSource(theRM.soundsResourcePrefix() + ':' + mediaFile + ".ogg"));
-	Phonon::createPath(media, &output);
-	connect(media, SIGNAL(finished()), this, SLOT(finish()));
-	media->play();
-}
-
-void SoundPlayer::finish()
-{
-	qDebug() << "Emitting \"finished\"";
-	deleteLater();
-	Q_EMIT finished(currentSound);
-}
-
-QString SoundPlayer::soundDescription(SoundType soundType)
-{
-	switch (soundType)
+	if (!sounds.contains(soundType))
 	{
-		case STAuth:
-			return "auth";
-		case STLetter:
-			return "letter";
-		case STMessage:
-			return "message";
-		case STOtprav:
-			return "otprav";
-		case STRing:
-			return "ring";
-		case STConference:
-			return "conference";
-		default:
-			return "";
+		if (soundType != STOtprav)
+			sounds.insert(soundType);
+		audio = new SoundPlayer();
+		connect(audio, SIGNAL(finished(SoundType)), this, SLOT(stop(SoundType)));
+		qDebug() << "playing sound";
+		audio->playSound(soundType);
 	}
+}
+
+void Audio::stop(SoundType soundType)
+{
+	qDebug() << "removing current sound type";
+	sounds.remove(soundType);
+}
+
+void Audio::setAccount(Account* account)
+{
+	m_account = account;
 }

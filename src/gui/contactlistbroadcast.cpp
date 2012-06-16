@@ -19,7 +19,7 @@
 
 #include "contactlistbroadcast.h"
 
-#include "models/contactlistmodel.h"
+#include "contactlistmodel.h"
 #include "models/contactlistbroadcastmodel.h"
 #include "core/contactlist.h"
 

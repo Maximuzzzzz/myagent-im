@@ -27,7 +27,7 @@
 
 #include "core/account.h"
 #include "core/contactlist.h"
-#include "gui/models/contactlistmodel.h"
+#include "contactlistmodel.h"
 #include "gui/models/contactlistsortfilterproxymodel.h"
 #include "gui/contactlisttreeview.h"
 #include "mrim/mrimclient.h"

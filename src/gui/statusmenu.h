@@ -22,10 +22,12 @@
 #define STATUSMENU_H
 
 #include <QMenu>
+#include <QPointer>
 
 #include "core/onlinestatus.h"
 
 class Account;
+class OnlineStatusesEditor;
 
 class StatusMenu : public QMenu
 {
@@ -39,17 +41,19 @@ public Q_SLOTS:
 	void updateExtendedStatuses();
 
 Q_SIGNALS:
-	void showOnlineStatusesEditor();
 	void statusChanged(OnlineStatus status, qint32 id);
 
 private Q_SLOTS:
 	QAction* createStatusAction(OnlineStatus status);
 	void slotActionTriggered(QAction* action);
+	void showOnlineStatusesEditor();
 
 private:
 	Account* m_account;
 	QActionGroup* extendedActions;
 	QAction* mainSeparator;
+
+	QPointer<OnlineStatusesEditor> m_onlineStatusesEditor;
 };
 
 #endif

@@ -30,7 +30,6 @@
 
 class QSettings;
 
-class OnlineStatusesEditor;
 class ContactList;
 
 class Account : public QObject
@@ -61,14 +60,12 @@ public:
 	uint unreadLetters() const { return m_unreadMessages; }
 
 	QSettings* settings();
-	OnlineStatusesEditor* onlineStatusesEditor();
 
 	void setAutoAway(bool on);
 public Q_SLOTS:
 	void setOnlineStatus(OnlineStatus status, qint32 id = -1);
 	void saveOnlineStatus(OnlineStatus st);
 	void savePassword(bool really);
-	void showOnlineStatusesEditor();
 	void extendedStatusChanged(qint32 id, OnlineStatus status);
 
 Q_SIGNALS:
@@ -105,7 +102,6 @@ private:
 	QPointer<MRIMClient> m_client;
 	QPointer<ChatsManager> m_chatsManager;
 	QPointer<QSettings> m_settings;
-	QPointer<OnlineStatusesEditor> m_onlineStatusesEditor;
 
 	bool m_isInAutoAway;
 	OnlineStatus m_statusBeforeAutoAway;
