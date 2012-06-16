@@ -3,7 +3,7 @@ TARGET = myagent-im
 CONFIG += qt no_keywords warn_on debug
 QT += network \
     phonon
-INCLUDEPATH += /usr/include
+INCLUDEPATH += core
 TRANSLATIONS = locale/myagent-im_en.ts \
     locale/myagent-im_ru.ts \
     locale/myagent-im_uk.ts \
@@ -136,6 +136,31 @@ SOURCES += main.cpp \
     core/onlinestatus.cpp \
     core/zlibbytearray.cpp \
     core/zodiac.cpp \
+    core/mrim/mrimmime.cpp \
+    core/mrim/mrimdatastream.cpp \
+    core/mrim/mrimclientprivate.cpp \
+    core/mrim/mrimclient.cpp \
+    core/mrim/filemessage.cpp \
+    core/mrim/fileexistsdialog.cpp \
+    core/mrim/tasks/tasksetvisibility.cpp \
+    core/mrim/tasks/tasksendsms.cpp \
+    core/mrim/tasks/tasksendmessage.cpp \
+    core/mrim/tasks/tasksearchcontacts.cpp \
+    core/mrim/tasks/taskrequestcontactinfo.cpp \
+    core/mrim/tasks/taskrenamegroup.cpp \
+    core/mrim/tasks/taskrenamecontact.cpp \
+    core/mrim/tasks/taskremovegroup.cpp \
+    core/mrim/tasks/taskremovecontact.cpp \
+    core/mrim/tasks/tasknewconference.cpp \
+    core/mrim/tasks/taskignorecontact.cpp \
+    core/mrim/tasks/taskgetmpopsession.cpp \
+    core/mrim/tasks/taskchangephones.cpp \
+    core/mrim/tasks/taskchangegroup.cpp \
+    core/mrim/tasks/taskbroadcastmessage.cpp \
+    core/mrim/tasks/taskaddsmscontact.cpp \
+    core/mrim/tasks/taskaddgroup.cpp \
+    core/mrim/tasks/taskaddcontact.cpp \
+    core/mrim/tasks/task.cpp \
     gui/logindialog.cpp \
     resourcemanager.cpp \
     gui/settingswindow.cpp \
@@ -147,30 +172,6 @@ SOURCES += main.cpp \
     idle/idle_win.cpp \
     idle/idle_mac.cpp \
     idle/idle.cpp \
-    mrim/mrimmime.cpp \
-    mrim/mrimdatastream.cpp \
-    mrim/mrimclientprivate.cpp \
-    mrim/mrimclient.cpp \
-    mrim/filemessage.cpp \
-    mrim/tasks/tasksetvisibility.cpp \
-    mrim/tasks/tasksendsms.cpp \
-    mrim/tasks/tasksendmessage.cpp \
-    mrim/tasks/tasksearchcontacts.cpp \
-    mrim/tasks/taskrequestcontactinfo.cpp \
-    mrim/tasks/taskrenamegroup.cpp \
-    mrim/tasks/taskrenamecontact.cpp \
-    mrim/tasks/taskremovegroup.cpp \
-    mrim/tasks/taskremovecontact.cpp \
-    mrim/tasks/tasknewconference.cpp \
-    mrim/tasks/taskignorecontact.cpp \
-    mrim/tasks/taskgetmpopsession.cpp \
-    mrim/tasks/taskchangephones.cpp \
-    mrim/tasks/taskchangegroup.cpp \
-    mrim/tasks/taskbroadcastmessage.cpp \
-    mrim/tasks/taskaddsmscontact.cpp \
-    mrim/tasks/taskaddgroup.cpp \
-    mrim/tasks/taskaddcontact.cpp \
-    mrim/tasks/task.cpp \
     gui/onlinestatuseseditor.cpp \
     gui/onlinestatusselector.cpp \
     gui/emoticonwidget.cpp \
@@ -244,8 +245,7 @@ SOURCES += main.cpp \
     qgsmcodec.cpp \
     gui/contactlistitemdelegate.cpp \
     gui/multselector.cpp \
-    gui/gnashplayer.cpp \
-    mrim/fileexistsdialog.cpp
+    gui/gnashplayer.cpp
 
 HEADERS += core/account.h \
     core/accountmanager.h \
@@ -272,37 +272,38 @@ HEADERS += core/account.h \
     gui/logindialog.h \
     resourcemanager.h \
     gui/settingswindow.h \
-    mrim/proto.h \
     audio.h \
     soundplayer.h \
     gui/centerwindow.h \
     gui/contactlistwindow.h \
     idle/idle.h \
-    mrim/mrimmime.h \
-    mrim/mrimdatastream.h \
-    mrim/mrimclientprivate.h \
-    mrim/mrimclient.h \
-    mrim/filemessage.h \
-    mrim/tasks/tasksetvisibility.h \
-    mrim/tasks/tasksendsms.h \
-    mrim/tasks/tasksendmessage.h \
-    mrim/tasks/tasksearchcontacts.h \
-    mrim/tasks/taskrequestcontactinfo.h \
-    mrim/tasks/taskrenamegroup.h \
-    mrim/tasks/taskrenamecontact.h \
-    mrim/tasks/taskremovegroup.h \
-    mrim/tasks/taskremovecontact.h \
-    mrim/tasks/tasknewconference.h \
-    mrim/tasks/taskignorecontact.h \
-    mrim/tasks/taskgetmpopsession.h \
-    mrim/tasks/taskchangephones.h \
-    mrim/tasks/taskchangegroup.h \
-    mrim/tasks/taskbroadcastmessage.h \
-    mrim/tasks/taskaddsmscontact.h \
-    mrim/tasks/taskaddgroup.h \
-    mrim/tasks/taskaddcontact.h \
-    mrim/tasks/task.h \
-    mrim/tasks/simpleblockingtask.h \
+    core/mrim/proto.h \
+    core/mrim/mrimmime.h \
+    core/mrim/mrimdatastream.h \
+    core/mrim/mrimclientprivate.h \
+    core/mrim/mrimclient.h \
+    core/mrim/filemessage.h \
+    core/mrim/fileexistsdialog.h \
+    core/mrim/tasks/tasksetvisibility.h \
+    core/mrim/tasks/tasksendsms.h \
+    core/mrim/tasks/tasksendmessage.h \
+    core/mrim/tasks/tasksearchcontacts.h \
+    core/mrim/tasks/taskrequestcontactinfo.h \
+    core/mrim/tasks/taskrenamegroup.h \
+    core/mrim/tasks/taskrenamecontact.h \
+    core/mrim/tasks/taskremovegroup.h \
+    core/mrim/tasks/taskremovecontact.h \
+    core/mrim/tasks/tasknewconference.h \
+    core/mrim/tasks/taskignorecontact.h \
+    core/mrim/tasks/taskgetmpopsession.h \
+    core/mrim/tasks/taskchangephones.h \
+    core/mrim/tasks/taskchangegroup.h \
+    core/mrim/tasks/taskbroadcastmessage.h \
+    core/mrim/tasks/taskaddsmscontact.h \
+    core/mrim/tasks/taskaddgroup.h \
+    core/mrim/tasks/taskaddcontact.h \
+    core/mrim/tasks/task.h \
+    core/mrim/tasks/simpleblockingtask.h \
     gui/onlinestatuseseditor.h \
     gui/onlinestatusselector.h \
     gui/emoticonwidget.h \
@@ -383,8 +384,7 @@ HEADERS += core/account.h \
     gui/contactlistitemdelegate.h \
     gui/multselector.h \
     gui/iflashplayer.h \
-    gui/gnashplayer.h \
-    mrim/fileexistsdialog.h
+    gui/gnashplayer.h
 
 FORMS += gui/logindialog.ui \
     gui/authorize.ui \
