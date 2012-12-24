@@ -2,7 +2,7 @@ Source: myagent-im
 Section: net
 Priority: optional
 Maintainer: Alexander Volkov <volkov0aa@gmail.com>
-Build-Depends: debhelper (>= 7), libqt4-dev (>= 4.4), pkg-config, flex, zlib1g-dev, libxapian-dev, libx11-dev, libxss-dev, libaspell-dev, libphonon-dev
+Build-Depends: cdbs, debhelper (>= 7), libqt4-dev (>= 4.4), pkg-config, flex, zlib1g-dev, libxapian-dev, libx11-dev, libxss-dev, libaspell-dev, libphonon-dev
 Standards-Version: 3.8.3
 Homepage: http://code.google.com/p/myagent-im
 
