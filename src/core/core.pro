@@ -3,7 +3,7 @@ CONFIG += static no_keywords create_prl
 
 QMAKE_CLEAN += libcore.prl
 
-DEFINES += VERSION=\\\"0.5.0\\\"
+include(../configure.pri)
 
 QT += network
 

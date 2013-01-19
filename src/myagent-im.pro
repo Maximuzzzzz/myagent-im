@@ -5,7 +5,7 @@ QT += network
 
 LIBS += -Lcore -lcore
 
-DEFINES += VERSION=\\\"0.5.0\\\"
+include(configure.pri)
 
 INCLUDEPATH += core
 TRANSLATIONS = locale/myagent-im_en.ts \
@@ -38,12 +38,6 @@ unix {
     PKGCONFIG += xscrnsaver zlib x11
 }
 unix {
-    isEmpty(PREFIX):PREFIX = /usr/local
-    BINDIR = $$PREFIX/bin
-    DATADIR = $$PREFIX/share/myagent-im
-    HICOLOR = $$PREFIX/share/icons/hicolor
-    DEFINES += DATADIR=\\\"$$DATADIR\\\"
-
     INSTALLS += target \
         smiles_animated \
         smiles_set03 \
