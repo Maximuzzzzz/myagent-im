@@ -22,11 +22,7 @@
 
 #include <QObject>
 
-namespace Phonon
-{
-class MediaObject;
-class AudioOutput;
-}
+class QMediaPlayer;
 
 enum SoundType
 {
@@ -44,20 +40,19 @@ Q_OBJECT
 public:
 	SoundPlayer(QObject* parent = 0);
 	~SoundPlayer();
-	void playSound(SoundType soundType);
+	bool playSound(SoundType soundType);
 
 Q_SIGNALS:
 	void finished(SoundType soundType);
 
 private:
 	QList<SoundType> sounds;
-	Phonon::MediaObject* media;
-	Phonon::AudioOutput* output;
 	QString soundDescription(SoundType soundType);
 	SoundType currentSound;
+	QMediaPlayer* mediaPlayer;
 
 private Q_SLOTS:
-	void finish();
+	void mediaStateChanged();
 };
 
 #endif

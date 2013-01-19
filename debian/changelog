@@ -1,3 +1,9 @@
+myagent-im (0.4.7) unstable; urgency=low
+
+  * Use Qt Mobility's multimedia framework instead of Phonon to play sounds
+
+ -- Alexander Volkov <volkov0aa@gmail.com>  Sun, 20 Jan 2013 01:09:34 +0400
+
 myagent-im (0.4.6-1lucid1) unstable; urgency=low
   Dmitry Malakhov <abr_mail@mail.ru>:
   * Fixed bugs with encoding in contact list and anketa

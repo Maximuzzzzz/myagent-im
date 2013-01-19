@@ -21,43 +21,55 @@
 
 #include <QDebug>
 
-#include <Phonon/AudioOutput>
-#include <Phonon/MediaObject>
+#include <QMediaPlayer>
 
 #include "resourcemanager.h"
 
 SoundPlayer::SoundPlayer(QObject *parent)
-	: QObject(parent), media(0), currentSound(STAuth)
+	: QObject(parent),
+	  currentSound(STAuth),
+	  mediaPlayer(0)
 {
-	output = new Phonon::AudioOutput(this);
 }
 
 SoundPlayer::~SoundPlayer()
 {
 }
 
-void SoundPlayer::playSound(SoundType soundType)
+bool SoundPlayer::playSound(SoundType soundType)
 {
 	qDebug() << "Audio::playSound(\"" + soundDescription(soundType) + ".ogg\")";
 	currentSound = soundType;
-	media = new Phonon::MediaObject(this);
+
 	QString mediaFile = soundDescription(soundType);
 
 	qDebug() << "File: " << (theRM.soundsResourcePrefix() + ':' + mediaFile + ".ogg");
 	if (mediaFile.isEmpty())
+	{
 		qDebug() << "Error: Media file not found";
-	else
-		media->setCurrentSource(Phonon::MediaSource(theRM.soundsResourcePrefix() + ':' + mediaFile + ".ogg"));
-	Phonon::createPath(media, output);
-	connect(media, SIGNAL(finished()), this, SLOT(finish()));
-	media->play();
+		deleteLater();
+		return false;
+	}
+
+	mediaPlayer = new QMediaPlayer(this);
+
+	mediaPlayer->setMedia(QUrl(theRM.soundsResourcePrefix() + ':' + mediaFile + ".ogg"));
+
+	connect(mediaPlayer, SIGNAL(stateChanged(QMediaPlayer::State)), this, SLOT(mediaStateChanged()));
+	mediaPlayer->play();
+
+	return true;
 }
 
-void SoundPlayer::finish()
+void SoundPlayer::mediaStateChanged()
 {
 	qDebug() << "Emitting \"finished\"";
-	deleteLater();
-	Q_EMIT finished(currentSound);
+
+	if (mediaPlayer->state() == QMediaPlayer::StoppedState)
+	{
+		deleteLater();
+		Q_EMIT finished(currentSound);
+	}
 }
 
 QString SoundPlayer::soundDescription(SoundType soundType)

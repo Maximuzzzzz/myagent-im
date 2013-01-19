@@ -5,7 +5,11 @@ QMAKE_CLEAN += libcore.prl
 
 DEFINES += VERSION=\\\"0.5.0\\\"
 
-QT += network phonon
+QT += network
+
+QT_CONFIG -= opengl # hack to avoid linking with QtOpenGL
+CONFIG += mobility
+MOBILITY = multimedia
 
 HEADERS += account.h \
     accountmanager.h \
