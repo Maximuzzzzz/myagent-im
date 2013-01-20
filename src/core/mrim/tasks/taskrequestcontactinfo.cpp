@@ -70,7 +70,7 @@ void RequestContactInfo::checkResult(quint32 msgseq, quint32 status, MRIMClient:
 			{
 				if (info.contains("status_uri") && !info["status_uri"].first().isEmpty())
 				{
-					QByteArray statusId = info["status_uri"].first().toAscii();
+					QByteArray statusId = info["status_uri"].first().toLatin1();
 					QString statusDescr = info["status_title"].first();
 					onlineStatus = OnlineStatus(statusId, statusDescr);
 				}

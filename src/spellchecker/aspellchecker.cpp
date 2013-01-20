@@ -44,7 +44,7 @@ ASpellChecker::ASpellChecker()
 		speller_ = to_aspell_speller(ret);
 	}
 	else {
-		qWarning(QString("Aspell error: %1").arg(aspell_error_message(ret)).toAscii());
+		qWarning(QString("Aspell error: %1").arg(aspell_error_message(ret)).toLatin1());
 	}
 }
 

@@ -86,7 +86,7 @@ void Tasks::SearchContacts::checkResult(quint32 msgseq, quint32 status, MRIMClie
 				{
 					if (info.contains("status_uri") && !info["status_uri"].at(i).isEmpty())
 					{
-						QByteArray statusId = info["status_uri"].at(i).toAscii();
+						QByteArray statusId = info["status_uri"].at(i).toLatin1();
 						QString statusDescr = info.value("status_title").value(i);
 						qDebug() << Q_FUNC_INFO << "statusId =" << statusId << ", statusDescr =" << statusDescr;
 						onlineStatus = OnlineStatus(statusId, statusDescr);

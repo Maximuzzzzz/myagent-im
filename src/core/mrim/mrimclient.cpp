@@ -239,7 +239,7 @@ quint32 MRIMClient::sendRtfMessage(QByteArray email, QString text, QByteArray rt
 {
 	//QByteArray baText = p->codec->fromUnicode(text);
 
-	qDebug() << "MRIMClient send message: " << QString::fromAscii(rtf);
+	qDebug() << "MRIMClient send message: " << QString::fromLatin1(rtf);
 
 	QByteArray packedRtf = p->packRtf(rtf);
 
