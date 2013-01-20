@@ -7,3 +7,5 @@ unix {
     HICOLOR = $$PREFIX/share/icons/hicolor
     DEFINES += DATADIR=\\\"$$DATADIR\\\"
 }
+
+QMAKE_CXXFLAGS += -Werror=return-type
