@@ -1,6 +1,6 @@
 TEMPLATE = app
 TARGET = myagent-im
-CONFIG += qt no_keywords warn_on debug
+CONFIG += qt no_keywords warn_on
 QT += network
 
 greaterThan(QT_MAJOR_VERSION, 4) {
