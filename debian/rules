@@ -2,9 +2,10 @@
 
 DEB_BUILD_PARALLEL ?= 1
 
-DEB_QMAKE_ARGS = PREFIX=/usr
-
 include /usr/share/cdbs/1/rules/debhelper.mk
+
+DEB_QMAKE_ARGS = PREFIX=/usr APP_VERSION=${DEB_VERSION}
+
 include /usr/share/cdbs/1/class/qmake.mk
 
 clean::

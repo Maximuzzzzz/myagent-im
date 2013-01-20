@@ -1,4 +1,8 @@
-DEFINES += VERSION=\\\"0.5.0\\\"
+isEmpty(APP_VERSION) {
+    DEFINES += VERSION=\\\"0.4.7-devel\\\"
+} else {
+    DEFINES += VERSION=\\\"$${APP_VERSION}\\\"
+}
 
 unix {
     isEmpty(PREFIX):PREFIX = /usr/local
