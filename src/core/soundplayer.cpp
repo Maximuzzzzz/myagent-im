@@ -22,6 +22,7 @@
 #include <QDebug>
 
 #include <QMediaPlayer>
+#include <QDir>
 
 #include "resourcemanager.h"
 
@@ -43,7 +44,6 @@ bool SoundPlayer::playSound(SoundType soundType)
 
 	QString mediaFile = soundDescription(soundType);
 
-	qDebug() << "File: " << (theRM.soundsResourcePrefix() + ':' + mediaFile + ".ogg");
 	if (mediaFile.isEmpty())
 	{
 		qDebug() << "Error: Media file not found";
@@ -53,7 +53,7 @@ bool SoundPlayer::playSound(SoundType soundType)
 
 	mediaPlayer = new QMediaPlayer(this);
 
-	mediaPlayer->setMedia(QUrl(theRM.soundsResourcePrefix() + ':' + mediaFile + ".ogg"));
+	mediaPlayer->setMedia(QUrl(theRM.soundsPath() + QDir::separator() + mediaFile + ".ogg"));
 
 	connect(mediaPlayer, SIGNAL(stateChanged(QMediaPlayer::State)), this, SLOT(mediaStateChanged()));
 	mediaPlayer->play();

@@ -41,17 +41,16 @@ ResourceManager::ResourceManager(QObject *parent)
 #ifdef DATADIR
 	QString emoticonsPath = QLatin1String(DATADIR) + "/emoticons";
 	QString onlineStatusesPath = QLatin1String(DATADIR) + "/emoticons";
-	QString soundsPath = QLatin1String(DATADIR) + "/sounds";
+	m_soundsPath = QLatin1String(DATADIR) + "/sounds";
 	QString flashPath = QLatin1String(DATADIR) + "/emoticons/flash";
 #else
 	QString emoticonsPath = QCoreApplication::applicationDirPath() + "/emoticons";
 	QString onlineStatusesPath = QCoreApplication::applicationDirPath() + "/emoticons";
-	QString soundsPath = QCoreApplication::applicationDirPath() + "/sounds";
+	m_soundsPath = QCoreApplication::applicationDirPath() + "/sounds";
 	QString flashPath = QCoreApplication::applicationDirPath() + "/emoticons/flash";
 #endif
 	QDir::addSearchPath(emoticonsResourcePrefix(), emoticonsPath);
 	QDir::addSearchPath(statusesResourcePrefix(), onlineStatusesPath);
-	QDir::addSearchPath(soundsResourcePrefix(), soundsPath);
 	QDir::addSearchPath(flashResourcePrefix(), flashPath);
 	m_locale = QLocale::system().name();
 	qDebug() << "loc:" << (emoticonsPath + "/skin/" + m_locale + "/skin.txt");
@@ -113,9 +112,9 @@ QString ResourceManager::statusesResourcePrefix()
 	return "statuses";
 }
 
-QString ResourceManager::soundsResourcePrefix()
+QString ResourceManager::soundsPath() const
 {
-	return "sounds";
+	return m_soundsPath;
 }
 
 QString ResourceManager::flashResourcePrefix()

@@ -48,7 +48,7 @@ public:
 	const Locations& locations() const { return m_locations; }
 	QString emoticonsResourcePrefix();
 	QString statusesResourcePrefix();
-	QString soundsResourcePrefix();
+	QString soundsPath() const;
 	QString flashResourcePrefix();
 	Audio* getAudio() { return audio; }
 	QString locale() { return m_locale; }
@@ -78,6 +78,7 @@ private:
 	Mults m_mults;
 	Audio* audio;
 	QString m_locale;
+	QString m_soundsPath;
 
 	Account* m_account;
 };
