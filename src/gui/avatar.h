@@ -24,9 +24,11 @@
 #include <QObject>
 #include <QPixmap>
 #include <QUrl>
-#include <QHttp>
 #include <QBuffer>
 #include <QDateTime>
+
+class QNetworkAccessManager;
+class QNetworkReply;
 
 class Avatar : public QObject, public QPixmap
 {
@@ -56,16 +58,15 @@ protected:
 	virtual QString imageName() const;
 	
 private Q_SLOTS:
-	void httpDone(bool error);
+	void managerFinished(QNetworkReply* reply);
 
 private:
 	void requestHttpHeader(QUrl url);
 	void requestImage();
 	
-	QHttp m_http;
-	QBuffer m_buffer;
+	QNetworkAccessManager* m_manager;
 	bool m_bRequestingHeader;
-	QString m_httpPath;
+	QUrl m_url;
 	QString m_dirname;
 	QDateTime m_fileDateTime;
 	State m_state;

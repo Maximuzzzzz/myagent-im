@@ -24,20 +24,25 @@
 
 #include <QDir>
 #include <QFile>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
 
 #include "core/datetime.h"
 
 Avatar::Avatar(QObject* parent)
 	: QObject(parent)
 {
-	connect(&m_http, SIGNAL(done(bool)), this, SLOT(httpDone(bool)));
+	m_manager = new QNetworkAccessManager(this);
+
+	connect(m_manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(managerFinished(QNetworkReply*)));
 	
 	reset();
 }
 
 Avatar::~Avatar()
 {
-	m_http.disconnect(this);
+	m_manager->disconnect(this);
 }
 
 void Avatar::reset()
@@ -100,29 +105,30 @@ void Avatar::load(const QString& dirname, const QString& email)
 
 void Avatar::requestHttpHeader(QUrl url)
 {
-	qDebug() << "url path = " << url.path();
+	qDebug() << Q_FUNC_INFO << "url path = " << url.toString();
 	if (!url.isValid()) {
 		qDebug() << "Error: Invalid URL" << endl;
 		return;
 	}
 	
 	m_bRequestingHeader = true;
-	m_httpPath = url.path();
+	m_url = url;
 	
 	setLoading();
 	
-	m_http.setHost(url.host(), url.port(80));
-	m_http.head(m_httpPath);
+	m_manager->head(QNetworkRequest(url));
 }
 
-void Avatar::httpDone(bool error)
+void Avatar::managerFinished(QNetworkReply* reply)
 {
+	reply->deleteLater();
+
 	if (m_bRequestingHeader)
 	{
 		m_bRequestingHeader = false;
 		qDebug() << "header received";
 		
-		if (m_http.lastResponse().statusCode() == 404)
+		if (reply->error() == QNetworkReply::ContentNotFoundError)
 		{
 			qDebug() << "Avatar: error 404";
 			reset();
@@ -141,7 +147,7 @@ void Avatar::httpDone(bool error)
 			else
 			{
 				qDebug() << "m_fileDateTime is valid";
-				QDateTime modificationDateTime = parseRFCDate(m_http.lastResponse().value("Last-Modified"));
+				QDateTime modificationDateTime = reply->header(QNetworkRequest::LastModifiedHeader).toDateTime();
 				
 				if (!modificationDateTime.isValid() || modificationDateTime > m_fileDateTime)
 				{
@@ -170,17 +176,18 @@ void Avatar::httpDone(bool error)
 	}
 	
 	qDebug() << "processing body";
-	m_buffer.close();
 	
-	if (error)
+	if (reply->error() != QNetworkReply::NoError)
 	{
-		qDebug() << "Error: " << qPrintable(m_http.errorString()) << endl;
+		qDebug() << "Error: " << qPrintable(reply->errorString()) << endl;
 		reset();
 		return;
 	}
 	
+	QByteArray rawData = reply->readAll();
+
 	QPixmap tmpPixmap;
-	if (!tmpPixmap.loadFromData(m_buffer.buffer()))
+	if (!tmpPixmap.loadFromData(rawData))
 	{
 		qDebug() << "wrong image format";
 		reset();
@@ -193,7 +200,7 @@ void Avatar::httpDone(bool error)
 	QFile pixmapFile(dir.absoluteFilePath(imageName()));
 	if (pixmapFile.open(QFile::WriteOnly))
 	{
-		pixmapFile.write(m_buffer.buffer());
+		pixmapFile.write(rawData);
 		pixmapFile.close();
 	}
 	
@@ -210,10 +217,7 @@ void Avatar::httpDone(bool error)
 
 void Avatar::requestImage()
 {
-	m_buffer.buffer().clear();
-	m_buffer.open(QIODevice::WriteOnly);
-	
-	m_http.get(m_httpPath, &m_buffer);
+	m_manager->get(QNetworkRequest(m_url));
 }
 
 QString Avatar::avatarBaseHref() const
