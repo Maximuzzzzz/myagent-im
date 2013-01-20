@@ -27,6 +27,7 @@
 #include <QApplication>
 #include <QMenu>
 #include <QClipboard>
+#include <QMimeData>
 
 LinkButton::LinkButton(const QString& url, const QIcon& icon, QWidget *parent)
 	: ToolButton(icon, parent), m_url(url)

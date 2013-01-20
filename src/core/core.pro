@@ -7,9 +7,13 @@ include(../configure.pri)
 
 QT += network
 
-QT_CONFIG -= opengl # hack to avoid linking with QtOpenGL
-CONFIG += mobility
-MOBILITY = multimedia
+greaterThan(QT_MAJOR_VERSION, 4) {
+    QT += widgets multimedia
+} else {
+    QT_CONFIG -= opengl # hack to avoid linking with QtOpenGL
+    CONFIG += mobility
+    MOBILITY = multimedia
+}
 
 HEADERS += account.h \
     accountmanager.h \

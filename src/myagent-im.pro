@@ -3,6 +3,10 @@ TARGET = myagent-im
 CONFIG += qt no_keywords warn_on debug
 QT += network
 
+greaterThan(QT_MAJOR_VERSION, 4) {
+    QT += widgets gui-private
+}
+
 LIBS += -Lcore -lcore
 
 include(configure.pri)
@@ -192,8 +196,7 @@ SOURCES += main.cpp \
     gui/smsedit.cpp \
     qgsmcodec.cpp \
     gui/contactlistitemdelegate.cpp \
-    gui/multselector.cpp \
-    gui/gnashplayer.cpp
+    gui/multselector.cpp
 
 HEADERS += gui/logindialog.h \
     gui/settingswindow.h \
@@ -274,8 +277,12 @@ HEADERS += gui/logindialog.h \
     qgsmcodec.h \
     gui/contactlistitemdelegate.h \
     gui/multselector.h \
-    gui/iflashplayer.h \
-    gui/gnashplayer.h
+    gui/iflashplayer.h
+
+lessThan(QT_MAJOR_VERSION, 5) {
+    HEADERS += gui/gnashplayer.h
+    SOURCES += gui/gnashplayer.cpp
+}
 
 FORMS += gui/logindialog.ui \
     gui/authorize.ui \

@@ -51,9 +51,12 @@
 #include "animatedtextbrowser.h"
 #include "contactlistbroadcast.h"
 #include "contactlistconferencewithhandle.h"
-#include "iflashplayer.h"
-#include "gnashplayer.h"
 #include "core/contactlist.h"
+
+#include "iflashplayer.h"
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+#include "gnashplayer.h"
+#endif
 
 ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoticonSelector, MultSelector* multSelector)
 	: QWidget(),
@@ -258,7 +261,11 @@ ChatWindow::ChatWindow(Account* account, ChatSession* s, EmoticonSelector* emoti
 
 	setLayout(layout);
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 	flashPlayer = new GnashPlayer(this);
+#else
+	flashPlayer = 0;
+#endif
 
 	qDebug() << Q_FUNC_INFO << "}";
 }

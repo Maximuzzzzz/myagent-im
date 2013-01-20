@@ -23,6 +23,7 @@
 #include <QDebug>
 #include <QHeaderView>
 #include <QDragMoveEvent>
+#include <QDrag>
 
 #include "core/contactmimedata.h"
 #include "core/contact.h"

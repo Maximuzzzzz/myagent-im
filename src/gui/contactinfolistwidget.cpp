@@ -101,7 +101,11 @@ ContactInfoListWidget::ContactInfoListWidget(Account* account, QWidget* parent)
 	setSortingEnabled(true);
 	setUniformRowHeights(true);
 	setItemDelegateForColumn(0, new ContactInfoItemDelegate(this));
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 	header()->setResizeMode(QHeaderView::ResizeToContents);
+#else
+	header()->setSectionResizeMode(QHeaderView::ResizeToContents);
+#endif
 
 	connect(this, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(slotDoubleClicked(const QModelIndex &)));
 }

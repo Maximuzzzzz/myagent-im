@@ -23,6 +23,8 @@
 #include <QPainter>
 #include <QPaintEvent>
 #include <QApplication>
+#include <QDrag>
+#include <QMimeData>
 
 #include "emoticonmovie.h"
 

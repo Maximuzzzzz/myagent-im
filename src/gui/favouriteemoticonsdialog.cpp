@@ -30,6 +30,7 @@
 #include <QDialogButtonBox>
 #include <QDragEnterEvent>
 #include <QPainter>
+#include <QMimeData>
 
 #include "resourcemanager.h"
 #include "emoticonwidget.h"

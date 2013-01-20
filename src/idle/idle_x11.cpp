@@ -23,7 +23,48 @@
 
 #include"idle.h"
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 #include <QX11Info>
+#include <X11/Xlib.h>
+
+static Display* x11Display()
+{
+	return QX11Info::display();
+}
+
+static Drawable x11AppRootWindow()
+{
+	return QX11Info::appRootWindow();
+}
+
+#else
+#include <QApplication>
+#include <QWindow>
+#include <QDesktopWidget>
+#include <qpa/qplatformnativeinterface.h>
+#include <X11/Xlib.h>
+
+static Display* x11Display()
+{
+	if (!qApp)
+		return NULL;
+
+	QPlatformNativeInterface *native = qApp->platformNativeInterface();
+
+	void *display = native->nativeResourceForScreen(QByteArray("display"), QGuiApplication::primaryScreen());
+
+	return reinterpret_cast<Display *>(display);
+}
+
+static Drawable x11AppRootWindow()
+{
+	QDesktopWidget *desktop = QApplication::desktop();
+	QWindow *window = desktop->windowHandle();
+
+	return Drawable(window->winId());
+}
+
+#endif
 
 #include <X11/extensions/scrnsaver.h>
 
@@ -69,7 +110,7 @@ bool IdlePlatform::init()
 	old_handler = XSetErrorHandler(xerrhandler);
 
 	int event_base, error_base;
-	if(XScreenSaverQueryExtension(QX11Info::display(), &event_base, &error_base)) {
+	if(XScreenSaverQueryExtension(x11Display(), &event_base, &error_base)) {
 		d->ss_info = XScreenSaverAllocInfo();
 		return true;
 	}
@@ -79,7 +120,7 @@ bool IdlePlatform::init()
 int IdlePlatform::secondsIdle()
 {
 	if(!d->ss_info) return 0;
-	if(!XScreenSaverQueryInfo(QX11Info::display(), QX11Info::appRootWindow(), d->ss_info)) return 0;
+	if(!XScreenSaverQueryInfo(x11Display(), x11AppRootWindow(), d->ss_info)) return 0;
 	return d->ss_info->idle / 1000;
 }
 

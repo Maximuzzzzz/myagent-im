@@ -23,6 +23,7 @@
 #include <QDebug>
 
 #include <QMenu>
+#include <QMimeData>
 
 #include "qgsmcodec.h"
 
