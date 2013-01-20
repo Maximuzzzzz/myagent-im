@@ -119,13 +119,13 @@ void SystemTrayIcon::updateTooltip()
 //	setToolTip("");
 	QString nickname = account->nickname();
 	if (nickname.isEmpty())
-#ifdef Q_WS_X11
+#ifdef HAVE_X11
 		setToolTip("<b>" + account->email() + "</b>");
 #else
 		setToolTip(account->email());
 #endif
 	else
-#ifdef Q_WS_X11
+#ifdef HAVE_X11
 		setToolTip("<b>" + account->nickname() + "</b><br>" + account->email());
 #else
 		setToolTip(account->nickname() + '\n' + account->email());

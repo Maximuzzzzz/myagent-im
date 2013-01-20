@@ -19,7 +19,7 @@
 
 #include <QtGlobal>
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
 
 	#include "idle.h"
 	#include <Carbon/Carbon.h>

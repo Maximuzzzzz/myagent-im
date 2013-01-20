@@ -36,6 +36,7 @@ unix {
     LIBS += $$system(xapian-config --libs)
     CONFIG += link_pkgconfig
     PKGCONFIG += xscrnsaver zlib x11
+    DEFINES += HAVE_X11
 }
 unix {
     INSTALLS += target \

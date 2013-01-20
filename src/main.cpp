@@ -31,7 +31,7 @@
 #include "resourcemanager.h"
 #include "core/account.h"
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 #include <QtPlugin>
 
 Q_IMPORT_PLUGIN(qjpeg)

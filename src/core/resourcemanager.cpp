@@ -83,7 +83,7 @@ ResourceManager & ResourceManager::self()
 
 QString ResourceManager::basePath()
 {
-#ifdef Q_WS_X11
+#ifdef Q_OS_UNIX
 	QDir dir = QDir::home();
 #else
 	QDir dir = QCoreApplication::applicationDirPath();

@@ -19,7 +19,7 @@
 
 #include <QtGlobal>
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 
 	#include "idle.h"
 	
