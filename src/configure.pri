@@ -9,3 +9,21 @@ unix {
 }
 
 QMAKE_CXXFLAGS += -Werror=return-type
+
+*g++* {
+    QMAKE_CXXFLAGS_DEBUG += \
+        -Wextra \
+        -Wlogical-op \
+        -Wold-style-cast \
+        -Woverloaded-virtual \
+        -Winit-self \
+        -Wunreachable-code \
+        -Wctor-dtor-privacy \
+        -Wnon-virtual-dtor \
+        -Wconversion \
+        -pedantic
+
+    QMAKE_CXXFLAGS_DEBUG += -isystem /usr/include/qt4/QtCore
+    QMAKE_CXXFLAGS_DEBUG += -isystem /usr/include/qt4/QtGui
+    QMAKE_CXXFLAGS_DEBUG += -isystem /usr/include/qt4/QtDBus
+}
