@@ -39,36 +39,41 @@ SoundPlayer::~SoundPlayer()
 
 bool SoundPlayer::playSound(SoundType soundType)
 {
-	qDebug() << "Audio::playSound(\"" + soundDescription(soundType) + ".ogg\")";
+	qDebug() << Q_FUNC_INFO << "(\"" + soundDescription(soundType) + ".ogg\")";
 	currentSound = soundType;
 
 	QString mediaFile = soundDescription(soundType);
 
 	if (mediaFile.isEmpty())
 	{
-		qDebug() << "Error: Media file not found";
+		qDebug() << Q_FUNC_INFO << "Error: Media file not found";
 		deleteLater();
 		return false;
 	}
 
 	mediaPlayer = new QMediaPlayer(this);
 
-	mediaPlayer->setMedia(QUrl(theRM.soundsPath() + QDir::separator() + mediaFile + ".ogg"));
+	mediaPlayer->setMedia(QUrl::fromLocalFile(theRM.soundsPath() + QDir::separator() + mediaFile + ".ogg"));
 
-	connect(mediaPlayer, SIGNAL(stateChanged(QMediaPlayer::State)), this, SLOT(mediaStateChanged()));
+	connect(mediaPlayer, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)), this, SLOT(mediaStatusChanged()));
 	mediaPlayer->play();
 
 	return true;
 }
 
-void SoundPlayer::mediaStateChanged()
+void SoundPlayer::mediaStatusChanged()
 {
-	qDebug() << "Emitting \"finished\"";
-
-	if (mediaPlayer->state() == QMediaPlayer::StoppedState)
+	switch (mediaPlayer->mediaStatus())
+	{
+	case QMediaPlayer::InvalidMedia:
+	case QMediaPlayer::EndOfMedia:
 	{
 		deleteLater();
 		Q_EMIT finished(currentSound);
+	}
+		break;
+	default:
+		break;
 	}
 }
 

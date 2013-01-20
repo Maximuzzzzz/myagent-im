@@ -1,6 +1,6 @@
 TEMPLATE = app
 TARGET = myagent-im
-CONFIG += qt no_keywords warn_on
+CONFIG += qt link_prl no_keywords warn_on
 QT += network
 
 greaterThan(QT_MAJOR_VERSION, 4) {

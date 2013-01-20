@@ -52,7 +52,7 @@ private:
 	QMediaPlayer* mediaPlayer;
 
 private Q_SLOTS:
-	void mediaStateChanged();
+	void mediaStatusChanged();
 };
 
 #endif
