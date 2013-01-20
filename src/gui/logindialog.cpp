@@ -179,8 +179,8 @@ void LoginDialog::showSettingsWindow()
 		return;
 
 	settingsWindow = new SettingsWindow(SHOW_CONNECTION_PAGE);
-	centerWindow(settingsWindow.data());
-	settingsWindow.data()->show();
+	centerWindow(settingsWindow);
+	settingsWindow->show();
 }
 
 void LoginDialog::slotSavePassChecked()

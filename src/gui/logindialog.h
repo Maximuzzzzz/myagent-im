@@ -22,7 +22,7 @@
 #define LOGINDIALOG_H
 
 #include <QDialog>
-#include <QWeakPointer>
+#include <QPointer>
 
 #include "ui_logindialog.h"
 #include "core/onlinestatus.h"
@@ -57,7 +57,7 @@ private:
 	QSize sizeWithoutHint;
 	QSize sizeWithHint;
 
-	QWeakPointer<SettingsWindow> settingsWindow;
+	QPointer<SettingsWindow> settingsWindow;
 };
 
 #endif
