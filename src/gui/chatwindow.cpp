@@ -748,7 +748,9 @@ void ChatWindow::fileReceiving(quint32 totalSize, quint32 sessionId, QByteArray 
 	QScrollBar* vScrollBar = chatView->verticalScrollBar();
 	vScrollBar->triggerAction(QAbstractSlider::SliderToMaximum);
 
+	theRM.getAudio()->play(STMessage);
 	qApp->alert(this);
+
 	Q_EMIT newMessage(this);
 }
 
@@ -777,7 +779,8 @@ void ChatWindow::slotAnchorClicked(const QUrl &url)
 	else if (url.path().contains("resend"))
 	{
 		//cleanupCommandUrls("resend");
-		session->resendMessage(url.path().mid(7).toUInt());
+		if (session->resendMessage(url.path().mid(7).toUInt()))
+			theRM.getAudio()->play(STOtprav);
 	}
 }
 

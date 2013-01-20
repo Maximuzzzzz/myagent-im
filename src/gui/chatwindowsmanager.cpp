@@ -33,6 +33,9 @@
 #include "core/message.h"
 #include "emoticonselector.h"
 #include "core/contactlist.h"
+#include "core/mrim/proto.h"
+#include "core/resourcemanager.h"
+#include "core/audio.h"
 
 ChatWindowsManager::ChatWindowsManager(Account* account, QObject *parent)
 	: QObject(parent), m_account(account)
@@ -323,6 +326,20 @@ void ChatWindowsManager::messageProcess(ChatSession* session, Message* msg)
 	ChatWindow* wnd = windows.value(session);
 	if (wnd == NULL || !wnd->isActiveWindow())
 	{
+		if (msg->type() == Message::Incoming)
+		{
+			if (msg->flags() & MESSAGE_FLAG_ALARM)
+				theRM.getAudio()->play(STRing);
+			else
+				if (!(msg->flags() & MESSAGE_FLAG_FLASH ))
+				{
+					if (session->contact()->email().contains("@chat.agent"))
+						theRM.getAudio()->play(STConference);
+					else
+						theRM.getAudio()->play(STMessage);
+				}
+		}
+
 		qDebug() << "Window isn't active";
 		Q_EMIT messageReceived(session->contact(), session->account()->email(), msg->dateTime());
 	}

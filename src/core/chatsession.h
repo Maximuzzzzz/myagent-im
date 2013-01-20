@@ -75,7 +75,7 @@ public Q_SLOTS:
 	bool wakeupContact();
 	//bool fileTransfer(FileMessage* fmsg);
 	void fileReceived(quint32 totalSize, quint32 sessionId, QByteArray filesAnsi, QString filesUtf, QByteArray ips);
-	void resendMessage(quint32 id);
+	bool resendMessage(quint32 id);
 	void clearHash();
 
 private Q_SLOTS:

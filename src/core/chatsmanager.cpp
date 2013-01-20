@@ -29,8 +29,6 @@
 #include "chatsession.h"
 #include "message.h"
 #include "mrim/proto.h"
-#include "audio.h"
-#include "resourcemanager.h"
 
 ChatsManager::ChatsManager(Account* account)
  : QObject(account), m_account(account)
@@ -66,19 +64,7 @@ void ChatsManager::processMessage(QByteArray from, Message* msg)
 	}
 
 	ChatSession* session = getSession(contact);
-	if (msg->type() == Message::Incoming)
-	{
-		if (msg->flags() & MESSAGE_FLAG_ALARM)
-			theRM.getAudio()->play(STRing);
-		else
-			if (!(msg->flags() & MESSAGE_FLAG_FLASH ))
-			{
-				if (from.contains("@chat.agent"))
-					theRM.getAudio()->play(STConference);
-				else
-					theRM.getAudio()->play(STMessage);
-			}
-	}
+
 	qDebug() << msg->flags();
 	session->appendMessage(msg);
 	qDebug() << msg->flags();
@@ -98,7 +84,6 @@ void ChatsManager::processMessage(QByteArray from, Message* msg)
 void ChatsManager::processFileMessage(QByteArray from, quint32 totalSize, quint32 sessionId, QByteArray filesAnsi, QString filesUtf, QByteArray ips)
 {
 	ChatSession* session = getSession(m_account->contactList()->getContact(from));
-	theRM.getAudio()->play(STMessage);
 	session->fileReceived(totalSize, sessionId, filesAnsi, filesUtf, ips);
 }
 

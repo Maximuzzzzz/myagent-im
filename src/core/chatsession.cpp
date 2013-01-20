@@ -34,8 +34,7 @@
 #include "mrim/tasks/tasksendmessage.h"
 #include "mrim/tasks/taskbroadcastmessage.h"
 #include "rtfexporter.h"
-#include "audio.h"
-#include "resourcemanager.h"
+#include "mults.h"
 
 ChatSession::ChatSession(Account* account, Contact* contact)
 	: m_account(account), m_contact(contact)
@@ -230,7 +229,7 @@ void ChatSession::fileReceived(quint32 totalSize, quint32 sessionId, QByteArray 
 	Q_EMIT signalFileReceived(totalSize, sessionId, filesAnsi, filesUtf, ips);
 }
 
-void ChatSession::resendMessage(quint32 id)
+bool ChatSession::resendMessage(quint32 id)
 {
 	MessageIterator it = messagesBegin();
 
@@ -266,8 +265,11 @@ void ChatSession::resendMessage(quint32 id)
 			broadcastMessage(msg, rec);
 		else
 			sendMessage(msg);
-		theRM.getAudio()->play(STOtprav);
+
+		return true;
 	}
+	else
+		return false;
 }
 
 void ChatSession::clearHash()
